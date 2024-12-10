@@ -13,7 +13,9 @@ import {
   Pagination,
   Checkbox,
   FormControlLabel,
+  Divider,
 } from "@mui/material";
+import CompanyLogo from "../../../assets/images/CompanyLogo.png";
 
 const companies = [
   {
@@ -92,7 +94,7 @@ const companies = [
 
 const MyVendors = () => {
   return (
-    <Container>
+    <div className="container">
       {/* Header */}
       <div className="flex justify-between align-center my-4">
         <Typography variant="h4">My Vendors</Typography>
@@ -123,14 +125,16 @@ const MyVendors = () => {
         </Grid>
       </Grid>
 
-      <Typography variant="body2" className="mb-4">
+      <Typography variant="body2">
         Popular: Twitter, Microsoft, Apple, Facebook
       </Typography>
+
+      <Divider />
 
       {/* Sidebar and Companies List */}
       <Grid container spacing={4}>
         {/* Sidebar */}
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={2}>
           <Typography variant="h6" className="mb-2">
             Industry
           </Typography>
@@ -165,7 +169,7 @@ const MyVendors = () => {
         </Grid>
 
         {/* Company Cards */}
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={10}>
           <Typography variant="h5" className="mb-4">
             All Vendors
           </Typography>
@@ -176,7 +180,7 @@ const MyVendors = () => {
                   <CardContent>
                     <div className="flex align-center mb-4">
                       <img
-                        src={company.logo}
+                        src={CompanyLogo}
                         alt={company.name}
                         className="me-3"
                         style={{ width: 50, height: 50 }}
@@ -216,7 +220,7 @@ const MyVendors = () => {
           </div>
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 };
 
