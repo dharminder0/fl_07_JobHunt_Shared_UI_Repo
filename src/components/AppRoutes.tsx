@@ -9,6 +9,7 @@ import Login from "../pages/auth/Login.tsx";
 import SignUp from "../pages/auth/SignUp.tsx";
 import OnBoarding from "../pages/boarding/OnBoarding.tsx";
 import DashboardNav from "../pages/dashboard/DashboardNav.tsx";
+import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails.tsx";
 
 export default function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/onboard" element={<OnBoarding />} />
         <Route path="/dashboard" element={<DashboardNav />} />
+        <Route path="/job/:id" element={<RequirementDetails />} />
       </Routes>
     </Router>
   );

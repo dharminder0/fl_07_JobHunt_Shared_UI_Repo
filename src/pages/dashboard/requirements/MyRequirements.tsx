@@ -14,10 +14,14 @@ import {
   Select,
   Pagination,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const MyRequirements = () => {
+  const navigate = useNavigate();
+
   const jobData = [
     {
+      id: 1,
       role: "Social Media Assistant",
       status: "Live",
       datePosted: "20 May 2020",
@@ -27,6 +31,7 @@ const MyRequirements = () => {
       needs: "4 / 11",
     },
     {
+      id: 2,
       role: "Senior Designer",
       status: "Live",
       datePosted: "16 May 2020",
@@ -36,6 +41,7 @@ const MyRequirements = () => {
       needs: "0 / 20",
     },
     {
+      id: 3,
       role: "Visual Designer",
       status: "Live",
       datePosted: "15 May 2020",
@@ -45,6 +51,7 @@ const MyRequirements = () => {
       needs: "1 / 5",
     },
     {
+      id: 4,
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
@@ -54,6 +61,7 @@ const MyRequirements = () => {
       needs: "10 / 10",
     },
     {
+      id: 5,
       role: "Kotlin Developer",
       status: "Closed",
       datePosted: "12 May 2020",
@@ -63,6 +71,7 @@ const MyRequirements = () => {
       needs: "20 / 20",
     },
     {
+      id: 6,
       role: "React Developer",
       status: "Closed",
       datePosted: "11 May 2020",
@@ -72,6 +81,7 @@ const MyRequirements = () => {
       needs: "10 / 10",
     },
     {
+      id: 7,
       role: "Social Media Assistant",
       status: "Live",
       datePosted: "20 May 2020",
@@ -81,6 +91,7 @@ const MyRequirements = () => {
       needs: "4 / 11",
     },
     {
+      id: 8,
       role: "Senior Designer",
       status: "Live",
       datePosted: "16 May 2020",
@@ -90,6 +101,7 @@ const MyRequirements = () => {
       needs: "0 / 20",
     },
     {
+      id: 9,
       role: "Visual Designer",
       status: "Live",
       datePosted: "15 May 2020",
@@ -99,6 +111,7 @@ const MyRequirements = () => {
       needs: "1 / 5",
     },
     {
+      id: 10,
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
@@ -108,6 +121,10 @@ const MyRequirements = () => {
       needs: "10 / 10",
     },
   ];
+
+  const handleRowClick = (id: number) => {
+    navigate(`/job/${id}`);
+  };
 
   return (
     <Box className="p-6  min-h-screen">
@@ -159,7 +176,11 @@ const MyRequirements = () => {
           </TableHead>
           <TableBody>
             {jobData.map((job, index) => (
-              <TableRow key={index} className="hover:bg-gray-50">
+              <TableRow
+                key={index}
+                onClick={() => handleRowClick(job.id)}
+                className="hover:bg-gray-50 cursor-pointer"
+              >
                 <TableCell>{job.role}</TableCell>
                 <TableCell>
                   <Typography
