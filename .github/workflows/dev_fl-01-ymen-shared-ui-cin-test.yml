@@ -21,10 +21,13 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build, and test
-        run: |
-          npm install
-           CI=false npm run build --if-present
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build React App
+        env:
+          CI: false
+        run: npm run build
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
