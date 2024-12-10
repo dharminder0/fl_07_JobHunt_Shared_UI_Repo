@@ -15,42 +15,40 @@ import MyApplications from "./MyApplications.tsx";
 import FindRequirements from "./FindRequirements.tsx";
 import MyClients from "./MyClients.tsx";
 import FindClients from "./FindClients.tsx";
+import MyRequirements from "./requirements/MyRequirements.tsx";
+import MyVendors from "./company-vendors/MyVendors.tsx";
+import FindVendors from "./company-vendors/FindVendors.tsx";
 
 export default function DashboardNav() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(0);
-  
-  const menuItems = [
-    { text: "Dashboard", icon: <DashboardIcon />, id: 0 },
-    { text: "My Applications", icon: <WorkIcon />, id: 1 },
-    { text: "Find requirements", icon: <PersonIcon />, id: 2 },
-    { text: "My Clients", icon: <WorkIcon />, id: 3 },
-    { text: "Find Clients", icon: <EventIcon />, id: 4 },
-    { text: "Messages", icon: <MessageIcon />, id: 5 },
-  ];
 
-  const menuItem = [
-    { text: "Dashboard", icon: <DashboardIcon />, id: 0 },
-    { text: "My Requirements", icon: <WorkIcon />, id: 1 },
-    { text: "My vendors", icon: <PersonIcon />, id: 2 },
-    { text: "Find vendors", icon: <WorkIcon />, id: 3 },
-    { text: "Messages", icon: <MessageIcon />, id: 4 },
+  const vendorItems = [
+    { id: 0, text: "Dashboard", icon: <DashboardIcon />, isVendor: true },
+    { id: 1, text: "My Applications", icon: <WorkIcon />, isVendor: true },
+    { id: 2, text: "Find requirements", icon: <PersonIcon />, isVendor: true },
+    { id: 3, text: "My Clients", icon: <WorkIcon />, isVendor: true },
+    { id: 4, text: "Find Clients", icon: <EventIcon />, isVendor: true },
+    { id: 5, text: "Messages", icon: <MessageIcon />, isVendor: true },
+    { id: 6, text: "Dashboard", icon: <DashboardIcon />, isVendor: false },
+    { id: 7, text: "My Requirements", icon: <WorkIcon />, isVendor: false },
+    { id: 8, text: "My vendors", icon: <PersonIcon />, isVendor: false },
+    { id: 9, text: "Find vendors", icon: <WorkIcon />, isVendor: false },
+    { id: 10, text: "Messages", icon: <MessageIcon />, isVendor: false },
   ];
 
   const renderContent = () => {
     switch (activeTab) {
-      case 0:
+      case 6:
         return <DashboardPage />;
-      case 1:
-        return <MyApplications />;
-      case 2:
-        return <FindRequirements />;
-      case 3:
-        return <MyClients />;
-      case 4:
+      case 7:
+        return <MyRequirements />;
+      case 8:
+        return <MyVendors />;
+      case 9:
+        return <FindVendors />;
+      case 10:
         return <FindClients />;
-      case 5:
-        return <Messages />;
       default:
         return <DashboardPage />;
     }
@@ -61,18 +59,23 @@ export default function DashboardNav() {
       {/* Sidebar */}
       <div className="bg-gray-50 p-4 h-screen w-80">
         <List>
-          {menuItems.map((item) => (
-            <ListItem
-              key={item.id}
-              onClick={() => setActiveTab(item.id)} // Update active tab state
-              className={`rounded-lg cursor-pointer ${
-                activeTab === item.id ? "bg-blue-200" : "hover:bg-blue-100"
-              }`}
-            >
-              <ListItemIcon className="text-blue-500">{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
+          {vendorItems.map(
+            (item) =>
+              item.isVendor === false && (
+                <ListItem
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)} // Update active tab state
+                  className={`rounded-lg cursor-pointer ${
+                    activeTab === item.id ? "bg-blue-200" : "hover:bg-blue-100"
+                  }`}
+                >
+                  <ListItemIcon className="text-blue-500">
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItem>
+              )
+          )}
         </List>
       </div>
 

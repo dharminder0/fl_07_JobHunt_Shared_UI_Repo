@@ -11,6 +11,23 @@ module.exports = {
         bold: "700",
         light: "300",
       },
+      colors: {
+        purple: {
+          500: "#a78bfa",
+        },
+        green: {
+          700: "#059669",
+        },
+        red: {
+          700: "#b91c1c",
+        },
+        yellow: {
+          700: "#f59e0b",
+        },
+        blue: {
+          700: "#2563eb",
+        },
+      },
     },
   },
   plugins: [],

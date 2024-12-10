@@ -14,12 +14,14 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import logo from "../assets/images/logo.png";
 import { useEffect, useState } from "react";
+import { Select, SelectChangeEvent } from "@mui/material";
 
 const pages = ["Vendor", "Company", "Logout"];
 const settings = ["Profile", "Logout"];
 
 function DashboardTopNav() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState("Vendor");
 
   useEffect(() => {
     // Check if the user is logged in by looking at localStorage
@@ -28,6 +30,7 @@ function DashboardTopNav() {
       setIsLoggedIn(true);
     }
   }, []);
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -65,7 +68,7 @@ function DashboardTopNav() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="inherit">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -105,15 +108,29 @@ function DashboardTopNav() {
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, display: "block" }}
               >
                 {page}
               </Button>
-            ))}
+            ))} */}
+
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={userType}
+              label="Type"
+              onChange={(event: SelectChangeEvent) =>
+                setUserType(event.target.value as string)
+              }
+            >
+              <MenuItem value={"Vendor"}>Vendor</MenuItem>
+              <MenuItem value={"Company"}>Company</MenuItem>
+              <MenuItem value={"Client"}>Client</MenuItem>
+            </Select>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

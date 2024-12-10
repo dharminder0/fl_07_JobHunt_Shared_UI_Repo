@@ -22,7 +22,21 @@ export default function Login() {
   const creds: any = {
     email: "admin@fleek.com",
     password: "Admin",
+    role: ['company']
   };
+
+  const credList:any[] = [
+    {
+      email: "admin@fleek.com",
+      password: "Admin",
+      role: ['company']
+    },
+    {
+      email: "vendor@fleek.com",
+      password: "vendor",
+      role: ['vendor']
+    }
+  ]
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
