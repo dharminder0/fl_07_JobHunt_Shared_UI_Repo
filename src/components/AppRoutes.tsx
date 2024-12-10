@@ -23,6 +23,7 @@ import VndMyApplications from "./pages/vendor/VndMyApplications.tsx";
 import FindJobs from "./pages/vendor/FindJobs.tsx";
 import BrowseCommpany from "./pages/vendor/BrowseCommpany.tsx";
 import VndProfile from "./pages/vendor/VndProfile.tsx";
+import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails.tsx";
 
 export default function AppRoutes() {
   return (
@@ -51,6 +52,7 @@ export default function AppRoutes() {
           <Route path="myprofile" element={<VndProfile />} />
         </Route>
         <Route path="/dashboard" element={<DashboardNav />} />
+        <Route path="/job/:id" element={<RequirementDetails />} />
       </Routes>
     </Router>
 
