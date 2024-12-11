@@ -110,7 +110,7 @@ const MyClients = () => {
     <div className="px-6">
       {/* Header */}
       <div className="flex justify-between align-center my-4">
-        <Typography variant="h5">My Vendors</Typography>
+        <Typography variant="h5">Find Vendors</Typography>
         <Button variant="contained" color="primary">
           Back to Homepage
         </Button>
