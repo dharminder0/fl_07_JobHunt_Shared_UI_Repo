@@ -10,7 +10,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Clash Display, Arial, sans-serif",
+    fontFamily: "Epilogue, Arial, sans-serif",
   },
   components: {
     MuiStepLabel: {

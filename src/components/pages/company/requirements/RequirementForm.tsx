@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -10,6 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { Add, HdrPlus } from "@mui/icons-material";
+import { Drawer } from "@mui/material";
 
 const RequirementForm = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -59,14 +59,14 @@ const RequirementForm = () => {
         Post requirements
       </Button>
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div className="w-96 p-4">
-          <h2 className="text-xl font-bold mb-4">Post Job</h2>
+        <div className="p-4">
+          <h2 className="text-xl font-bold mb-4">Post Requirements</h2>
           <FormControl fullWidth className="mb-4">
             <FormLabel>Post Type</FormLabel>
             <Select
               value={postType}
               onChange={handlePostTypeChange}
-              className="mt-2"
+              className="my-2"
             >
               <MenuItem value="single">Single</MenuItem>
               <MenuItem value="multiple">Multiple</MenuItem>

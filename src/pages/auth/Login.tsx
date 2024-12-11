@@ -6,10 +6,7 @@ import {
   FormControlLabel,
   Typography,
 } from "@mui/material";
-import bannerPerson from "../../assets/images/banner-person.png";
-import bar from "../../assets/images/bar.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Password } from "@mui/icons-material";
 
 export default function Login() {
   const location = useLocation();
@@ -78,12 +75,12 @@ export default function Login() {
       {/* Left Section */}
       <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
         <div className="mb-8 bg-white p-4 w-40">
-          <img src={bar} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
+          <img src={require('../../assets/images/bar.png')} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
           <h2 className="font-bold text-xl">10K+</h2>
           <p className="text-gray-600 font-medium">People got hired</p>
         </div>
         <div className="self-center">
-          <img src={bannerPerson} alt="JobHunty Logo" className="w-auto" />
+          <img src={require('../../assets/images/banner-person.png')} alt="JobHunty Logo" className="w-auto" />
         </div>
       </div>
 
