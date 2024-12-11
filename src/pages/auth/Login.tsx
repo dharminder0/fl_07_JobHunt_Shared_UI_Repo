@@ -38,7 +38,8 @@ export default function Login() {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (isLoggedIn) {
-      navigate("/onboard");
+      // navigate("/onboard");
+      navigate("/company");
     }
   }, []);
 
