@@ -1,11 +1,9 @@
 import React from 'react';
-
 interface HeaderProps {}
-
 const pages = ["Vendor", "Company", "Logout"];
 const settings = ["Profile", "Logout"];
 
-const Header: React.FC<HeaderProps> = () => {
+const CmpHeader: React.FC<HeaderProps> = () => {
   return (
     <div>
       Header
@@ -13,4 +11,4 @@ const Header: React.FC<HeaderProps> = () => {
   );
 };
 
-export default Header;
+export default CmpHeader;

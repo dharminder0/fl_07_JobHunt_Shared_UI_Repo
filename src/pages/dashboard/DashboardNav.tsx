@@ -18,6 +18,7 @@ import FindClients from "./FindClients.tsx";
 import MyRequirements from "./requirements/MyRequirements.tsx";
 import MyVendors from "./company-vendors/MyVendors.tsx";
 import FindVendors from "./company-vendors/FindVendors.tsx";
+import VendorCompanyDetails from "./company-vendors/VendorCompanyDetails.tsx";
 
 export default function DashboardNav() {
   const location = useLocation();
@@ -46,7 +47,7 @@ export default function DashboardNav() {
       case 8:
         return <MyVendors />;
       case 9:
-        return <FindVendors />;
+        return <VendorCompanyDetails />;
       case 10:
         return <FindClients />;
       default:

@@ -13,6 +13,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
+import CompanyLogo from "../../../assets/images/CompanyLogo.png";
 
 const companies = [
   {
@@ -63,38 +64,14 @@ const companies = [
     jobs: 7,
     logo: "https://via.placeholder.com/100", // Replace with your logo
   },
-  {
-    name: "Square",
-    description:
-      "Square builds common business tools in unconventional ways...",
-    tags: ["Business", "Blockchain"],
-    jobs: 7,
-    logo: "https://via.placeholder.com/100",
-  },
-  {
-    name: "Truebill",
-    description:
-      "Take control of your money. Truebill develops a mobile app...",
-    tags: ["Business"],
-    jobs: 7,
-    logo: "https://via.placeholder.com/100",
-  },
-  {
-    name: "Stripe",
-    description:
-      "Stripe is a software platform for starting and running internet businesses.",
-    tags: ["Business", "Payment gateway"],
-    jobs: 7,
-    logo: "https://via.placeholder.com/100", // Replace with your logo
-  },
 ];
 
 const FindVendors = () => {
   return (
-    <Container>
+    <div className="container">
       {/* Header */}
       <div className="flex justify-between align-center my-4">
-        <Typography variant="h4">My Vendors</Typography>
+        <Typography variant="h4">Find Vendors</Typography>
         <Button variant="contained" color="primary">
           Back to Homepage
         </Button>
@@ -129,7 +106,7 @@ const FindVendors = () => {
       {/* Sidebar and Companies List */}
       <Grid container spacing={4}>
         {/* Sidebar */}
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={2}>
           <Typography variant="h6" className="mb-2">
             Industry
           </Typography>
@@ -164,7 +141,7 @@ const FindVendors = () => {
         </Grid>
 
         {/* Company Cards */}
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={10}>
           <Typography variant="h5" className="mb-4">
             All Vendors
           </Typography>
@@ -175,7 +152,7 @@ const FindVendors = () => {
                   <CardContent>
                     <div className="flex align-center mb-4">
                       <img
-                        src={company.logo}
+                        src={CompanyLogo}
                         alt={company.name}
                         className="me-3"
                         style={{ width: 50, height: 50 }}
@@ -215,7 +192,7 @@ const FindVendors = () => {
           </div>
         </Grid>
       </Grid>
-    </Container>
+    </div>
   );
 };
 
