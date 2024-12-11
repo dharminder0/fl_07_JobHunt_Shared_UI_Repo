@@ -13,10 +13,6 @@ import JobStatistics from '../../common/JobStatistics';
 interface CompanyDashboardProps { }
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
-<<<<<<< HEAD
-=======
-
->>>>>>> d64b5e5b48289b3fc844e5ab85210800dc0a66d2
   const applicantData = [
     { label: "Infosys", value: 45, color: "bg-purple-500" },
     { label: "Microsoft", value: 24, color: "bg-green-500" },

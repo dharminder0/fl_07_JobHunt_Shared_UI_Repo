@@ -5,23 +5,6 @@
       "dom",
       "dom.iterable",
       "esnext"
-<<<<<<< HEAD
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["react", "react-dom", "jest"]
-=======
     ], // Use DOM and modern ES features
     "module": "esnext", // Use ES modules
     "moduleResolution": "node", // Resolve modules like Node.js
@@ -42,7 +25,6 @@
         "src/*"
       ]
     }
->>>>>>> d64b5e5b48289b3fc844e5ab85210800dc0a66d2
   },
   "include": [
     "src"
