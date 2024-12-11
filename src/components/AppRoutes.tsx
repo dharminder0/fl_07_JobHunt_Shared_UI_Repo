@@ -23,13 +23,15 @@ import VndProfile from "./pages/vendor/VndProfile.tsx";
 import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails.tsx";
 import Layout from "./layouts/Layout.tsx";
 import VendorCompanyDetails from "../pages/dashboard/company-vendors/VendorCompanyDetails.tsx";
+import NotFound from "./pages/NotFound/NotFound.tsx";
 
 export default function AppRoutes() {
   return (
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route index element={<Navigate to="/login" replace />} />
+        {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/onboard" element={<OnBoarding />} />
@@ -68,6 +70,8 @@ export default function AppRoutes() {
         {/* Shared Routes */}
         <Route path="/dashboard" element={<Navigate to="/company/dashboard" replace />} />
         <Route path="/job/:id" element={<RequirementDetails />} />
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
     </Router>
   );
