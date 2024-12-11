@@ -8,12 +8,12 @@ import {
   Avatar,
   LinearProgress
 } from "@mui/material";
-import JobStatistics from '../../common/JobStatistics.tsx';
+import JobStatistics from '../../common/JobStatistics';
 
-interface CompanyDashboardProps {}
+interface CompanyDashboardProps { }
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
-  
+
   const applicantData = [
     { label: "Full Time", value: 45, color: "bg-purple-500" },
     { label: "Part-Time", value: 24, color: "bg-green-500" },

@@ -6,11 +6,11 @@ import WorkIcon from "@mui/icons-material/Work";
 import EventIcon from "@mui/icons-material/Event";
 import { Button, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import Header from './Header.tsx';
-import SideMenu from './SideMenu.tsx';
+import Header from './Header';
+import SideMenu from './SideMenu';
 
 
-interface LayoutProps {}
+interface LayoutProps { }
 
 const Layout: React.FC<LayoutProps> = () => {
 
@@ -20,9 +20,9 @@ const Layout: React.FC<LayoutProps> = () => {
       <div className="h-[calc(100%-82px)] flex">
         <SideMenu />
         <div className="w-[calc(100%-270px)] h-full overflow-auto">
-          <Outlet />      
+          <Outlet />
         </div>
-      </div> 
+      </div>
     </div>
   );
 };

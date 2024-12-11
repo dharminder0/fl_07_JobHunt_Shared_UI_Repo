@@ -9,7 +9,7 @@ import {
   Avatar,
   LinearProgress,
 } from "@mui/material";
-import JobStatistics from "../../components/common/JobStatistics.tsx";
+import JobStatistics from "../../components/common/JobStatistics";
 
 const DashboardPage = () => {
   const applicantData = [

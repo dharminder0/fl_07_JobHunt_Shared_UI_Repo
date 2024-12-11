@@ -23,7 +23,7 @@ const CompanyService = () => {
   const [rateCard, setRateCard] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const companyModules = [
+  const companyModules: Array<string> = [
     "Staff Augmentation",
     "Fixed Project",
     "Dedicated Team",
@@ -31,16 +31,16 @@ const CompanyService = () => {
     "All of the Above",
   ];
 
-  const resourcesOptions = ["Onsite", "Offsite", "Hybrid", "All of the Above"];
+  const resourcesOptions: Array<string> = ["Onsite", "Offsite", "Hybrid", "All of the Above"];
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = (e: any) => {
     const file = e.target.files?.[0];
     if (file) {
       setRateCard(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     if (

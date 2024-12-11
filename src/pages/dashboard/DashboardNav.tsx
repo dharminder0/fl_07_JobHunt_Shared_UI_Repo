@@ -8,17 +8,17 @@ import WorkIcon from "@mui/icons-material/Work";
 import EventIcon from "@mui/icons-material/Event";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
-import DashboardPage from "./DashboardPage.tsx";
-import Messages from "./Messages.tsx";
-import DashboardTopNav from "../../components/DashboardTopNav.tsx";
-import MyApplications from "./MyApplications.tsx";
-import FindRequirements from "./FindRequirements.tsx";
-import MyClients from "./MyClients.tsx";
-import FindClients from "./FindClients.tsx";
-import MyRequirements from "./requirements/MyRequirements.tsx";
-import MyVendors from "./company-vendors/MyVendors.tsx";
-import FindVendors from "./company-vendors/FindVendors.tsx";
-import VendorCompanyDetails from "./company-vendors/VendorCompanyDetails.tsx";
+import DashboardPage from "./DashboardPage";
+import Messages from "./Messages";
+import DashboardTopNav from "../../components/DashboardTopNav";
+import MyApplications from "./MyApplications";
+import FindRequirements from "./FindRequirements";
+import MyClients from "./MyClients";
+import FindClients from "./FindClients";
+import MyRequirements from "./requirements/MyRequirements";
+import MyVendors from "./company-vendors/MyVendors";
+import FindVendors from "./company-vendors/FindVendors";
+import VendorCompanyDetails from "./company-vendors/VendorCompanyDetails";
 
 export default function DashboardNav() {
   const location = useLocation();
@@ -66,9 +66,8 @@ export default function DashboardNav() {
                 <ListItem
                   key={item.id}
                   onClick={() => setActiveTab(item.id)} // Update active tab state
-                  className={`rounded-lg cursor-pointer ${
-                    activeTab === item.id ? "bg-blue-200" : "hover:bg-blue-100"
-                  }`}
+                  className={`rounded-lg cursor-pointer ${activeTab === item.id ? "bg-blue-200" : "hover:bg-blue-100"
+                    }`}
                 >
                   <ListItemIcon className="text-blue-500">
                     {item.icon}
