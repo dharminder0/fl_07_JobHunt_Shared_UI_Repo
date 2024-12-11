@@ -29,37 +29,6 @@ import VendorCompanyDetails from "../pages/dashboard/company-vendors/VendorCompa
 
 export default function AppRoutes() {
   return (
-    // <Router>
-    //   <Routes>
-    //     <Route path="/" element={<Navigate to="/login" replace />} />
-    //     <Route path="/login" element={<Login />} />
-    //     <Route path="/signup" element={<SignUp />} />
-    //     <Route path="/onboard" element={<OnBoarding />} />
-    //     <Route path="/company" element={<CompanyLayout />}>
-    //       <Route index element={<Navigate to="dashboard" replace />} />
-    //       <Route path="dashboard" element={<CompanyDashboard />} />
-    //       <Route path="myapp">
-    //         <Route index element={<MyApplications />} /> {/* List all applications */}
-    //         <Route path=":id" element={<RequirementDetails />} /> {/* View specific application */}
-    //       </Route>
-    //       <Route path="findrequirements" element={<FindRequirements />} />
-    //       <Route path="myclients" element={<MyClients />} />
-    //       <Route path="findclients" element={<FindClients />} />
-    //       <Route path="messages" element={<Messages />} />
-    //     </Route>
-    //     <Route path="/vendor" element={<VendorLayout />}>
-    //       <Route index element={<Navigate to="dashboard" replace />} />
-    //       <Route path="dashboard" element={<VendorDashboard />} />
-    //       <Route path="messages" element={<Messages />} />
-    //       <Route path="myapp" element={<VndMyApplications />} />
-    //       <Route path="findjobs" element={<FindJobs />} />
-    //       <Route path="browsecompany" element={<BrowseCommpany />} />
-    //       <Route path="myprofile" element={<VndProfile />} />
-    //     </Route>
-    //     <Route path="/dashboard" element={<DashboardNav />} />
-    //     <Route path="/job/:id" element={<RequirementDetails />} />
-    //   </Routes>
-    // </Router>
     <Router>
       <Routes>
         {/* Public Routes */}

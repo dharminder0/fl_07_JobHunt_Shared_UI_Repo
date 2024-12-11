@@ -49,25 +49,20 @@ const Header: React.FC<HeaderProps> = () => {
     setAnchorEl(null);
   };
   return (
-    <div className="h-[82px] px-8 py-4 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
+    <div className="h-[75px] px-8 py-4 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className='flex gap-5'>
-        <div className="icon">{selectedOrg?.icon}</div>
-        <div className="dropdown flex flex-col" 
+        <div className="icon my-auto">{selectedOrg?.icon}</div>
+        <div className="dropdown flex flex-row gap-2" 
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
         >
-          <div className="org font-[Epilogue] font-normal text-base">{selectedOrg?.orgType}</div>
-          <div className="title flex flex-row gap-2">
-            <div className='font-semibold font-[Epilogue] text-[20px]/[24px]'>{selectedOrg?.title}</div>
-            <div>
-              <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19.5 8.5L12.5 15.5L5.5 8.5" stroke="#25324B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-          </div>
+          <div className='font-semibold font-[Epilogue] text-[20px]/[24px] my-auto'>{selectedOrg?.title}</div>
+          <svg className='my-auto' width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.5 8.5L12.5 15.5L5.5 8.5" stroke="#25324B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
         </div>
         <Menu
           id="basic-menu"
