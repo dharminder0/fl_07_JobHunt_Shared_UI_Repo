@@ -18,12 +18,13 @@ import MyClients from "./pages/company/MyClients.tsx";
 import FindClients from "./pages/company/FindClients.tsx";
 import Messages from "./pages/company/Messages.tsx";
 import FindRequirements from "./pages/company/FindRequirements.tsx";
-import MyApplications from "./pages/company/MyApplications.tsx";
+import MyApplications from "./pages/company/requirements/MyApplications.tsx";
 import VndMyApplications from "./pages/vendor/VndMyApplications.tsx";
 import FindJobs from "./pages/vendor/FindJobs.tsx";
 import BrowseCommpany from "./pages/vendor/BrowseCommpany.tsx";
 import VndProfile from "./pages/vendor/VndProfile.tsx";
 import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails.tsx";
+import VendorCompanyDetails from "../pages/dashboard/company-vendors/VendorCompanyDetails.tsx";
 
 export default function AppRoutes() {
   return (
@@ -40,8 +41,14 @@ export default function AppRoutes() {
             <Route index element={<MyApplications />} /> {/* List all applications */}
             <Route path=":id" element={<RequirementDetails />} /> {/* View specific application */}
           </Route>
-          <Route path="findrequirements" element={<FindRequirements />} />
-          <Route path="myclients" element={<MyClients />} />
+          <Route path="findrequirements">
+            <Route index element={<FindRequirements />} /> {/* List all applications */}
+            <Route path=":id" element={<VendorCompanyDetails />} /> {/* View specific application */}
+          </Route>
+          <Route path="myclients">
+            <Route index element={<MyClients />} /> {/* List all applications */}
+            <Route path=":id" element={<VendorCompanyDetails />} /> {/* View specific application */}
+          </Route>
           <Route path="findclients" element={<FindClients />} />
           <Route path="messages" element={<Messages />} />
         </Route>

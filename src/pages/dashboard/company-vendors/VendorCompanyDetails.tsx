@@ -11,7 +11,7 @@ import { ArrowForward, Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 
 const VendorCompanyDetails = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen p-6">
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
@@ -236,14 +236,6 @@ const VendorCompanyDetails = () => {
                 </Button>
               </div>
             </div>
-          </div>
-
-          <div className="my-4">
-            <img
-              src={require("../../../assets/images/Frame1191.png")}
-              alt=""
-              className="w-full"
-            />
           </div>
         </Grid>
 

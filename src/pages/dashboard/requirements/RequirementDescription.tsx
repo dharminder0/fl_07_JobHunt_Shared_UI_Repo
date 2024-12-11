@@ -5,8 +5,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 export default function RequirementDescription() {
   return (
-    <Box className="p-8 bg-gray-50 min-h-screen">
-      <Paper className="p-6 shadow-md">
+    <Box className="min-h-screen">
+      <Paper className="p-6">
         {/* Header */}
         <Box className="flex justify-between items-start mb-4">
           <Typography variant="h5" className="font-bold text-gray-800">
