@@ -54,7 +54,8 @@ export default function Login() {
       if (email === storedEmail && password === storedPassword) {
         localStorage.setItem("isLoggedIn", "true");
         setErrorMessage(""); // Clear any previous errors
-        navigate("/onboard");
+        // navigate("/onboard");
+        navigate("/company");
         return;
       }
     }
