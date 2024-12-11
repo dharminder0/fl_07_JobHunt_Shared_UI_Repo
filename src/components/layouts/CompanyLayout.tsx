@@ -1,66 +1,17 @@
 import React, { useState } from 'react';
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import MessageIcon from "@mui/icons-material/Message";
-import PersonIcon from "@mui/icons-material/Person";
-import WorkIcon from "@mui/icons-material/Work";
-import EventIcon from "@mui/icons-material/Event";
+
 import { Button, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 interface CompanyLayoutProps {}
 
 const CompanyLayout: React.FC<CompanyLayoutProps> = () => {
-  const menuItems = [
-    { text: "Dashboard", icon: <DashboardIcon />, id: 0, path:'/company/dashboard' },
-    { text: "My Requirements", icon: <WorkIcon />, id: 1, path:'/company/myapp' },
-    { text: "My Vendors", icon: <PersonIcon />, id: 2, path:'/company/findrequirements' },
-    { text: "Find Vendors", icon: <WorkIcon />, id: 3, path:'/company/myclients' },
-    // { text: "Find Clients", icon: <EventIcon />, id: 4, path:'/company/findclients' },
-    { text: "Messages", icon: <MessageIcon />, id: 5, path:'/company/messages' },
-  ];
 
-  const organizationList = [
-    {
-      title:"Nomad",
-      orgType:"Company",
-      icon: <svg width="37" height="44" viewBox="0 0 37 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z" fill="#449B82" />
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z" fill="#9BDB9C" />
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z" fill="#56CDAD" />
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z" fill="white" />
-      </svg>,
-      redirectTo: "/company"     
-    },
-    {
-      title:"Fleek",
-      orgType:"Vendor",
-      icon: <svg width="37" height="44" viewBox="0 0 37 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z" fill="#449B82" />
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z" fill="#9BDB9C" />
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z" fill="#56CDAD" />
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z" fill="white" />
-      </svg>,
-      redirectTo: "/vendor"           
-    },
-  ]
-  const [selectedOrg, setSelectedOrg] = useState<any>(organizationList[0]);
-  const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<any>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = (orgObj?:any) => {
-    if(orgObj){
-      setSelectedOrg(orgObj);
-      navigate(orgObj.redirectTo);
-    }
-    setAnchorEl(null);
-  };
+
 
   return (
     <div className="h-screen flex">
-      <div className="w-[270px] h-full overflow-auto bg-gray-50 p-4">
+      {/* <div className="w-[270px] h-full overflow-auto bg-gray-50 p-4">
           <List>
             {menuItems.map((item) => (
               <ListItem
@@ -73,9 +24,9 @@ const CompanyLayout: React.FC<CompanyLayoutProps> = () => {
               </ListItem>
             ))}
           </List>
-      </div>
+      </div> */}
       <div className="w-[calc(100%-270px)]">
-        <div className="h-[82px] px-8 py-4 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
+        {/* <div className="h-[82px] px-8 py-4 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
           <div className='flex gap-5'>
             <div className="icon">{selectedOrg?.icon}</div>
             <div className="dropdown flex flex-col" 
@@ -133,7 +84,7 @@ const CompanyLayout: React.FC<CompanyLayoutProps> = () => {
 
             </Button>
           </div>
-        </div>
+        </div> */}
         <div className="h-[calc(100%-82px)] overflow-auto">
           <Outlet />       
         </div> 
