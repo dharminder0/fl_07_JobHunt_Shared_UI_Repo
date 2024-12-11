@@ -25,7 +25,6 @@ const RequirementDetails = () => {
   const [search, setSearch] = useState("");
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log(newValue);
     setActiveTab(newValue);
   };
 
