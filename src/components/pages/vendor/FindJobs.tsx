@@ -4,8 +4,8 @@ interface FindJobsProps {}
 
 const FindJobs: React.FC<FindJobsProps> = () => {
   return (
-    <div>
-      FindJobs
+    <div className='flex h-full'>
+      <div className="m-auto font-bold text-[25px]">Comming soon...</div>      
     </div>
   );
 };

@@ -4,8 +4,8 @@ interface VndProfileProps {}
 
 const VndProfile: React.FC<VndProfileProps> = () => {
   return (
-    <div>
-      VndProfile
+    <div className='flex h-full'>
+      <div className="m-auto font-bold text-[25px]">Comming soon...</div>      
     </div>
   );
 };
