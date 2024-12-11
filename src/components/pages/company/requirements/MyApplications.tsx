@@ -337,7 +337,7 @@ const MyApplications = () => {
                 <TableCell>{job.datePosted}</TableCell>
                 <TableCell>
                   <Typography
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    className={`px-3 py-1 rounded-full text-sm font-medium text-center ${
                       job.requirementType === "Onsite"
                         ? "text-blue-700 border border-blue-700"
                         : "text-yellow-700 border border-yellow-700"

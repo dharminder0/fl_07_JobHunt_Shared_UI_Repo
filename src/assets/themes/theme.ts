@@ -10,9 +10,31 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Epilogue, Arial, sans-serif",
+    fontFamily: "Poppins, Arial, sans-serif",
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          color: 'primary'
+        },
+      },
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
+    },
     MuiStepLabel: {
       styleOverrides: {
         label: {
