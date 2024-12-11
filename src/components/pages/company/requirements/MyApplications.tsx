@@ -15,6 +15,7 @@ import {
   Pagination,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import RequirementForm from "./RequirementForm.tsx";
 
 const MyApplications = () => {
   const navigate = useNavigate();
@@ -131,19 +132,12 @@ const MyApplications = () => {
       {/* Header */}
       <Box className="flex justify-between items-center mb-6">
         <Box>
-          <Typography variant="h6" className="font-bold text-gray-800">
-            Requirements Listing
-          </Typography>
+          <Typography variant="h5">Requirements Listing</Typography>
           <Typography className="text-gray-500">
             Here is your requirements listing status from July 19 - July 25.
           </Typography>
         </Box>
-        <Button
-          variant="contained"
-          className="bg-purple-500 text-white font-medium px-4 py-2 rounded-md shadow-md"
-        >
-          + Post a Requirement
-        </Button>
+        <RequirementForm />
       </Box>
 
       {/* Job List */}

@@ -131,7 +131,7 @@ const MyRequirements = () => {
       {/* Header */}
       <Box className="flex justify-between items-center mb-6">
         <Box>
-          <Typography variant="h6" className="font-bold text-gray-800">
+          <Typography variant="h5" fontWeight={600}>
             Requirements Listing
           </Typography>
           <Typography className="text-gray-500">
