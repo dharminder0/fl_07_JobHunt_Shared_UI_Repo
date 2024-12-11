@@ -18,7 +18,7 @@ import {
   Pagination,
 } from "@mui/material";
 import { Search, FilterList, MoreHoriz } from "@mui/icons-material";
-import RequirementDescription from "./RequirementDescription.tsx";
+import RequirementDescription from "./RequirementDescription";
 
 const RequirementDetails = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -115,11 +115,10 @@ const RequirementDetails = () => {
                     <TableCell>{applicant.score}</TableCell>
                     <TableCell>
                       <span
-                        className={`px-2 py-1 rounded-full ${
-                          applicant.stage === "Hired"
+                        className={`px-2 py-1 rounded-full ${applicant.stage === "Hired"
                             ? "bg-green-100 text-green-600"
                             : "bg-gray-100 text-gray-600"
-                        }`}
+                          }`}
                       >
                         {applicant.stage}
                       </span>

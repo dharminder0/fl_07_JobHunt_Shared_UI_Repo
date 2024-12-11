@@ -5,10 +5,10 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import CompanyInfo from "./CompanyInfo.tsx";
-import CompanyService from "./CompanyService.tsx";
-import CompanyTechnologiesForm from "./CompanyTechnologiesForm.tsx";
-import Navbar from "../../components/Navbar.tsx";
+import CompanyInfo from "./CompanyInfo";
+import CompanyService from "./CompanyService";
+import CompanyTechnologiesForm from "./CompanyTechnologiesForm";
+import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
 const steps = [

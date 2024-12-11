@@ -5,25 +5,25 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "../pages/auth/Login.tsx";
-import SignUp from "../pages/auth/SignUp.tsx";
-import OnBoarding from "../pages/boarding/OnBoarding.tsx";
-import VendorDashboard from "./pages/vendor/VendorDashboard.tsx";
-import CompanyDashboard from "./pages/company/CompanyDashboard.tsx";
-// import MyApplications from "./pages/company/MyApplications.tsx";
-import MyClients from "./pages/company/MyClients.tsx";
-import FindClients from "./pages/company/FindClients.tsx";
-import Messages from "./pages/company/Messages.tsx";
-import FindRequirements from "./pages/company/FindRequirements.tsx";
-import MyApplications from "./pages/company/requirements/MyApplications.tsx";
-import VndMyApplications from "./pages/vendor/VndMyApplications.tsx";
-import FindJobs from "./pages/vendor/FindJobs.tsx";
-import BrowseCommpany from "./pages/vendor/BrowseCommpany.tsx";
-import VndProfile from "./pages/vendor/VndProfile.tsx";
-import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails.tsx";
-import Layout from "./layouts/Layout.tsx";
-import VendorCompanyDetails from "../pages/dashboard/company-vendors/VendorCompanyDetails.tsx";
-import NotFound from "./pages/NotFound/NotFound.tsx";
+import Login from "../pages/auth/Login";
+import SignUp from "../pages/auth/SignUp";
+import OnBoarding from "../pages/boarding/OnBoarding";
+import VendorDashboard from "./pages/vendor/VendorDashboard";
+import CompanyDashboard from "./pages/company/CompanyDashboard";
+// import MyApplications from "./pages/company/MyApplications";
+import MyClients from "./pages/company/MyClients";
+import FindClients from "./pages/company/FindClients";
+import Messages from "./pages/company/Messages";
+import FindRequirements from "./pages/company/FindRequirements";
+import MyApplications from "./pages/company/requirements/MyApplications";
+import VndMyApplications from "./pages/vendor/VndMyApplications";
+import FindJobs from "./pages/vendor/FindJobs";
+import BrowseCommpany from "./pages/vendor/BrowseCommpany";
+import VndProfile from "./pages/vendor/VndProfile";
+import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails";
+import Layout from "./layouts/Layout";
+import VendorCompanyDetails from "../pages/dashboard/company-vendors/VendorCompanyDetails";
+import NotFound from "./pages/NotFound/NotFound";
 
 export default function AppRoutes() {
   return (
@@ -37,7 +37,7 @@ export default function AppRoutes() {
         <Route path="/onboard" element={<OnBoarding />} />
 
         {/* Company Layout */}
-        <Route path="/company" element={<Layout/>}>
+        <Route path="/company" element={<Layout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<CompanyDashboard />} />
           <Route path="myapp">

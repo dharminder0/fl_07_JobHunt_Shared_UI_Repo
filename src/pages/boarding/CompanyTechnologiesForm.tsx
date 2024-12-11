@@ -72,7 +72,7 @@ const CompanyTechnologiesForm = () => {
   const [otherOtherDetail, setOtherOtherDetail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     // Validation

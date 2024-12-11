@@ -6,11 +6,11 @@ import MessageIcon from "@mui/icons-material/Message";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import EventIcon from "@mui/icons-material/Event";
-import DashboardPage from "../pages/dashboard/DashboardPage.tsx";
-import MyApplications from "../pages/dashboard/MyApplications.tsx";
-import FindRequirements from "../pages/dashboard/FindRequirements.tsx";
-import MyClients from "../pages/dashboard/MyClients.tsx";
-import FindClients from "../pages/dashboard/FindClients.tsx";
+import DashboardPage from "../pages/dashboard/DashboardPage";
+import MyApplications from "../pages/dashboard/MyApplications";
+import FindRequirements from "../pages/dashboard/FindRequirements";
+import MyClients from "../pages/dashboard/MyClients";
+import FindClients from "../pages/dashboard/FindClients";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -50,9 +50,8 @@ const Sidebar = () => {
             <ListItem
               key={item.id}
               onClick={() => setActiveTab(item.id)} // Update active tab state
-              className={`rounded-lg ${
-                activeTab === item.id ? "bg-blue-200" : "hover:bg-blue-100"
-              }`}
+              className={`rounded-lg ${activeTab === item.id ? "bg-blue-200" : "hover:bg-blue-100"
+                }`}
             >
               <ListItemIcon className="text-blue-500">{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />

@@ -22,7 +22,7 @@ const RequirementForm = () => {
     shareIt: "specificVendor",
   });
 
-  const toggleDrawer = (open) => (event) => {
+  const toggleDrawer = (open: any) => (event: any) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -32,11 +32,11 @@ const RequirementForm = () => {
     setDrawerOpen(open);
   };
 
-  const handlePostTypeChange = (event) => {
+  const handlePostTypeChange = (event: any) => {
     setPostType(event.target.value);
   };
 
-  const handleFormChange = (event) => {
+  const handleFormChange = (event: any) => {
     const { name, value } = event.target;
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -44,7 +44,7 @@ const RequirementForm = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log("Form Submitted", formValues);
   };
