@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import logo from "../assets/images/logo.png";
 import { useEffect, useState } from "react";
 import { Select, SelectChangeEvent } from "@mui/material";
 

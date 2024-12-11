@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import bannerPerson from "../../assets/images/banner-person.png";
-import bar from "../../assets/images/bar.png";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -23,7 +21,8 @@ export default function SignUp() {
       alert("Account created successfully!");
 
       // Redirect to home page after signup
-      navigate("/login");
+      // navigate("/login");
+      navigate("/onboard");
     } else {
       setErrorMessage("Please fill in all the fields.");
     }
@@ -34,12 +33,12 @@ export default function SignUp() {
       {/* Left Section */}
       <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
         <div className="mb-8 bg-white p-4 w-40">
-          <img src={bar} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
+          <img src={require('../../assets/images/bar.png')} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
           <h2 className="font-bold text-xl">10K+</h2>
           <p className="text-gray-600 font-medium">People got hired</p>
         </div>
         <div className="self-center">
-          <img src={bannerPerson} alt="JobHunty Logo" className="w-auto" />
+          <img src={require('../../assets/images/banner-person.png')} alt="JobHunty Logo" className="w-auto" />
         </div>
       </div>
       <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
