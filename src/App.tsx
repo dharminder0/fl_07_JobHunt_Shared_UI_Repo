@@ -4,7 +4,7 @@ import AppRoutes from "./components/AppRoutes.tsx";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./assets/themes/theme.ts";
-import { OrganizationTypeProvider } from "./contexts/OrganizationTypeContext";
+import { OrganizationTypeProvider } from "./contexts/OrganizationTypeContext.tsx";
 
 
 function App() {
