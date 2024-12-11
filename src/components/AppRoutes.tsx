@@ -36,8 +36,9 @@ export default function AppRoutes() {
         <Route path="/company" element={<CompanyLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<CompanyDashboard />} />
-          <Route path="myapp" element={<MyApplications />}>
-            <Route path="recruitement/:id" element={<RequirementDetails />} />
+          <Route path="myapp">
+            <Route index element={<MyApplications />} /> {/* List all applications */}
+            <Route path=":id" element={<RequirementDetails />} /> {/* View specific application */}
           </Route>
           <Route path="findrequirements" element={<FindRequirements />} />
           <Route path="myclients" element={<MyClients />} />
