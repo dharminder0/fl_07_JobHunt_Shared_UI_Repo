@@ -8,9 +8,6 @@ import {
 import Login from "../pages/auth/Login.tsx";
 import SignUp from "../pages/auth/SignUp.tsx";
 import OnBoarding from "../pages/boarding/OnBoarding.tsx";
-import DashboardNav from "../pages/dashboard/DashboardNav.tsx";
-import CompanyLayout from "./layouts/CompanyLayout.tsx";
-import VendorLayout from "./layouts/VendorLayout.tsx";
 import VendorDashboard from "./pages/vendor/VendorDashboard.tsx";
 import CompanyDashboard from "./pages/company/CompanyDashboard.tsx";
 // import MyApplications from "./pages/company/MyApplications.tsx";

@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import logo from "../assets/images/logo.png";
 
 const pages = [];
 const settings = [ "Logout"];
@@ -45,7 +44,7 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
-          <img src={logo} alt="JobHunty Logo" className="h-8" />
+          <img src={require('../assets/images/logo.png')} alt="JobHunty Logo" className="h-8" />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton

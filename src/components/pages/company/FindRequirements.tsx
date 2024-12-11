@@ -1,13 +1,10 @@
 // App.tsx
 import React from "react";
 import {
-  Container,
   Grid,
   TextField,
   MenuItem,
   Select,
-  Card,
-  CardContent,
   Button,
   Typography,
   Pagination,

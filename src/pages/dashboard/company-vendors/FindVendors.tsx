@@ -13,7 +13,6 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import CompanyLogo from "../../../assets/images/CompanyLogo.png";
 
 const companies = [
   {
@@ -152,7 +151,7 @@ const FindVendors = () => {
                   <CardContent>
                     <div className="flex align-center mb-4">
                       <img
-                        src={CompanyLogo}
+                        src={require('../../../assets/images/CompanyLogo.png')}
                         alt={company.name}
                         className="me-3"
                         style={{ width: 50, height: 50 }}
