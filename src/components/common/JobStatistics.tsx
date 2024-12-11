@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Box, Typography, Tabs, Tab, ButtonGroup, Button } from "@mui/material";
-import { BarChart } from "@mui/x-charts";
+import { Box } from "@mui/material";
+import { BarChart, LineChart, PieChart } from "@mui/x-charts";
 
 const JobStatistics = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -19,43 +19,15 @@ const JobStatistics = () => {
     { day: "Sun", views: 54, applied: 18 },
   ];
 
+  const items = [
+    { value: 10, label: "Series A ( no Id )" },
+    { id: "id_B", value: 15, label: "Series B" },
+    { id: "id_C", value: 20, label: "Series C" },
+  ];
+
   return (
-    <Box className="p-6 bg-white rounded-lg border-2 w-2/3">
-      {/* Header */}
-      <Box className="flex justify-between items-center mb-6">
-        <Box>
-          <Typography variant="h6" className="font-semibold text-gray-800">
-            Job statistics
-          </Typography>
-          <Typography className="text-gray-500">
-            Showing Job statistics Jul 19-25
-          </Typography>
-        </Box>
-
-        <ButtonGroup variant="outlined" aria-label="Basic button group">
-          <Button variant="contained">Week</Button>
-          <Button>Month</Button>
-          <Button>Year</Button>
-        </ButtonGroup>
-      </Box>
-
-      {/* Tabs */}
-      <Box className="mb-6">
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          textColor="primary"
-          indicatorColor="primary"
-        >
-          <Tab label="Overview" />
-          <Tab label="Jobs View" />
-          <Tab label="Jobs Applied" />
-        </Tabs>
-      </Box>
-
-      {/* Chart Section */}
-      <Box className="flex">
-        {/* Chart */}
+    <Box className="flex-1 flex justify-between">
+      <div className="border p-3 rounded-md w-[33%]">
         <Box className="flex-1">
           <BarChart
             xAxis={[
@@ -80,25 +52,30 @@ const JobStatistics = () => {
             height={300}
           />
         </Box>
-
-        {/* Summary */}
-        <Box className="ml-6 flex flex-col justify-between">
-          <Box className="p-4 bg-gray-100 rounded-lg shadow-md">
-            <Typography className="text-gray-600">Job Views</Typography>
-            <Typography className="text-2xl font-semibold">2,342</Typography>
-            <Typography className="text-sm text-green-500">
-              This Week ↑6.4%
-            </Typography>
-          </Box>
-          <Box className="p-4 bg-gray-100 rounded-lg shadow-md mt-4">
-            <Typography className="text-gray-600">Job Applied</Typography>
-            <Typography className="text-2xl font-semibold">654</Typography>
-            <Typography className="text-sm text-red-500">
-              This Week ↓0.5%
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+      </div>
+      <div className="w-[33%] border p-3 rounded-md">
+        <LineChart
+          xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+          series={[
+            {
+              data: [2, 5.5, 2, 8.5, 1.5, 5],
+            },
+          ]}
+          height={300}
+        />
+      </div>
+      <div className="w-[33%] border p-3 rounded-md">
+        <PieChart
+          series={[
+            {
+              data: items,
+            },
+          ]}
+          // onItemClick={handleClick}
+          height={300}
+          margin={{ right: 200 }}
+        />
+      </div>
     </Box>
   );
 };

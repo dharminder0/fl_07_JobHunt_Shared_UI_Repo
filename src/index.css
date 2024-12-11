@@ -1,8 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Clash+Display&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Clash+Display&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 body {
   margin: 0;
@@ -45,9 +46,9 @@ code {
 body {
   margin: 0;
   font-size: 14px;
-  font-family: Epilogue;
+  font-family: Poppins;
 }
 
-div, p, span, label, button, input, textarea, h1, h2, h3, h4, h5, h6, li, ul {
-  font-family: Epilogue;
-}
+/* div, p, span, label, button, input, textarea, h1, h2, h3, h4, h5, h6, li, ul {
+  font-family: Poppins;
+} */

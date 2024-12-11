@@ -59,7 +59,7 @@ const Header: React.FC<HeaderProps> = () => {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          <div className='font-semibold font-[Epilogue] text-[20px]/[24px] my-auto'>{selectedOrg?.title}</div>
+          <div className='font-semibold text-[20px]/[24px] my-auto'>{selectedOrg?.title}</div>
           <svg className='my-auto' width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.5 8.5L12.5 15.5L5.5 8.5" stroke="#25324B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
