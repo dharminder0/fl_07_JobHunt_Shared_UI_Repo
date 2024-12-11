@@ -27,6 +27,13 @@ module.exports = {
         blue: {
           700: "#2563eb",
         },
+        gray: {
+          seconadary: "#7C8493"
+        }
+      },
+      lineHeight: {
+        'h5': '28.8px',  // Custom line height
+        'secondary': '25.6px',  // Custom line height
       },
     },
   },

@@ -21,7 +21,8 @@ export default function SignUp() {
       alert("Account created successfully!");
 
       // Redirect to home page after signup
-      navigate("/login");
+      // navigate("/login");
+      navigate("/onboard");
     } else {
       setErrorMessage("Please fill in all the fields.");
     }

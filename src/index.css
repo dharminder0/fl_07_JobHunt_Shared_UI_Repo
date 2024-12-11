@@ -41,3 +41,13 @@ code {
   font-style: normal;
   font-display: swap;
 }
+
+body {
+  margin: 0;
+  font-size: 14px;
+  font-family: Epilogue;
+}
+
+div, p, span, label, button, input, textarea, h1, h2, h3, h4, h5, h6, li, ul {
+  font-family: Epilogue;
+}
