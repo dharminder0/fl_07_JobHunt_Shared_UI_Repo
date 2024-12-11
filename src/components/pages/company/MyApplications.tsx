@@ -123,7 +123,7 @@ const MyApplications = () => {
   ];
 
   const handleRowClick = (id: number) => {
-    navigate(`recruitement/${id}`);
+    navigate(`${id}`);
   };
 
   return (
