@@ -8,7 +8,7 @@ import {
   Avatar,
   LinearProgress
 } from "@mui/material";
-import JobStatistics from "../../common/JobStatistics.tsx";
+import JobStatistics from '../../common/JobStatistics.tsx';
 
 interface CompanyDashboardProps {}
 
