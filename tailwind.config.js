@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Clash Display", "sans"],
+        display: ["Epilogue", "sans"],
       },
       fontWeight: {
         regular: "400",
