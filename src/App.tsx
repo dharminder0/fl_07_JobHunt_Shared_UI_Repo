@@ -4,6 +4,7 @@ import AppRoutes from "./components/AppRoutes.tsx";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./assets/themes/theme.ts";
+import { OrganizationTypeProvider } from "./contexts/OrganizationTypeContext.tsx";
 
 const muiButtontheme = createTheme({
   components: {
@@ -34,12 +35,14 @@ const muiButtontheme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <ThemeProvider theme={muiButtontheme}>
-        <CssBaseline />
-        <AppRoutes />
+    <OrganizationTypeProvider>
+      <ThemeProvider theme={theme}>
+        <ThemeProvider theme={muiButtontheme}>
+          <CssBaseline />
+          <AppRoutes />
+        </ThemeProvider>
       </ThemeProvider>
-    </ThemeProvider>
+    </OrganizationTypeProvider>
   );
 }
 
