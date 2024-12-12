@@ -6,10 +6,63 @@ import {
   Grid,
   Button,
   Grid2,
+  Box,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { ArrowForward, Facebook, LinkedIn, Twitter } from "@mui/icons-material";
 
 const VendorCompanyDetails = () => {
+  const [value, setValue] = React.useState("one");
+  const handleRowClick = (id: any) => {};
+
+  const activeContracts = [
+    {
+      id: 1,
+      title: "Social Media Assistant",
+      startDate: "20 May 2020",
+      endDate: "20 May 2022",
+      client: "Airtel",
+      resource: "Raj ",
+    },
+    {
+      id: 2,
+      title: "Android Developer",
+      startDate: "20 Jan 2024",
+      endDate: "20 May 2022",
+      client: "IBM",
+      resource: "Sajid ",
+    },
+    {
+      id: 3,
+      title: "Angular Developer",
+      startDate: "20 Mar 2023",
+      endDate: "20 May 2022",
+      client: "SDET Tech",
+      resource: "Amit ",
+    },
+    {
+      id: 4,
+      title: "iOS Developer",
+      startDate: "20 Apr 2022",
+      endDate: "20 May 2022",
+      client: "DevStringx",
+      resource: "Harshit ",
+    },
+    {
+      id: 1,
+      title: "QA Automation",
+      startDate: "20 May 2021",
+      endDate: "20 May 2022",
+      client: "JigNect Technologies",
+      resource: "Vinod ",
+    },
+  ];
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
   return (
     <div className="min-h-screen p-6">
       {/* Header Section */}
@@ -17,16 +70,19 @@ const VendorCompanyDetails = () => {
         <div className="flex items-center gap-4 mb-4">
           <div>
             <img
-              src={"/assets/images/CompanyLogo.png"}
+              src={
+                "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png"
+              }
               style={{ width: 65, height: 65 }}
             />
           </div>
           <div>
-            <Typography variant="h4" className="font-bold">
-              Stripe
-            </Typography>
-            <a href="https://stripe.com" className="text-blue-500 underline">
-              https://stripe.com
+            <p className="text-heading">Fleek IT Solutions</p>
+            <a
+              href="https://fleekitsolutions.com/"
+              className="text-blue-500 underline text-base"
+            >
+              https://fleekitsolutions.com/
             </a>
           </div>
         </div>
@@ -47,10 +103,10 @@ const VendorCompanyDetails = () => {
                 />
               </svg>
               <div className="ms-4">
-                <Typography className="font-medium text-gray-600">
-                  Founded
-                </Typography>
-                <Typography fontWeight={600}>July 31, 2011</Typography>
+                <p className="font-medium text-gray-600 text-title">Founded</p>
+                <p className="font-bold text-gray-600 text-title">
+                  Aug 17, 2016
+                </p>
               </div>
             </div>
           </Grid>
@@ -72,10 +128,10 @@ const VendorCompanyDetails = () => {
                 />
               </svg>
               <div className="ms-4">
-                <Typography className="font-medium text-gray-600">
+                <p className="font-medium text-gray-600 text-title">
                   Employees
-                </Typography>
-                <Typography fontWeight={600}>4000+</Typography>
+                </p>
+                <p className="font-bold text-gray-600 text-title">4000+</p>
               </div>
             </div>
           </Grid>
@@ -108,14 +164,14 @@ const VendorCompanyDetails = () => {
                 />
               </svg>
               <div className="ms-4">
-                <Typography className="font-medium text-gray-600">
-                  Location
-                </Typography>
-                <Typography fontWeight={600}>20 countries</Typography>
+                <p className="font-medium text-gray-600 text-title">Location</p>
+                <p className="font-bold text-gray-600 text-title">
+                  20 countries
+                </p>
               </div>
             </div>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <div className="flex items-center">
               <svg
                 width="44"
@@ -194,19 +250,17 @@ const VendorCompanyDetails = () => {
                 <Typography fontWeight={600}>Payment Gateway</Typography>
               </div>
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </div>
 
       {/* Company Profile and Tech Stack */}
       <Grid container spacing={6}>
         {/* Company Profile */}
-        <Grid item xs={12} md={8}>
-          <Typography variant="h5" fontWeight={600}>
-            Company Profile
-          </Typography>
+        <Grid item xs={12} md={10}>
+          <h5 className="text-heading mt-3 mb-2">Company Profile</h5>
           <div className="mt-2">
-            <Typography className="text-gray-700">
+            <p className="text-gray-700 text-base">
               Stripe is a software platform for starting and running internet
               businesses. Millions of businesses rely on Stripe’s software tools
               to accept payments, expand globally, and manage their businesses
@@ -219,8 +273,8 @@ const VendorCompanyDetails = () => {
               necessary to build global economic infrastructure—from designing
               highly reliable systems to developing advanced machine learning
               algorithms to prevent fraud.
-            </Typography>
-            <div className="mt-6">
+            </p>
+            {/* <div className="mt-6">
               <Typography variant="h5" fontWeight={600}>
                 Contact
               </Typography>
@@ -235,13 +289,80 @@ const VendorCompanyDetails = () => {
                   linkedin.com/company/stripe
                 </Button>
               </div>
-            </div>
+            </div> */}
+          </div>
+          <div className="my-2">
+            <h5 className="text-heading mt-6 mb-2">Placements</h5>
+            <Box sx={{ width: "100%" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="primary"
+                indicatorColor="primary"
+                aria-label="secondary tabs example"
+              >
+                <Tab value="one" label="Active Contracts" />
+                <Tab value="two" label="Past Contracts" />
+                <Tab value="three" label="Open Positions" />
+                <Tab value="four" label="Bench Strength" />
+              </Tabs>
+              {value === "one" && (
+                <div className="table-body mt-4">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th className="add-right-shadow">Title</th>
+                        <th>Client</th>
+                        <th>Start Date</th>
+                        <th>Resource</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activeContracts.map((item, index) => (
+                        <tr key={index} onClick={() => handleRowClick(item.id)}>
+                          <th className="add-right-shadow">{item.title}</th>
+                          <td>{item.client}</td>
+                          <td>{item.startDate}</td>
+                          <td>{item.resource}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {value === "two" && (
+                <div className="table-body mt-4">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th className="add-right-shadow">Title</th>
+                        <th>Client</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Resource</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activeContracts.map((item, index) => (
+                        <tr key={index} onClick={() => handleRowClick(item.id)}>
+                          <th className="add-right-shadow">{item.title}</th>
+                          <td>{item.client}</td>
+                          <td>{item.startDate}</td>
+                          <td>{item.endDate}</td>
+                          <td>{item.resource}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </Box>
           </div>
         </Grid>
 
         {/* Tech Stack and Office Location */}
-        <Grid item xs={12} md={4}>
-          <div className="mt-2">
+        <Grid item xs={12} md={2}>
+          {/* <div className="mt-2">
             <Typography variant="h5" fontWeight={600}>
               Tech Stack
             </Typography>
@@ -253,13 +374,11 @@ const VendorCompanyDetails = () => {
             <Button variant="text" endIcon={<ArrowForward />}>
               View tech stack
             </Button>
-          </div>
+          </div> */}
 
-          <div className="mt-6">
-            <Typography variant="h5" fontWeight={600}>
-              Office Location
-            </Typography>
-            <ul className="text-gray-700">
+          <div className="mt-4">
+            <h5 className="text-heading mb-2">Office Location</h5>
+            <ul className="text-gray-700 text-base">
               <li>Noida</li>
               <li>Gurgaon</li>
               <li>Delhi(NCR)</li>
