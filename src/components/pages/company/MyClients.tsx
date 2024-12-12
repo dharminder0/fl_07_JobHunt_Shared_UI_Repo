@@ -21,25 +21,25 @@ import { useNavigate } from "react-router-dom";
 const companies = [
   {
     id: 1,
-    name: "Fleek IT Solutions",
+    name: "Cyient Limited",
     description:
       "Stripe is a software platform for starting and running internet businesses.",
     tags: ["Onsite", "50-100", "QA Testing"],
     place: "Noida",
-    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    logo: "https://www.cyient.com/hubfs/enhancer.png",
   },
   {
     id: 2,
-    name: "DevStringX Technologies",
+    name: "3Pillar Global Noida",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "10-50", "App Tech"],
     place: "Delhi(NCR)",
-    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    logo: "https://www.3pillarglobal.com/favicon.png",
   },
   {
     id: 3,
-    name: "Binemiles Technologies",
+    name: "Exzeo Software Pvt Ltd",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "500+", "Other Tech"],
@@ -48,7 +48,7 @@ const companies = [
   },
   {
     id: 4,
-    name: "SDET Tech Pvt. Ltd",
+    name: "Nucleus Software Exports ",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
@@ -57,10 +57,46 @@ const companies = [
   },
   {
     id: 5,
-    name: "JigNect Technologies",
+    name: "Ucodice Technologies IT ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-500", "Other Tech"],
+    tags: ["Onsite", "100-200", "Other Tech"],
+    place: "Pune",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
+  {
+    id: 6,
+    name: "Shadow infosystem(P) ",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "50-100", "App Tech"],
+    place: "Pune",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
+  {
+    id: 7,
+    name: "Nexthoughts Software Technologies",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "100-200", "Other Tech"],
+    place: "Pune",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
+  {
+    id: 8,
+    name: "GrapeCity India Private ",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "10-50", "Web Tech"],
+    place: "Pune",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
+  {
+    id: 7,
+    name: "Eastern Software Solutions",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "50-100", "App Tech"],
     place: "Pune",
     logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
   },
