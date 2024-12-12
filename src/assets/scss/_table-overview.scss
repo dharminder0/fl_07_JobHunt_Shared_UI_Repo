@@ -60,6 +60,12 @@
     tbody td {
         font-weight: 400;
     }
+    tbody tr:nth-child(even) {
+        background-color: #F8F8FD;
+        th {
+            background-color: inherit !important;
+        }
+    }
     tbody th:first-child {
         text-align: left;
         min-width: 350px;
