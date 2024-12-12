@@ -29,7 +29,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
       { text: "Messages", icon: <ChatOutlinedIcon fontSize='small' />, id: 5, path: '/company/messages' },
     ],
     vendor: [
-      { text: "Dashboard", icon: <HomeOutlinedIcon fontSize='small'/>, id: 0, path: '/vendor/dashboard' },
+      { text: "Dashboard", icon: <HomeOutlinedIcon fontSize='small' />, id: 0, path: '/vendor/dashboard' },
       { text: "Messages", icon: <ChatOutlinedIcon fontSize='small'/>, id: 5, path: '/vendor/messages' },
       { text: "My Applications", icon: <WorkOutlineOutlinedIcon fontSize='small'/>, id: 1, path: '/vendor/myapp' },
       { text: "Find Jobs", icon: <PersonSearchOutlinedIcon fontSize='small'/>, id: 2, path: '/vendor/findjobs' },
@@ -39,22 +39,36 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   };
   return (
     <div className="w-[200px] overflow-auto h-full overflow-auto bg-primary-light py-4 shadow-[1px_0_0_0_#D6DDEB]">
-      <List>
-        {menuItems[organizationType]?.map((item: any,index:number) => (
+<List>
+        {menuItems[organizationType]?.map((item: any, index: number) => (
           <ListItem key={item.id} disablePadding>
             <NavLink
-              key={index}
-              to={item.path} 
-              className={({ isActive }) => `flex w-full px-1 hover:bg-primary-hover py-2 gap-2 ${isActive ? "text-primary bg-primary-hover" : "text-secondary-text"}`}            
+              to={item.path}
+              className={({ isActive }) =>
+                `flex w-full px-1 py-2 gap-2 items-center rounded-md ${
+                  isActive ? "bg-primary-hover text-primary" : "text-secondary-text"
+                }`
+              }
             >
-                <ListItemIcon className="!min-w-[unset] !w-[20px] text-blue-500">{item.icon}</ListItemIcon>
-                <ListItemText className='!text-[14px] !my-auto' 
-                  primary={item.text} 
-                  classes={{
-                    primary: '!text-title',
-                  }}
-                />
-            </NavLink>          
+              {({ isActive }) => (
+                <>
+                  <ListItemIcon
+                    className={`!min-w-[unset] !w-[20px] ${
+                      isActive ? "text-primary" : "text-secondary-text"
+                    }`}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    className="!text-[14px]"
+                    primary={item.text}
+                    classes={{
+                      primary: "!text-title",
+                    }}
+                  />
+                </>
+              )}
+            </NavLink>
           </ListItem>
         ))}
       </List>
