@@ -16,7 +16,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
 
   const menuItems: any = {
     company: [
-      { text: "Dashboard", icon: <DashboardIcon />, id: 0, path: '/company/dashboard' },
+      { text: "Dashboarderr", icon: <DashboardIcon />, id: 0, path: '/company/dashboard' },
       { text: "My Requirements", icon: <WorkIcon />, id: 1, path: '/company/myapp' },
       { text: "My Vendors", icon: <PersonIcon />, id: 2, path: '/company/findrequirements' },
       { text: "Find Vendors", icon: <WorkIcon />, id: 3, path: '/company/myclients' },
@@ -34,7 +34,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   };
   return (
     <div className="w-[200px] overflow-auto h-full overflow-auto bg-gray-50 py-4 shadow-[1px_0_0_0_#D6DDEB]">
-      <List>
+      {/* <List>
         {menuItems[organizationType]?.map((item: any) => (
           <ListItem key={item.id} className='!p-0'>
               <NavLink 
@@ -47,6 +47,18 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           </ListItem>
         ))}
       </List>
+
+      <div> hhjkkksds</div> */}
+
+      <List>
+      {menuItems[organizationType]?.map((item: any) => (
+        <ListItem key={item.id} component={NavLink} to={item.path} >
+          <ListItemIcon className="min-w-0 w-[20px] text-blue-500">{item.icon}</ListItemIcon>
+          <ListItemText className="!text-[14px] my-auto" primary={item.text} />
+        </ListItem>
+      ))}
+    </List>
+
     </div>
   );
 };
