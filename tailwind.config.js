@@ -31,6 +31,8 @@ module.exports = {
           seconadary: "#7C8493"
         },
         primary: "var(--primary-color)",
+        'primary-hover': "var(--primary-hover-color)",
+        'primary-light': "#F8F8FD",
         secondary: "var(--secondary-color)",
         'secondary-text': "var(--secondary-text-color)",
         'primary-text': "var(--primary-text-color)",
