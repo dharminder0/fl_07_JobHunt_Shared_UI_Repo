@@ -1,9 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-/* @import url('https://fonts.googleapis.com/css2?family=Clash+Display&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root {
+  --primary-color: #2D64BC;
+  --secondary-color: #a9a9a9;
+  --primary-text-color: #2A2D33;
+  --secondary-text-color: #A5AAAA;
+  --primary-hover-color: #8A8D8D;
+  --Gray1: #333333;
+  --Gray2: #4F4F4F;
+  --Gray3: #828282;
+  --Gray4: #2A2D33;
+  --Gray5: #E0E0E0;
+  --bg-input: #EAF0F0;
+}
 
 body {
   margin: 0;
