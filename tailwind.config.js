@@ -31,6 +31,8 @@ module.exports = {
           seconadary: "#7C8493"
         },
         primary: "var(--primary-color)",
+        'primary-hover': "var(--primary-hover-color)",
+        'primary-light': "#F8F8FD",
         secondary: "var(--secondary-color)",
         'secondary-text': "var(--secondary-text-color)",
         'primary-text': "var(--primary-text-color)",
@@ -39,10 +41,12 @@ module.exports = {
         'h5': '28.8px',  // Custom line height
         'secondary': '25.6px',  // Custom line height
       },
-      heading: ['16px', { lineHeight: '20px', fontWeight: '600' }], // Heading style
-      title: ['14px', { lineHeight: '18px', fontWeight: '500' }],   // Title style
-      base: ['12px', { lineHeight: '16px', fontWeight: '400' }],
-      info: ['10px', { lineHeight: '14px', fontWeight: '400' }],
+      fontSize: {
+        heading: ['16px', { lineHeight: '20px', fontWeight: '600' }], // Heading style
+        title: ['14px', { lineHeight: '18px', fontWeight: '500' }],   // Title style
+        base: ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        info: ['10px', { lineHeight: '14px', fontWeight: '400' }],
+      }
     },
   },
   plugins: [],
