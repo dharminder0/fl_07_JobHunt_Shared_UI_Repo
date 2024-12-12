@@ -7,8 +7,11 @@ import {
   Box,
   Avatar,
   LinearProgress,
+  Button,
+  Chip,
 } from "@mui/material";
 import JobStatistics from "../../common/JobStatistics";
+import { Share } from "@mui/icons-material";
 
 interface CompanyDashboardProps {}
 
@@ -81,23 +84,28 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     {
       logo: "https://reactnative.dev/img/header_logo.svg",
       label: "React Native",
-      value: 45,
+      value: 35,
       color: "bg-purple-500",
     },
     {
       logo: "https://angular.dev/assets/icons/favicon-48x48.png",
       label: "Angular",
-      value: 24,
+      value: 27,
       color: "bg-green-500",
     },
     {
       logo: "https://www.gstatic.com/devrel-devsite/prod/v3239347c48d1e3c46204782fd038ba187a6753dfa7d7a0d08a574587ae2085f5/android/images/favicon.svg",
       label: "Android Developer",
-      value: 22,
+      value: 23,
       color: "bg-blue-500",
     },
-    { logo: "https://vuejs.org/logo.svg", label: "Vue Developer", value: 32, color: "bg-yellow-500" },
-    { logo: "", label: "QA Automation", value: 30, color: "bg-red-500" },
+    {
+      logo: "https://vuejs.org/logo.svg",
+      label: "Vue Developer",
+      value: 34,
+      color: "bg-yellow-500",
+    },
+    { logo: "", label: "QA Automation", value: 36, color: "bg-red-500" },
   ];
 
   const attentionData = [
@@ -106,24 +114,28 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
       client: "Airtel",
       label: "Social Media Assistant",
       logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
+      vendor: "Fleek IT Solutions",
     },
     {
       id: 2,
       client: "IBM Consulting",
       label: "QA Automation",
       logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
+      vendor: "Global Vendors",
     },
     {
       id: 3,
       client: "Capgemini",
       label: "React native developer",
       logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
+      vendor: "Empanelled Vendors",
     },
     {
       id: 4,
       client: "NTT DATA",
       label: "Web Application",
       logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
+      vendor: "DevStingX Technologies",
     },
   ];
 
@@ -202,7 +214,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 76
               </Typography>
-              <p className="text-white text-sm">Open Requirements</p>
+              {/* <p className="text-white text-heading mb-2">76</p> */}
+              <p className="text-white text-base">Open Requirements</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
@@ -210,7 +223,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 13
               </Typography>
-              <p className="text-white text-sm">Hot Requirements</p>
+              <p className="text-white text-base">Hot Requirements</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
@@ -218,7 +231,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 26
               </Typography>
-              <p className="text-white text-sm">Interview Scheduled</p>
+              <p className="text-white text-base">Interview Scheduled</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
@@ -226,7 +239,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 34
               </Typography>
-              <p className="text-white text-sm">Candidates to review</p>
+              <p className="text-white text-base">Candidates to review</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
@@ -234,7 +247,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 12
               </Typography>
-              <p className="text-white text-sm">No Applicants</p>
+              <p className="text-white text-base">No Applicants</p>
             </div>
           </Grid>
         </Grid>
@@ -247,7 +260,10 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <Box className="gap-6 w-[33%]">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
-              <p className="pt-4">Top Vendors</p>
+              <div className="flex justify-between">
+                <p className="pt-4 text-title">Top Vendors</p>
+                <p className="pt-4 text-title">Placements</p>
+              </div>
               {/* Progress Bars */}
               <Box className="mt-4">
                 {applicantData.map((item, index) => (
@@ -261,11 +277,11 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                               : item.logo
                           }
                           className="rounded-full"
-                          style={{ width: 40, height: 40 }}
+                          style={{ width: 25, height: 25 }}
                         />
-                        <Typography marginLeft={2}>{item.label}</Typography>
+                        <p className="text-base ms-2">{item.label}</p>
                       </div>
-                      <Typography variant="h6">{item.value}</Typography>
+                      <p className="text-title ms-2">{item.value}</p>
                     </Box>
                   </Box>
                 ))}
@@ -275,7 +291,10 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <Box className="gap-6 w-[33%]">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
-              <p className="pt-4">Top Clients</p>
+              <div className="flex justify-between">
+                <p className="pt-4 text-title">Top Clients</p>
+                <p className="pt-4 text-title">Requirments</p>
+              </div>
               {/* Progress Bars */}
               <Box className="mt-4">
                 {applicantItems.map((item, index) => (
@@ -289,11 +308,11 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                               : item.logo
                           }
                           className="rounded-full"
-                          style={{ width: 40, height: 40 }}
+                          style={{ width: 25, height: 25 }}
                         />
-                        <Typography marginLeft={2}>{item.label}</Typography>
+                        <p className="text-base ms-2">{item.label}</p>
                       </div>
-                      <Typography variant="h6">{item.value}</Typography>
+                      <p className="text-title ms-2">{item.value}</p>
                     </Box>
                   </Box>
                 ))}
@@ -303,7 +322,10 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <Box className="gap-6 w-[33%]">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
-              <p className="pt-4">Trending Technologies</p>
+              <div className="flex justify-between">
+                <p className="pt-4 text-title">Trending Technologies</p>
+                <p className="pt-4 text-title">Requirments</p>
+              </div>
               {/* Progress Bars */}
               <Box className="mt-4">
                 {hotTech.map((item, index) => (
@@ -317,11 +339,11 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                               : item.logo
                           }
                           className="rounded-full"
-                          style={{ width: 40, height: 40 }}
+                          style={{ width: 25, height: 25 }}
                         />
-                        <Typography marginLeft={2}>{item.label}</Typography>
+                        <p className="text-base ms-2">{item.label}</p>
                       </div>
-                      <Typography variant="h6">{item.value}</Typography>
+                      <p className="text-title ms-2">{item.value}</p>
                     </Box>
                   </Box>
                 ))}
@@ -331,27 +353,51 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         </div>
 
         {/* Job Updates */}
-        <Typography variant="body1" marginBottom={2} marginTop={4}>
-          Requirements need attention
-        </Typography>
+        <p className="text-heading mb-4 mt-6">Requirements need attention</p>
 
         <Grid container spacing={2}>
           {attentionData.map((requirement) => (
             <Grid item xs={12} sm={6} md={3} key={requirement.id}>
               <div className="border rounded-md p-4">
-                <img
-                  src={
-                    !requirement.logo
-                      ? "/assets/images/Companylogo1.png"
-                      : requirement.logo
-                  }
-                  className="rounded-full mb-2"
-                  style={{ width: 40, height: 40 }}
-                />
-                <Typography variant="subtitle1">{requirement.label}</Typography>
-                <Typography variant="subtitle2">
-                  {requirement.client}
-                </Typography>
+                <div className="flex">
+                  <img
+                    src={
+                      !requirement.logo
+                        ? "/assets/images/Companylogo1.png"
+                        : requirement.logo
+                    }
+                    className="rounded-full mb-2"
+                    style={{ width: 36, height: 36 }}
+                  />
+                  <div className="ms-3">
+                    <p className="text-title">{requirement.label}</p>
+                    <p className="text-base">{requirement.client}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap">
+                  <Chip
+                    label="Remote"
+                    variant="outlined"
+                    sx={{ fontSize: 12 }}
+                    className="my-1 me-1"
+                  />
+                  <Chip
+                    label="Positions: 3"
+                    variant="outlined"
+                    sx={{ fontSize: 12 }}
+                    className="my-1 me-1"
+                  />
+                  <Chip
+                    label="12/12/2024"
+                    variant="outlined"
+                    sx={{ fontSize: 12 }}
+                    className="my-1 me-1"
+                  />
+                </div>
+
+                <Button variant="text" startIcon={<Share />}>
+                  {requirement.vendor}
+                </Button>
               </div>
             </Grid>
           ))}

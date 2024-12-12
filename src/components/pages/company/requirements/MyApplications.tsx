@@ -20,108 +20,6 @@ import RequirementForm from "./RequirementForm";
 const MyApplications = () => {
   const navigate = useNavigate();
 
-  // const jobData = [
-  //   {
-  //     id: 1,
-  //     role: "Social Media Assistant",
-  //     status: "Live",
-  //     datePosted: "20 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Fulltime",
-  //     applicants: "19",
-  //     needs: "4 / 11",
-  //   },
-  //   {
-  //     id: 2,
-  //     role: "Senior Designer",
-  //     status: "Live",
-  //     datePosted: "16 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Fulltime",
-  //     applicants: "1,234",
-  //     needs: "0 / 20",
-  //   },
-  //   {
-  //     id: 3,
-  //     role: "Visual Designer",
-  //     status: "Live",
-  //     datePosted: "15 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Freelance",
-  //     applicants: "2,435",
-  //     needs: "1 / 5",
-  //   },
-  //   {
-  //     id: 4,
-  //     role: "Data Science",
-  //     status: "Closed",
-  //     datePosted: "13 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Freelance",
-  //     applicants: "6,234",
-  //     needs: "10 / 10",
-  //   },
-  //   {
-  //     id: 5,
-  //     role: "Kotlin Developer",
-  //     status: "Closed",
-  //     datePosted: "12 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Fulltime",
-  //     applicants: "12",
-  //     needs: "20 / 20",
-  //   },
-  //   {
-  //     id: 6,
-  //     role: "React Developer",
-  //     status: "Closed",
-  //     datePosted: "11 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Fulltime",
-  //     applicants: "14",
-  //     needs: "10 / 10",
-  //   },
-  //   {
-  //     id: 7,
-  //     role: "Social Media Assistant",
-  //     status: "Live",
-  //     datePosted: "20 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Fulltime",
-  //     applicants: "19",
-  //     needs: "4 / 11",
-  //   },
-  //   {
-  //     id: 8,
-  //     role: "Senior Designer",
-  //     status: "Live",
-  //     datePosted: "16 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Fulltime",
-  //     applicants: "1,234",
-  //     needs: "0 / 20",
-  //   },
-  //   {
-  //     id: 9,
-  //     role: "Visual Designer",
-  //     status: "Live",
-  //     datePosted: "15 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Freelance",
-  //     applicants: "2,435",
-  //     needs: "1 / 5",
-  //   },
-  //   {
-  //     id: 10,
-  //     role: "Data Science",
-  //     status: "Closed",
-  //     datePosted: "13 May 2020",
-  //     dueDate: "24 May 2020",
-  //     jobType: "Freelance",
-  //     applicants: "6,234",
-  //     needs: "10 / 10",
-  //   },
-  // ];
   const jobData = [
     {
       id: 1,
@@ -254,10 +152,8 @@ const MyApplications = () => {
       {/* Header */}
       <Box className="flex justify-between items-center mb-6">
         <Box>
-          <div className="font-display text-[24px]/[28.8px] leading-h5 font-semibold">
-            Requirements Listing
-          </div>
-          <div className="text-gray-seconadary font-medium text-[16px]/[25.6px]">
+          <div className="text-heading">Requirements Listing</div>
+          <div className="text-info text-secondary">
             Here is your requirements listing status from July 19 - July 25.
           </div>
         </Box>
