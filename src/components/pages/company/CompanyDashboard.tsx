@@ -170,7 +170,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
-                          src={require("../../../assets/images/Companylogo1.png")}
+                          src={"/assets/images/Companylogo1.png"}
                           className="rounded-full"
                           style={{ width: 50, height: 50 }}
                         />
@@ -193,7 +193,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
-                          src={require("../../../assets/images/Companylogo1.png")}
+                          src={"/assets/images/Companylogo1.png"}
                           className="rounded-full"
                           style={{ width: 50, height: 50 }}
                         />
@@ -216,7 +216,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
-                          src={require("../../../assets/images/Companylogo1.png")}
+                          src={"/assets/images/Companylogo1.png"}
                           className="rounded-full"
                           style={{ width: 50, height: 50 }}
                         />
@@ -241,7 +241,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             <Grid item xs={12} sm={6} md={3} key={job}>
               <div className="border rounded-md p-4">
                 <img
-                  src={require("../../../assets/images/Companylogo1.png")}
+                  src={"/assets/images/Companylogo1.png"}
                   className="rounded-full"
                   style={{ width: 40, height: 40 }}
                 />

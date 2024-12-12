@@ -186,7 +186,7 @@ const MyVendors = () => {
                   <CardContent>
                     <div className="flex align-center mb-4">
                       <img
-                        src={require('../../../assets/images/CompanyLogo.png')}
+                        src={'/assets/images/CompanyLogo.png'}
                         alt={company.name}
                         className="me-3"
                         style={{ width: 50, height: 50 }}

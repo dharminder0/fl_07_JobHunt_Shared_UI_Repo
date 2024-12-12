@@ -4,11 +4,9 @@ interface VendorDashboardProps {}
 
 const VendorDashboard: React.FC<VendorDashboardProps> = () => {
   return (
-    <>
-      <div className="h-[75px] px-8 py-4 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
-        dashboard
-      </div>
-    </>
+    <div className='flex h-full'>
+      <div className="m-auto font-bold text-[25px]">Comming soon...</div>      
+    </div>
   );
 };
 
