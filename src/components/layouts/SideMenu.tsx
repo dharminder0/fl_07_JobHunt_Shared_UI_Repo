@@ -7,6 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import EventIcon from "@mui/icons-material/Event";
 import { useOrganizationType } from '../../contexts/OrganizationTypeContext';
+import { NavLink } from 'react-router-dom';
 
 interface SideMenuProps { }
 
@@ -32,14 +33,17 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     ]
   };
   return (
-    <div className="w-[270px] overflow-auto h-full overflow-auto bg-gray-50 p-4 shadow-[1px_0_0_0_#D6DDEB]">
+    <div className="w-[200px] overflow-auto h-full overflow-auto bg-gray-50 py-4 shadow-[1px_0_0_0_#D6DDEB]">
       <List>
         {menuItems[organizationType]?.map((item: any) => (
-          <ListItem key={item.id} >
-            <Link className='flex' to={item.path}>
-              <ListItemIcon className="text-blue-500">{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </Link>
+          <ListItem key={item.id} className='!p-0'>
+              <NavLink 
+                to={item.path} 
+                className={({ isActive }) => `flex w-full px-1 py-2 gap-2 ${isActive ? "bg-[#4640DE] text-white" : ""}`}
+              >
+              <ListItemIcon className="!min-w-[unset] !w-[20px] text-blue-500">{item.icon}</ListItemIcon>
+              <ListItemText className='!text-[14px] !my-auto' primary={item.text} />
+            </NavLink>
           </ListItem>
         ))}
       </List>
