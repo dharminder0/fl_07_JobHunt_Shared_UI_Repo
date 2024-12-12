@@ -1,4 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 @import 'assets/scss/errors.scss';
+@import 'assets/scss/_table-overview.scss';
 
 .App {
   text-align: center;
