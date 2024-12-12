@@ -14,25 +14,117 @@ interface CompanyDashboardProps {}
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const applicantData = [
-    { label: "Fleek IT Solutions", value: 45, color: "bg-purple-500" },
-    { label: "DevStringX Technologies", value: 24, color: "bg-green-500" },
-    { label: "Binemiles Technologies", value: 22, color: "bg-blue-500" },
-    { label: "SDET Tech Pvt. Ltd", value: 32, color: "bg-yellow-500" },
-    { label: "JigNect Technologies", value: 30, color: "bg-red-500" },
+    {
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+      label: "Fleek IT Solutions",
+      value: 25,
+      color: "bg-purple-500",
+    },
+    {
+      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+      label: "DevStringX Technologies",
+      value: 14,
+      color: "bg-green-500",
+    },
+    {
+      logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+      label: "Binemiles Technologies",
+      value: 12,
+      color: "bg-blue-500",
+    },
+    {
+      logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+      label: "SDET Tech Pvt. Ltd",
+      value: 8,
+      color: "bg-yellow-500",
+    },
+    {
+      logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+      label: "JigNect Technologies",
+      value: 10,
+      color: "bg-red-500",
+    },
   ];
   const applicantItems = [
-    { label: "Airtel", value: 45, color: "bg-purple-500" },
-    { label: "IBM Consulting", value: 24, color: "bg-green-500" },
-    { label: "Capgemini", value: 22, color: "bg-blue-500" },
-    { label: "NTT DATA", value: 32, color: "bg-yellow-500" },
-    { label: "Cognizant", value: 30, color: "bg-red-500" },
+    {
+      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
+      label: "Airtel",
+      value: 21,
+      color: "bg-purple-500",
+    },
+    {
+      logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
+      label: "IBM Consulting",
+      value: 17,
+      color: "bg-green-500",
+    },
+    {
+      logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
+      label: "Capgemini",
+      value: 18,
+      color: "bg-blue-500",
+    },
+    {
+      logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
+      label: "NTT DATA",
+      value: 16,
+      color: "bg-yellow-500",
+    },
+    {
+      logo: "https://companieslogo.com/img/orig/CTSH-82a8444b.png",
+      label: "Cognizant",
+      value: 21,
+      color: "bg-red-500",
+    },
   ];
   const hotTech = [
-    { label: "React Native", value: 45, color: "bg-purple-500" },
-    { label: "Angular", value: 24, color: "bg-green-500" },
-    { label: "Android Studio", value: 22, color: "bg-blue-500" },
-    { label: "iOs App", value: 32, color: "bg-yellow-500" },
-    { label: "QA Automation", value: 30, color: "bg-red-500" },
+    {
+      logo: "https://reactnative.dev/img/header_logo.svg",
+      label: "React Native",
+      value: 45,
+      color: "bg-purple-500",
+    },
+    {
+      logo: "https://angular.dev/assets/icons/favicon-48x48.png",
+      label: "Angular",
+      value: 24,
+      color: "bg-green-500",
+    },
+    {
+      logo: "https://www.gstatic.com/devrel-devsite/prod/v3239347c48d1e3c46204782fd038ba187a6753dfa7d7a0d08a574587ae2085f5/android/images/favicon.svg",
+      label: "Android Developer",
+      value: 22,
+      color: "bg-blue-500",
+    },
+    { logo: "https://vuejs.org/logo.svg", label: "Vue Developer", value: 32, color: "bg-yellow-500" },
+    { logo: "", label: "QA Automation", value: 30, color: "bg-red-500" },
+  ];
+
+  const attentionData = [
+    {
+      id: 1,
+      client: "Airtel",
+      label: "Social Media Assistant",
+      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
+    },
+    {
+      id: 2,
+      client: "IBM Consulting",
+      label: "QA Automation",
+      logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
+    },
+    {
+      id: 3,
+      client: "Capgemini",
+      label: "React native developer",
+      logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
+    },
+    {
+      id: 4,
+      client: "NTT DATA",
+      label: "Web Application",
+      logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
+    },
   ];
 
   return (
@@ -105,7 +197,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
         {/* Overview Cards */}
         <Grid container spacing={2} className="mb-6">
-          <Grid item xs={12} md={2}>
+          <Grid item xs={12} md={2.4}>
             <div className="bg-purple-700 p-3 rounded-md flex flex-col items-center">
               <Typography variant="h5" color="white">
                 76
@@ -113,7 +205,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <p className="text-white text-sm">Open Requirements</p>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
+          <Grid item xs={12} md={2.4}>
             <div className="bg-green-600 p-3 rounded-md flex items-center flex-col">
               <Typography variant="h5" color="white">
                 13
@@ -121,7 +213,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <p className="text-white text-sm">Hot Requirements</p>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
+          <Grid item xs={12} md={2.4}>
             <div className="bg-cyan-500 p-3 rounded-md flex items-center flex-col">
               <Typography variant="h5" color="white">
                 26
@@ -129,7 +221,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <p className="text-white text-sm">Interview Scheduled</p>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
+          <Grid item xs={12} md={2.4}>
             <div className="bg-blue-700 p-3 rounded-md flex items-center flex-col">
               <Typography variant="h5" color="white">
                 34
@@ -137,12 +229,12 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <p className="text-white text-sm">Candidates to review</p>
             </div>
           </Grid>
-          <Grid item xs={12} md={3}>
-            <div className="bg-blue-700 p-3 rounded-md flex items-center flex-col">
+          <Grid item xs={12} md={2.4}>
+            <div className="bg-red-600 p-3 rounded-md flex items-center flex-col">
               <Typography variant="h5" color="white">
                 12
               </Typography>
-              <p className="text-white text-sm">Requirements without Applicant</p>
+              <p className="text-white text-sm">No Applicants</p>
             </div>
           </Grid>
         </Grid>
@@ -163,9 +255,13 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
-                          src={require("../../../assets/images/Companylogo1.png")}
+                          src={
+                            !item.logo
+                              ? "/assets/images/Companylogo1.png"
+                              : item.logo
+                          }
                           className="rounded-full"
-                          style={{ width: 50, height: 50 }}
+                          style={{ width: 40, height: 40 }}
                         />
                         <Typography marginLeft={2}>{item.label}</Typography>
                       </div>
@@ -187,9 +283,13 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
-                          src={require("../../../assets/images/Companylogo1.png")}
+                          src={
+                            !item.logo
+                              ? "/assets/images/Companylogo1.png"
+                              : item.logo
+                          }
                           className="rounded-full"
-                          style={{ width: 50, height: 50 }}
+                          style={{ width: 40, height: 40 }}
                         />
                         <Typography marginLeft={2}>{item.label}</Typography>
                       </div>
@@ -211,9 +311,13 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
-                          src={require("../../../assets/images/Companylogo1.png")}
+                          src={
+                            !item.logo
+                              ? "/assets/images/Companylogo1.png"
+                              : item.logo
+                          }
                           className="rounded-full"
-                          style={{ width: 50, height: 50 }}
+                          style={{ width: 40, height: 40 }}
                         />
                         <Typography marginLeft={2}>{item.label}</Typography>
                       </div>
@@ -227,23 +331,26 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         </div>
 
         {/* Job Updates */}
-        <Typography variant="h5" marginBottom={2} marginTop={4}>
-          Job Updates
+        <Typography variant="body1" marginBottom={2} marginTop={4}>
+          Requirements need attention
         </Typography>
 
         <Grid container spacing={2}>
-          {[1, 2, 3, 4].map((job) => (
-            <Grid item xs={12} sm={6} md={3} key={job}>
+          {attentionData.map((requirement) => (
+            <Grid item xs={12} sm={6} md={3} key={requirement.id}>
               <div className="border rounded-md p-4">
                 <img
-                  src={require("../../../assets/images/Companylogo1.png")}
-                  className="rounded-full"
+                  src={
+                    !requirement.logo
+                      ? "/assets/images/Companylogo1.png"
+                      : requirement.logo
+                  }
+                  className="rounded-full mb-2"
                   style={{ width: 40, height: 40 }}
                 />
-                <Typography variant="h6">Social Media Assistant</Typography>
-                <Typography>Nomad - Paris, France</Typography>
-                <Typography className="text-sm text-gray-500">
-                  5 applied of 10 capacity
+                <Typography variant="subtitle1">{requirement.label}</Typography>
+                <Typography variant="subtitle2">
+                  {requirement.client}
                 </Typography>
               </div>
             </Grid>

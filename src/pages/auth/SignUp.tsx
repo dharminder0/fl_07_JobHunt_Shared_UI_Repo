@@ -33,12 +33,12 @@ export default function SignUp() {
       {/* Left Section */}
       <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
         <div className="mb-8 bg-white p-4 w-40">
-          <img src={require('../../assets/images/bar.png')} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
+          <img src={'/assets/images/bar.png'} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
           <h2 className="font-bold text-xl">10K+</h2>
           <p className="text-gray-600 font-medium">People got hired</p>
         </div>
         <div className="self-center">
-          <img src={require('../../assets/images/banner-person.png')} alt="JobHunty Logo" className="w-auto" />
+          <img src={'/assets/images/banner-person.png'} alt="JobHunty Logo" className="w-auto" />
         </div>
       </div>
       <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">

@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 interface NotFoundProps {}
 
 const NotFound: React.FC<NotFoundProps> = () => {

@@ -17,7 +17,7 @@ const VendorCompanyDetails = () => {
         <div className="flex items-center gap-4 mb-4">
           <div>
             <img
-              src={require("../../../assets/images/CompanyLogo.png")}
+              src={"/assets/images/CompanyLogo.png"}
               style={{ width: 65, height: 65 }}
             />
           </div>
