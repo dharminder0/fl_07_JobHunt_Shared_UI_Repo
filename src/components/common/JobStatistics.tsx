@@ -19,10 +19,18 @@ const JobStatistics = () => {
     { day: "Sun", views: 54, applied: 18 },
   ];
 
+  const requirementData = [
+    { owner: "Soniya", count: 12 },
+    { owner: "Somya", count: 6 },
+    { owner: "Maria", count: 15 },
+    { owner: "Mariam", count: 8 },
+  ];
+
   const items = [
-    { value: 10, label: "Series A ( no Id )" },
-    { id: "id_B", value: 15, label: "Series B" },
-    { id: "id_C", value: 20, label: "Series C" },
+    { id: "id_A", value: 10, label: "Open" },
+    { id: "id_B", value: 15, label: "In Progress" },
+    { id: "id_C", value: 20, label: "Closed" },
+    { id: "id_D", value: 10, label: "Placed" },
   ];
 
   return (
@@ -40,13 +48,13 @@ const JobStatistics = () => {
             series={[
               {
                 data: data.map((item) => item.views),
-                label: "Job Views",
-                color: "#fbbf24", // Tailwind's yellow-500
+                label: "Total Requirements",
+                color: "#007FFF", // Tailwind's yellow-500
               },
               {
                 data: data.map((item) => item.applied),
-                label: "Jobs Applied",
-                color: "#a78bfa", // Tailwind's purple-500
+                label: "Placed",
+                color: "#5DB996", // Tailwind's purple-500
               },
             ]}
             height={300}
@@ -54,7 +62,24 @@ const JobStatistics = () => {
         </Box>
       </div>
       <div className="w-[33%] border p-3 rounded-md">
-        <LineChart
+        <BarChart
+          xAxis={[
+            {
+              data: requirementData.map((item) => item.owner),
+              label: "Owners",
+              scaleType: "band", // Set the x-axis type to "band"
+            },
+          ]}
+          series={[
+            {
+              data: requirementData.map((item) => item.count),
+              label: "Workload",
+              color: "#007FFF", // Tailwind's yellow-500
+            }
+          ]}
+          height={300}
+        />
+        {/* <LineChart
           xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
           series={[
             {
@@ -62,7 +87,7 @@ const JobStatistics = () => {
             },
           ]}
           height={300}
-        />
+        /> */}
       </div>
       <div className="w-[33%] border p-3 rounded-md">
         <PieChart

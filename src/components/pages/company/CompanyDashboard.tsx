@@ -8,20 +8,20 @@ import {
   Avatar,
   LinearProgress,
 } from "@mui/material";
-import JobStatistics from '../../common/JobStatistics';
+import JobStatistics from "../../common/JobStatistics";
 
-interface CompanyDashboardProps { }
+interface CompanyDashboardProps {}
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const applicantData = [
-    { label: "Infosys", value: 45, color: "bg-purple-500" },
-    { label: "Microsoft", value: 24, color: "bg-green-500" },
-    { label: "Technosys", value: 22, color: "bg-blue-500" },
-    { label: "HCL Infotech", value: 32, color: "bg-yellow-500" },
-    { label: "Info Solutions", value: 30, color: "bg-red-500" },
+    { label: "Fleek IT Solutions", value: 45, color: "bg-purple-500" },
+    { label: "DevStringX Technologies", value: 24, color: "bg-green-500" },
+    { label: "Binemiles Technologies", value: 22, color: "bg-blue-500" },
+    { label: "SDET Tech Pvt. Ltd", value: 32, color: "bg-yellow-500" },
+    { label: "JigNect Technologies", value: 30, color: "bg-red-500" },
   ];
   const applicantItems = [
-    { label: "accenture", value: 45, color: "bg-purple-500" },
+    { label: "Airtel", value: 45, color: "bg-purple-500" },
     { label: "IBM Consulting", value: 24, color: "bg-green-500" },
     { label: "Capgemini", value: 22, color: "bg-blue-500" },
     { label: "NTT DATA", value: 32, color: "bg-yellow-500" },
@@ -110,7 +110,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 76
               </Typography>
-              <p className="text-white">Open Requirements</p>
+              <p className="text-white text-sm">Open Requirements</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2}>
@@ -118,7 +118,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 13
               </Typography>
-              <p className="text-white">Hot Requirements</p>
+              <p className="text-white text-sm">Hot Requirements</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2}>
@@ -126,7 +126,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 26
               </Typography>
-              <p className="text-white">Interview Scheduled</p>
+              <p className="text-white text-sm">Interview Scheduled</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2}>
@@ -134,23 +134,15 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <Typography variant="h5" color="white">
                 34
               </Typography>
-              <p className="text-white">Candidates to review</p>
+              <p className="text-white text-sm">Candidates to review</p>
             </div>
           </Grid>
-          <Grid item xs={12} md={2}>
-            <div className="bg-blue-700 p-3 rounded-md flex items-center flex-col">
-              <Typography variant="h5" color="white">
-                34
-              </Typography>
-              <p className="text-white">Candidates to review</p>
-            </div>
-          </Grid>
-          <Grid item xs={12} md={2}>
+          <Grid item xs={12} md={3}>
             <div className="bg-blue-700 p-3 rounded-md flex items-center flex-col">
               <Typography variant="h5" color="white">
                 12
               </Typography>
-              <p className="text-white">Jobs without Applicants</p>
+              <p className="text-white text-sm">Requirements without Applicant</p>
             </div>
           </Grid>
         </Grid>
@@ -163,6 +155,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <Box className="gap-6 w-[33%]">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
+              <p className="pt-4">Top Vendors</p>
               {/* Progress Bars */}
               <Box className="mt-4">
                 {applicantData.map((item, index) => (
@@ -186,6 +179,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <Box className="gap-6 w-[33%]">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
+              <p className="pt-4">Top Clients</p>
               {/* Progress Bars */}
               <Box className="mt-4">
                 {applicantItems.map((item, index) => (
@@ -209,6 +203,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <Box className="gap-6 w-[33%]">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
+              <p className="pt-4">Trending Technologies</p>
               {/* Progress Bars */}
               <Box className="mt-4">
                 {hotTech.map((item, index) => (
