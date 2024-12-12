@@ -235,7 +235,7 @@ const FindRequirements = () => {
                 <div className="h-100 border p-4 rounded-md cursor-pointer">
                   <div className="flex align-center mb-4">
                     <img
-                      src={require("../../../assets/images/CompanyLogo.png")}
+                      src={"/assets/images/Companylogo.png"}
                       alt={company.name}
                       className="me-3"
                       style={{ width: 50, height: 50 }}
