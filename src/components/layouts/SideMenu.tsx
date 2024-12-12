@@ -54,7 +54,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                 <>
                   <ListItemIcon
                     className={`!min-w-[unset] !w-[20px] ${
-                      isActive ? "text-primary" : "text-secondary-text"
+                      isActive ? "!text-primary" : "!text-secondary-text"
                     }`}
                   >
                     {item.icon}

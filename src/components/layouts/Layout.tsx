@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = () => {
   return (
     <div className="h-screen">
       <Header />
-      <div className="h-[calc(100%-82px)] flex">
+      <div className="h-[calc(100%-75px)] flex">
         <SideMenu />
         <div className="w-[calc(100%-180px)] h-full overflow-auto">
           <Outlet />
