@@ -1,0 +1,31 @@
+.MuiTab-root {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 21px !important;
+  text-align: center !important;
+  &.Mui-selected {
+    color: var(--primary-color) !important;
+  }
+  &.has-error {
+    background-color: rgb(from #d32f2f r g b/.1) !important;
+  }
+}
+
+.flow-action .MuiInputLabel-root {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 18px !important;
+  text-align: left !important;
+  color: var(--primary-color) !important;
+}
+
+.MuiTabScrollButton-root {
+  color: #828282 !important;
+  :hover {
+    color: var(--primary-color) !important;
+  }
+}
+
+.MuiTabs-indicator {
+  background-color: var(--primary-color) !important;
+}
