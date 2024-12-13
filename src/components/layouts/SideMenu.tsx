@@ -112,14 +112,14 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     ],
   };
   return (
-    <div className="w-[200px] overflow-auto h-full overflow-auto bg-primary-light py-4 shadow-[1px_0_0_0_#D6DDEB]">
+    <div className="w-[160px] overflow-auto h-full overflow-auto bg-primary-light py-4 shadow-[1px_0_0_0_#D6DDEB]">
       <List>
         {menuItems[organizationType]?.map((item: any, index: number) => (
           <ListItem key={item.id} disablePadding>
             <NavLink
               to={item.path}
               className={({ isActive }) =>
-                `flex w-full px-1 py-2 gap-1 items-center rounded-md ${
+                `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
                   isActive
                     ? "bg-primary-hover text-primary"
                     : "text-secondary-text"
@@ -129,7 +129,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               {({ isActive }) => (
                 <>
                   <ListItemIcon
-                    className={`!min-w-[unset] !w-[20px] ${
+                    className={`!min-w-[unset] !w-[20px]${
                       isActive ? "!text-primary" : "!text-secondary-text"
                     }`}
                   >
