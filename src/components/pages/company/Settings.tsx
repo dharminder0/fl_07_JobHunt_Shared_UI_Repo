@@ -16,7 +16,7 @@ export default function Settings() {
         indicatorColor="primary"
         aria-label="secondary tabs example"
       >
-        <Tab value="profile" label="My Profile" />
+        <Tab value="profile" label="Company Profile" />
         <Tab value="login" label="Login Details" />
         <Tab value="notifications" label="Notifications" />
       </Tabs>
