@@ -105,60 +105,6 @@ export default function RequirementDescription() {
           </ul>
         </Box>
       </div>
-
-      {/* Perks & Benefits */}
-      {/* <Box>
-        <Typography variant="h6" className="font-bold text-gray-700">
-          Perks & Benefits
-        </Typography>
-        <Box className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-4">
-          {[
-            {
-              title: "Full Healthcare",
-              description: "We believe in thriving communities...",
-            },
-            {
-              title: "Unlimited Vacation",
-              description: "Flexible schedule for family and fun.",
-            },
-            {
-              title: "Skill Development",
-              description: "Learning and leveling up skills.",
-            },
-            {
-              title: "Team Summits",
-              description: "Every 6 months, a team summit.",
-            },
-            {
-              title: "Remote Working",
-              description: "Work from home, cafe, or anywhere.",
-            },
-            {
-              title: "Commuter Benefits",
-              description: "Time & energy savings.",
-            },
-            {
-              title: "We give back.",
-              description: "Donations to support organizations.",
-            },
-          ].map((perk, index) => (
-            <div
-              key={index}
-              className="p-4 border-2 rounded-md hover:bg-sky-100 curson-pointer"
-            >
-              <Typography
-                variant="subtitle1"
-                className="font-bold text-gray-600"
-              >
-                {perk.title}
-              </Typography>
-              <Typography variant="subtitle2" className="text-gray-500">
-                {perk.description}
-              </Typography>
-            </div>
-          ))}
-        </Box>
-      </Box> */}
     </Box>
   );
 }

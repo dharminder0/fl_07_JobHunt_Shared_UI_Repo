@@ -19,7 +19,7 @@ const VendorCompanyDetails = () => {
       startDate: "20-04-2024",
       endDate: "12-08-2024",
       client: "Airtel",
-      resource: "Raj ",
+      resource: "Raj Kumar",
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ const VendorCompanyDetails = () => {
       startDate: "18-03-2024",
       endDate: "16-09-2024",
       client: "IBM",
-      resource: "Sajid ",
+      resource: "Sajid Sarkar",
     },
     {
       id: 3,
@@ -35,7 +35,7 @@ const VendorCompanyDetails = () => {
       startDate: "02-01-2024",
       endDate: "06-10-2024",
       client: "SDET Tech",
-      resource: "Amit ",
+      resource: "Amit Thakur",
     },
     {
       id: 4,
@@ -43,7 +43,7 @@ const VendorCompanyDetails = () => {
       startDate: "26-04-2024",
       endDate: "18-11-2024",
       client: "DevStringx",
-      resource: "Harshit ",
+      resource: "Harshit Pandey",
     },
     {
       id: 1,
@@ -51,7 +51,7 @@ const VendorCompanyDetails = () => {
       startDate: "13-05-2024",
       endDate: "10-12-2024",
       client: "JigNect Technologies",
-      resource: "Vinod ",
+      resource: "Vinod Agarwal",
     },
   ];
 

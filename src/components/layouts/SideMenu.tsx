@@ -13,6 +13,7 @@ import PhotoCameraFrontOutlinedIcon from "@mui/icons-material/PhotoCameraFrontOu
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import { NavLink } from "react-router-dom";
+import { HowToRegOutlined, PersonOutlineOutlined, Settings } from "@mui/icons-material";
 
 interface SideMenuProps {}
 
@@ -31,25 +32,43 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         text: "My Requirements",
         icon: <WorkOutlineOutlinedIcon fontSize="inherit" />,
         id: 1,
-        path: "/company/myapp",
+        path: "/company/myrequirements",
       },
       {
         text: "My Vendors",
         icon: <GroupAddOutlinedIcon fontSize="inherit" />,
         id: 2,
-        path: "/company/findrequirements",
+        path: "/company/myvendors",
       },
       {
         text: "Find Vendors",
         icon: <PersonSearchOutlinedIcon fontSize="inherit" />,
         id: 3,
-        path: "/company/myclients",
+        path: "/company/findvendors",
+      },
+      {
+        text: "Vendors Request",
+        icon: <HowToRegOutlined fontSize="inherit" />,
+        id: 4,
+        path: "/company/vendorsrequest",
+      },
+      {
+        text: "Company Profile",
+        icon: <PersonOutlineOutlined fontSize="inherit" />,
+        id: 5,
+        path: "/company/profile",
+      },
+      {
+        text: "Settings",
+        icon: <Settings fontSize="inherit" />,
+        id: 6,
+        path: "/company/settings",
       },
       // { text: "Find Clients", icon: <EventIcon />, id: 4, path:'/company/findclients' },
       {
         text: "Messages",
         icon: <ChatOutlinedIcon fontSize="inherit" />,
-        id: 5,
+        id: 7,
         path: "/company/messages",
       },
     ],
