@@ -1,87 +1,87 @@
-.MuiTextField-root{
-    .MuiFormHelperText-sizeMedium{
-        line-height: 18px;
-        font-weight: 400;
-        font-size: 12px;
-        color: #828282;
-    }
-    .MuiInputBase-input{
-        font-size: 12px !important;
-    }
-    .MuiInputLabel-root.MuiInputLabel-outlined{
-        &.MuiInputLabel-sizeMedium{
-            font-size: 12px !important;
-            font-weight: 400 !important;
-            line-height: 21px !important;
-            -webkit-transform: translate(14px, 16px) scale(1);
-            -moz-transform: translate(14px, 16px) scale(1);
-            -ms-transform: translate(14px, 16px) scale(1);
-            transform: translate(14px, 16px) scale(1);
-            &.Mui-focused,
-            &.MuiFormLabel-filled {
-                -webkit-transform: translate(14px, -8px) scale(0.75);
-                -moz-transform: translate(14px, -8px) scale(0.75);
-                -ms-transform: translate(14px, -8px) scale(0.75);
-                transform: translate(14px, -8px) scale(0.75);    
-            }
-            ~.MuiInputBase-root{
-                input {
-                    font-size: 12px !important;
-                    font-weight: 400 !important;
-                    line-height: 21px !important;
-                    padding: 15.45px 14px !important;
-                }
-                .MuiOutlinedInput-notchedOutline{
-                    legend{
-                        line-height: 21px;
-                        font-size: 10px;
-                    }
-                }
-                &:hover {
-                    .MuiOutlinedInput-notchedOutline{
-                        border-color: var(--primary-color);
-                    }
-                }
-                &.Mui-focused {
-                    .MuiOutlinedInput-notchedOutline{
-                        border-color: var(--primary-color);
-                    }
-                }
-            }
-        }
-    }
-    .MuiInputLabel-root.MuiInputLabel-filled{
-        font-size: 12px !important;
-        font-weight: 400 !important;
-        line-height: 21px !important;
-    }
-    .MuiFilledInput-root{
-        font-size: 12px !important;
-        font-weight: 400 !important;
-        line-height: 21px !important;
-        background: #EDEDED;
-        &::after{
-            border-bottom: 2px solid var(--primary-color);
-        }
-        &:hover{
-            &:not(.Mui-disabled, .Mui-error):before{
-                border-bottom: 1px solid rgb(from var(--primary-color) r g b / .87);
-            }
-        }
-    }
-    .MuiInputBase-root.MuiInputBase-sizeSmall{
-        &:hover {
-            .MuiOutlinedInput-notchedOutline{
-                border-color: var(--primary-color);
-            }
-        }
-        &.Mui-focused {
-            .MuiOutlinedInput-notchedOutline{
-                border-color: var(--primary-color);
-            }
-        }
-    }
-}
+
+// .MuiTextField-root{
+//     .MuiInputBase-root {
+//         &.MuiInputBase-sizeSmall{
+//             font-size: 12px !important;
+//             // &.MuiOutlinedInput-root{
+
+//             // }            
+//         }
+//     }
+//     .MuiInputLabel-root.MuiInputLabel-outlined{
+//         &.MuiInputLabel-sizeMedium{
+//             font-size: 12px !important;
+//             font-weight: 400 !important;
+//             line-height: 21px !important;
+//             -webkit-transform: translate(14px, 16px) scale(1);
+//             -moz-transform: translate(14px, 16px) scale(1);
+//             -ms-transform: translate(14px, 16px) scale(1);
+//             transform: translate(14px, 16px) scale(1);
+//             &.Mui-focused,
+//             &.MuiFormLabel-filled {
+//                 -webkit-transform: translate(14px, -8px) scale(0.75);
+//                 -moz-transform: translate(14px, -8px) scale(0.75);
+//                 -ms-transform: translate(14px, -8px) scale(0.75);
+//                 transform: translate(14px, -8px) scale(0.75);    
+//             }
+//             ~.MuiInputBase-root{
+//                 input {
+//                     font-size: 12px !important;
+//                     font-weight: 400 !important;
+//                     line-height: 21px !important;
+//                     padding: 15.45px 14px !important;
+//                 }
+//                 .MuiOutlinedInput-notchedOutline{
+//                     legend{
+//                         line-height: 21px;
+//                         font-size: 10px;
+//                     }
+//                 }
+//                 &:hover {
+//                     .MuiOutlinedInput-notchedOutline{
+//                         border-color: var(--primary-color);
+//                     }
+//                 }
+//                 &.Mui-focused {
+//                     .MuiOutlinedInput-notchedOutline{
+//                         border-color: var(--primary-color);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     .MuiInputLabel-root.MuiInputLabel-filled{
+//         font-size: 12px !important;
+//         font-weight: 400 !important;
+//         line-height: 21px !important;
+//     }
+//     .MuiFilledInput-root{
+//         font-size: 12px !important;
+//         font-weight: 400 !important;
+//         line-height: 21px !important;
+//         background: #EDEDED;
+//         &::after{
+//             border-bottom: 2px solid var(--primary-color);
+//         }
+//         &:hover{
+//             &:not(.Mui-disabled, .Mui-error):before{
+//                 border-bottom: 1px solid rgb(from var(--primary-color) r g b / .87);
+//             }
+//         }
+//     }
+//     .MuiInputBase-root.MuiInputBase-sizeSmall{
+//         &:hover {
+//             .MuiOutlinedInput-notchedOutline{
+//                 border-color: var(--primary-color);
+//             }
+//         }
+//         &.Mui-focused {
+//             .MuiOutlinedInput-notchedOutline{
+//                 border-color: var(--primary-color);
+//             }
+//         }
+//     }
+// }
 
 .MuiAutocomplete-root{
     .MuiTextField-root {

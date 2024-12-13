@@ -601,7 +601,7 @@ const MyRequirements = () => {
         <div className="flex flex-row gap-2 mb-3">
           <TextField
             size="small"
-            className="bg-primary-light w-[calc(100%-680px)] rounded"
+            className="bg-primary-light w-[calc(100%-680px)]"
             value={searchFilter.searchValue}
             onChange={(event) => {
               setSearchFilter({
@@ -686,7 +686,7 @@ const MyRequirements = () => {
           <div>
             <svg
               width="180"
-              height="40"
+              height="34"
               viewBox="0 0 180 51"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
