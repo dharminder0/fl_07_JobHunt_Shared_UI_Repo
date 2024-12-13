@@ -112,7 +112,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     ],
   };
   return (
-    <div className="w-[200px] overflow-auto h-full overflow-auto bg-primary-light py-4 shadow-[1px_0_0_0_#D6DDEB]">
+    <div className="w-[160px] overflow-auto h-full overflow-auto bg-primary-light py-4 shadow-[1px_0_0_0_#D6DDEB]">
       <List>
         {menuItems[organizationType]?.map((item: any, index: number) => (
           <ListItem key={item.id} disablePadding>
