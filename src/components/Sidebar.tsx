@@ -7,10 +7,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import EventIcon from "@mui/icons-material/Event";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import MyApplications from "../pages/dashboard/MyApplications";
-import FindRequirements from "../pages/dashboard/FindRequirements";
-import MyClients from "../pages/dashboard/MyClients";
 import FindClients from "../pages/dashboard/FindClients";
+import MyRequirements from "./pages/company/requirements/MyRequirements";
+import MyVendors from "./pages/company/my-vendors/MyVendors";
+import FindVendors from "./pages/company/find-vendors/FindVendors";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -29,11 +29,11 @@ const Sidebar = () => {
       case 0:
         return <DashboardPage />;
       case 1:
-        return <MyApplications />;
+        return <MyRequirements />;
       case 2:
-        return <FindRequirements />;
+        return <MyVendors />;
       case 3:
-        return <MyClients />;
+        return <FindVendors />;
       case 4:
         return <FindClients />;
       default:

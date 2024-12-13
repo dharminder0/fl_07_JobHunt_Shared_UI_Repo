@@ -1,59 +1,46 @@
 import React from "react";
-import { Typography, Grid, Box, Tabs, Tab, Chip, Link } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Box,
+  Tabs,
+  Tab,
+  Chip,
+  Link,
+  Button,
+  Modal,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import {
   Language,
   LocationOnOutlined,
   MailOutline,
   Phone,
   PictureAsPdf,
+  Share,
 } from "@mui/icons-material";
 
 const VendorDetails = () => {
+  const theme = useTheme();
   const [value, setValue] = React.useState("bench");
   const handleRowClick = (id: any) => {};
+  const [open, setOpen] = React.useState(false);
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const activeContracts = [
-    {
-      id: 1,
-      title: "Social Media Assistant",
-      startDate: "20-04-2024",
-      endDate: "12-08-2024",
-      client: "Airtel",
-      resource: "Raj ",
-    },
-    {
-      id: 2,
-      title: "Android Developer",
-      startDate: "18-03-2024",
-      endDate: "16-09-2024",
-      client: "IBM",
-      resource: "Sajid ",
-    },
-    {
-      id: 3,
-      title: "Angular Developer",
-      startDate: "02-01-2024",
-      endDate: "06-10-2024",
-      client: "SDET Tech",
-      resource: "Amit ",
-    },
-    {
-      id: 4,
-      title: "iOS Developer",
-      startDate: "26-04-2024",
-      endDate: "18-11-2024",
-      client: "DevStringx",
-      resource: "Harshit ",
-    },
-    {
-      id: 1,
-      title: "QA Automation",
-      startDate: "13-05-2024",
-      endDate: "10-12-2024",
-      client: "JigNect Technologies",
-      resource: "Vinod ",
-    },
-  ];
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const benchData = [
     {
@@ -90,69 +77,6 @@ const VendorDetails = () => {
     },
   ];
 
-  const jobData = [
-    {
-      id: 1,
-      role: "Social Media Assistant",
-      status: "Open",
-      datePosted: "20 May 2020",
-      applicants: "19",
-      client: "Self",
-      requirementType: "Remote",
-      noOfPositions: 3,
-      contractPeriod: "6 months",
-      visibility: "Global",
-    },
-    {
-      id: 2,
-      role: "Senior Designer",
-      status: "On hold",
-      datePosted: "16 May 2020",
-      applicants: "1,234",
-      client: "Creative Solutions Ltd.",
-      requirementType: "Hybrid",
-      noOfPositions: 5,
-      contractPeriod: "12 months",
-      visibility: "Empanelled",
-    },
-    {
-      id: 3,
-      role: "Visual Designer",
-      status: "Open",
-      datePosted: "15 May 2020",
-      applicants: "2,435",
-      client: "Design Pros Inc.",
-      requirementType: "Onsite",
-      noOfPositions: 2,
-      contractPeriod: "3 months",
-      visibility: "Limited",
-    },
-    {
-      id: 4,
-      role: "Data Science",
-      status: "Closed",
-      datePosted: "13 May 2020",
-      applicants: "6,234",
-      client: "Self",
-      requirementType: "Remote",
-      noOfPositions: 10,
-      contractPeriod: "9 months",
-      visibility: "Global",
-    },
-    {
-      id: 5,
-      role: "Kotlin Developer",
-      status: "Closed",
-      datePosted: "12 May 2020",
-      applicants: "12",
-      client: "Tech Innovators LLC",
-      requirementType: "Hybrid",
-      noOfPositions: 20,
-      contractPeriod: "18 months",
-      visibility: "Empanelled",
-    },
-  ];
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -160,7 +84,7 @@ const VendorDetails = () => {
   return (
     <div className="min-h-screen p-6">
       {/* Header Section */}
-      <div className="mb-6 ">
+      <div className="mb-6">
         <div className="flex items-center gap-4 mb-4">
           <div>
             <img
@@ -266,7 +190,83 @@ const VendorDetails = () => {
 
         {/* Tech Stack and Office Location */}
         <Grid item xs={12} md={3}>
-          <div>
+          <div className="mb-2 space-y-4">
+            {/* <p className="text-base">
+              Click the 'Invite' button to send a notification to vendors.
+              Interested vendors will follow the instructions to complete the
+              process. You can track their progress and manage empaneled vendors
+              from the 'Manage Vendors' section.
+            </p> */}
+            <Button
+              onClick={handleClickOpen}
+              variant="outlined"
+              startIcon={<Share />}
+            >
+              Invite for Empanelment
+            </Button>
+
+            <Dialog
+              fullScreen={fullScreen}
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="responsive-dialog-title"
+            >
+              <DialogContent>
+                <div className="space-y-4">
+                  <p className="text-heading">Invite Vendors for Empanelment</p>
+                  <p className="text-base">
+                    Click the 'Invite' button to send a notification to vendors.
+                    Interested vendors will follow the instructions to complete
+                    the process. You can track their progress and manage
+                    empaneled vendors from the 'Manage Vendors' section.
+                  </p>
+                  <p className="text-base">Write a Personalized Message</p>
+                </div>
+                <form className="mt-2 space-y-4">
+                  <TextField
+                    label="Message"
+                    // value={companyName}
+                    // onChange={(e) => setCompanyName(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                  />
+                </form>
+              </DialogContent>
+              <DialogActions sx={{ paddingBottom: 2, paddingRight: 3 }}>
+                <Button autoFocus onClick={handleClose} variant="outlined">
+                  Close
+                </Button>
+                <Button variant="contained">Invite</Button>
+              </DialogActions>
+            </Dialog>
+            {/* <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <p className="text-base">Write a Personalized Message</p>
+                <form className="w-full max-w-md mt-2 space-y-4">
+                  <TextField
+                    label="Message"
+                    // value={companyName}
+                    // onChange={(e) => setCompanyName(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                  />
+                  <Button onClick={handleOpen} variant="contained">
+                    Send Request
+                  </Button>
+                </form>
+              </Box>
+            </Modal> */}
+          </div>
+          <div className="mt-4">
             <h5 className="text-heading mb-2">Contact Information</h5>
             <ul className="text-gray-700 text-base">
               <li>

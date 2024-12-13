@@ -70,7 +70,7 @@ const companies = [
   },
 ];
 
-const FindRequirements = () => {
+const MyVendors = () => {
   const navigate = useNavigate();
   const handleDetails = (id: number) => {
     navigate(`${id}`);
@@ -188,4 +188,4 @@ const FindRequirements = () => {
   );
 };
 
-export default FindRequirements;
+export default MyVendors;

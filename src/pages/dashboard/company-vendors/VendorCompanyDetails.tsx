@@ -71,7 +71,7 @@ const VendorCompanyDetails = () => {
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
-          <IconButton color="primary" aria-label="add to shopping cart" className="!w-[50px] !h-[50px]" onClick={()=>{navigate('/company/findrequirements')}}>
+          <IconButton color="primary" aria-label="add to shopping cart" className="!w-[50px] !h-[50px]" onClick={()=>{navigate('/company/myvendors')}}>
             <ArrowBackIcon />
           </IconButton>
           <div>

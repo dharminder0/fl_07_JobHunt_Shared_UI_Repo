@@ -22,7 +22,7 @@
         top: 0;
         z-index: 1;
         padding: 0 15px;
-        min-width: 250px;
+        min-width: 175px;
         background-color: #fff;
         width: auto;
         text-align: left;
@@ -36,7 +36,7 @@
         z-index: 2;
         border-right: 1px solid #e0e0e0;
         box-shadow: 1px 1px 0 0 #e0e0e0;
-        min-width: 350px;
+        min-width: 250px;
         // ===================
         box-shadow: -2px 2px 4px 0 #e0e0e0;
         &.add-right-shadow{
@@ -76,7 +76,7 @@
     }
     tbody th:first-child {
         text-align: left;
-        min-width: 350px;
+        min-width: 250px;
         // ===============
         box-shadow: -2px 2px 4px 0 #e0e0e0;
         &.add-right-shadow{
@@ -161,7 +161,7 @@
         padding: 0 15px;
         border-bottom: 1px solid #e0e0e0;
         height: 40px;
-        max-width: 250px;
+        max-width: 175px;
         &.wide-150{
             min-width: 150px;
         }
