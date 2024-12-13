@@ -52,7 +52,7 @@
         /* for Safari */
         position: sticky;
         left: 0;
-        background: #fff;
+        background-color: #fff;
         border-right: 1px solid #e0e0e0;
         box-shadow: 1px 1px 0 0 #e0e0e0;
         font-weight: 500;
@@ -60,10 +60,18 @@
     tbody td {
         font-weight: 400;
     }
-    tbody tr:nth-child(even) {
-        background-color: #F8F8FD;
-        th {
-            background-color: inherit !important;
+    tbody tr {
+        &:hover{
+            background-color: var(--primary-hover-color) !important;
+            th {
+                background-color: inherit;
+            }
+        }
+        &:nth-child(even) {
+            background-color: #F8F8FD;
+            th {
+                background-color: inherit;
+            }
         }
     }
     tbody th:first-child {

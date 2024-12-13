@@ -9,10 +9,13 @@ import {
   Box,
   Tabs,
   Tab,
+  IconButton,
 } from "@mui/material";
-import { ArrowForward, Facebook, LinkedIn, Twitter } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const VendorCompanyDetails = () => {
+  const navigate = useNavigate();
   const [value, setValue] = React.useState("one");
   const handleRowClick = (id: any) => {};
 
@@ -68,6 +71,9 @@ const VendorCompanyDetails = () => {
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
+          <IconButton color="primary" aria-label="add to shopping cart" className="!w-[50px] !h-[50px]" onClick={()=>{navigate('/company/findrequirements')}}>
+            <ArrowBackIcon />
+          </IconButton>
           <div>
             <img
               src={

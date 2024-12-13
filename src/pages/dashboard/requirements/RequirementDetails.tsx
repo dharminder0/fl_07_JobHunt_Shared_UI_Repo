@@ -58,7 +58,7 @@ const RequirementDetails = () => {
       {/* Header */}
       <Box className="flex justify-between items-center mb-6">
         <div className="flex flex-row gap-3">
-        <IconButton color="primary" aria-label="add to shopping cart" className="!w-[50px]" onClick={()=>{navigate('/company/myapp')}}>
+        <IconButton color="primary" aria-label="add to shopping cart" className="!w-[50px] !h-[50px]" onClick={()=>{navigate('/company/myapp')}}>
           <ArrowBackIcon />
         </IconButton>
           <Box>
