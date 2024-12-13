@@ -22,8 +22,9 @@ import BrowseCommpany from "./components/pages/vendor/BrowseCommpany";
 import VndProfile from "./components/pages/vendor/VndProfile";
 import RequirementDetails from "./pages/dashboard/requirements/RequirementDetails";
 import Layout from "./components/layouts/Layout";
-import VendorCompanyDetails from "./pages/dashboard/company-vendors/VendorCompanyDetails";
 import NotFound from "./components/pages/NotFound/NotFound";
+import VendorCompanyDetails from "./components/pages/company/my-vendors/VendorCompanyDetails";
+import VendorDetails from "./components/pages/company/find-vendors/VendorDetails";
 
 export default function AppRoutes() {
   return (
@@ -50,7 +51,7 @@ export default function AppRoutes() {
           </Route>
           <Route path="myclients">
             <Route index element={<MyClients />} /> {/* List all applications */}
-            <Route path=":id" element={<VendorCompanyDetails />} /> {/* View specific application */}
+            <Route path=":id" element={<VendorDetails />} /> {/* View specific application */}
           </Route>
           <Route path="findclients" element={<FindClients />} />
           <Route path="messages" element={<Messages />} />
