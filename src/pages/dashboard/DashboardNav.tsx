@@ -18,7 +18,7 @@ import FindClients from "./FindClients";
 import MyRequirements from "./requirements/MyRequirements";
 import MyVendors from "./company-vendors/MyVendors";
 import FindVendors from "./company-vendors/FindVendors";
-import VendorCompanyDetails from "./company-vendors/VendorCompanyDetails";
+import VendorCompanyDetails from "../../components/pages/company/my-vendors/VendorCompanyDetails";
 
 export default function DashboardNav() {
   const location = useLocation();
