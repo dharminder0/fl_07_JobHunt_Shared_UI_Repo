@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Grid, Box, Tabs, Tab, Chip } from "@mui/material";
+import { Typography, Grid, Box, Tabs, Tab, Chip, Link } from "@mui/material";
 import {
   Language,
   LocationOnOutlined,
@@ -233,7 +233,7 @@ const VendorDetails = () => {
               >
                 <Tab value="bench" label="Bench Strength" />
               </Tabs>
-             
+
               {value === "bench" && (
                 <div className="table-body mt-4">
                   <table>
@@ -270,13 +270,19 @@ const VendorDetails = () => {
             <h5 className="text-heading mb-2">Contact Information</h5>
             <ul className="text-gray-700 text-base">
               <li>
-                <MailOutline fontSize="small" /> sales@fleekitsolutions.com
+                <Link href="mailto:sales@fleekitsolutions.com" underline="none">
+                  <MailOutline fontSize="small" /> sales@fleekitsolutions.com
+                </Link>
               </li>
               <li>
-                <Phone fontSize="small" /> +91 971181234
+                <Link href="tel:+91 971181234" underline="none">
+                  <Phone fontSize="small" /> +91 971181234
+                </Link>
               </li>
               <li>
-                <Language fontSize="small" /> www.fleekitsolutions.com
+                <Link href="www.fleekitsolutions.com" underline="none">
+                  <Language fontSize="small" /> www.fleekitsolutions.com
+                </Link>
               </li>
             </ul>
           </div>

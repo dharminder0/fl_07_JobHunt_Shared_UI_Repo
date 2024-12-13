@@ -1,0 +1,29 @@
+.MuiStepper-root {
+    &.MuiStepper-vertical {
+        .MuiStep-root .MuiStepButton-root{
+            width: auto !important;
+            .MuiStepLabel-root {
+
+                .MuiStepLabel-labelContainer .MuiStepLabel-label{
+                    font-size: 14px;
+                    line-height: 21px;
+                    font-weight: 600;
+                    color: #4F4F4F;
+                    &.Mui-active{
+                        color: #333333 !important;
+                    }
+                }
+
+                .MuiStepLabel-iconContainer{
+                    .MuiSvgIcon-root {
+                        color: #828282;
+                        &.Mui-active {
+                            color: var(--primary-color);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}

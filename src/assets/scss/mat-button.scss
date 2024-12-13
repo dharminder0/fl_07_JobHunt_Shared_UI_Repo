@@ -1,0 +1,50 @@
+.MuiButton-text {
+  // line-height: 18px !important;
+  // font-weight: 600 !important;
+  font-size: 12px !important;
+  &.MuiButton-textError {
+    color: var(--Gray3);
+    &:hover {
+      background-color: #eb57571a;
+      color: #eb5757;
+    }
+  }
+  &.MuiButton-colorPrimary {
+    color: var(--primary-color);
+    &:hover {
+      background-color: rgb(from var(--primary-color) r g b / 0.08);
+    }
+    &.prev:not(.Mui-disabled) {
+      color: var(--Gray2);
+      &:hover {
+        background-color: rgb(from var(--Gray2) r g b / 0.08);
+      }
+    }
+  }
+}
+
+.MuiButton-contained:not(:disabled) {
+  background-color: var(--primary-color);
+  &:hover {
+    background-color: var(--primary-color);
+  }
+}
+
+.MuiButton-outlined:not(:disabled) {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  &:hover {
+    border-color: var(--primary-color);
+    background: rgba(from var(--primary-color) r g b / 0.04);
+  }
+}
+
+.MuiButton-root {
+  font-size: 12px !important;
+  letter-spacing: 0.6px;
+}
+
+.css-kxwn6k-MuiButtonBase-root-MuiCheckbox-root {
+  padding: 1px 4px 1px 9px !important;
+  color: rgba(0, 0, 0, 0.4) !important;
+}

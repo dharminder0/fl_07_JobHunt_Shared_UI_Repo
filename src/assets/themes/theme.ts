@@ -16,29 +16,48 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
-          color: 'primary'
+          textTransform: "none",
+          color: "primary",
         },
       },
     },
     MuiButtonBase: {
       styleOverrides: {
         root: {
-          textTransform: 'none'
-        }
-      }
+          textTransform: "none",
+        },
+      },
     },
     MuiTab: {
       styleOverrides: {
         root: {
-          textTransform: 'none'
-        }
-      }
+          textTransform: "none",
+        },
+      },
     },
     MuiStepLabel: {
       styleOverrides: {
         label: {
           fontSize: "1rem", // Apply desired font size globally
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputBase-input": {
+            fontSize: "14px", // Customize font size for input text
+          },
+          "& .MuiInputLabel-root": {
+            fontSize: "12px", // Customize font size for the label
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          fontSize: "12px", // Customize font size for select text
         },
       },
     },
