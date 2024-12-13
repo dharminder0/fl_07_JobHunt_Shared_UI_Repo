@@ -76,72 +76,71 @@ export default function VendorsRequest() {
         <Tab value="three" label="NDA & MSA" />
       </Tabs>
 
-      {value == "one" ||
-        (value == "three" && (
-          <div className="mt-4">
-            {/* Company Cards */}
-            <Grid item xs={12} md={12}>
-              <Grid container spacing={3}>
-                {companies.map((company, idx) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={3}
-                    key={idx}
-                    // onClick={() => handleDetails(company.id)}
-                  >
-                    <div className="h-100 border p-4 rounded-md cursor-pointer">
-                      <div className="flex align-center mb-4">
-                        <img
-                          src={
-                            !company.logo
-                              ? "/assets/images/Companylogo.png"
-                              : company.logo
-                          }
-                          alt={company.name}
-                          className="me-3"
-                          style={{ width: 50, height: 50 }}
-                        />
-                        <div>
-                          <p className="text-title font-bold">{company.name}</p>
-                          <p className="text-base">{company.place}</p>
-                          {company.contracts && (
-                            <p className="text-base">
-                              {company.contracts} Contracts
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <p className="text-base">{company.description}</p>
-                      <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag, idx) => (
-                          // <Typography
-                          //   key={idx}
-                          //   variant="caption"
-                          //   className="p-1 border rounded"
-                          //   marginTop={1}
-                          //   marginRight={1}
-                          // >
-                          //   {tag}
-                          // </Typography>
-                          <Chip
-                            key={idx}
-                            label={tag}
-                            size="small"
-                            variant="outlined"
-                            sx={{ fontSize: 10 }}
-                            className="my-1 me-1"
-                          />
-                        ))}
+      {(value == "one" || value == "three") && (
+        <div className="mt-4">
+          {/* Company Cards */}
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={3}>
+              {companies.map((company, idx) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  key={idx}
+                  // onClick={() => handleDetails(company.id)}
+                >
+                  <div className="h-100 border p-4 rounded-md cursor-pointer">
+                    <div className="flex align-center mb-4">
+                      <img
+                        src={
+                          !company.logo
+                            ? "/assets/images/Companylogo.png"
+                            : company.logo
+                        }
+                        alt={company.name}
+                        className="me-3"
+                        style={{ width: 50, height: 50 }}
+                      />
+                      <div>
+                        <p className="text-title font-bold">{company.name}</p>
+                        <p className="text-base">{company.place}</p>
+                        {company.contracts && (
+                          <p className="text-base">
+                            {company.contracts} Contracts
+                          </p>
+                        )}
                       </div>
                     </div>
-                  </Grid>
-                ))}
-              </Grid>
+                    <p className="text-base">{company.description}</p>
+                    <div className="flex flex-wrap mt-2">
+                      {company.tags.map((tag, idx) => (
+                        // <Typography
+                        //   key={idx}
+                        //   variant="caption"
+                        //   className="p-1 border rounded"
+                        //   marginTop={1}
+                        //   marginRight={1}
+                        // >
+                        //   {tag}
+                        // </Typography>
+                        <Chip
+                          key={idx}
+                          label={tag}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </Grid>
+              ))}
             </Grid>
-          </div>
-        ))}
+          </Grid>
+        </div>
+      )}
     </div>
   );
 }
