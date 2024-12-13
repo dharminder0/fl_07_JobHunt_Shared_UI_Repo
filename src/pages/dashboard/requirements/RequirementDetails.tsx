@@ -16,11 +16,15 @@ import {
   MenuItem,
   TextField,
   Pagination,
+  IconButton,
 } from "@mui/material";
 import { Search, FilterList, MoreHoriz } from "@mui/icons-material";
 import RequirementDescription from "./RequirementDescription";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
 
 const RequirementDetails = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
   const [search, setSearch] = useState("");
 
@@ -53,14 +57,19 @@ const RequirementDetails = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <Box className="flex justify-between items-center mb-6">
-        <Box>
-          <Typography variant="h6" className="font-bold text-gray-800">
-            Social Media Assistant
-          </Typography>
-          <Typography className="text-gray-500">
-            Design • Full-Time • 4 / 11 Hired
-          </Typography>
-        </Box>
+        <div className="flex flex-row gap-3">
+        <IconButton color="primary" aria-label="add to shopping cart" className="!w-[50px]" onClick={()=>{navigate('/company/myapp')}}>
+          <ArrowBackIcon />
+        </IconButton>
+          <Box>
+            <Typography variant="h6" className="font-bold text-gray-800">
+              Social Media Assistant
+            </Typography>
+            <Typography className="text-gray-500">
+              Design • Full-Time • 4 / 11 Hired
+            </Typography>
+          </Box>
+        </div>
         <Button variant="contained" className="bg-purple-500 text-white">
           <MoreHoriz />
           More Action

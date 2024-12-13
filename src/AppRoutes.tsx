@@ -5,26 +5,26 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "../pages/auth/Login";
-import SignUp from "../pages/auth/SignUp";
-import OnBoarding from "../pages/boarding/OnBoarding";
-import VendorDashboard from "./pages/vendor/VendorDashboard";
-import CompanyDashboard from "./pages/company/CompanyDashboard";
+import Login from "./pages/auth/Login";
+import SignUp from "./pages/auth/SignUp";
+import OnBoarding from "./pages/boarding/OnBoarding";
+import VendorDashboard from "./components/pages/vendor/VendorDashboard";
+import CompanyDashboard from "./components/pages/company/CompanyDashboard";
 // import MyApplications from "./pages/company/MyApplications";
-import MyClients from "./pages/company/MyClients";
-import FindClients from "./pages/company/FindClients";
-import Messages from "./pages/company/Messages";
-import FindRequirements from "./pages/company/FindRequirements";
-import MyApplications from "./pages/company/requirements/MyApplications";
-import VndMyApplications from "./pages/vendor/VndMyApplications";
-import FindJobs from "./pages/vendor/FindJobs";
-import BrowseCommpany from "./pages/vendor/BrowseCommpany";
-import VndProfile from "./pages/vendor/VndProfile";
-import RequirementDetails from "../pages/dashboard/requirements/RequirementDetails";
-import Layout from "./layouts/Layout";
-import VendorCompanyDetails from "./pages/company/my-vendors/VendorCompanyDetails";
-import NotFound from "./pages/NotFound/NotFound";
-import VendorDetails from "./pages/company/find-vendors/VendorDetails";
+import MyClients from "./components/pages/company/MyClients";
+import FindClients from "./components/pages/company/FindClients";
+import Messages from "./components/pages/company/Messages";
+import FindRequirements from "./components/pages/company/FindRequirements";
+import MyApplications from "./components/pages/company/requirements/MyApplications";
+import VndMyApplications from "./components/pages/vendor/VndMyApplications";
+import FindJobs from "./components/pages/vendor/FindJobs";
+import BrowseCommpany from "./components/pages/vendor/BrowseCommpany";
+import VndProfile from "./components/pages/vendor/VndProfile";
+import RequirementDetails from "./pages/dashboard/requirements/RequirementDetails";
+import Layout from "./components/layouts/Layout";
+import NotFound from "./components/pages/NotFound/NotFound";
+import VendorCompanyDetails from "./components/pages/company/my-vendors/VendorCompanyDetails";
+import VendorDetails from "./components/pages/company/find-vendors/VendorDetails";
 
 export default function AppRoutes() {
   return (
