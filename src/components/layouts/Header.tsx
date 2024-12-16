@@ -13,26 +13,12 @@ const Header: React.FC<HeaderProps> = () => {
     [
       {
         title: "Company",
-        orgType: "Company",
         code: "company",
-        icon: <svg width="37" height="33" viewBox="0 0 37 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z" fill="#449B82" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z" fill="#9BDB9C" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z" fill="#56CDAD" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z" fill="white" />
-        </svg>,
         redirectTo: "/company"
       },
       {
         title: "Vendor",
-        orgType: "Vendor",
         code: "vendor",
-        icon: <svg width="37" height="33" viewBox="0 0 37 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z" fill="#449B82" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z" fill="#9BDB9C" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z" fill="#56CDAD" />
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z" fill="white" />
-        </svg>,
         redirectTo: "/vendor"
       },
     ]
@@ -46,7 +32,7 @@ const Header: React.FC<HeaderProps> = () => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (orgObj?: any) => {
-    if (orgObj) {
+    if (orgObj?.code !== selectedOrg.code) {
       setSelectedOrg(orgObj);
       setOrganizationType(orgObj.code);
       navigate(orgObj.redirectTo);
@@ -56,9 +42,16 @@ const Header: React.FC<HeaderProps> = () => {
   return (
     <div className="h-[52px] px-5 py-2 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className="flex gap-3">
-        <div className="icon my-auto">{selectedOrg?.icon}</div>
+        <div className="icon my-auto">
+          <svg width="37" height="33" viewBox="0 0 37 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z" fill="#449B82" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z" fill="#9BDB9C" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z" fill="#56CDAD" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z" fill="white" />
+          </svg>
+        </div>
         <div
-          className="dropdown flex flex-row gap-2"
+          className="cursor-pointer flex flex-row gap-2"
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}
           aria-haspopup="true"
@@ -74,7 +67,7 @@ const Header: React.FC<HeaderProps> = () => {
           id="basic-menu"
           anchorEl={anchorEl}
           open={open}
-          onClose={handleClose}
+          onClose={()=>handleClose()}
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
@@ -109,20 +102,6 @@ const Header: React.FC<HeaderProps> = () => {
         </svg>
         {organizationType === "company" && (
           <RequirementForm />
-          // <Button variant="contained" className='bg-[#4640DE]'>
-          //   <svg className='mr-[10px]' width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          //     <g clip-path="url(#clip0_279_16506)">
-          //       <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 4C13.0523 4 13.5 4.44772 13.5 5V19C13.5 19.5523 13.0523 20 12.5 20C11.9477 20 11.5 19.5523 11.5 19V5C11.5 4.44772 11.9477 4 12.5 4Z" fill="white" />
-          //       <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 12C4.5 11.4477 4.94772 11 5.5 11H19.5C20.0523 11 20.5 11.4477 20.5 12C20.5 12.5523 20.0523 13 19.5 13H5.5C4.94772 13 4.5 12.5523 4.5 12Z" fill="white" />
-          //     </g>
-          //     <defs>
-          //       <clipPath id="clip0_279_16506">
-          //         <rect width="24" height="24" fill="white" transform="translate(0.5)" />
-          //       </clipPath>
-          //     </defs>
-          //   </svg>
-          //   <span>Post a job</span>
-          // </Button>
         )}
       </div>
     </div>
