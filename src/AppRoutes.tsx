@@ -13,20 +13,22 @@ import CompanyDashboard from "./components/pages/company/CompanyDashboard";
 import FindClients from "./components/pages/company/FindClients";
 import Messages from "./components/pages/company/Messages";
 import VndMyApplications from "./components/pages/vendor/VndMyApplications";
-import FindJobs from "./components/pages/vendor/FindJobs";
-import BrowseCommpany from "./components/pages/vendor/BrowseCommpany";
+import MyClients from "./components/pages/vendor/MyClients";
 import VndProfile from "./components/pages/vendor/VndProfile";
 import RequirementDetails from "./components/pages/company/requirements/RequirementDetails";
 import Layout from "./components/layouts/Layout";
 import NotFound from "./components/pages/NotFound/NotFound";
 import VendorCompanyDetails from "./components/pages/company/my-vendors/VendorCompanyDetails";
 import VendorDetails from "./components/pages/company/find-vendors/VendorDetails";
-import VendorsRequest from "./components/pages/company/VendorsRequest";
+import VendorOnboarding from "./components/pages/company/VendorOnboarding";
 import MyRequirements from "./components/pages/company/requirements/MyRequirements";
 import MyVendors from "./components/pages/company/my-vendors/MyVendors";
 import FindVendors from "./components/pages/company/find-vendors/FindVendors";
 import CompanyProfile from "./components/pages/company/CompanyProfile";
 import Settings from "./components/pages/company/Settings";
+import FindRequirements from "./components/pages/vendor/FindRequirements";
+import VndFindClients from "./components/pages/vendor/VndFindClients";
+import VndSettings from "./components/pages/vendor/VndSettings";
 
 export default function AppRoutes() {
   return (
@@ -56,7 +58,7 @@ export default function AppRoutes() {
             <Route path=":id" element={<VendorDetails />} /> {/* View specific application */}
           </Route>
           <Route path="findclients" element={<FindClients />} />
-          <Route path="vendorsrequest" element={<VendorsRequest />} />
+          <Route path="vndonboarding" element={<VendorOnboarding />} />
           <Route path="profile" element={<CompanyProfile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="messages" element={<Messages />} />
@@ -68,9 +70,11 @@ export default function AppRoutes() {
           <Route path="dashboard" element={<VendorDashboard />} />
           <Route path="messages" element={<Messages />} />
           <Route path="myapp" element={<VndMyApplications />} />
-          <Route path="findjobs" element={<FindJobs />} />
-          <Route path="browsecompany" element={<BrowseCommpany />} />
-          <Route path="myprofile" element={<VndProfile />} />
+          <Route path="findrequirements" element={<FindRequirements />} />
+          <Route path="myclients" element={<MyClients />} />
+          <Route path="findclients" element={<VndFindClients />} />
+          <Route path="profile" element={<VndProfile />} />
+          <Route path="settings" element={<VndSettings />} />
         </Route>
 
         {/* Shared Routes */}
