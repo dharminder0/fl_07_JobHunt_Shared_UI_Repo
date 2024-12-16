@@ -1,11 +1,6 @@
 import React from "react";
 import {
-  Typography,
   Grid,
-  Box,
-  Tabs,
-  Tab,
-  Chip,
   Link,
   IconButton,
 } from "@mui/material";
@@ -17,12 +12,10 @@ import {
   LocationOnOutlined,
   MailOutline,
   Phone,
-  PictureAsPdf,
-  Twitter,
   X,
 } from "@mui/icons-material";
 
-const CompanyProfile = () => {
+const VndProfile = () => {
   const [value, setValue] = React.useState("one");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -199,4 +192,4 @@ const CompanyProfile = () => {
   );
 };
 
-export default CompanyProfile;
+export default VndProfile;
