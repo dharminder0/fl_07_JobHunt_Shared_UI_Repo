@@ -24,11 +24,15 @@ import VendorOnboarding from "./components/pages/company/VendorOnboarding";
 import MyRequirements from "./components/pages/company/requirements/MyRequirements";
 import MyVendors from "./components/pages/company/my-vendors/MyVendors";
 import FindVendors from "./components/pages/company/find-vendors/FindVendors";
-import CompanyProfile from "./components/pages/company/CompanyProfile";
-import Settings from "./components/pages/company/Settings";
+import CompanyProfile from "./components/pages/company/settings/CompanyProfile";
+import Settings from "./components/pages/company/settings/Settings";
 import FindRequirements from "./components/pages/vendor/FindRequirements";
 import VndFindClients from "./components/pages/vendor/VndFindClients";
 import VndSettings from "./components/pages/vendor/VndSettings";
+import Subscriptions from "./components/pages/company/settings/Subscriptions";
+import Teams from "./components/pages/company/settings/Teams";
+import MyCandidates from "./components/pages/company/candidates/MyCandidates";
+import UserDetails from "./components/pages/company/accounts/UserDetails";
 
 export default function AppRoutes() {
   return (
@@ -59,8 +63,12 @@ export default function AppRoutes() {
           </Route>
           <Route path="findclients" element={<FindClients />} />
           <Route path="vndonboarding" element={<VendorOnboarding />} />
+          <Route path="candidates" element={<MyCandidates />} />
           <Route path="profile" element={<CompanyProfile />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="subscriptions" element={<Subscriptions />} />
+          <Route path="teams" element={<Teams />} />
+          <Route path="account" element={<UserDetails />} />
           <Route path="messages" element={<Messages />} />
         </Route>
 
@@ -74,6 +82,7 @@ export default function AppRoutes() {
           <Route path="myclients" element={<MyClients />} />
           <Route path="findclients" element={<VndFindClients />} />
           <Route path="profile" element={<VndProfile />} />
+          <Route path="account" element={<UserDetails />} />
           <Route path="settings" element={<VndSettings />} />
         </Route>
 

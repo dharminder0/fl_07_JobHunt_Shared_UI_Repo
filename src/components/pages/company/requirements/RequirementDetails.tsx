@@ -3,19 +3,9 @@ import {
   Box,
   Typography,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Tabs,
   Tab,
-  Select,
-  MenuItem,
   TextField,
-  Pagination,
   IconButton,
   Chip,
   Collapse,
@@ -23,11 +13,9 @@ import {
 import {
   Search,
   FilterList,
-  MoreHoriz,
   PictureAsPdf,
   Edit,
 } from "@mui/icons-material";
-import RequirementDescription from "./RequirementDescription";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 

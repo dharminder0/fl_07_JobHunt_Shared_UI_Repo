@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mui/material";
+import { Link, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
@@ -105,7 +105,13 @@ export default function VendorOnboarding() {
                         <p className="text-title font-bold">{company.name}</p>
                         <p className="text-base">{company.place}</p>
                         {company.contracts && (
-                          <p className="text-base">{company.contracts}</p>
+                          <Link
+                            href="#"
+                            underline="none"
+                            fontSize={12}
+                          >
+                            {company.contracts}
+                          </Link>
                         )}
                       </div>
                     </div>
