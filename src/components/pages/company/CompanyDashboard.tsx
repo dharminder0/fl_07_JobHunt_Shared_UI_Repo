@@ -210,44 +210,44 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         {/* Overview Cards */}
         <Grid container spacing={2} className="mb-6">
           <Grid item xs={12} md={2.4}>
-            <div className="bg-purple-700 p-3 rounded-md flex flex-col items-center">
-              <Typography variant="h5" color="white">
+            <div className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover">
+              <Typography variant="h5" className="!text-indigo-950">
                 76
               </Typography>
               {/* <p className="text-white text-heading mb-2">76</p> */}
-              <p className="text-white text-base">Open Requirements</p>
+              <p className="text-base">Open Requirements</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
-            <div className="bg-green-600 p-3 rounded-md flex items-center flex-col">
-              <Typography variant="h5" color="white">
+            <div className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover">
+              <Typography variant="h5" className="!text-indigo-800">
                 13
               </Typography>
-              <p className="text-white text-base">Hot Requirements</p>
+              <p className="text-base">Hot Requirements</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
-            <div className="bg-cyan-500 p-3 rounded-md flex items-center flex-col">
-              <Typography variant="h5" color="white">
+            <div className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover">
+              <Typography variant="h5" className="!text-indigo-600">
                 26
               </Typography>
-              <p className="text-white text-base">Interview Scheduled</p>
+              <p className="text-base">Interview Scheduled</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
-            <div className="bg-blue-700 p-3 rounded-md flex items-center flex-col">
-              <Typography variant="h5" color="white">
+            <div className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover">
+              <Typography variant="h5" className="!text-indigo-400">
                 34
               </Typography>
-              <p className="text-white text-base">Candidates to review</p>
+              <p className="text-base">Candidates to review</p>
             </div>
           </Grid>
           <Grid item xs={12} md={2.4}>
-            <div className="bg-red-600 p-3 rounded-md flex items-center flex-col">
-              <Typography variant="h5" color="white">
+            <div className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover">
+              <Typography variant="h5" className="!text-red-600">
                 12
               </Typography>
-              <p className="text-white text-base">No Applicants</p>
+              <p className="text-base">No Applicants</p>
             </div>
           </Grid>
         </Grid>

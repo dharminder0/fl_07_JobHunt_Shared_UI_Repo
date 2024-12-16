@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface BrowseCommpanyProps {}
+interface VndFindClients {}
 
-const BrowseCommpany: React.FC<BrowseCommpanyProps> = () => {
+const VndFindClients: React.FC<VndFindClients> = () => {
   return (
     <div className='flex h-full'>
       <div className="m-auto font-bold text-[25px]">Comming soon...</div>      
@@ -10,4 +10,4 @@ const BrowseCommpany: React.FC<BrowseCommpanyProps> = () => {
   );
 };
 
-export default BrowseCommpany;
+export default VndFindClients;
