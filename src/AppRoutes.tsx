@@ -12,27 +12,34 @@ import VendorDashboard from "./components/pages/vendor/VendorDashboard";
 import CompanyDashboard from "./components/pages/company/CompanyDashboard";
 import FindClients from "./components/pages/company/FindClients";
 import Messages from "./components/pages/company/Messages";
-import VndMyApplications from "./components/pages/vendor/VndMyApplications";
-import MyClients from "./components/pages/vendor/MyClients";
-import VndProfile from "./components/pages/vendor/VndProfile";
+import VndRequirements from "./components/pages/vendor/requirements/VndRequirements";
+import VndClients from "./components/pages/vendor/clients/VndClients";
+import VndProfile from "./components/pages/vendor/settings/VndProfile";
 import RequirementDetails from "./components/pages/company/requirements/RequirementDetails";
 import Layout from "./components/layouts/Layout";
 import NotFound from "./components/pages/NotFound/NotFound";
 import VendorCompanyDetails from "./components/pages/company/my-vendors/VendorCompanyDetails";
 import VendorDetails from "./components/pages/company/find-vendors/VendorDetails";
-import VendorOnboarding from "./components/pages/company/VendorOnboarding";
+import VendorOnboarding from "./components/pages/company/onboarding/VendorOnboarding";
 import MyRequirements from "./components/pages/company/requirements/MyRequirements";
 import MyVendors from "./components/pages/company/my-vendors/MyVendors";
 import FindVendors from "./components/pages/company/find-vendors/FindVendors";
 import CompanyProfile from "./components/pages/company/settings/CompanyProfile";
 import Settings from "./components/pages/company/settings/Settings";
-import FindRequirements from "./components/pages/vendor/FindRequirements";
-import VndFindClients from "./components/pages/vendor/VndFindClients";
+import VndBench from "./components/pages/vendor/bench/VndBench";
+import VndSearchClients from "./components/pages/vendor/clients/VndSearchClients";
 import VndSettings from "./components/pages/vendor/VndSettings";
 import Subscriptions from "./components/pages/company/settings/Subscriptions";
-import Teams from "./components/pages/company/settings/Teams";
+import Members from "./components/pages/company/settings/Members";
 import MyCandidates from "./components/pages/company/candidates/MyCandidates";
 import UserDetails from "./components/pages/company/accounts/UserDetails";
+import VndRequirementDetails from "./components/pages/vendor/requirements/VndRequirementDetails";
+import VndCandidates from "./components/pages/vendor/candidates/VndCandidates";
+import ClientOnboarding from "./components/pages/vendor/onboarding/ClientOnboarding";
+import VndUserDetails from "./components/pages/vendor/account/VndUserDetails";
+import VndClientDetails from "./components/pages/vendor/clients/VndClientDetails";
+import VndSubscriptions from "./components/pages/vendor/settings/VndSubscriptions";
+import VndMembers from "./components/pages/vendor/settings/VndMembers";
 
 export default function AppRoutes() {
   return (
@@ -67,7 +74,7 @@ export default function AppRoutes() {
           <Route path="profile" element={<CompanyProfile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="subscriptions" element={<Subscriptions />} />
-          <Route path="teams" element={<Teams />} />
+          <Route path="members" element={<Members />} />
           <Route path="account" element={<UserDetails />} />
           <Route path="messages" element={<Messages />} />
         </Route>
@@ -77,12 +84,25 @@ export default function AppRoutes() {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<VendorDashboard />} />
           <Route path="messages" element={<Messages />} />
-          <Route path="myapp" element={<VndMyApplications />} />
-          <Route path="findrequirements" element={<FindRequirements />} />
-          <Route path="myclients" element={<MyClients />} />
-          <Route path="findclients" element={<VndFindClients />} />
+          <Route path="requirements">
+            <Route index element={<VndRequirements />} /> {/* List all applications */}
+            <Route path=":id" element={<VndRequirementDetails />} /> {/* View specific application */}
+          </Route>
+          <Route path="bench" element={<VndBench />} />
+          <Route path="candidate" element={<VndCandidates />} />
+          <Route path="clients" >
+            <Route index element={<VndClients />} />
+            <Route path=":id" element={<VndClientDetails />} /> 
+          </Route>
+          <Route path="searchclient" >
+            <Route index element={<VndSearchClients />} />
+            <Route path=":id" element={<VendorCompanyDetails />} />
+          </Route>
+          <Route path="onboarding" element={<ClientOnboarding />} />
           <Route path="profile" element={<VndProfile />} />
-          <Route path="account" element={<UserDetails />} />
+          <Route path="account" element={<VndUserDetails />} />
+          <Route path="subscriptions" element={<VndSubscriptions />} />
+          <Route path="members" element={<VndMembers />} />
           <Route path="settings" element={<VndSettings />} />
         </Route>
 

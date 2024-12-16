@@ -8,7 +8,6 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import clsx from "clsx";
 
 // Tailwind classes
@@ -17,7 +16,7 @@ const cardBase =
 const selectedCard =
   "bg-violet-900 text-white text-base transform scale-105 hover:scale-110";
 
-const Subscriptions: React.FC = () => {
+const VndSubscriptions: React.FC = () => {
   const [billingType, setBillingType] = useState<"monthly" | "annually">(
     "monthly"
   );
@@ -185,4 +184,4 @@ const Subscriptions: React.FC = () => {
   );
 };
 
-export default Subscriptions;
+export default VndSubscriptions;

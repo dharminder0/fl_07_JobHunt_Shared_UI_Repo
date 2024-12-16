@@ -22,7 +22,7 @@ const applicantData = [
   },
 ];
 
-export default function Teams() {
+export default function Members() {
   const [search, setSearch] = useState("");
   const filteredApplicants = applicantData.filter((applicant) =>
     applicant.name.toLowerCase().includes(search.toLowerCase())
