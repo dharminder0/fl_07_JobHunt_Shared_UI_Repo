@@ -25,6 +25,13 @@ import {
   Settings,
 } from "@mui/icons-material";
 import Drawer from "@mui/material/Drawer";
+import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
+import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
+import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
 
 interface SideMenuProps {}
 
@@ -36,31 +43,37 @@ const SideMenu: React.FC<SideMenuProps> = () => {
       main: [
         {
           text: "Dashboard",
-          icon: <HomeOutlinedIcon fontSize="inherit" />,
+          icon: <DashboardOutlinedIcon fontSize="inherit" />,
           id: 0,
           path: "/company/dashboard",
         },
         {
-          text: "My Requirements",
+          text: "Requirements",
           icon: <WorkOutlineOutlinedIcon fontSize="inherit" />,
           id: 1,
           path: "/company/myrequirements",
         },
         {
-          text: "My Vendors",
+          text: "Candidates",
           icon: <GroupAddOutlinedIcon fontSize="inherit" />,
+          id: 1,
+          path: "/company/candidates",
+        },
+        {
+          text: "My Vendors",
+          icon: <BusinessOutlinedIcon fontSize="inherit" />,
           id: 2,
           path: "/company/myvendors",
         },
         {
           text: "Find Vendors",
-          icon: <PersonSearchOutlinedIcon fontSize="inherit" />,
+          icon: <ScreenSearchDesktopOutlinedIcon fontSize="inherit" />,
           id: 3,
           path: "/company/findvendors",
         },
         {
-          text: "Vendors Onboarding",
-          icon: <HowToRegOutlined fontSize="inherit" />,
+          text: "Vendor Onboarding",
+          icon: <HandshakeOutlinedIcon fontSize="inherit" />,
           id: 4,
           path: "/company/vndonboarding",
         },
@@ -75,15 +88,33 @@ const SideMenu: React.FC<SideMenuProps> = () => {
       settings: [
         {
           text: "Company Profile",
-          icon: <PersonOutlineOutlined fontSize="inherit" />,
+          icon: <ContactPageOutlinedIcon fontSize="inherit" />,
           id: 0,
           path: "/company/profile",
         },
         {
-          text: "Settings",
-          icon: <Settings fontSize="inherit" />,
+          text: "Subscriptions",
+          icon: <SubscriptionsOutlinedIcon fontSize="inherit" />,
           id: 1,
-          path: "/company/settings",
+          path: "/company/subscriptions",
+        },
+        {
+          text: "Teams",
+          icon: <PeopleOutlinedIcon fontSize="inherit" />,
+          id: 2,
+          path: "/company/teams",
+        },
+        // {
+        //   text: "Settings",
+        //   icon: <Settings fontSize="inherit" />,
+        //   id: 3,
+        //   path: "/company/settings",
+        // },
+      ],
+      account: [
+        {
+          id: 0,
+          path: "/company/account",
         },
       ],
     },
@@ -140,6 +171,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           path: "/vendor/settings",
         },
       ],
+      account: [
+        {
+          id: 0,
+          path: "/vendor/account",
+        },
+      ],
     },
   };
   return (
@@ -151,7 +188,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
+                  `flex w-full px-1 py-1 gap-1 items-center rounded-md hover:bg-primary-hover ${
                     isActive
                       ? "bg-primary-hover text-primary"
                       : "text-secondary-text"
@@ -161,7 +198,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                 {({ isActive }) => (
                   <>
                     <ListItemIcon
-                      className={`!min-w-[unset] !w-[20px]${
+                      className={`!min-w-[unset] !w-[16px] ${
                         isActive ? "!text-primary" : "!text-secondary-text"
                       }`}
                     >
@@ -182,6 +219,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         </List>
 
         <Divider sx={{ marginTop: 1.5, marginBottom: 1.5 }} />
+        <div className="text-base text-secondary-text my-2 px-1">SETTINGS</div>
         <List>
           {menuItems[organizationType].settings?.map(
             (item: any, index: number) => (
@@ -189,7 +227,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
+                    `flex w-full px-1 py-1 gap-1 items-center rounded-md hover:bg-primary-hover ${
                       isActive
                         ? "bg-primary-hover text-primary"
                         : "text-secondary-text"
@@ -199,7 +237,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                   {({ isActive }) => (
                     <>
                       <ListItemIcon
-                        className={`!min-w-[unset] !w-[20px]${
+                        className={`!min-w-[unset] !w-[16px] ${
                           isActive ? "!text-primary" : "!text-secondary-text"
                         }`}
                       >
@@ -221,20 +259,43 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         </List>
       </div>
       <div className="flex justify-between items-center px-1 h-[50px]">
-        <img
-          src={"/assets/images/Avatar.png"}
-          alt=""
-          className="rounded-full"
-          style={{ height: 32, width: 32 }}
-        />
-        <div className="w-[110px]">
-          <p className="text-base text-secondary-text truncate text-ellipsis">
-            Admin
-          </p>
-          <p className="text-info truncate text-secondary-text text-ellipsis">
-            admin@fleek.com
-          </p>
-        </div>
+        <List>
+          {menuItems[organizationType].account?.map(
+            (item: any, index: number) => (
+              <ListItem key={item.id} disablePadding>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
+                      isActive
+                        ? "bg-primary-hover text-primary"
+                        : "text-secondary-text"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <img
+                        src={"/assets/images/Avatar.png"}
+                        alt=""
+                        className="rounded-full"
+                        style={{ height: 32, width: 32 }}
+                      />
+                      <div className="w-[110px]">
+                        <p className="text-base text-secondary-text truncate text-ellipsis">
+                          Admin
+                        </p>
+                        <p className="text-info truncate text-secondary-text text-ellipsis">
+                          admin@fleek.com
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </NavLink>
+              </ListItem>
+            )
+          )}
+        </List>
       </div>
     </div>
   );
