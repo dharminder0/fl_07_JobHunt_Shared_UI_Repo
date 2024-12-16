@@ -10,7 +10,7 @@ const companies = [
       "Stripe is a software platform for starting and running internet businesses.",
     tags: ["Onsite", "50-100", "QA Testing"],
     place: "Noida",
-    contracts: "20",
+    contracts: "Accepted",
     logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
   },
   {
@@ -20,7 +20,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "10-50", "App Tech"],
     place: "Delhi(NCR)",
-    contracts: "10",
+    contracts: "Declined",
     logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
   },
   {
@@ -30,7 +30,7 @@ const companies = [
       "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "500+", "Other Tech"],
     place: "Gurgaon",
-    contracts: "12",
+    contracts: "Pending Agreements",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
   {
@@ -40,7 +40,7 @@ const companies = [
       "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
     place: "Mumbai",
-    contracts: "16",
+    contracts: "Pending Approval",
     logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
   },
   {
@@ -50,13 +50,13 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-500", "Other Tech"],
     place: "Pune",
-    contracts: "18",
+    contracts: "Approved",
     logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
   },
 ];
 
-export default function VendorsRequest() {
-  const [value, setValue] = React.useState("one");
+export default function VendorOnboarding() {
+  const [value, setValue] = React.useState("Invited");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -71,12 +71,11 @@ export default function VendorsRequest() {
         indicatorColor="primary"
         aria-label="secondary tabs example"
       >
-        <Tab value="one" label="Invited" />
-        <Tab value="two" label="Pending Approvals" />
-        <Tab value="three" label="NDA & MSA" />
+        <Tab value="Invited" label="Invited for Empanelment" />
+        <Tab value="Requested" label="Requested for Empanelment" />
       </Tabs>
 
-      {(value == "one" || value == "three") && (
+      {(value == "Invited" || value == "Requested") && (
         <div className="mt-4">
           {/* Company Cards */}
           <Grid item xs={12} md={12}>
@@ -106,9 +105,7 @@ export default function VendorsRequest() {
                         <p className="text-title font-bold">{company.name}</p>
                         <p className="text-base">{company.place}</p>
                         {company.contracts && (
-                          <p className="text-base">
-                            {company.contracts} Contracts
-                          </p>
+                          <p className="text-base">{company.contracts}</p>
                         )}
                       </div>
                     </div>

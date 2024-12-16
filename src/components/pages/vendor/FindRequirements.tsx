@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface FindJobsProps {}
+interface FindRequirements {}
 
-const FindJobs: React.FC<FindJobsProps> = () => {
+const FindRequirements: React.FC<FindRequirements> = () => {
   return (
     <div className='flex h-full'>
       <div className="m-auto font-bold text-[25px]">Comming soon...</div>      
@@ -10,4 +10,4 @@ const FindJobs: React.FC<FindJobsProps> = () => {
   );
 };
 
-export default FindJobs;
+export default FindRequirements;

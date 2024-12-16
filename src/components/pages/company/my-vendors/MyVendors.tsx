@@ -13,6 +13,8 @@ import {
   Divider,
   Chip,
   InputAdornment,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -75,115 +77,122 @@ const MyVendors = () => {
   const handleDetails = (id: number) => {
     navigate(`${id}`);
   };
+
+  const [tabValue, setTabValue] = React.useState("Active");
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
   return (
     <div className="px-6">
       {/* Header */}
-      <div className="flex justify-between items-center my-4">
-        <h5 className="text-heading">My Vendors</h5>
-        <div className="flex w-3/5 items-center">
-          <TextField
-            fullWidth
-            label="Company title or keyword"
-            variant="outlined"
-            size="small"
-            // slotProps={{
-            //   input: {
-            //     startAdornment: (
-            //       <InputAdornment position="start">
-            //         <SearchIcon fontSize="inherit" />
-            //       </InputAdornment>
-            //     ),
-            //   },
-            // }}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ width: 170, marginLeft: 2 }}
-          >
-            Search
-          </Button>
-        </div>
-      </div>
 
-      {/* Search and Filters */}
-      {/* <Grid container spacing={2} alignItems="center" className="mb-4">
-        <Grid item xs={12} md={6}></Grid>
-        <Grid item xs={12} md={2}></Grid>
-      </Grid> */}
+      <Tabs
+        value={tabValue}
+        onChange={handleChange}
+        textColor="primary"
+        indicatorColor="primary"
+        aria-label="secondary tabs example"
+      >
+        <Tab value="Invited" label="Active Vendors" />
+        <Tab value="Archived" label="Archived Vendors" />
+      </Tabs>
 
-      {/* <Typography variant="body2">
-        Popular: Twitter, Microsoft, Apple, Facebook
-      </Typography>
-      <div className="my-4">
-        <Divider />
-      </div> */}
-
-      {/* Sidebar and Companies List */}
-      <Grid container spacing={4}>
-        {/* Company Cards */}
-        <Grid item xs={12} md={12}>
-          <Grid container spacing={3}>
-            {companies.map((company, idx) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={3}
-                key={idx}
-                onClick={() => handleDetails(company.id)}
+      {(tabValue == "Invited" || tabValue == "Archived") && (
+        <>
+          <div className="flex justify-between items-center my-4">
+            <h5 className="text-heading">{tabValue == "Invited" ? "Invited" : "Archived"} Vendors</h5>
+            <div className="flex w-3/5 items-center">
+              <TextField
+                fullWidth
+                label="Company title or keyword"
+                variant="outlined"
+                size="small"
+                // slotProps={{
+                //   input: {
+                //     startAdornment: (
+                //       <InputAdornment position="start">
+                //         <SearchIcon fontSize="inherit" />
+                //       </InputAdornment>
+                //     ),
+                //   },
+                // }}
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ width: 170, marginLeft: 2 }}
               >
-                <div className="h-100 border p-4 rounded-md cursor-pointer">
-                  <div className="flex align-center mb-4">
-                    <img
-                      src={
-                        !company.logo
-                          ? "/assets/images/Companylogo.png"
-                          : company.logo
-                      }
-                      alt={company.name}
-                      className="me-3"
-                      style={{ width: 50, height: 50 }}
-                    />
-                    <div>
-                      <p className="text-title font-bold">{company.name}</p>
-                      <p className="text-base">{company.place}</p>
-                      {company.contracts && (
-                        <p className="text-base">
-                          {company.contracts} Contracts
-                        </p>
-                      )}
+                Search
+              </Button>
+            </div>
+          </div>
+
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={12}>
+              <Grid container spacing={3}>
+                {companies.map((company, idx) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={3}
+                    key={idx}
+                    onClick={() => handleDetails(company.id)}
+                  >
+                    <div className="h-100 border p-4 rounded-md cursor-pointer">
+                      <div className="flex align-center mb-4">
+                        <img
+                          src={
+                            !company.logo
+                              ? "/assets/images/Companylogo.png"
+                              : company.logo
+                          }
+                          alt={company.name}
+                          className="me-3"
+                          style={{ width: 50, height: 50 }}
+                        />
+                        <div>
+                          <p className="text-title font-bold">{company.name}</p>
+                          <p className="text-base">{company.place}</p>
+                          {company.contracts && (
+                            <p className="text-base">
+                              {company.contracts} Contracts
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-base">{company.description}</p>
+                      <div className="flex flex-wrap mt-2">
+                        {company.tags.map((tag, idx) => (
+                          // <Typography
+                          //   key={idx}
+                          //   variant="caption"
+                          //   className="p-1 border rounded"
+                          //   marginTop={1}
+                          //   marginRight={1}
+                          // >
+                          //   {tag}
+                          // </Typography>
+                          <Chip
+                            key={idx}
+                            label={tag}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: 10 }}
+                            className="my-1 me-1"
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <p className="text-base">{company.description}</p>
-                  <div className="flex flex-wrap mt-2">
-                    {company.tags.map((tag, idx) => (
-                      // <Typography
-                      //   key={idx}
-                      //   variant="caption"
-                      //   className="p-1 border rounded"
-                      //   marginTop={1}
-                      //   marginRight={1}
-                      // >
-                      //   {tag}
-                      // </Typography>
-                      <Chip
-                        key={idx}
-                        label={tag}
-                        size="small"
-                        variant="outlined"
-                        sx={{ fontSize: 10 }}
-                        className="my-1 me-1"
-                      />
-                    ))}
-                  </div>
-                </div>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+        </>
+      )}
     </div>
   );
 };
