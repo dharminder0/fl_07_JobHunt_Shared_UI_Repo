@@ -206,7 +206,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
+                  `flex w-full px-1 py-1 gap-1 items-center rounded-md hover:bg-primary-hover ${
                     isActive
                       ? "bg-primary-hover text-primary"
                       : "text-secondary-text"
@@ -216,7 +216,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                 {({ isActive }) => (
                   <>
                     <ListItemIcon
-                      className={`!min-w-[unset] !w-[20px]${
+                      className={`!min-w-[unset] !w-[16px] ${
                         isActive ? "!text-primary" : "!text-secondary-text"
                       }`}
                     >
@@ -245,7 +245,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                 <NavLink
                   to={item.path}
                   className={({ isActive }) =>
-                    `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
+                    `flex w-full px-1 py-1 gap-1 items-center rounded-md hover:bg-primary-hover ${
                       isActive
                         ? "bg-primary-hover text-primary"
                         : "text-secondary-text"
@@ -255,7 +255,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                   {({ isActive }) => (
                     <>
                       <ListItemIcon
-                        className={`!min-w-[unset] !w-[20px]${
+                        className={`!min-w-[unset] !w-[16px] ${
                           isActive ? "!text-primary" : "!text-secondary-text"
                         }`}
                       >
