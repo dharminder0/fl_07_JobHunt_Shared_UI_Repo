@@ -94,14 +94,14 @@ const MyVendors = () => {
         indicatorColor="primary"
         aria-label="secondary tabs example"
       >
-        <Tab value="Invited" label="Active Vendors" />
+        <Tab value="Active" label="Active Vendors" />
         <Tab value="Archived" label="Archived Vendors" />
       </Tabs>
 
-      {(tabValue == "Invited" || tabValue == "Archived") && (
+      {(tabValue == "Active" || tabValue == "Archived") && (
         <>
-          <div className="flex justify-between items-center my-4">
-            <h5 className="text-heading">{tabValue == "Invited" ? "Invited" : "Archived"} Vendors</h5>
+          <div className="flex justify-end items-center my-4">
+            {/* <h5 className="text-heading">{tabValue == "Active" ? "Active" : "Archived"} Vendors</h5> */}
             <div className="flex w-3/5 items-center">
               <TextField
                 fullWidth
