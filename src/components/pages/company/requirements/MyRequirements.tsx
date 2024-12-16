@@ -35,8 +35,7 @@ const MyRequirements = () => {
     status: "",
     requirementType: "",
   });
-  const [jobData, setJobData] = useState<any[]>([]);
-  
+  const [jobData, setJobData] = useState<any[]>([]); 
   const jobDataOrg = [
     {
       id: 1,
