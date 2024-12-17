@@ -31,10 +31,10 @@ const Header: React.FC<HeaderProps> = () => {
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (orgObj?: any) => {
-    if (orgObj?.code !== selectedOrg.code) {
+  const handleClose = (orgObj?: any) => {debugger
+    if (orgObj && orgObj?.code !== selectedOrg?.code) {
       setSelectedOrg(orgObj);
-      setOrganizationType(orgObj.code);
+      setOrganizationType(orgObj?.code);
       navigate(orgObj.redirectTo);
     }
     setAnchorEl(null);
