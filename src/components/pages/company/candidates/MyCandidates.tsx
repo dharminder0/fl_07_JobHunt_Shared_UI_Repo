@@ -1,6 +1,16 @@
 import { FilterList, PictureAsPdf, Search } from "@mui/icons-material";
-import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const applicantData = [
   {
@@ -44,6 +54,14 @@ const applicantData = [
     date: "13-07-2024",
   },
   {
+    vendor: "SDET Tech Pvt. Ltd",
+    name: "Vaibhav Rastogi",
+    requirement: "Devops AWS Certified engineer",
+    client: "NTT DATA",
+    status: "Interview Schedule",
+    date: "11-04-2024",
+  },
+  {
     vendor: "DevStringX Technologies",
     name: "Raj Pathar",
     requirement: ".Net MVC Support",
@@ -64,16 +82,47 @@ const applicantData = [
     name: "Amit Kumar",
     requirement: "Devops AWS Certified engineer",
     client: "NTT DATA",
-    status: "Hired",
+    status: "Interview Schedule",
     date: "11-04-2024",
   },
 ];
 
 export default function MyCandidates() {
   const [search, setSearch] = useState("");
-  const filteredApplicants = applicantData.filter((applicant) =>
-    applicant.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const location = useLocation();
+  const params = location.state || {};
+  const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
+
+  const [filterList, setFilterList] = useState<any>({
+    status: [
+      "In Review",
+      "Shortlisted",
+      "Interview Schedule",
+      "Declined",
+      "Hired",
+    ],
+  });
+  const [searchFilter, setSearchFilter] = useState<any>({
+    searchValue: "",
+    status: !params?.status ? "" : params?.status,
+  });
+
+  useEffect(() => {
+    // Filtering logic
+    const filtered = applicantData.filter((item) => {
+      // Check status filter
+      const statusMatch =
+        searchFilter.status === "" || item.status === searchFilter.status;
+      // Check search input
+      const searchMatch =
+        searchFilter.searchValue === "" ||
+        item.name
+          .toLowerCase()
+          .includes(searchFilter.searchValue.toLowerCase());
+      return statusMatch && searchMatch;
+    });
+    setFilteredApplicants(filtered);
+  }, [searchFilter]);
 
   return (
     <div className="p-4">
@@ -89,6 +138,27 @@ export default function MyCandidates() {
               startAdornment: <Search className="mr-2" fontSize="small" />,
             }}
           />
+          <FormControl size="small">
+            <InputLabel id="topic">Status</InputLabel>
+            <Select
+              className="rounded !w-[150px] bg-primary-light"
+              label="Topic"
+              value={searchFilter.client}
+              onChange={(event) => {
+                setSearchFilter((prev: any) => ({
+                  ...prev,
+                  status: event.target.value,
+                }));
+              }}
+            >
+              <MenuItem value={""}>All</MenuItem>
+              {filterList?.status?.map((status: any) => (
+                <MenuItem key={status} value={status}>
+                  {status}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
