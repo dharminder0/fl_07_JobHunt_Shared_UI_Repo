@@ -1,30 +1,43 @@
 import { Button, Menu, MenuItem } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useOrganizationType } from "../../contexts/OrganizationTypeContext";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
+  const role = JSON.parse(localStorage.getItem("role") || "[]");
+  const routesData = [
+    {
+      title: "Company",
+      code: "company",
+      redirectTo: "/company",
+    },
+    {
+      title: "Vendor",
+      code: "vendor",
+      redirectTo: "/vendor",
+    },
+  ];
+
+  const findRoutesByCodes = (codesToMatch: string[]) => {
+    return routesData.filter((route) => codesToMatch.includes(route.code));
+  };
+
+  useEffect(() => {
+    const currentObj = findRoutesByCodes(role);
+    setOrganization(currentObj);
+    setSelectedOrg(currentObj[0]);
+    handleClose(currentObj[0]);
+  }, []);
+
   const { organizationType, setOrganizationType } = useOrganizationType();
-  const [organizationList, setOrganization] = useState<any[]>(
-    [
-      {
-        title: "Company",
-        code: "company",
-        redirectTo: "/company"
-      },
-      {
-        title: "Vendor",
-        code: "vendor",
-        redirectTo: "/vendor"
-      },
-    ]
-  );
+  const [organizationList, setOrganization] = useState<any[]>([]);
 
   const [selectedOrg, setSelectedOrg] = useState<any>(organizationList[0]);
+
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -39,15 +52,42 @@ const Header: React.FC<HeaderProps> = () => {
     }
     setAnchorEl(null);
   };
+
   return (
     <div className="h-[52px] px-5 py-2 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className="flex gap-3">
         <div className="icon my-auto">
-          <svg width="37" height="33" viewBox="0 0 37 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z" fill="#449B82" />
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z" fill="#9BDB9C" />
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z" fill="#56CDAD" />
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z" fill="white" />
+          <svg
+            width="37"
+            height="33"
+            viewBox="0 0 37 44"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0.5 11.1201V32.4538L18.8241 43.471L19.2494 42.7861L18.8241 22.0811L1.13004 11.1328L0.5 11.1201Z"
+              fill="#449B82"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M36.9501 11.02V32.6542L18.8242 43.4713V22.0812L36.2862 11.0363L36.9501 11.02Z"
+              fill="#9BDB9C"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M18.725 0.402832L36.95 11.0196L18.8241 22.4377L0.5 11.1198L18.725 0.402832Z"
+              fill="#56CDAD"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z"
+              fill="white"
+            />
           </svg>
         </div>
         <div
@@ -61,13 +101,15 @@ const Header: React.FC<HeaderProps> = () => {
           <div className="font-semibold text-title my-auto">
             {selectedOrg?.title}
           </div>
-          <KeyboardArrowDownOutlinedIcon className="my-auto"/>
+          {role && role.length > 1 && (
+            <KeyboardArrowDownOutlinedIcon className="my-auto" />
+          )}
         </div>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
           open={open}
-          onClose={()=>handleClose()}
+          onClose={() => handleClose()}
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
@@ -100,9 +142,7 @@ const Header: React.FC<HeaderProps> = () => {
             stroke="white"
           />
         </svg>
-        {organizationType === "company" && (
-          <RequirementForm />
-        )}
+        {organizationType === "company" && <RequirementForm />}
       </div>
     </div>
   );

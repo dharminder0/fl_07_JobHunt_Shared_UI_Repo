@@ -19,55 +19,84 @@ export default function Login() {
   const creds: any = {
     email: "admin@fleek.com",
     password: "Admin",
-    role: ['company']
+    role: ["company"],
   };
 
-  const credList:any[] = [
+  const credsList: any[] = [
     {
-      email: "admin@fleek.com",
-      password: "Admin",
-      role: ['company']
+      email: "company@vendorscloud.com",
+      password: "password",
+      role: ["company"],
     },
     {
-      email: "vendor@fleek.com",
-      password: "vendor",
-      role: ['vendor']
-    }
-  ]
+      email: "vendor@vendorscloud.com",
+      password: "password",
+      role: ["vendor"],
+    },
+    {
+      email: "both@vendorscloud.com",
+      password: "password",
+      role: ["vendor", "company"],
+    },
+  ];
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (isLoggedIn) {
-      // navigate("/onboard");
-      navigate("/company");
+      navigate("/dashboard");
     }
   }, []);
 
   const handleLogin = () => {
+    // Step 1: Check if credentials already exist in localStorage
     const storedEmail = localStorage.getItem("email");
     const storedPassword = localStorage.getItem("password");
+    const storedRole = localStorage.getItem("role");
 
     if (storedEmail && storedPassword) {
-      // Check if provided email/password match stored credentials
+      // If credentials exist in localStorage, verify them
       if (email === storedEmail && password === storedPassword) {
-        localStorage.setItem("isLoggedIn", "true");
-        setErrorMessage(""); // Clear any previous errors
-        // navigate("/onboard");
-        navigate("/company");
+        setErrorMessage("");
+        redirectBasedOnRole(JSON.parse(storedRole || "[]"));
+        return;
+      } else {
+        logWithCreds();
+        setErrorMessage("Stored credentials do not match. Please try again.");
         return;
       }
-    }
-
-    // Compare provided email/password with hardcoded creds
-    if (email === creds.email && password === creds.password) {
-      localStorage.setItem("email", email);
-      localStorage.setItem("password", password);
-      localStorage.setItem("isLoggedIn", "true");
-
-      setErrorMessage(""); // Clear any previous errors
-      navigate("/");
     } else {
-      setErrorMessage("Invalid email or password.");
+      logWithCreds();
+    }
+  };
+
+  const logWithCreds = () => {
+    const user = credsList.find(
+      (cred) => cred.email === email && cred.password === password
+    );
+
+    if (user) {
+      // Successful login: Store user credentials in localStorage
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("email", user.email);
+      localStorage.setItem("password", user.password);
+      localStorage.setItem("role", JSON.stringify(user.role));
+
+      setErrorMessage(""); // Clear error message
+
+      // Redirect based on role
+      redirectBasedOnRole(user.role);
+    } else {
+      setErrorMessage("Invalid email or password. Please try again.");
+    }
+  };
+
+  const redirectBasedOnRole = (roles: string[]) => {
+    if (roles.includes("company")) {
+      navigate("/company");
+    } else if (roles.includes("vendor")) {
+      navigate("/vendor");
+    } else {
+      navigate("/dashboard"); // Fallback route
     }
   };
 
@@ -76,12 +105,20 @@ export default function Login() {
       {/* Left Section */}
       <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
         <div className="mb-8 bg-white p-4 w-40">
-          <img src={'/assets/images/bar.png'} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
+          <img
+            src={"/assets/images/bar.png"}
+            alt="JobHunty Logo"
+            className="h-8 w-auto mb-4"
+          />
           <h2 className="font-bold text-xl">10K+</h2>
           <p className="text-gray-600 font-medium">People got hired</p>
         </div>
         <div className="self-center">
-          <img src={'/assets/images/banner-person.png'} alt="JobHunty Logo" className="w-auto" />
+          <img
+            src={"/assets/images/banner-person.png"}
+            alt="JobHunty Logo"
+            className="w-auto"
+          />
         </div>
       </div>
 

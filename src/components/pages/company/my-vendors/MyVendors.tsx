@@ -1,5 +1,5 @@
 // App.tsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   TextField,
@@ -15,9 +15,11 @@ import {
   InputAdornment,
   Tabs,
   Tab,
+  Box
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import { FilterList, Search } from "@mui/icons-material";
 
 const companies = [
   {
@@ -79,6 +81,7 @@ const MyVendors = () => {
   };
 
   const [tabValue, setTabValue] = React.useState("Active");
+  const [search, setSearch] = useState("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -102,7 +105,7 @@ const MyVendors = () => {
         <>
           <div className="flex justify-end items-center my-4">
             {/* <h5 className="text-heading">{tabValue == "Active" ? "Active" : "Archived"} Vendors</h5> */}
-            <div className="flex w-3/5 items-center">
+            {/* <div className="flex w-3/5 items-center">
               <TextField
                 fullWidth
                 label="Company title or keyword"
@@ -126,7 +129,24 @@ const MyVendors = () => {
               >
                 Search
               </Button>
-            </div>
+            </div> */}
+            <Box className="flex items-center justify-end my-2">
+              <Box className="flex items-center space-x-4">
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Search Vendors"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  InputProps={{
+                    startAdornment: <Search className="mr-2" fontSize="small" />,
+                  }}
+                />
+                <Button variant="outlined" startIcon={<FilterList />}>
+                  Filter
+                </Button>
+              </Box>
+            </Box>
           </div>
 
           <Grid container spacing={4}>

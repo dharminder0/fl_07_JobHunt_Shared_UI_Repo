@@ -18,31 +18,35 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = location.state || {};
   const [searchInput, setSearchInput] = useState<string>("");
   const [filterList, setFilterList] = useState<any>({
     client: ["Self", "Creative Solutions Ltd.", "Data Insights Group"],
-    status: ["Open", "On hold", "Closed"],
+    status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
     client: "",
-    status: "",
+    status: !params?.status ? "" : params?.status,
     requirementType: "",
+    isApplicant: !!params?.status,
   });
-  const [jobData, setJobData] = useState<any[]>([]); 
+
+  const [jobData, setJobData] = useState<any[]>([]);
   const jobDataOrg = [
     {
       id: 1,
       role: "Social Media Assistant",
       status: "Open",
       datePosted: "20 May 2020",
-      applicants: "19",
+      applicants: 19,
       client: "Self",
       requirementType: "Remote",
       noOfPositions: 3,
@@ -54,7 +58,7 @@ const MyRequirements = () => {
       role: "Senior Designer",
       status: "On hold",
       datePosted: "16 May 2020",
-      applicants: "1",
+      applicants: 0,
       client: "Creative Solutions Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
@@ -66,7 +70,7 @@ const MyRequirements = () => {
       role: "Visual Designer",
       status: "Open",
       datePosted: "15 May 2020",
-      applicants: "4",
+      applicants: 4,
       client: "Design Pros Inc.",
       requirementType: "Onsite",
       noOfPositions: 2,
@@ -78,7 +82,7 @@ const MyRequirements = () => {
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
-      applicants: "6",
+      applicants: 6,
       client: "Self",
       requirementType: "Remote",
       noOfPositions: 1,
@@ -90,7 +94,7 @@ const MyRequirements = () => {
       role: "Kotlin Developer",
       status: "Closed",
       datePosted: "12 May 2020",
-      applicants: "12",
+      applicants: 12,
       client: "Tech Innovators LLC",
       requirementType: "Hybrid",
       noOfPositions: 1,
@@ -100,9 +104,9 @@ const MyRequirements = () => {
     {
       id: 6,
       role: "React Developer",
-      status: "Closed",
+      status: "Hot",
       datePosted: "11 May 2020",
-      applicants: "14",
+      applicants: 14,
       client: "Code Crafters Co.",
       requirementType: "Onsite",
       noOfPositions: 3,
@@ -114,7 +118,7 @@ const MyRequirements = () => {
       role: "Social Media Assistant",
       status: "On hold",
       datePosted: "20 May 2020",
-      applicants: "19",
+      applicants: 19,
       client: "Self",
       requirementType: "Remote",
       noOfPositions: 3,
@@ -126,7 +130,7 @@ const MyRequirements = () => {
       role: "Senior Designer",
       status: "Open",
       datePosted: "16 May 2020",
-      applicants: "1",
+      applicants: 0,
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
@@ -138,7 +142,7 @@ const MyRequirements = () => {
       role: "Visual Designer",
       status: "On hold",
       datePosted: "15 May 2020",
-      applicants: "2",
+      applicants: 2,
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
@@ -150,7 +154,7 @@ const MyRequirements = () => {
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
-      applicants: "4",
+      applicants: 4,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
@@ -162,7 +166,7 @@ const MyRequirements = () => {
       role: "Social Media Assistant",
       status: "On hold",
       datePosted: "20 May 2020",
-      applicants: "19",
+      applicants: 19,
       client: "Self",
       requirementType: "Remote",
       noOfPositions: 3,
@@ -174,7 +178,7 @@ const MyRequirements = () => {
       role: "Senior Designer",
       status: "Open",
       datePosted: "16 May 2020",
-      applicants: "4",
+      applicants: 4,
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
@@ -186,7 +190,7 @@ const MyRequirements = () => {
       role: "Visual Designer",
       status: "On hold",
       datePosted: "15 May 2020",
-      applicants: "5",
+      applicants: 5,
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
@@ -196,9 +200,9 @@ const MyRequirements = () => {
     {
       id: 10,
       role: "Data Science",
-      status: "Closed",
+      status: "Hot",
       datePosted: "13 May 2020",
-      applicants: "6",
+      applicants: 0,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
@@ -210,7 +214,7 @@ const MyRequirements = () => {
       role: "Social Media Assistant",
       status: "On hold",
       datePosted: "20 May 2020",
-      applicants: "9",
+      applicants: 9,
       client: "Self",
       requirementType: "Remote",
       noOfPositions: 3,
@@ -222,7 +226,7 @@ const MyRequirements = () => {
       role: "Senior Designer",
       status: "Open",
       datePosted: "16 May 2020",
-      applicants: "4",
+      applicants: 4,
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
@@ -232,9 +236,9 @@ const MyRequirements = () => {
     {
       id: 9,
       role: "Visual Designer",
-      status: "On hold",
+      status: "Hot",
       datePosted: "15 May 2020",
-      applicants: "2",
+      applicants: 2,
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
@@ -246,7 +250,7 @@ const MyRequirements = () => {
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
-      applicants: "6",
+      applicants: 6,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
@@ -258,7 +262,7 @@ const MyRequirements = () => {
       role: "Social Media Assistant",
       status: "On hold",
       datePosted: "20 May 2020",
-      applicants: "1",
+      applicants: 1,
       client: "Self",
       requirementType: "Remote",
       noOfPositions: 3,
@@ -270,7 +274,7 @@ const MyRequirements = () => {
       role: "Senior Designer",
       status: "Open",
       datePosted: "16 May 2020",
-      applicants: "4",
+      applicants: 4,
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
@@ -282,7 +286,7 @@ const MyRequirements = () => {
       role: "Visual Designer",
       status: "On hold",
       datePosted: "15 May 2020",
-      applicants: "2",
+      applicants: 2,
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
@@ -294,7 +298,7 @@ const MyRequirements = () => {
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
-      applicants: "7",
+      applicants: 7,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
@@ -302,6 +306,7 @@ const MyRequirements = () => {
       visibility: "Global",
     },
   ];
+  console.log(searchFilter);
 
   const handleRowClick = (id: number) => {
     navigate(`${id}`);
@@ -326,7 +331,14 @@ const MyRequirements = () => {
         item.role
           .toLowerCase()
           .includes(searchFilter.searchValue.toLowerCase());
-      return clientMatch && statusMatch && requirementTypeMatch && searchMatch;
+      const applicantMatch = !searchFilter.isApplicant || item.applicants <= 0;
+      return (
+        clientMatch &&
+        statusMatch &&
+        requirementTypeMatch &&
+        searchMatch &&
+        applicantMatch
+      );
     });
     setJobData(filtered);
   }, [searchFilter]);

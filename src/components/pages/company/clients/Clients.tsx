@@ -2,6 +2,7 @@ import { Add, FilterList, Search } from "@mui/icons-material";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateClientForm from "./CreateClientForm";
 
 const clientDataObj = [
   {
@@ -70,9 +71,7 @@ export default function Clients() {
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
-          <Button variant="contained" startIcon={<Add />}>
-            Add new client
-          </Button>
+          <CreateClientForm />
         </Box>
       </Box>
       <div className="table-body">

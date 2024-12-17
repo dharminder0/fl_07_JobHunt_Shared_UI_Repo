@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   List,
   ListItem,
@@ -6,7 +7,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MessageIcon from "@mui/icons-material/Message";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
@@ -21,6 +22,7 @@ import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import { NavLink } from "react-router-dom";
 import {
   HowToRegOutlined,
+  Logout,
   PersonOutlineOutlined,
   Settings,
 } from "@mui/icons-material";
@@ -32,12 +34,26 @@ import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
-import AssuredWorkloadOutlinedIcon from '@mui/icons-material/AssuredWorkloadOutlined';
+import AssuredWorkloadOutlinedIcon from "@mui/icons-material/AssuredWorkloadOutlined";
 
 interface SideMenuProps {}
 
 const SideMenu: React.FC<SideMenuProps> = () => {
   const { organizationType } = useOrganizationType();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Remove login session data from localStorage
+    localStorage.removeItem("isLoggedIn");
+
+    // Optionally, clear other stored user-related data
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("role");
+
+    // Redirect to the login page
+    navigate("/login");
+  };
 
   const menuItems: any = {
     company: {
@@ -206,9 +222,9 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   };
   return (
     <div className="w-[160px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
-      <div className="overflow-auto h-[calc(100%-52px)]">
+      <div className="overflow-auto h-[calc(100%-82px)]">
         <List>
-          {menuItems[organizationType].main?.map((item: any, index: number) => (
+          {menuItems[organizationType]?.main?.map((item: any, index: number) => (
             <ListItem key={item.id} disablePadding>
               <NavLink
                 to={item.path}
@@ -246,7 +262,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         <Divider sx={{ marginTop: 1.5, marginBottom: 1.5 }} />
         <div className="text-base text-secondary-text my-2 px-1">SETTINGS</div>
         <List>
-          {menuItems[organizationType].settings?.map(
+          {menuItems[organizationType]?.settings?.map(
             (item: any, index: number) => (
               <ListItem key={item.id} disablePadding>
                 <NavLink
@@ -283,9 +299,9 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           )}
         </List>
       </div>
-      <div className="flex justify-between items-center px-1 h-[50px]">
+      <div className="flex justify-between items-center px-1 h-[80px]">
         <List>
-          {menuItems[organizationType].account?.map(
+          {menuItems[organizationType]?.account?.map(
             (item: any, index: number) => (
               <ListItem key={item.id} disablePadding>
                 <NavLink
@@ -320,6 +336,15 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               </ListItem>
             )
           )}
+          <Divider sx={{ marginTop: 1.5, marginBottom: 1 }} />
+          <Button
+            variant="text"
+            startIcon={<Logout />}
+            size="small"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
         </List>
       </div>
     </div>

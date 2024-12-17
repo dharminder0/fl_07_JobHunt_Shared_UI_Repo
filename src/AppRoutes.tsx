@@ -5,8 +5,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "./pages/auth/Login";
-import SignUp from "./pages/auth/SignUp";
+import Login from "./components/auth/Login";
+import SignUp from "./components/auth/SignUp";
 import OnBoarding from "./pages/boarding/OnBoarding";
 import VendorDashboard from "./components/pages/vendor/VendorDashboard";
 import CompanyDashboard from "./components/pages/company/CompanyDashboard";
@@ -42,8 +42,10 @@ import VndSubscriptions from "./components/pages/vendor/settings/VndSubscription
 import VndMembers from "./components/pages/vendor/settings/VndMembers";
 import Clients from "./components/pages/company/clients/Clients";
 import ClientDetails from "./components/pages/company/clients/ClientDetails";
+import ProtectedRoute from "./components/shared/ProtectedRoute";
 
 export default function AppRoutes() {
+  const role = JSON.parse(localStorage.getItem("role") || "[]");
   return (
     <Router>
       <Routes>
@@ -55,7 +57,7 @@ export default function AppRoutes() {
         <Route path="/onboard" element={<OnBoarding />} />
 
         {/* Company Layout */}
-        <Route path="/company" element={<Layout />}>
+        <Route path="/company" element={<ProtectedRoute allowedRoles={["company"]} />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<CompanyDashboard />} />
           <Route path="myrequirements">
@@ -86,7 +88,7 @@ export default function AppRoutes() {
         </Route>
 
         {/* Vendor Layout */}
-        <Route path="/vendor" element={<Layout />}>
+        <Route path="/vendor" element={<ProtectedRoute allowedRoles={["vendor"]} />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<VendorDashboard />} />
           <Route path="messages" element={<Messages />} />
@@ -113,7 +115,7 @@ export default function AppRoutes() {
         </Route>
 
         {/* Shared Routes */}
-        <Route path="/dashboard" element={<Navigate to="/company/dashboard" replace />} />
+        <Route path="/dashboard" element={<Navigate to={`/${role[0]}/dashboard`} replace />} />
         <Route path="/job/:id" element={<RequirementDetails />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" />} />

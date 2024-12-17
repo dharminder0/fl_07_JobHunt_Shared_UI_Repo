@@ -1,8 +1,9 @@
 // App.tsx
-import React from "react";
-import { TextField, Button, Chip, Tabs, Tab } from "@mui/material";
+import React, { useState } from "react";
+import { TextField, Button, Chip, Tabs, Tab, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
+import { FilterList, Search } from "@mui/icons-material";
 
 const companies = [
   {
@@ -59,6 +60,7 @@ const companies = [
 
 const VndClients = () => {
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
   const handleDetails = (id: number) => {
     navigate(`${id}`);
   };
@@ -86,7 +88,7 @@ const VndClients = () => {
       {(tabValue == "Active" || tabValue == "Archived") && (
         <>
           <div className="flex justify-end items-center my-4">
-            <div className="flex w-3/5 items-center">
+            {/* <div className="flex w-3/5 items-center">
               <TextField
                 fullWidth
                 label="Company title or keyword"
@@ -101,7 +103,24 @@ const VndClients = () => {
               >
                 Search
               </Button>
-            </div>
+            </div> */}
+             <Box className="flex items-center justify-end my-2">
+              <Box className="flex items-center space-x-4">
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Search Client"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  InputProps={{
+                    startAdornment: <Search className="mr-2" fontSize="small" />,
+                  }}
+                />
+                <Button variant="outlined" startIcon={<FilterList />}>
+                  Filter
+                </Button>
+              </Box>
+            </Box>
           </div>
 
           <Grid container spacing={4}>
