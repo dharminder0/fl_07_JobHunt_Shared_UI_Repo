@@ -32,6 +32,7 @@ import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
 import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDesktopOutlined";
+import AssuredWorkloadOutlinedIcon from '@mui/icons-material/AssuredWorkloadOutlined';
 
 interface SideMenuProps {}
 
@@ -60,28 +61,34 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           path: "/company/candidates",
         },
         {
+          text: "Clients",
+          icon: <AssuredWorkloadOutlinedIcon fontSize="inherit" />,
+          id: 3,
+          path: "/company/clients",
+        },
+        {
           text: "My Vendors",
           icon: <BusinessOutlinedIcon fontSize="inherit" />,
-          id: 3,
+          id: 4,
           path: "/company/myvendors",
         },
         {
           text: "Find Vendors",
           icon: <ScreenSearchDesktopOutlinedIcon fontSize="inherit" />,
-          id: 4,
+          id: 5,
           path: "/company/findvendors",
         },
         {
           text: "Vendor Onboarding",
           icon: <HandshakeOutlinedIcon fontSize="inherit" />,
-          id: 5,
+          id: 6,
           path: "/company/vndonboarding",
         },
         // { text: "Find Clients", icon: <EventIcon />, id: 4, path:'/company/findclients' },
         {
           text: "Messages",
           icon: <ChatOutlinedIcon fontSize="inherit" />,
-          id: 6,
+          id: 7,
           path: "/company/messages",
         },
       ],
