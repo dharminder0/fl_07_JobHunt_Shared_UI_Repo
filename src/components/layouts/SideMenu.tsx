@@ -224,7 +224,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     <div className="w-[160px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
       <div className="overflow-auto h-[calc(100%-82px)]">
         <List>
-          {menuItems[organizationType].main?.map((item: any, index: number) => (
+          {menuItems[organizationType]?.main?.map((item: any, index: number) => (
             <ListItem key={item.id} disablePadding>
               <NavLink
                 to={item.path}
@@ -262,7 +262,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         <Divider sx={{ marginTop: 1.5, marginBottom: 1.5 }} />
         <div className="text-base text-secondary-text my-2 px-1">SETTINGS</div>
         <List>
-          {menuItems[organizationType].settings?.map(
+          {menuItems[organizationType]?.settings?.map(
             (item: any, index: number) => (
               <ListItem key={item.id} disablePadding>
                 <NavLink
@@ -301,7 +301,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
       </div>
       <div className="flex justify-between items-center px-1 h-[80px]">
         <List>
-          {menuItems[organizationType].account?.map(
+          {menuItems[organizationType]?.account?.map(
             (item: any, index: number) => (
               <ListItem key={item.id} disablePadding>
                 <NavLink
@@ -336,7 +336,13 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               </ListItem>
             )
           )}
-          <Button startIcon={<Logout />} size="small" onClick={handleLogout}>
+          <Divider sx={{ marginTop: 1.5, marginBottom: 1 }} />
+          <Button
+            variant="text"
+            startIcon={<Logout />}
+            size="small"
+            onClick={handleLogout}
+          >
             Logout
           </Button>
         </List>
