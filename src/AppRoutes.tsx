@@ -40,6 +40,8 @@ import VndUserDetails from "./components/pages/vendor/account/VndUserDetails";
 import VndClientDetails from "./components/pages/vendor/clients/VndClientDetails";
 import VndSubscriptions from "./components/pages/vendor/settings/VndSubscriptions";
 import VndMembers from "./components/pages/vendor/settings/VndMembers";
+import Clients from "./components/pages/company/clients/Clients";
+import ClientDetails from "./components/pages/company/clients/ClientDetails";
 
 export default function AppRoutes() {
   return (
@@ -69,6 +71,10 @@ export default function AppRoutes() {
             <Route path=":id" element={<VendorDetails />} /> {/* View specific application */}
           </Route>
           <Route path="findclients" element={<FindClients />} />
+          <Route path="clients">
+            <Route index element={<Clients />} />
+            <Route path=":id" element={<ClientDetails />} /> 
+          </Route>
           <Route path="vndonboarding" element={<VendorOnboarding />} />
           <Route path="candidates" element={<MyCandidates />} />
           <Route path="profile" element={<CompanyProfile />} />

@@ -32,9 +32,9 @@ const Header: React.FC<HeaderProps> = () => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (orgObj?: any) => {
-    if (orgObj?.code !== selectedOrg.code) {
+    if (orgObj && orgObj?.code !== selectedOrg?.code) {
       setSelectedOrg(orgObj);
-      setOrganizationType(orgObj.code);
+      setOrganizationType(orgObj?.code);
       navigate(orgObj.redirectTo);
     }
     setAnchorEl(null);
