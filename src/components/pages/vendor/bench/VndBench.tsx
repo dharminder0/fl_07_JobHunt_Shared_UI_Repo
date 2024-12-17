@@ -1,6 +1,6 @@
-import { Add } from "@mui/icons-material";
-import { Button } from "@mui/material";
-import React from "react";
+import { Add, FilterList, Search } from "@mui/icons-material";
+import { Button,Box, TextField } from "@mui/material";
+import React, { useState } from "react";
 
 interface VndBench {}
 
@@ -40,18 +40,36 @@ const benchData = [
 ];
 
 const VndBench: React.FC<VndBench> = () => {
+  const [search, setSearch] = useState("");
   return (
     <div className="px-4">
       <div className="mt-4 flex justify-end items-center">
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          sx={{ width: 170 }}
-          startIcon={<Add />}
-        >
-          Add Bench
-        </Button>
+        <Box className="flex items-center justify-end my-2">
+          <Box className="flex items-center space-x-4">
+            <TextField
+              variant="outlined"
+              size="small"
+              placeholder="Search Bench"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              InputProps={{
+                startAdornment: <Search className="mr-2" fontSize="small" />,
+              }}
+            />
+            <Button variant="outlined" startIcon={<FilterList />}>
+              Filter
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{ width: 170 }}
+              startIcon={<Add />}
+            >
+              Add Bench
+            </Button>
+          </Box>
+        </Box>
       </div>
       <div className="table-body mt-4">
         <table>

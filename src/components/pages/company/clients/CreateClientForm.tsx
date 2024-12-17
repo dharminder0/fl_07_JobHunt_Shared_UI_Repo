@@ -118,13 +118,21 @@ const CreateClientForm = () => {
                   />
 
                   {/* About Client */}
-                  <TextareaAutosize
-                    minRows={3}
-                    placeholder="About Client"
+
+                  <TextField
+                    label="About Client"
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    minRows={4}
                     name="about"
+                    placeholder="About Client"
                     value={formData.about}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    error={errors.name}
+                    helperText={errors.name && "Name is required"}
+                    required
+                    size="small"
                   />
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">

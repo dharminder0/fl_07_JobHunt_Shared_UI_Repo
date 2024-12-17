@@ -1,5 +1,5 @@
 // App.tsx
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Grid,
@@ -15,8 +15,10 @@ import {
   FormControlLabel,
   Divider,
   Chip,
+  Box
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { FilterList, Search } from "@mui/icons-material";
 
 const companies = [
   {
@@ -104,6 +106,7 @@ const companies = [
 
 const MyClients = () => {
   const navigate = useNavigate();
+   const [search, setSearch] = useState("");
   const handleDetails = (id: number) => {
     navigate(`${id}`);
   };
@@ -114,7 +117,7 @@ const MyClients = () => {
       {/* Search and Filters */}
       <div className="flex justify-between items-center my-4">
         <h5 className="text-heading">Find Vendors</h5>
-        <div className="flex w-3/5 items-center">
+        {/* <div className="flex w-3/5 items-center">
           <TextField
             fullWidth
             label="Company title or keyword"
@@ -138,7 +141,25 @@ const MyClients = () => {
           >
             Search
           </Button>
-        </div>
+        </div> */}        
+
+        <Box className="flex items-center justify-end my-2">
+              <Box className="flex items-center space-x-4">
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Search Vendors"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  InputProps={{
+                    startAdornment: <Search className="mr-2" fontSize="small" />,
+                  }}
+                />
+                <Button variant="outlined" startIcon={<FilterList />}>
+                  Filter
+                </Button>
+              </Box>
+            </Box>
       </div>
 
       {/* <Typography variant="body2">

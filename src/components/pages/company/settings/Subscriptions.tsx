@@ -13,7 +13,7 @@ import clsx from "clsx";
 
 // Tailwind classes
 const cardBase =
-  "w-full max-w-sm p-6 rounded-lg shadow-lg text-base transition-transform duration-300";
+  "w-full max-w-sm p-6 rounded-3xl shadow-lg text-base transition-transform duration-300";
 const selectedCard =
   "bg-violet-900 text-white text-base transform scale-105 hover:scale-110";
 
@@ -119,65 +119,69 @@ const Subscriptions: React.FC = () => {
 
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 w-full max-w-6xl">
-            {pricingPlans.map((plan) => (
-              <Box
-                key={plan.name}
-                className={clsx(
-                  cardBase,
-                  plan.highlight ? selectedCard : "bg-white",
-                  "hover:shadow-2xl hover:-translate-y-2"
-                )}
-              >
-                {/* Title */}
-                <Typography
-                  variant="h6"
-                  className={clsx(
-                    plan.highlight ? "text-white" : "text-gray-800",
-                    "mb-4 text-title"
-                  )}
-                >
-                  {plan.name}
-                </Typography>
+  {pricingPlans.map((plan) => (
+    <Box
+      key={plan.name}
+      className={clsx(
+        cardBase,
+        plan.highlight ? selectedCard : "bg-white",
+        "hover:shadow-2xl hover:-translate-y-2 relative"
+      )}
+    >
+      {/* Title */}
+      <Typography
+        variant="h6"
+        className={clsx(
+          plan.highlight ? "text-white" : "text-gray-800",
+          "mb-4 text-title"
+        )}
+      >
+        {plan.name}
+      </Typography>
 
-                {/* Price */}
-                <Typography
-                  variant="h5"
-                  className={clsx(
-                    plan.highlight ? "text-white" : "text-gray-800"
-                  )}
-                >
-                  ${billingType === "monthly" ? plan.price : plan.price - 10}
-                  <span className="text-sm"> /month</span>
-                </Typography>
+      {/* Price */}
+      <Typography
+        variant="h5"
+        className={clsx(
+          plan.highlight ? "text-white" : "text-gray-800"
+        )}
+      >
+        ${billingType === "monthly" ? plan.price : plan.price - 10}
+        <span className="text-sm"> /month</span>
+      </Typography>
 
-                {/* Features */}
-                <ul
-                  className={clsx(
-                    plan.highlight ? "text-white" : "text-gray-600",
-                    "mt-4 mb-6"
-                  )}
-                >
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center mb-2">
-                      ✓ {feature}
-                    </li>
-                  ))}
-                </ul>
+      {/* Features */}
+      <ul
+        className={clsx(
+          plan.highlight ? "text-white" : "text-gray-600",
+          "mt-4 mb-6"
+        )}
+      >
+        {plan.features.map((feature, idx) => (
+          <li key={idx} className="flex items-center mb-2">
+            ✓ {feature}
+          </li>
+        ))}
+      </ul>
 
-                {/* Button */}
-                <Button
-                  variant="contained"
-                  fullWidth
-                  className={clsx(
-                    plan.highlight
-                      ? "bg-white text-violet-900 hover:bg-gray-100"
-                      : "bg-violet-600 text-white hover:bg-violet-700"
-                  )}
-                >
-                  {plan.highlight ? "Try 1 month" : "Choose"}
-                </Button>
-              </Box>
-            ))}
+      {/* Button */}
+      <div className="min-h-8">
+        <div className="absolute bottom-6 w-3/4">
+          <Button
+            variant={plan.highlight ? "contained" : "outlined"}
+            fullWidth
+            className={clsx(
+              plan.highlight
+                ? "bg-white !ml-2.5 !font-semibold text-violet-900 hover:bg-gray-100"
+                : "bg-violet-600 !ml-2.5 !font-semibold text-white hover:bg-violet-700"
+            )}
+          >
+            {plan.highlight ? "Try 1 month" : "Choose"}
+          </Button>
+        </div>
+      </div>
+    </Box>
+  ))}
           </div>
         </div>
       )}

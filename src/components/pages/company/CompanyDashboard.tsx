@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from 'react-router-dom';
 import {
   Typography,
-  Card,
-  CardContent,
   Grid,
   Box,
-  Avatar,
-  LinearProgress,
   Button,
   Chip,
 } from "@mui/material";
 import JobStatistics from "../../common/JobStatistics";
 import { Share } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 
 interface CompanyDashboardProps {}
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const navigate = useNavigate();
+  const openViewList = (typeofList: string) => {
+    let currentPath = window.location.pathname;
+    const newPath = currentPath.replace('dashboard', typeofList);
+    navigate(newPath);
+  };
+
   const applicantData = [
     {
       logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
@@ -236,6 +238,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                   </Box>
                 ))}
               </Box>
+              <div className="mb-1.5 text-end"><Button variant="text" onClick={() => openViewList('myvendors')}>View all</Button></div>
             </Box>
           </Box>
           <Box className="gap-6 w-[33%]">
@@ -266,6 +269,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     </Box>
                   </Box>
                 ))}
+                <div className="mb-1.5 text-end"><Button variant="text" onClick={() => openViewList('clients')}>View all</Button></div>
               </Box>
             </Box>
           </Box>
@@ -297,6 +301,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     </Box>
                   </Box>
                 ))}
+                                <div className="mb-1.5 text-end"><Button variant="text">View all</Button></div>
               </Box>
             </Box>
           </Box>
