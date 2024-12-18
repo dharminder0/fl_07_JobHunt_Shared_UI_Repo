@@ -2,60 +2,57 @@ import { Link, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
-const invitedData = [
+const invitedData = [ 
   {
-    id: 1,
-    name: "Fleek IT Solutions",
-    description:
-      "Stripe is a software platform for starting and running internet businesses.",
+    id: 2,
+    name: "Taazaa",
+    description: "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "50-100", "QA Testing"],
     place: "Noida",
     contracts: "Accepted",
-    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    logo: "https://www.taazaa.com/wp-content/uploads/2023/06/favicon-1-1.png",
   },
   {
     id: 2,
-    name: "DevStringX Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "App Tech"],
-    place: "Delhi(NCR)",
+    name: "Taksh It Solutionsns",
+    description:  "Square builds common business tools in unconventional ways and used best technologies...",
+    tags: ["Onsite", "50-200", "QA Testing"],
+    place: "Noida",
     contracts: "Declined",
-    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    logo: "https://www.sparxitsolutions.com/favicon.ico",
   },
   {
     id: 3,
-    name: "Binemiles Technologies",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "500+", "Other Tech"],
-    place: "Gurgaon",
+    name: "Nucleus software",
+    description: "Stripe is a software platform for starting and running internet businesses.",
+    tags: ["Onsite", "50-400", "App Tech"],
+    place: "Noida",
     contracts: "Pending Agreements",
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    logo: "https://www.nucleussoftware.com/wp-content/uploads/2023/07/cropped-logo-180x180.jpg",
   },
+
 ];
 
-const requestedData = [
+const requestedData = [ 
   {
-    id: 4,
-    name: "SDET Tech Pvt. Ltd",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "0-10", "App Tech"],
-    place: "Mumbai",
-    contracts: "Pending Approval",
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    id: 1,
+    name: "Topcubit",
+    description: "Stripe is a software platform for starting and running internet businesses.",
+    tags: ["Onsite", "50-500", "QA Testing"],
+    place: "Noida",
+    contracts: "Pending Agreements",
+    logo: "https://topcubit.com/wp-content/uploads/2019/06/cropped-tcis-logo-circle-180x180.png",
   },
   {
-    id: 5,
-    name: "JigNect Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-500", "Other Tech"],
-    place: "Pune",
-    contracts: "Approved",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    id: 2,
+    name: "Vidyatech Solution",
+    description:  "Stripe is a software platform for starting and running internet businesses.",
+    tags: ["Onsite", "50-100", "Other Tech"],
+    place: "Noida",
+    contracts: "Pending Agreements",
+    logo: "https://www.vidyatech.com/images/Vidya.ico",
   },
+
 ];
 
 export default function VendorOnboarding() {
@@ -78,9 +75,9 @@ export default function VendorOnboarding() {
         <Tab value="Requested" label="Requested for Empanelment" />
       </Tabs>
 
-      <div className="mt-3">
+      <div className="mt-4">
         {/* Invited */}
-        {value == "Invited" && (
+        {(value == "Invited") && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {invitedData.map((company, idx) => (
@@ -90,7 +87,7 @@ export default function VendorOnboarding() {
                   sm={6}
                   md={3}
                   key={idx}
-                  // onClick={() => handleDetails(company.id)}
+                // onClick={() => handleDetails(company.id)}
                 >
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
@@ -144,7 +141,7 @@ export default function VendorOnboarding() {
         )}
 
         {/* Requested */}
-        {value == "Requested" && (
+        {(value == "Requested") && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {requestedData.map((company, idx) => (
@@ -154,7 +151,7 @@ export default function VendorOnboarding() {
                   sm={6}
                   md={3}
                   key={idx}
-                  // onClick={() => handleDetails(company.id)}
+                // onClick={() => handleDetails(company.id)}
                 >
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
