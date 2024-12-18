@@ -52,6 +52,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 2,
@@ -64,6 +65,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 3,
@@ -76,6 +78,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://www.prototypehouse.com/favicon.ico",
     },
     {
       id: 4,
@@ -88,6 +91,7 @@ const MyRequirements = () => {
       noOfPositions: 1,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 5,
@@ -100,6 +104,7 @@ const MyRequirements = () => {
       noOfPositions: 1,
       contractPeriod: "18 months",
       visibility: "Empanelled",
+      logo: "https://techinnovators.dev/icon_dark.ico",
     },
     {
       id: 6,
@@ -112,6 +117,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "12 months",
       visibility: "Limited",
+      logo: "https://codecrafters.io/favicon.ico",
     },
     {
       id: 7,
@@ -124,6 +130,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 8,
@@ -136,6 +143,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -148,6 +156,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -160,6 +169,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
@@ -172,6 +182,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 8,
@@ -184,6 +195,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -196,6 +208,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -208,6 +221,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
@@ -220,6 +234,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 8,
@@ -232,6 +247,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -244,6 +260,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -256,6 +273,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
@@ -268,6 +286,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 8,
@@ -280,6 +299,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -292,6 +312,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -304,6 +325,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
   ];
   console.log(searchFilter);
@@ -518,7 +540,14 @@ const MyRequirements = () => {
                   onClick={() => handleRowClick(job.id)}
                 >
                   <th className="add-right-shadow">{job.role}</th>
-                  <td>{job.client}</td>
+                  <td className="flex items-center wide-250">
+                    <img
+                      src={job.logo}
+                      style={{ height: 16, width: 16 }}
+                      className="me-1"
+                    />
+                    {job.client}
+                  </td>
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base rounded-full ${

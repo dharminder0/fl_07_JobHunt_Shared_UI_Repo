@@ -1,12 +1,6 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
-import {
-  Typography,
-  Grid,
-  Box,
-  Button,
-  Chip,
-} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Typography, Grid, Box, Button, Chip } from "@mui/material";
 import JobStatistics from "../../common/JobStatistics";
 import { Share } from "@mui/icons-material";
 
@@ -16,7 +10,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const navigate = useNavigate();
   const openViewList = (typeofList: string) => {
     let currentPath = window.location.pathname;
-    const newPath = currentPath.replace('dashboard', typeofList);
+    const newPath = currentPath.replace("dashboard", typeofList);
     navigate(newPath);
   };
 
@@ -156,9 +150,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", "Open")}
         >
-          <Typography variant="h5" className="!text-indigo-950">
-            76
-          </Typography>
+          <p className="!text-indigo-950">76</p>
           {/* <p className="text-white text-heading mb-2">76</p> */}
           <p className="text-base">Open Requirements</p>
         </div>
@@ -167,19 +159,15 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", "Hot")}
         >
-          <Typography variant="h5" className="!text-indigo-800">
-            13
-          </Typography>
+          <p className="!text-indigo-800">13</p>
           <p className="text-base">Hot Requirements</p>
         </div>
 
         <div
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-          onClick={() => handleCardClick("candidates", "Interview Schedule")}
+          onClick={() => handleCardClick("candidates", "Interview Scheduled")}
         >
-          <Typography variant="h5" className="!text-indigo-600">
-            26
-          </Typography>
+          <p className="!text-indigo-600">26</p>
           <p className="text-base">Interview Scheduled</p>
         </div>
 
@@ -187,9 +175,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("candidates", "In Review")}
         >
-          <Typography variant="h5" className="!text-indigo-400">
-            34
-          </Typography>
+          <p className="!text-indigo-400">34</p>
           <p className="text-base">Candidates to review</p>
         </div>
 
@@ -197,9 +183,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", true)}
         >
-          <Typography variant="h5" className="!text-red-600">
-            12
-          </Typography>
+          <p className="!text-red-600">12</p>
           <p className="text-base">No Applicants</p>
         </div>
       </div>
@@ -238,7 +222,14 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                   </Box>
                 ))}
               </Box>
-              <div className="mb-1.5 text-end"><Button variant="text" onClick={() => openViewList('myvendors')}>View all</Button></div>
+              <div className="mb-1.5 text-end">
+                <Button
+                  variant="text"
+                  onClick={() => openViewList("myvendors")}
+                >
+                  View all
+                </Button>
+              </div>
             </Box>
           </Box>
           <Box className="gap-6 w-[33%]">
@@ -269,7 +260,14 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     </Box>
                   </Box>
                 ))}
-                <div className="mb-1.5 text-end"><Button variant="text" onClick={() => openViewList('clients')}>View all</Button></div>
+                <div className="mb-1.5 text-end">
+                  <Button
+                    variant="text"
+                    onClick={() => openViewList("clients")}
+                  >
+                    View all
+                  </Button>
+                </div>
               </Box>
             </Box>
           </Box>
@@ -301,7 +299,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     </Box>
                   </Box>
                 ))}
-                                <div className="mb-1.5 text-end"><Button variant="text">View all</Button></div>
+                <div className="mb-1.5 text-end">
+                  <Button variant="text">View all</Button>
+                </div>
               </Box>
             </Box>
           </Box>
