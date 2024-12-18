@@ -14,6 +14,7 @@ const ClientDetails = () => {
       endDate: "12-08-2024",
       client: "Fleek IT Solutions",
       resource: "Raj Kumar",
+      vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",      
     },
     {
       id: 2,
@@ -22,6 +23,7 @@ const ClientDetails = () => {
       endDate: "16-09-2024",
       client: "DevStringX Technologies",
       resource: "Sajid Sarkar",
+      vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
     },
     {
       id: 3,
@@ -30,6 +32,7 @@ const ClientDetails = () => {
       endDate: "06-10-2024",
       client: "Binemiles Technologies",
       resource: "Amit Thakur",
+      vendorLogo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
     },
     {
       id: 4,
@@ -38,6 +41,7 @@ const ClientDetails = () => {
       endDate: "18-11-2024",
       client: "SDET Tech Pvt. Ltd",
       resource: "Harshit Pandey",
+      vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
     {
       id: 1,
@@ -46,6 +50,7 @@ const ClientDetails = () => {
       endDate: "10-12-2024",
       client: "JigNect Technologies",
       resource: "Vinod Agarwal",
+      vendorLogo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
     },
   ];
 
@@ -213,7 +218,16 @@ const ClientDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">{item.title}</th>
-                          <td>{item.client}</td>
+                          <td className="wide-250">
+                            <div className="flex">
+                              <img
+                                src={item.vendorLogo}
+                                style={{ height: 16, width: 16 }}
+                                className="me-1"
+                              />
+                              {item.client}
+                            </div>
+                          </td>
                           <td>{item.resource}</td>
                           <td>{item.startDate}</td>
                         </tr>
@@ -238,7 +252,16 @@ const ClientDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">{item.title}</th>
-                          <td>{item.client}</td>
+                          <td className="wide-250">
+                            <div className="flex">
+                              <img
+                                src={item.vendorLogo}
+                                style={{ height: 16, width: 16 }}
+                                className="me-1"
+                              />
+                              {item.client}
+                            </div>
+                          </td>
                           <td>{item.resource}</td>
                           <td>{item.startDate}</td>
                           <td>{item.endDate}</td>

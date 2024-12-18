@@ -125,7 +125,7 @@ const RequirementForm = () => {
             <h2 className="text-xl">Post Requirements</h2>
           </div>
 
-          <div className="mx-auto w-[90%] my-4">
+          <div className="p-4 w-[50%] mx-auto">
             <FormControl component="fieldset">
               <p className="text-title">Post Type</p>
               <RadioGroup
@@ -149,100 +149,88 @@ const RequirementForm = () => {
 
             {formValues.postType === "single" ? (
               <div>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="flex gap-4">
-                    <div className="w-2/4 flex flex-col gap-2">
-                      <TextField
-                        label="Title"
-                        name="title"
-                        fullWidth
-                        variant="outlined"
-                        value={formValues.title}
-                        onChange={handleFormChange}
-                        size="small"
-                      />
+                <form onSubmit={handleSubmit} className="space-y-2">
+                  <TextField
+                    label="Title"
+                    name="title"
+                    fullWidth
+                    variant="outlined"
+                    value={formValues.title}
+                    onChange={handleFormChange}
+                    size="small"
+                  />
 
-                      <FormControl component="fieldset">
-                        <p className="text-title mt-1">Job Location</p>
-                        <RadioGroup
-                          row
-                          name="jobLocation"
-                          value={formValues.jobLocation}
-                          onChange={handleFormChange}
-                        >
-                          <FormControlLabel
-                            value="onsite"
-                            control={<Radio size="small" />}
-                            label="Onsite"
-                          />
-                          <FormControlLabel
-                            value="hybrid"
-                            control={<Radio size="small" />}
-                            label="Hybrid"
-                          />
-                          <FormControlLabel
-                            value="remote"
-                            control={<Radio size="small" />}
-                            label="Remote"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </div>
-                    <div className="w-2/4">
-                      <TextField
-                        label="Job Description"
-                        name="jobDescription"
-                        multiline
-                        rows={5}
-                        fullWidth
-                        variant="outlined"
-                        value={formValues.jobDescription}
-                        onChange={handleFormChange}
-                        size="small"
+                  <FormControl component="fieldset">
+                    <p className="text-title mt-1">Job Location</p>
+                    <RadioGroup
+                      row
+                      name="jobLocation"
+                      value={formValues.jobLocation}
+                      onChange={handleFormChange}
+                    >
+                      <FormControlLabel
+                        value="onsite"
+                        control={<Radio size="small" />}
+                        label="Onsite"
                       />
-                    </div>
-                  </div>
+                      <FormControlLabel
+                        value="hybrid"
+                        control={<Radio size="small" />}
+                        label="Hybrid"
+                      />
+                      <FormControlLabel
+                        value="remote"
+                        control={<Radio size="small" />}
+                        label="Remote"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <TextField
+                    label="Job Description"
+                    name="jobDescription"
+                    multiline
+                    rows={5}
+                    fullWidth
+                    variant="outlined"
+                    value={formValues.jobDescription}
+                    onChange={handleFormChange}
+                    size="small"
+                  />
 
-                  <div className="flex gap-4">
-                    <div className="w-2/4 flex flex-col gap-2">
-                      <TextField
-                        label="Experience"
-                        name="experience"
-                        type="string"
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        value={formValues.experience}
-                        onChange={handleFormChange}
-                      />
+                  <TextField
+                    label="Experience"
+                    name="experience"
+                    type="string"
+                    fullWidth
+                    size="small"
+                    variant="outlined"
+                    value={formValues.experience}
+                    onChange={handleFormChange}
+                  />
 
-                      <TextField
-                        label="Budget"
-                        name="budget"
-                        type="number"
-                        fullWidth
-                        size="small"
-                        variant="outlined"
-                        value={formValues.budget}
-                        onChange={handleFormChange}
-                      />
-                    </div>
+                  <TextField
+                    label="Budget"
+                    name="budget"
+                    type="number"
+                    fullWidth
+                    size="small"
+                    variant="outlined"
+                    value={formValues.budget}
+                    onChange={handleFormChange}
+                  />
 
-                    <div className="w-2/4">
-                      <TextField
-                        label="Remark for vendor"
-                        name="remarkforvendor"
-                        type="string"
-                        multiline
-                        rows={4}
-                        size="small"
-                        fullWidth
-                        variant="outlined"
-                        value={formValues.remarkforvendor}
-                        onChange={handleFormChange}
-                      />
-                    </div>
-                  </div>
+                  <TextField
+                    label="Remark for vendor"
+                    name="remarkforvendor"
+                    type="string"
+                    multiline
+                    rows={4}
+                    size="small"
+                    fullWidth
+                    variant="outlined"
+                    value={formValues.remarkforvendor}
+                    onChange={handleFormChange}
+                  />
                 </form>
 
                 <div className="mt-2">
@@ -272,13 +260,6 @@ const RequirementForm = () => {
                     </RadioGroup>
                   </FormControl>
                 </div>
-                <Button
-                  variant="contained"
-                  onClick={handleSubmit} // The function is correctly called here without parentheses
-                  sx={{ mt: 1, mr: 1 }}
-                >
-                  Submit
-                </Button>
               </div>
             ) : (
               <form>
@@ -302,6 +283,13 @@ const RequirementForm = () => {
                 </div>
               </form>
             )}
+            <Button
+              variant="contained"
+              onClick={handleSubmit} // The function is correctly called here without parentheses
+              sx={{ mt: 1, mr: 1 }}
+            >
+              Submit
+            </Button>
           </div>
         </div>
       </Drawer>
