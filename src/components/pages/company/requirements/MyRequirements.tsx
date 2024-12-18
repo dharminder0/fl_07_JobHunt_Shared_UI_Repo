@@ -526,10 +526,10 @@ const MyRequirements = () => {
                 <th>Status</th>
                 <th>Date Posted</th>
                 <th>Requirement Type</th>
-                <th>No. of Positions</th>
+                <th>Applicants</th>
                 <th>Contract period</th>
                 <th>Visibility</th>
-                <th>Applicants</th>
+                <th>No. of Positions</th>
               </tr>
             </thead>
             <tbody>
@@ -571,10 +571,10 @@ const MyRequirements = () => {
                     {job.requirementType}
                     {/* </Typography> */}
                   </td>
-                  <td>{job.noOfPositions}</td>
+                  <td>{job.applicants}</td>
                   <td>{job.contractPeriod}</td>
                   <td>{job.visibility}</td>
-                  <td>{job.applicants}</td>
+                  <td>{job.noOfPositions}</td>
                 </tr>
               ))}
             </tbody>

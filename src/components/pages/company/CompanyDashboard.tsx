@@ -150,7 +150,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", "Open")}
         >
-          <p className="!text-indigo-950">76</p>
+          <Typography variant="h5" className="!text-indigo-950">
+            76
+          </Typography>
           {/* <p className="text-white text-heading mb-2">76</p> */}
           <p className="text-base">Open Requirements</p>
         </div>
@@ -159,7 +161,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", "Hot")}
         >
-          <p className="!text-indigo-800">13</p>
+          <Typography variant="h5" className="!text-indigo-800">
+            13
+          </Typography>
           <p className="text-base">Hot Requirements</p>
         </div>
 
@@ -167,7 +171,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("candidates", "Interview Scheduled")}
         >
-          <p className="!text-indigo-600">26</p>
+          <Typography variant="h5" className="!text-indigo-600">
+            26
+          </Typography>
           <p className="text-base">Interview Scheduled</p>
         </div>
 
@@ -175,7 +181,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("candidates", "In Review")}
         >
-          <p className="!text-indigo-400">34</p>
+          <Typography variant="h5" className="!text-indigo-400">
+            34
+          </Typography>
           <p className="text-base">Candidates to review</p>
         </div>
 
@@ -183,7 +191,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", true)}
         >
-          <p className="!text-red-600">12</p>
+          <Typography variant="h5" className="!text-red-600">
+            12
+          </Typography>
           <p className="text-base">No Applicants</p>
         </div>
       </div>
