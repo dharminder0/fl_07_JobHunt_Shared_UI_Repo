@@ -55,9 +55,10 @@ const clientDataObj = [
 export default function Clients() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-
-  const handleRowClick = (id: number) => {
-    navigate(`${id}`);
+  const handleRowClick = (id: number, Tab: string) => {
+    navigate(`/company/clients/${id}`, {
+      state: { type: Tab }, // Passing state data
+    });
   };
   return (
     <div className="px-4 py-1">
@@ -94,10 +95,9 @@ export default function Clients() {
             {clientDataObj.map((item, index) => (
               <tr
                 className="cursor-pointer"
-                key={index}
-                onClick={() => handleRowClick(item.id)}
+                key={index}               
               >
-                <th className="add-right-shadow wide-250">                
+                <th className="add-right-shadow wide-250"  onClick={() => handleRowClick(item.id,'active')}>                
                   <div className="flex">
                     <img
                       src={item.logo}
@@ -108,8 +108,8 @@ export default function Clients() {
                   </div>                 
                 </th>
                 <td>{item.requirement}</td>
-                <td>{item.activeContracts}</td>
-                <td>{item.pastContracts}</td>
+                <td onClick={() => handleRowClick(item.id,'active')}>{item.activeContracts}</td>
+                <td onClick={() => handleRowClick(item.id,'past')} >{item.pastContracts}</td>
                 <td>{item.status}</td>
               </tr>
             ))}
