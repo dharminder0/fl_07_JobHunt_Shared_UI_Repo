@@ -27,7 +27,7 @@ const MyRequirements = () => {
   const params = location.state || {};
   const [searchInput, setSearchInput] = useState<string>("");
   const [filterList, setFilterList] = useState<any>({
-    client: ["Self", "Creative Solutions Ltd.", "Data Insights Group"],
+    client: ["OpsTree Solutions", "Creative Solutions Ltd.", "Data Insights Group"],
     status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
@@ -47,11 +47,12 @@ const MyRequirements = () => {
       status: "Open",
       datePosted: "20 May 2020",
       applicants: 19,
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 2,
@@ -64,6 +65,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 3,
@@ -76,6 +78,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://www.prototypehouse.com/favicon.ico",
     },
     {
       id: 4,
@@ -83,11 +86,12 @@ const MyRequirements = () => {
       status: "Closed",
       datePosted: "13 May 2020",
       applicants: 6,
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 1,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 5,
@@ -100,6 +104,7 @@ const MyRequirements = () => {
       noOfPositions: 1,
       contractPeriod: "18 months",
       visibility: "Empanelled",
+      logo: "https://techinnovators.dev/icon_dark.ico",
     },
     {
       id: 6,
@@ -112,6 +117,7 @@ const MyRequirements = () => {
       noOfPositions: 3,
       contractPeriod: "12 months",
       visibility: "Limited",
+      logo: "https://codecrafters.io/favicon.ico",
     },
     {
       id: 7,
@@ -119,11 +125,12 @@ const MyRequirements = () => {
       status: "On hold",
       datePosted: "20 May 2020",
       applicants: 19,
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 8,
@@ -136,6 +143,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -148,6 +156,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -160,6 +169,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
@@ -167,11 +177,12 @@ const MyRequirements = () => {
       status: "On hold",
       datePosted: "20 May 2020",
       applicants: 19,
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 8,
@@ -184,6 +195,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -196,6 +208,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -208,6 +221,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
@@ -215,11 +229,12 @@ const MyRequirements = () => {
       status: "On hold",
       datePosted: "20 May 2020",
       applicants: 9,
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 8,
@@ -232,6 +247,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -244,6 +260,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -256,6 +273,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
@@ -263,11 +281,12 @@ const MyRequirements = () => {
       status: "On hold",
       datePosted: "20 May 2020",
       applicants: 1,
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 8,
@@ -280,6 +299,7 @@ const MyRequirements = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
@@ -292,6 +312,7 @@ const MyRequirements = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 10,
@@ -304,6 +325,7 @@ const MyRequirements = () => {
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
   ];
   console.log(searchFilter);
@@ -504,10 +526,10 @@ const MyRequirements = () => {
                 <th>Status</th>
                 <th>Date Posted</th>
                 <th>Requirement Type</th>
-                <th>No. of Positions</th>
+                <th>Applicants</th>
                 <th>Contract period</th>
                 <th>Visibility</th>
-                <th>Applicants</th>
+                <th>No. of Positions</th>
               </tr>
             </thead>
             <tbody>
@@ -518,7 +540,14 @@ const MyRequirements = () => {
                   onClick={() => handleRowClick(job.id)}
                 >
                   <th className="add-right-shadow">{job.role}</th>
-                  <td>{job.client}</td>
+                  <td className="flex items-center wide-250">
+                    <img
+                      src={job.logo}
+                      style={{ height: 16, width: 16 }}
+                      className="me-1"
+                    />
+                    {job.client}
+                  </td>
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base rounded-full ${
@@ -542,10 +571,10 @@ const MyRequirements = () => {
                     {job.requirementType}
                     {/* </Typography> */}
                   </td>
-                  <td>{job.noOfPositions}</td>
+                  <td>{job.applicants}</td>
                   <td>{job.contractPeriod}</td>
                   <td>{job.visibility}</td>
-                  <td>{job.applicants}</td>
+                  <td>{job.noOfPositions}</td>
                 </tr>
               ))}
             </tbody>

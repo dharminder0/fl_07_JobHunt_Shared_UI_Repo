@@ -224,39 +224,41 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     <div className="w-[160px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
       <div className="overflow-auto h-[calc(100%-82px)]">
         <List>
-          {menuItems[organizationType]?.main?.map((item: any, index: number) => (
-            <ListItem key={item.id} disablePadding>
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex w-full px-1 py-1 gap-1 items-center rounded-md hover:bg-primary-hover ${
-                    isActive
-                      ? "bg-primary-hover text-primary"
-                      : "text-secondary-text"
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    <ListItemIcon
-                      className={`!min-w-[unset] !w-[16px] ${
-                        isActive ? "!text-primary" : "!text-secondary-text"
-                      }`}
-                    >
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      className="!text-[14px]"
-                      primary={item.text}
-                      classes={{
-                        primary: "!text-base",
-                      }}
-                    />
-                  </>
-                )}
-              </NavLink>
-            </ListItem>
-          ))}
+          {menuItems[organizationType]?.main?.map(
+            (item: any, index: number) => (
+              <ListItem key={item.id} disablePadding>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `flex w-full px-1 py-1 gap-1 items-center rounded-md hover:bg-primary-hover ${
+                      isActive
+                        ? "bg-primary-hover text-primary"
+                        : "text-secondary-text"
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <ListItemIcon
+                        className={`!min-w-[unset] !w-[16px] ${
+                          isActive ? "!text-primary" : "!text-secondary-text"
+                        }`}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        className="!text-[14px]"
+                        primary={item.text}
+                        classes={{
+                          primary: "!text-base",
+                        }}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              </ListItem>
+            )
+          )}
         </List>
 
         <Divider sx={{ marginTop: 1.5, marginBottom: 1.5 }} />
@@ -337,14 +339,13 @@ const SideMenu: React.FC<SideMenuProps> = () => {
             )
           )}
           <Divider sx={{ marginTop: 1.5, marginBottom: 1 }} />
-          <Button
-            variant="text"
-            startIcon={<Logout />}
-            size="small"
+          <div
             onClick={handleLogout}
+            className="text-info flex items-center justify-end text-indigo-500 cursor-pointer px-2 hover:text-indigo-700"
           >
+            <Logout fontSize="inherit" sx={{ mr: 0.5 }} />
             Logout
-          </Button>
+          </div>
         </List>
       </div>
     </div>

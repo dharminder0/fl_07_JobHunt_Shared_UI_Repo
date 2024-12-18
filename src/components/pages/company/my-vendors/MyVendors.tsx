@@ -15,13 +15,13 @@ import {
   InputAdornment,
   Tabs,
   Tab,
-  Box
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { FilterList, Search } from "@mui/icons-material";
 
-const companies = [
+const activeData = [
   {
     id: 1,
     name: "Fleek IT Solutions",
@@ -52,6 +52,9 @@ const companies = [
     contracts: "12",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
+];
+
+const archivedData = [
   {
     id: 4,
     name: "SDET Tech Pvt. Ltd",
@@ -87,49 +90,23 @@ const MyVendors = () => {
     setTabValue(newValue);
   };
   return (
-    <div className="px-6">
+    <div className="px-4">
       {/* Header */}
-
-      <Tabs
-        value={tabValue}
-        onChange={handleChange}
-        textColor="primary"
-        indicatorColor="primary"
-        aria-label="secondary tabs example"
-      >
-        <Tab value="Active" label="Active Vendors" />
-        <Tab value="Archived" label="Archived Vendors" />
-      </Tabs>
-
-      {(tabValue == "Active" || tabValue == "Archived") && (
-        <>
-          <div className="flex justify-end items-center my-4">
-            {/* <h5 className="text-heading">{tabValue == "Active" ? "Active" : "Archived"} Vendors</h5> */}
-            {/* <div className="flex w-3/5 items-center">
-              <TextField
-                fullWidth
-                label="Company title or keyword"
-                variant="outlined"
-                size="small"
-                // slotProps={{
-                //   input: {
-                //     startAdornment: (
-                //       <InputAdornment position="start">
-                //         <SearchIcon fontSize="inherit" />
-                //       </InputAdornment>
-                //     ),
-                //   },
-                // }}
-              />
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                sx={{ width: 170, marginLeft: 2 }}
-              >
-                Search
-              </Button>
-            </div> */}
+      <div className="flex items-center justify-between mb-3 mt-1">
+        <div className="w-1/2">
+          <Tabs
+            value={tabValue}
+            onChange={handleChange}
+            textColor="primary"
+            indicatorColor="primary"
+            aria-label="secondary tabs example"
+          >
+            <Tab value="Active" label="Active Vendors" />
+            <Tab value="Archived" label="Archived Vendors" />
+          </Tabs>
+        </div>
+        <div className="w-1/2 flex justify-end">
+          <div className="flex justify-end items-center">
             <Box className="flex items-center justify-end my-2">
               <Box className="flex items-center space-x-4">
                 <TextField
@@ -139,7 +116,9 @@ const MyVendors = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   InputProps={{
-                    startAdornment: <Search className="mr-2" fontSize="small" />,
+                    startAdornment: (
+                      <Search className="mr-2" fontSize="small" />
+                    ),
                   }}
                 />
                 <Button variant="outlined" startIcon={<FilterList />}>
@@ -148,11 +127,15 @@ const MyVendors = () => {
               </Box>
             </Box>
           </div>
-
+        </div>
+      </div>
+      <>
+        {/* Active */}
+        {tabValue == "Active" && (
           <Grid container spacing={4}>
             <Grid item xs={12} md={12}>
               <Grid container spacing={3}>
-                {companies.map((company, idx) => (
+                {activeData.map((company, idx) => (
                   <Grid
                     item
                     xs={12}
@@ -211,8 +194,74 @@ const MyVendors = () => {
               </Grid>
             </Grid>
           </Grid>
-        </>
-      )}
+        )}
+
+        {/* Archived */}
+        {tabValue == "Archived" && (
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={12}>
+              <Grid container spacing={3}>
+                {archivedData.map((company, idx) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={3}
+                    key={idx}
+                    onClick={() => handleDetails(company.id)}
+                  >
+                    <div className="h-100 border p-4 rounded-md cursor-pointer">
+                      <div className="flex align-center mb-4">
+                        <img
+                          src={
+                            !company.logo
+                              ? "/assets/images/Companylogo.png"
+                              : company.logo
+                          }
+                          alt={company.name}
+                          className="me-3"
+                          style={{ width: 50, height: 50 }}
+                        />
+                        <div>
+                          <p className="text-title font-bold">{company.name}</p>
+                          <p className="text-base">{company.place}</p>
+                          {company.contracts && (
+                            <p className="text-base">
+                              {company.contracts} Contracts
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-base">{company.description}</p>
+                      <div className="flex flex-wrap mt-2">
+                        {company.tags.map((tag, idx) => (
+                          // <Typography
+                          //   key={idx}
+                          //   variant="caption"
+                          //   className="p-1 border rounded"
+                          //   marginTop={1}
+                          //   marginRight={1}
+                          // >
+                          //   {tag}
+                          // </Typography>
+                          <Chip
+                            key={idx}
+                            label={tag}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: 10 }}
+                            className="my-1 me-1"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+      </>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { Link, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
-const companies = [
+const invitedData = [
   {
     id: 1,
     name: "Fleek IT Solutions",
@@ -33,6 +33,9 @@ const companies = [
     contracts: "Pending Agreements",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
+];
+
+const RequestedData = [
   {
     id: 4,
     name: "SDET Tech Pvt. Ltd",
@@ -63,7 +66,7 @@ export default function ClientOnboarding() {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Tabs
         value={value}
         onChange={handleChange}
@@ -75,12 +78,12 @@ export default function ClientOnboarding() {
         <Tab value="Requested" label="Requested for Empanelment" />
       </Tabs>
 
-      {(value == "Invited" || value == "Requested") && (
-        <div className="mt-4">
-          {/* Company Cards */}
+      <div className="mt-4">
+        {/* Invited */}
+        {value == "Invited" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
-              {companies.map((company, idx) => (
+              {invitedData.map((company, idx) => (
                 <Grid
                   item
                   xs={12}
@@ -129,8 +132,63 @@ export default function ClientOnboarding() {
               ))}
             </Grid>
           </Grid>
-        </div>
-      )}
+        )}
+
+        {/* Requested */}
+        {value == "Requested" && (
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={3}>
+              {RequestedData.map((company, idx) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  key={idx}
+                  // onClick={() => handleDetails(company.id)}
+                >
+                  <div className="h-100 border p-4 rounded-md cursor-pointer">
+                    <div className="flex align-center mb-4">
+                      <img
+                        src={
+                          !company.logo
+                            ? "/assets/images/Companylogo.png"
+                            : company.logo
+                        }
+                        alt={company.name}
+                        className="me-3"
+                        style={{ width: 50, height: 50 }}
+                      />
+                      <div>
+                        <p className="text-title font-bold">{company.name}</p>
+                        <p className="text-base">{company.place}</p>
+                        {company.contracts && (
+                          <Link href="#" underline="none" fontSize={12}>
+                            {company.contracts}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-base">{company.description}</p>
+                    <div className="flex flex-wrap mt-2">
+                      {company.tags.map((tag, idx) => (
+                        <Chip
+                          key={idx}
+                          label={tag}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        )}
+      </div>
     </div>
   );
 }

@@ -12,7 +12,7 @@ import clsx from "clsx";
 
 // Tailwind classes
 const cardBase =
-"w-full max-w-sm p-6 rounded-3xl shadow-lg text-base transition-transform duration-300";
+  "w-full max-w-sm p-6 rounded-3xl shadow-lg text-base transition-transform duration-300";
 const selectedCard =
   "bg-violet-900 text-white text-base transform scale-105 hover:scale-110";
 
@@ -72,7 +72,7 @@ const VndSubscriptions: React.FC = () => {
   ];
 
   return (
-    <div className="px-6">
+    <div className="px-4 py-1">
       <Tabs
         value={tabValue}
         onChange={handleChange}
@@ -163,24 +163,24 @@ const VndSubscriptions: React.FC = () => {
                   ))}
                 </ul>
 
-                  {/* Button */}
-                     <div className="min-h-8">
-                       <div className="absolute bottom-6 w-3/4">
-                         <Button
-                           variant={plan.highlight ? "contained" : "outlined"}
-                           fullWidth
-                           className={clsx(
-                             plan.highlight
-                               ? "bg-white !ml-2.5 !font-semibold text-violet-900 hover:bg-gray-100"
-                               : "bg-violet-600 !ml-2.5 !font-semibold text-white hover:bg-violet-700"
-                           )}
-                         >
-                           {plan.highlight ? "Try 1 month" : "Choose"}
-                         </Button>
-                       </div>
-                     </div>
-                   </Box>
-                 ))}
+                {/* Button */}
+                <div className="min-h-8">
+                  <div className="absolute bottom-6 w-3/4">
+                    <Button
+                      variant={plan.highlight ? "contained" : "outlined"}
+                      fullWidth
+                      className={clsx(
+                        plan.highlight
+                          ? "bg-white !ml-2.5 !font-semibold text-violet-900 hover:bg-gray-100"
+                          : "bg-violet-600 !ml-2.5 !font-semibold text-white hover:bg-violet-700"
+                      )}
+                    >
+                      {plan.highlight ? "Try 1 month" : "Choose"}
+                    </Button>
+                  </div>
+                </div>
+              </Box>
+            ))}
           </div>
         </div>
       )}

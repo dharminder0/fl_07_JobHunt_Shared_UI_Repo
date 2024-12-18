@@ -58,7 +58,7 @@ const applicantData = [
     name: "Vaibhav Rastogi",
     requirement: "Devops AWS Certified engineer",
     client: "NTT DATA",
-    status: "Interview Schedule",
+    status: "Interview Scheduled",
     date: "11-04-2024",
   },
   {
@@ -82,7 +82,7 @@ const applicantData = [
     name: "Amit Kumar",
     requirement: "Devops AWS Certified engineer",
     client: "NTT DATA",
-    status: "Interview Schedule",
+    status: "Interview Scheduled ",
     date: "11-04-2024",
   },
 ];
@@ -97,7 +97,7 @@ export default function MyCandidates() {
     status: [
       "In Review",
       "Shortlisted",
-      "Interview Schedule",
+      "Interview Scheduled",
       "Declined",
       "Hired",
     ],
@@ -125,7 +125,7 @@ export default function MyCandidates() {
   }, [searchFilter]);
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Box className="flex items-center justify-end my-2">
         <Box className="flex items-center space-x-4">
           <TextField

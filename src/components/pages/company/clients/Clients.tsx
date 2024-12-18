@@ -55,7 +55,7 @@ export default function Clients() {
     navigate(`${id}`);
   };
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Box className="flex items-center justify-end my-2">
         <Box className="flex items-center space-x-4">
           <TextField
