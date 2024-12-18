@@ -102,11 +102,12 @@ const VendorCompanyDetails = () => {
       status: "Open",
       datePosted: "20 May 2020",
       applicants: "19",
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 2,
@@ -119,6 +120,7 @@ const VendorCompanyDetails = () => {
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 3,
@@ -131,6 +133,7 @@ const VendorCompanyDetails = () => {
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
+      logo: "https://www.prototypehouse.com/favicon.ico",
     },
     {
       id: 4,
@@ -138,11 +141,12 @@ const VendorCompanyDetails = () => {
       status: "Closed",
       datePosted: "13 May 2020",
       applicants: "6,234",
-      client: "Self",
+      client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 5,
@@ -155,6 +159,7 @@ const VendorCompanyDetails = () => {
       noOfPositions: 20,
       contractPeriod: "18 months",
       visibility: "Empanelled",
+      logo: "https://techinnovators.dev/icon_dark.ico",
     },
   ];
 
@@ -326,7 +331,16 @@ const VendorCompanyDetails = () => {
                       {jobData.map((job, index) => (
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
                           <th className="add-right-shadow">{job.role}</th>
-                          <td>{job.client}</td>
+                          <td className="wide-200">
+                            <div className="flex">
+                              <img
+                                src={job.logo}
+                                style={{ height: 16, width: 16 }}
+                                className="me-1"
+                              />
+                              {job.client}
+                            </div>
+                          </td>
                           <td>{job.datePosted}</td>
                           <td>
                             <Typography
