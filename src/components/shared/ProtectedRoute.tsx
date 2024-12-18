@@ -11,8 +11,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
   const role = JSON.parse(localStorage.getItem("role") || "[]");
 
   // Check if user is logged in and has at least one matching role
-  const hasAccess =
-    isLoggedIn && role.some((r: string) => allowedRoles.includes(r));
+  const hasAccess = isLoggedIn && role.some((r: string) => allowedRoles.includes(r));
 
   return hasAccess ? <Layout /> : <Navigate to="/login" replace />;
 };

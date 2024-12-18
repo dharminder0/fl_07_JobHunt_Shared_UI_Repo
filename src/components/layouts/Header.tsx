@@ -115,7 +115,7 @@ const Header: React.FC<HeaderProps> = () => {
           }}
         >
           {organizationList.map((item) => (
-            <MenuItem className="w-[160px]" onClick={() => handleClose(item)}>
+            <MenuItem key={item.code} className="w-[160px]" onClick={() => handleClose(item)}>
               {item.title}
             </MenuItem>
           ))}

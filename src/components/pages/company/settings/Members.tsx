@@ -2,7 +2,7 @@ import { Add, FilterList, PictureAsPdf, Search } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { access } from "fs";
 import React, { useState } from "react";
-import AddNewMemberForm from "./AddNewMemberForm";
+import AddNewMemberForm from "../../../common/AddNewMemberForm";
 
 const applicantData = [
   {

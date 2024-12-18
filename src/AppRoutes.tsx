@@ -114,9 +114,6 @@ export default function AppRoutes() {
           <Route path="settings" element={<VndSettings />} />
         </Route>
 
-        {/* Shared Routes */}
-        <Route path="/dashboard" element={<Navigate to={`/${role[0]}/dashboard`} replace />} />
-        <Route path="/job/:id" element={<RequirementDetails />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
