@@ -8,6 +8,7 @@ import { Button, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } fr
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import SideMenu from './SideMenu';
+import SideMenu2 from './SideMenu2';
 
 
 interface LayoutProps { }
@@ -18,7 +19,7 @@ const Layout: React.FC<LayoutProps> = () => {
     <div className="h-screen">
       <Header />
       <div className="h-[calc(100%-52px)] flex">
-        <SideMenu />
+        <SideMenu2 />
         <div className="w-[calc(100%-160px)] h-full overflow-auto">
           <Outlet />
         </div>
