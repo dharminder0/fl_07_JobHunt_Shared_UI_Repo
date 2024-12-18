@@ -2,7 +2,7 @@ import { Link, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
-const companies = [
+const invitedData = [
   {
     id: 1,
     name: "Fleek IT Solutions",
@@ -33,26 +33,28 @@ const companies = [
     contracts: "Pending Agreements",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
-  {
-    id: 4,
-    name: "SDET Tech Pvt. Ltd",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "0-10", "App Tech"],
-    place: "Mumbai",
-    contracts: "Pending Approval",
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-  },
-  {
-    id: 5,
-    name: "JigNect Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-500", "Other Tech"],
-    place: "Pune",
-    contracts: "Approved",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-  },
+];
+
+const requestedData = [{
+  id: 4,
+  name: "SDET Tech Pvt. Ltd",
+  description:
+    "Square builds common business tools in unconventional ways and used best technologies...",
+  tags: ["Onsite", "0-10", "App Tech"],
+  place: "Mumbai",
+  contracts: "Pending Approval",
+  logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+},
+{
+  id: 5,
+  name: "JigNect Technologies",
+  description:
+    "Take control of your money. Truebill develops a mobile app for you business...",
+  tags: ["Onsite", "100-500", "Other Tech"],
+  place: "Pune",
+  contracts: "Approved",
+  logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+},
 ];
 
 export default function VendorOnboarding() {
@@ -75,12 +77,12 @@ export default function VendorOnboarding() {
         <Tab value="Requested" label="Requested for Empanelment" />
       </Tabs>
 
-      {(value == "Invited" || value == "Requested") && (
         <div className="mt-4">
-          {/* Company Cards */}
+          {/* Invited */}
+      {(value == "Invited") && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
-              {companies.map((company, idx) => (
+              {invitedData.map((company, idx) => (
                 <Grid
                   item
                   xs={12}
@@ -142,8 +144,76 @@ export default function VendorOnboarding() {
               ))}
             </Grid>
           </Grid>
-        </div>
       )}
+
+{/* Requested */}
+{(value == "Requested") && (
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={3}>
+              {requestedData.map((company, idx) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  key={idx}
+                  // onClick={() => handleDetails(company.id)}
+                >
+                  <div className="h-100 border p-4 rounded-md cursor-pointer">
+                    <div className="flex align-center mb-4">
+                      <img
+                        src={
+                          !company.logo
+                            ? "/assets/images/Companylogo.png"
+                            : company.logo
+                        }
+                        alt={company.name}
+                        className="me-3"
+                        style={{ width: 50, height: 50 }}
+                      />
+                      <div>
+                        <p className="text-title font-bold">{company.name}</p>
+                        <p className="text-base">{company.place}</p>
+                        {company.contracts && (
+                          <Link
+                            href="#"
+                            underline="none"
+                            fontSize={12}
+                          >
+                            {company.contracts}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-base">{company.description}</p>
+                    <div className="flex flex-wrap mt-2">
+                      {company.tags.map((tag, idx) => (
+                        // <Typography
+                        //   key={idx}
+                        //   variant="caption"
+                        //   className="p-1 border rounded"
+                        //   marginTop={1}
+                        //   marginRight={1}
+                        // >
+                        //   {tag}
+                        // </Typography>
+                        <Chip
+                          key={idx}
+                          label={tag}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+      )}
+        </div>
     </div>
   );
 }
