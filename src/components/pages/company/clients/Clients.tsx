@@ -12,6 +12,7 @@ const clientDataObj = [
     activeContracts: 10,
     pastContracts: 20,
     status: "Active",
+    logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const clientDataObj = [
     activeContracts: 8,
     pastContracts: 16,
     status: "Active",
+    logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ const clientDataObj = [
     activeContracts: 6,
     pastContracts: 13,
     status: "Active",
+    logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ const clientDataObj = [
     activeContracts: 5,
     pastContracts: 12,
     status: "Active",
+    logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
     id: 5,
@@ -44,6 +48,7 @@ const clientDataObj = [
     activeContracts: 7,
     pastContracts: 17,
     status: "Active",
+    logo: "https://companieslogo.com/img/orig/CTSH-82a8444b.png",
   },
 ];
 
@@ -55,7 +60,7 @@ export default function Clients() {
     navigate(`${id}`);
   };
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Box className="flex items-center justify-end my-2">
         <Box className="flex items-center space-x-4">
           <TextField
@@ -92,7 +97,16 @@ export default function Clients() {
                 key={index}
                 onClick={() => handleRowClick(item.id)}
               >
-                <th className="add-right-shadow">{item.name}</th>
+                <th className="add-right-shadow wide-250">                
+                  <div className="flex">
+                    <img
+                      src={item.logo}
+                      style={{ height: 16, width: 16 }}
+                      className="me-1"
+                    />
+                   {item.name}
+                  </div>                 
+                </th>
                 <td>{item.requirement}</td>
                 <td>{item.activeContracts}</td>
                 <td>{item.pastContracts}</td>

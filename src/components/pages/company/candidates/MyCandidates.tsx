@@ -20,6 +20,8 @@ const applicantData = [
     client: "Airtel",
     status: "In Review",
     date: "13-07-2024",
+    vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    clientLogo:"https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
     vendor: "DevStringX Technologies",
@@ -28,6 +30,8 @@ const applicantData = [
     client: "IBM Consulting",
     status: "Shortlisted",
     date: "12-06-2024",
+    vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    clientLogo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
     vendor: "Binemiles Technologies",
@@ -36,6 +40,8 @@ const applicantData = [
     client: "Capgemini",
     status: "Declined",
     date: "18-05-2024",
+    vendorLogo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
+    clientLogo:"https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
   },
   {
     vendor: "SDET Tech Pvt. Ltd",
@@ -44,6 +50,8 @@ const applicantData = [
     client: "NTT DATA",
     status: "Hired",
     date: "11-04-2024",
+    vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    clientLogo:"https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
     vendor: "Fleek IT Solutions",
@@ -52,14 +60,18 @@ const applicantData = [
     client: "Airtel",
     status: "Hired",
     date: "13-07-2024",
+    vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    clientLogo:"https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
     vendor: "SDET Tech Pvt. Ltd",
     name: "Vaibhav Rastogi",
     requirement: "Devops AWS Certified engineer",
     client: "NTT DATA",
-    status: "Interview Schedule",
+    status: "Interview Scheduled",
     date: "11-04-2024",
+    vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    clientLogo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
     vendor: "DevStringX Technologies",
@@ -68,6 +80,8 @@ const applicantData = [
     client: "IBM Consulting",
     status: "Shortlisted",
     date: "12-06-2024",
+    vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    clientLogo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
     vendor: "Binemiles Technologies",
@@ -76,14 +90,18 @@ const applicantData = [
     client: "Capgemini",
     status: "Declined",
     date: "18-05-2024",
+    vendorLogo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    clientLogo:"https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
   {
     vendor: "SDET Tech Pvt. Ltd",
     name: "Amit Kumar",
     requirement: "Devops AWS Certified engineer",
     client: "NTT DATA",
-    status: "Interview Schedule",
+    status: "Interview Scheduled ",
     date: "11-04-2024",
+    vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    clientLogo:"https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
   },
 ];
 
@@ -97,7 +115,7 @@ export default function MyCandidates() {
     status: [
       "In Review",
       "Shortlisted",
-      "Interview Schedule",
+      "Interview Scheduled",
       "Declined",
       "Hired",
     ],
@@ -125,7 +143,7 @@ export default function MyCandidates() {
   }, [searchFilter]);
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Box className="flex items-center justify-end my-2">
         <Box className="flex items-center space-x-4">
           <TextField
@@ -185,9 +203,27 @@ export default function MyCandidates() {
                 // onClick={() => handleRowClick(applicant.id)}
               >
                 <th className="add-right-shadow">{applicant.name}</th>
-                <td>{applicant.vendor}</td>
+                <td className="wide-250">
+                  <div className="flex ">
+                    <img
+                      src={applicant.vendorLogo}
+                      style={{ height: 16, width: 16 }}
+                      className="me-1"
+                    />
+                    {applicant.vendor}
+                  </div>
+                  </td>
                 <td>{applicant.requirement}</td>
-                <td>{applicant.client}</td>
+                <td className="wide-250">
+                <div className="flex">
+                    <img
+                      src={applicant.clientLogo}
+                      style={{ height: 16, width: 16 }}
+                      className="me-1"
+                    />
+                    {applicant.client}
+                  </div>
+                </td>
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full ${

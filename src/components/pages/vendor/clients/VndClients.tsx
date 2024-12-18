@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 import { FilterList, Search } from "@mui/icons-material";
 
-const companies = [
+const activieClients = [
   {
     id: 1,
     name: "Fleek IT Solutions",
@@ -36,6 +36,9 @@ const companies = [
     contracts: "12",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
+];
+
+const archivedClients = [
   {
     id: 4,
     name: "SDET Tech Pvt. Ltd",
@@ -71,62 +74,51 @@ const VndClients = () => {
     setTabValue(newValue);
   };
   return (
-    <div className="px-6">
+    <div className="px-4 py-1">
       {/* Header */}
 
-      <Tabs
-        value={tabValue}
-        onChange={handleChange}
-        textColor="primary"
-        indicatorColor="primary"
-        aria-label="secondary tabs example"
-      >
-        <Tab value="Active" label="Active Clients" />
-        <Tab value="Archived" label="Archived Clients" />
-      </Tabs>
+      <div className="flex items-center justify-between mb-3">
+        <div className="w-1/2">
+          <Tabs
+            value={tabValue}
+            onChange={handleChange}
+            textColor="primary"
+            indicatorColor="primary"
+            aria-label="secondary tabs example"
+          >
+            <Tab value="Active" label="Active Clients" />
+            <Tab value="Archived" label="Archived Clients" />
+          </Tabs>
+        </div>
 
-      {(tabValue == "Active" || tabValue == "Archived") && (
-        <>
-          <div className="flex justify-end items-center my-4">
-            {/* <div className="flex w-3/5 items-center">
+        <div className="w-1/2 flex justify-end">
+          <Box className="flex items-center justify-end my-2">
+            <Box className="flex items-center space-x-4">
               <TextField
-                fullWidth
-                label="Company title or keyword"
                 variant="outlined"
                 size="small"
+                placeholder="Search Client"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                InputProps={{
+                  startAdornment: <Search className="mr-2" fontSize="small" />,
+                }}
               />
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                sx={{ width: 170, marginLeft: 2 }}
-              >
-                Search
+              <Button variant="outlined" startIcon={<FilterList />}>
+                Filter
               </Button>
-            </div> */}
-             <Box className="flex items-center justify-end my-2">
-              <Box className="flex items-center space-x-4">
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  placeholder="Search Client"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  InputProps={{
-                    startAdornment: <Search className="mr-2" fontSize="small" />,
-                  }}
-                />
-                <Button variant="outlined" startIcon={<FilterList />}>
-                  Filter
-                </Button>
-              </Box>
             </Box>
-          </div>
+          </Box>
+        </div>
+      </div>
 
+      <>
+        {/* Active */}
+        {tabValue == "Active" && (
           <Grid container spacing={4}>
             <Grid size={12}>
               <Grid container spacing={3}>
-                {companies.map((company, idx) => (
+                {activieClients.map((company, idx) => (
                   <Grid
                     size={3}
                     key={idx}
@@ -173,8 +165,62 @@ const VndClients = () => {
               </Grid>
             </Grid>
           </Grid>
-        </>
-      )}
+        )}
+
+        {/* Archived */}
+        {tabValue == "Archived" && (
+          <Grid container spacing={4}>
+            <Grid size={12}>
+              <Grid container spacing={3}>
+                {archivedClients.map((company, idx) => (
+                  <Grid
+                    size={3}
+                    key={idx}
+                    onClick={() => handleDetails(company.id)}
+                  >
+                    <div className="h-100 border p-4 rounded-md cursor-pointer">
+                      <div className="flex align-center mb-4">
+                        <img
+                          src={
+                            !company.logo
+                              ? "/assets/images/Companylogo.png"
+                              : company.logo
+                          }
+                          alt={company.name}
+                          className="me-3"
+                          style={{ width: 50, height: 50 }}
+                        />
+                        <div>
+                          <p className="text-title font-bold">{company.name}</p>
+                          <p className="text-base">{company.place}</p>
+                          {company.contracts && (
+                            <p className="text-base">
+                              {company.contracts} Contracts
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-base">{company.description}</p>
+                      <div className="flex flex-wrap mt-2">
+                        {company.tags.map((tag, idx) => (
+                          <Chip
+                            key={idx}
+                            label={tag}
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: 10 }}
+                            className="my-1 me-1"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+      </>
     </div>
   );
 };

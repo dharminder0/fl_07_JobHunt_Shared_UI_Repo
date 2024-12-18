@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Divider,
   Chip,
-  Box
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FilterList, Search } from "@mui/icons-material";
@@ -25,7 +25,7 @@ const companies = [
     id: 1,
     name: "Cyient Limited",
     description:
-      "Stripe is a software platform for starting and running internet businesses.",
+      "Stripe is a software platform for starting and running internet businesses with this platform.",
     tags: ["Onsite", "50-100", "QA Testing"],
     place: "Noida",
     logo: "https://www.cyient.com/hubfs/enhancer.png",
@@ -64,7 +64,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-200", "Other Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.ucodice.com/images/new_logo_for_white_background.png",
   },
   {
     id: 6,
@@ -73,7 +73,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "50-100", "App Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.shadowinfosystem.com/static/media/shadow-png-logo2-1.53ac2f8235b19116a576.png",
   },
   {
     id: 7,
@@ -82,7 +82,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-200", "Other Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://nexthoughts.com/wp-content/uploads/2019/12/cropped-Fevicon-logo-192x192.png",
   },
   {
     id: 8,
@@ -91,7 +91,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "10-50", "Web Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://static.wixstatic.com/media/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png",
   },
   {
     id: 7,
@@ -100,22 +100,22 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "50-100", "App Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.essindia.com/assets/img/favicon.png",
   },
 ];
 
 const MyClients = () => {
   const navigate = useNavigate();
-   const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
   const handleDetails = (id: number) => {
     navigate(`${id}`);
   };
   return (
-    <div className="px-6">
+    <div className="px-4 pb-4">
       {/* Header */}
 
       {/* Search and Filters */}
-      <div className="flex justify-between items-center my-4">
+      <div className="flex justify-between items-center mt-1">
         <h5 className="text-heading">Find Vendors</h5>
         {/* <div className="flex w-3/5 items-center">
           <TextField
@@ -141,25 +141,25 @@ const MyClients = () => {
           >
             Search
           </Button>
-        </div> */}        
+        </div> */}
 
         <Box className="flex items-center justify-end my-2">
-              <Box className="flex items-center space-x-4">
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  placeholder="Search Vendors"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  InputProps={{
-                    startAdornment: <Search className="mr-2" fontSize="small" />,
-                  }}
-                />
-                <Button variant="outlined" startIcon={<FilterList />}>
-                  Filter
-                </Button>
-              </Box>
-            </Box>
+          <Box className="flex items-center space-x-4">
+            <TextField
+              variant="outlined"
+              size="small"
+              placeholder="Search Vendors"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              InputProps={{
+                startAdornment: <Search className="mr-2" fontSize="small" />,
+              }}
+            />
+            <Button variant="outlined" startIcon={<FilterList />}>
+              Filter
+            </Button>
+          </Box>
+        </Box>
       </div>
 
       {/* <Typography variant="body2">

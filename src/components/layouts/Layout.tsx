@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = () => {
       <Header />
       <div className="h-[calc(100%-52px)] flex">
         <SideMenu2 />
-        <div className="w-[calc(100%-160px)] h-full overflow-auto">
+        <div className="w-[calc(100%-180px)] h-full overflow-auto">
           <Outlet />
         </div>
       </div>

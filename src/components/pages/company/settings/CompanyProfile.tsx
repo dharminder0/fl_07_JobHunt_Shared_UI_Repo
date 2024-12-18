@@ -30,7 +30,7 @@ const CompanyProfile = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4">
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">

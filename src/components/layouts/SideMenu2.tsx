@@ -87,13 +87,12 @@ const SideMenu2: React.FC<SideMenu2Props> = () => {
           path: "/company/clients",
         },
         {
-          text: "My Vendors",
+          text: "Vendors",
           icon: <BusinessOutlinedIcon fontSize="inherit" />,
           id: 4,
-          // path: "/company/myvendors",
           child: [
             {
-              text: "Vendors",
+              text: "Empanelled",
               icon: <BusinessOutlinedIcon fontSize="inherit" />,
               id: 1,
               path: "/company/myvendors",
@@ -184,18 +183,26 @@ const SideMenu2: React.FC<SideMenu2Props> = () => {
           icon: <BusinessOutlinedIcon fontSize="inherit" />,
           id: 4,
           path: "/vendor/clients",
-        },
-        {
-          text: "Search Clients",
-          icon: <ScreenSearchDesktopOutlinedIcon fontSize="inherit" />,
-          id: 5,
-          path: "/vendor/searchclient",
-        },
-        {
-          text: "Client Onboarding",
-          icon: <HandshakeOutlinedIcon fontSize="inherit" />,
-          id: 6,
-          path: "/vendor/onboarding",
+          child: [
+            {
+              text: "Empanelled",
+              icon: <BusinessOutlinedIcon fontSize="inherit" />,
+              id: 11,
+              path: "/vendor/clients",
+            },
+            {
+              text: "Search",
+              icon: <ScreenSearchDesktopOutlinedIcon fontSize="inherit" />,
+              id: 22,
+              path: "/vendor/searchclient",
+            },
+            {
+              text: "Onboarding",
+              icon: <HandshakeOutlinedIcon fontSize="inherit" />,
+              id: 33,
+              path: "/vendor/onboarding",
+            },
+          ]
         },
         {
           text: "Messages",
@@ -240,8 +247,8 @@ const SideMenu2: React.FC<SideMenu2Props> = () => {
   };
 
   return (
-    <div className="w-[160px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
-      <div className="overflow-auto h-[calc(100%-82px)]">
+    <div className="w-[180px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
+      <div className="overflow-auto h-[calc(100%-75px)]">
         <List disablePadding>
           {
             menuItems[organizationType]?.main?.map((item: any, index: number) => (
@@ -280,7 +287,7 @@ const SideMenu2: React.FC<SideMenu2Props> = () => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex w-full px-1 py-1 gap-1 items-center rounded-md ${
+                  `flex w-full p-1 pl-2 gap-1 items-center rounded-md ${
                     isActive
                       ? "bg-primary-hover text-primary"
                       : "text-secondary-text"
@@ -295,11 +302,11 @@ const SideMenu2: React.FC<SideMenu2Props> = () => {
                       className="rounded-full"
                       style={{ height: 32, width: 32 }}
                     />
-                    <div className="w-[110px]">
-                      <p className="text-base text-secondary-text truncate text-ellipsis">
+                    <div className={`w-[110px] ${isActive ? "!text-primary" : "!text-secondary-text"}`}>
+                      <p className="text-base truncate text-ellipsis">
                         Admin
                       </p>
-                      <p className="text-info truncate text-secondary-text text-ellipsis">
+                      <p className="text-info truncate text-ellipsis">
                         admin@fleek.com
                       </p>
                     </div>
@@ -309,25 +316,14 @@ const SideMenu2: React.FC<SideMenu2Props> = () => {
             </ListItemButton>
           )
         )}
-        <ListItemButton
-        classes={{
-          root: 'gap-1 !p-1 !pl-2 text-secondar-hover'
-        }}
-          key={'logout'}
+        <Divider sx={{ marginTop: 1.5, marginBottom: 1 }} />
+        <div
           onClick={handleLogout}
+          className="text-info flex items-center justify-end text-indigo-500 cursor-pointer px-2 hover:text-indigo-700"
         >
-          <ListItemIcon
-            className={`!min-w-[unset] !w-[18px] !text-primary`}
-          >
-            <Logout fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText
-            primary="Logout"
-            classes={{
-              primary: "!text-base ",
-            }}
-          />
-        </ListItemButton>
+          <Logout fontSize="inherit" sx={{ mr: 0.5 }} />
+          Logout
+        </div>
       </List>
     </div>
   );
@@ -345,6 +341,9 @@ const SidebarItemCollapse: React.FC<SidebarItemCollapseProps> = ({ item, isOpen,
   return (
     <>
       <ListItemButton
+        classes={{
+          root: '!text-secondary-text'
+        }}
         onClick={onToggle}
         sx={{
           padding: 0
@@ -365,7 +364,7 @@ const SidebarItemCollapse: React.FC<SidebarItemCollapseProps> = ({ item, isOpen,
             }}
           />
         </div>
-        {isOpen ? <ExpandLessOutlinedIcon className="!text-secondary-text" fontSize="small" /> : <ExpandMoreOutlinedIcon fontSize="small" />}
+        {isOpen ? <ExpandLessOutlinedIcon color="inherit" fontSize="small" /> : <ExpandMoreOutlinedIcon color="inherit" fontSize="small" />}
       </ListItemButton>
       <Collapse in={isOpen} timeout="auto">
         <List disablePadding

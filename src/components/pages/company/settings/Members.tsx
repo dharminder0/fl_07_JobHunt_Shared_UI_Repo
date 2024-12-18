@@ -2,6 +2,7 @@ import { Add, FilterList, PictureAsPdf, Search } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { access } from "fs";
 import React, { useState } from "react";
+import AddNewMemberForm from "./AddNewMemberForm";
 
 const applicantData = [
   {
@@ -29,8 +30,8 @@ export default function Members() {
   );
 
   return (
-    <div className="p-4">
-      <Box className="flex items-center justify-end my-2">
+    <div className="px-4 py-3">
+      <Box className="flex items-center justify-end mb-2">
         <Box className="flex items-center space-x-4">
           <TextField
             variant="outlined"
@@ -45,9 +46,7 @@ export default function Members() {
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
-          <Button variant="contained" startIcon={<Add />}>
-            Invite new team member
-          </Button>
+          <AddNewMemberForm />
         </Box>
       </Box>
       <div className="table-body">
