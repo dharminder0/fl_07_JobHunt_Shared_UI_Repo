@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Typography,
-  Grid,
-  Box,
-  Tabs,
-  Tab,
-  Chip,
-  Link,
-  IconButton,
-} from "@mui/material";
+import { Grid, Link, IconButton } from "@mui/material";
 import {
   Edit,
   Instagram,
@@ -17,12 +8,10 @@ import {
   LocationOnOutlined,
   MailOutline,
   Phone,
-  PictureAsPdf,
-  Twitter,
   X,
 } from "@mui/icons-material";
 
-const CompanyProfile = () => {
+const OrganizationProfile = () => {
   const [value, setValue] = React.useState("one");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -65,18 +54,6 @@ const CompanyProfile = () => {
         {/* Company Profile */}
         <Grid item xs={12} md={9}>
           <div className="mt-2">
-            {/* <p className="text-gray-700 text-base">
-              Opstree Solutions is a Digital Transformation and Platform
-              Engineer Partner. We empower technology leaders and teams to
-              deliver the desired tech outcomes. Empower your business with
-              tailored consulting solutions to optimize applications,
-              infrastructure, and processes. Our experts leverage automation,
-              AI, and cloud technologies to deliver smarter, more secure, and
-              cost-effective operations, driving improved agility and
-              sustainable growth. Specialized solutions designed to address
-              unique needs of your industry, providing strategic support
-              essential for business success.
-            </p> */}
             <p className="text-base text-gray-700 group/item flex  mb-2">
               Opstree Solutions is a Digital Transformation and Platform
               Engineer Partner. We empower technology leaders and teams to
@@ -199,4 +176,4 @@ const CompanyProfile = () => {
   );
 };
 
-export default CompanyProfile;
+export default OrganizationProfile;

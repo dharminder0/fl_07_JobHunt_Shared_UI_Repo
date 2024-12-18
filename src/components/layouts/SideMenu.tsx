@@ -88,7 +88,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         path: "/company/messages"
       }],
       settings: [{
-        text: "Company Profile",
+        text: "Organization Profile",
         icon: <ContactPageOutlinedIcon fontSize="inherit" />,
         id: 0,
         path: "/company/profile"
@@ -102,12 +102,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         icon: <PeopleOutlinedIcon fontSize="inherit" />,
         id: 2,
         path: "/company/members"
-      } // {
-      //   text: "Settings",
-      //   icon: <Settings fontSize="inherit" />,
-      //   id: 3,
-      //   path: "/company/settings",
-      // },
+      }
       ],
       account: [{
         id: 0,
@@ -163,7 +158,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         path: "/vendor/messages"
       }],
       settings: [{
-        text: "Vendor Profile",
+        text: "Organization Profile",
         icon: <PersonOutlineOutlined fontSize="inherit" />,
         id: 0,
         path: "/vendor/profile"
