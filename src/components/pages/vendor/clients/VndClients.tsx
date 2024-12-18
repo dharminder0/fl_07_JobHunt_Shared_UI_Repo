@@ -8,56 +8,53 @@ import { FilterList, Search } from "@mui/icons-material";
 const activieClients = [
   {
     id: 1,
-    name: "Fleek IT Solutions",
-    description:
-      "Stripe is a software platform for starting and running internet businesses.",
+    name: "Teleperformance",
+    description: "Teleperformance is the leading global provider of outsourced Digital Integrated Business Services.",
     tags: ["Onsite", "50-100", "QA Testing"],
     place: "Noida",
     contracts: "20",
-    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    logo: "https://www.teleperformance.com/css/assets/favicon.ico",
   },
   {
     id: 2,
-    name: "DevStringX Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
+    name: "KPIT Technologiess",
+    description:"Fully integrated technology & services that power the world’s best brands today and into the future.",
     tags: ["Onsite", "10-50", "App Tech"],
     place: "Delhi(NCR)",
     contracts: "10",
-    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
   },
   {
     id: 3,
-    name: "Binemiles Technologies",
+    name: "Mphasis",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "500+", "Other Tech"],
     place: "Gurgaon",
     contracts: "12",
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
   },
 ];
 
 const archivedClients = [
   {
     id: 4,
-    name: "SDET Tech Pvt. Ltd",
+    name: "Fidelity Information Services",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
     place: "Mumbai",
     contracts: "16",
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
   },
   {
     id: 5,
-    name: "JigNect Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
+    name: "coforge",
+    description: "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-500", "Other Tech"],
     place: "Pune",
     contracts: "18",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "	https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
   },
 ];
 

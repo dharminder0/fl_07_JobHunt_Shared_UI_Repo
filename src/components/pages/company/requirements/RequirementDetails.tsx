@@ -281,8 +281,8 @@ const RequirementDetails = () => {
                     // onClick={() => handleRowClick(applicant.id)}
                   >
                     <th className="add-right-shadow">{applicant.name}</th>                    
-                    <td>
-                      <div className="flex items-center wide-250">
+                    <td className="wide-250">
+                      <div className="flex items-center">
                         <img
                           src={applicant.logo}
                           style={{ height: 16, width: 16 }}
