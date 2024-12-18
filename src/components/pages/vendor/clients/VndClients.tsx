@@ -38,26 +38,28 @@ const activieClients = [
   },
 ];
 
-const archivedClients = [{
-  id: 4,
-  name: "SDET Tech Pvt. Ltd",
-  description:
-    "Square builds common business tools in unconventional ways and used best technologies...",
-  tags: ["Onsite", "0-10", "App Tech"],
-  place: "Mumbai",
-  contracts: "16",
-  logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-},
-{
-  id: 5,
-  name: "JigNect Technologies",
-  description:
-    "Take control of your money. Truebill develops a mobile app for you business...",
-  tags: ["Onsite", "100-500", "Other Tech"],
-  place: "Pune",
-  contracts: "18",
-  logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-},]
+const archivedClients = [
+  {
+    id: 4,
+    name: "SDET Tech Pvt. Ltd",
+    description:
+      "Square builds common business tools in unconventional ways and used best technologies...",
+    tags: ["Onsite", "0-10", "App Tech"],
+    place: "Mumbai",
+    contracts: "16",
+    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+  },
+  {
+    id: 5,
+    name: "JigNect Technologies",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "100-500", "Other Tech"],
+    place: "Pune",
+    contracts: "18",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
+];
 
 const VndClients = () => {
   const navigate = useNavigate();
@@ -72,17 +74,18 @@ const VndClients = () => {
     setTabValue(newValue);
   };
   return (
-    <div className="px-6">
+    <div className="px-4 py-1">
       {/* Header */}
 
-      <div className="flex items-center justify-between my-4">
+      <div className="flex items-center justify-between mb-3">
         <div className="w-1/2">
           <Tabs
             value={tabValue}
             onChange={handleChange}
             textColor="primary"
             indicatorColor="primary"
-            aria-label="secondary tabs example"  >
+            aria-label="secondary tabs example"
+          >
             <Tab value="Active" label="Active Clients" />
             <Tab value="Archived" label="Archived Clients" />
           </Tabs>
@@ -109,9 +112,9 @@ const VndClients = () => {
         </div>
       </div>
 
-        <>
+      <>
         {/* Active */}
-      {(tabValue == "Active") && (
+        {tabValue == "Active" && (
           <Grid container spacing={4}>
             <Grid size={12}>
               <Grid container spacing={3}>
@@ -162,10 +165,10 @@ const VndClients = () => {
               </Grid>
             </Grid>
           </Grid>
-      )}
+        )}
 
-{/* Archived */}
-{(tabValue == "Archived") && (
+        {/* Archived */}
+        {tabValue == "Archived" && (
           <Grid container spacing={4}>
             <Grid size={12}>
               <Grid container spacing={3}>
@@ -216,7 +219,7 @@ const VndClients = () => {
               </Grid>
             </Grid>
           </Grid>
-      )}
+        )}
       </>
     </div>
   );

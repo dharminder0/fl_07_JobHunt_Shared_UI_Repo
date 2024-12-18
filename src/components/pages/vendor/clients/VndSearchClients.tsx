@@ -6,7 +6,8 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Chip,Box,
+  Chip,
+  Box,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -102,11 +103,11 @@ const VndSearchClients = () => {
     navigate(`${id}`);
   };
   return (
-    <div className="px-6">
+    <div className="px-4 py-1">
       {/* Header */}
 
       {/* Search and Filters */}
-      <div className="flex justify-between items-center my-4">
+      <div className="flex justify-between items-center">
         <h5 className="text-heading">Search Clients</h5>
         {/* <div className="flex w-3/5 items-center">
           <TextField

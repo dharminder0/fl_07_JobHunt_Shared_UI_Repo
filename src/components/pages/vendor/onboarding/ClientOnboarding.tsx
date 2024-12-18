@@ -35,26 +35,27 @@ const invitedData = [
   },
 ];
 
-const RequestedData = [{
-  id: 4,
-  name: "SDET Tech Pvt. Ltd",
-  description:
-    "Square builds common business tools in unconventional ways and used best technologies...",
-  tags: ["Onsite", "0-10", "App Tech"],
-  place: "Mumbai",
-  contracts: "Pending Approval",
-  logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-},
-{
-  id: 5,
-  name: "JigNect Technologies",
-  description:
-    "Take control of your money. Truebill develops a mobile app for you business...",
-  tags: ["Onsite", "100-500", "Other Tech"],
-  place: "Pune",
-  contracts: "Approved",
-  logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-},
+const RequestedData = [
+  {
+    id: 4,
+    name: "SDET Tech Pvt. Ltd",
+    description:
+      "Square builds common business tools in unconventional ways and used best technologies...",
+    tags: ["Onsite", "0-10", "App Tech"],
+    place: "Mumbai",
+    contracts: "Pending Approval",
+    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+  },
+  {
+    id: 5,
+    name: "JigNect Technologies",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "100-500", "Other Tech"],
+    place: "Pune",
+    contracts: "Approved",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
 ];
 
 export default function ClientOnboarding() {
@@ -65,7 +66,7 @@ export default function ClientOnboarding() {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Tabs
         value={value}
         onChange={handleChange}
@@ -79,7 +80,7 @@ export default function ClientOnboarding() {
 
       <div className="mt-4">
         {/* Invited */}
-        {(value == "Invited") && (
+        {value == "Invited" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {invitedData.map((company, idx) => (
@@ -89,7 +90,7 @@ export default function ClientOnboarding() {
                   sm={6}
                   md={3}
                   key={idx}
-                // onClick={() => handleDetails(company.id)}
+                  // onClick={() => handleDetails(company.id)}
                 >
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
@@ -134,7 +135,7 @@ export default function ClientOnboarding() {
         )}
 
         {/* Requested */}
-        {(value == "Requested") && (
+        {value == "Requested" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {RequestedData.map((company, idx) => (
@@ -144,7 +145,7 @@ export default function ClientOnboarding() {
                   sm={6}
                   md={3}
                   key={idx}
-                // onClick={() => handleDetails(company.id)}
+                  // onClick={() => handleDetails(company.id)}
                 >
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">

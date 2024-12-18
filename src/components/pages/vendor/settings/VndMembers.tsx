@@ -29,8 +29,8 @@ export default function VndMembers() {
   );
 
   return (
-    <div className="p-4">
-      <Box className="flex items-center justify-end my-2">
+    <div className="px-4 py-3">
+      <Box className="flex items-center justify-end mb-2">
         <Box className="flex items-center space-x-4">
           <TextField
             variant="outlined"

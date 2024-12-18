@@ -1,5 +1,5 @@
 import { Add, FilterList, Search } from "@mui/icons-material";
-import { Button,Box, TextField } from "@mui/material";
+import { Button, Box, TextField } from "@mui/material";
 import React, { useState } from "react";
 
 interface VndBench {}
@@ -42,9 +42,9 @@ const benchData = [
 const VndBench: React.FC<VndBench> = () => {
   const [search, setSearch] = useState("");
   return (
-    <div className="px-4">
-      <div className="mt-4 flex justify-end items-center">
-        <Box className="flex items-center justify-end my-2">
+    <div className="px-4 py-3">
+      <div className="flex justify-end items-center">
+        <Box className="flex items-center justify-end">
           <Box className="flex items-center space-x-4">
             <TextField
               variant="outlined"
@@ -71,7 +71,7 @@ const VndBench: React.FC<VndBench> = () => {
           </Box>
         </Box>
       </div>
-      <div className="table-body mt-4">
+      <div className="table-body my-3">
         <table>
           <thead>
             <tr>
