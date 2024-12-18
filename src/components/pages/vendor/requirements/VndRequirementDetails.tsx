@@ -34,24 +34,28 @@ const VndRequirementDetails = () => {
       name: "Harshit Tandon",
       stage: "In Review",
       date: "13-07-2024",
+      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       vendor: "DevStringX Technologies",
       name: "Raj Pathar",
       stage: "Shortlisted",
       date: "12-06-2024",
+      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico"
     },
     {
       vendor: "Binemiles Technologies",
       name: "Sajid Sarkar",
       stage: "Declined",
       date: "18-05-2024",
+      logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
     },
     {
       vendor: "SDET Tech Pvt. Ltd",
       name: "Amit Kumar",
       stage: "Hired",
       date: "11-04-2024",
+      logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
   ];
 
@@ -259,7 +263,16 @@ const VndRequirementDetails = () => {
                     // onClick={() => handleRowClick(applicant.id)}
                   >
                     <th className="add-right-shadow">{applicant.name}</th>
-                    <td>{applicant.vendor}</td>
+                    <td className="wide-250">
+                      <div className="flex items-center">
+                        <img
+                          src={applicant.logo}
+                          style={{ height: 16, width: 16 }}
+                          className="me-1"
+                        />
+                        {applicant.vendor}
+                      </div>
+                    </td>
                     <td>
                       <Typography
                         className={`inline-block px-3 py-1 !text-base rounded-full ${

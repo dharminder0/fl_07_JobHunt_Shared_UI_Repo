@@ -5,56 +5,51 @@ import { Grid, Chip } from "@mui/material";
 const invitedData = [
   {
     id: 1,
-    name: "Fleek IT Solutions",
-    description:
-      "Stripe is a software platform for starting and running internet businesses.",
+    name: "Globant",
+    description: "Stripe is a software platform for starting and running internet businesses.",
     tags: ["Onsite", "50-100", "QA Testing"],
     place: "Noida",
     contracts: "Accepted",
-    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    logo: "https://statics.globant.com/production/public/Fav-icon_Globant_8_2.png",
   },
   {
     id: 2,
-    name: "DevStringX Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
+    name: "Netcracker Technology",
+    description:  "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "10-50", "App Tech"],
     place: "Delhi(NCR)",
     contracts: "Declined",
-    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    logo: "https://www.netcracker.com/assets/templates/v.3.0/favicon/favicon-72.png",
   },
   {
     id: 3,
-    name: "Binemiles Technologies",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
+    name: "Precision Techserve",
+    description: "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "500+", "Other Tech"],
     place: "Gurgaon",
     contracts: "Pending Agreements",
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    logo: "https://www.precisionit.co.in/core/views/6f2230b236/assets/images/fav-icon.png",
   },
 ];
 
 const RequestedData = [
   {
     id: 4,
-    name: "SDET Tech Pvt. Ltd",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
+    name: "GirnarSoft",
+    description:  "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
     place: "Mumbai",
     contracts: "Pending Approval",
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    logo: "https://www.girnarsoft.com/wp-content/uploads/2020/02/fav.png",
   },
   {
     id: 5,
-    name: "JigNect Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
+    name: "RAMTeCH Software Solutions",
+    description:  "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-500", "Other Tech"],
     place: "Pune",
     contracts: "Approved",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.ramtech-corp.com/wp-content/uploads/2021/07/cropped-logo-192x192.png",
   },
 ];
 

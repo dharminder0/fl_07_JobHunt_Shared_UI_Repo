@@ -38,6 +38,7 @@ const VndRequirements = () => {
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
+      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
     },
     {
       id: 2,
@@ -49,6 +50,7 @@ const VndRequirements = () => {
       requirementType: "Hybrid",
       noOfPositions: 5,
       contractPeriod: "12 months",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 3,
@@ -60,6 +62,7 @@ const VndRequirements = () => {
       requirementType: "Onsite",
       noOfPositions: 2,
       contractPeriod: "3 months",
+      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
     },
     {
       id: 4,
@@ -71,6 +74,7 @@ const VndRequirements = () => {
       requirementType: "Remote",
       noOfPositions: 4,
       contractPeriod: "9 months",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 5,
@@ -82,6 +86,7 @@ const VndRequirements = () => {
       requirementType: "Hybrid",
       noOfPositions: 8,
       contractPeriod: "18 months",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
   ];
 
@@ -287,7 +292,14 @@ const VndRequirements = () => {
                   onClick={() => handleRowClick(job.id)}
                 >
                   <th className="add-right-shadow">{job.role}</th>
-                  <td>{job.client}</td>
+                  <td className="flex items-center wide-250">
+                    <img
+                      src={job.logo}
+                      style={{ height: 16, width: 16 }}
+                      className="me-1"
+                    />
+                    {job.client}
+                  </td>
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base rounded-full ${
