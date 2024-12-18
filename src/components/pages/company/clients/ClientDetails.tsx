@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Box, Tabs, Tab, Link, Grid2 } from "@mui/material";
 import { Language, MailOutline, Phone } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
+
 
 const ClientDetails = () => {
   const [value, setValue] = React.useState("one");
+  const location = useLocation();
   const handleRowClick = (id: any) => {};
+  const params = location.state || {};
+
+  useEffect(() => {
+    if(params){
+      params.type == 'active' ? setValue('one') : setValue('two');
+    }
+  }, [params]); 
 
   const activeContracts = [
     {
