@@ -28,6 +28,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    console.log('side menu')
     // Remove login session data from localStorage
     localStorage.removeItem("isLoggedIn"); // Optionally, clear other stored user-related data
 
