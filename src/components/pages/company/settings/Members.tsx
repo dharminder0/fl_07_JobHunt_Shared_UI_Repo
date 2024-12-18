@@ -2,6 +2,7 @@ import { Add, FilterList, PictureAsPdf, Search } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { access } from "fs";
 import React, { useState } from "react";
+import AddNewMemberForm from "./AddNewMemberForm";
 
 const applicantData = [
   {
@@ -45,9 +46,7 @@ export default function Members() {
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
-          <Button variant="contained" startIcon={<Add />}>
-            Invite new team member
-          </Button>
+          <AddNewMemberForm />
         </Box>
       </Box>
       <div className="table-body">

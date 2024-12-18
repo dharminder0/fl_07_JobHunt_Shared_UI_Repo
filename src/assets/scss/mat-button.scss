@@ -48,3 +48,10 @@
   padding: 1px 4px 1px 9px !important;
   color: rgba(0, 0, 0, 0.4) !important;
 }
+
+.MuiButtonBase-root-MuiRadio-root {
+  padding: 5px !important;
+}
+.MuiRadioGroup-root .MuiFormControlLabel-label {
+  font-size: 12px !important;
+}
