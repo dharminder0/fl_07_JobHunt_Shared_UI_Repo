@@ -5,14 +5,14 @@ import { useLocation } from "react-router-dom";
 
 
 const ClientDetails = () => {
-  const [value, setValue] = React.useState("one");
+  const [value, setValue] = React.useState("active");
   const location = useLocation();
   const handleRowClick = (id: any) => {};
   const params = location.state || {};
 
   useEffect(() => {
     if(params){
-      params.type == 'active' ? setValue('one') : setValue('two');
+      params.type == 'active' ? setValue('active') : setValue('past');
     }
   }, [params]); 
 
@@ -209,11 +209,11 @@ const ClientDetails = () => {
                 indicatorColor="primary"
                 aria-label="secondary tabs example"
               >
-                <Tab value="one" label="Active Contracts" />
-                <Tab value="two" label="Past Contracts" />
-                <Tab value="three" label="Open Positions" />
+                <Tab value="active" label="Active Contracts" />
+                <Tab value="past" label="Past Contracts" />
+                <Tab value="open" label="Open Positions" />
               </Tabs>
-              {value === "one" && (
+              {value === "active" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -246,7 +246,7 @@ const ClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "two" && (
+              {value === "past" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -281,7 +281,7 @@ const ClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "three" && (
+              {value === "open" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
