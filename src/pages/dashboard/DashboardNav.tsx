@@ -6,7 +6,6 @@ import MessageIcon from "@mui/icons-material/Message";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import EventIcon from "@mui/icons-material/Event";
-import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
 import DashboardPage from "./DashboardPage";
 import Messages from "./Messages";

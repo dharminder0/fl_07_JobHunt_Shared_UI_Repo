@@ -1,6 +1,7 @@
 import { Add, FilterList, Search } from "@mui/icons-material";
 import { Button, Box, TextField } from "@mui/material";
 import React, { useState } from "react";
+import AddBenchForm from "./AddBenchForm";
 
 interface VndBench {}
 
@@ -59,15 +60,7 @@ const VndBench: React.FC<VndBench> = () => {
             <Button variant="outlined" startIcon={<FilterList />}>
               Filter
             </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ width: 170 }}
-              startIcon={<Add />}
-            >
-              Add Bench
-            </Button>
+            <AddBenchForm />
           </Box>
         </Box>
       </div>

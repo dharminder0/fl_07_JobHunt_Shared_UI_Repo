@@ -14,7 +14,6 @@ import FindClients from "./components/pages/company/FindClients";
 import Messages from "./components/pages/company/Messages";
 import VndRequirements from "./components/pages/vendor/requirements/VndRequirements";
 import VndClients from "./components/pages/vendor/clients/VndClients";
-import VndProfile from "./components/pages/vendor/settings/VndProfile";
 import RequirementDetails from "./components/pages/company/requirements/RequirementDetails";
 import Layout from "./components/layouts/Layout";
 import NotFound from "./components/pages/NotFound/NotFound";
@@ -24,25 +23,20 @@ import VendorOnboarding from "./components/pages/company/onboarding/VendorOnboar
 import MyRequirements from "./components/pages/company/requirements/MyRequirements";
 import MyVendors from "./components/pages/company/my-vendors/MyVendors";
 import FindVendors from "./components/pages/company/find-vendors/FindVendors";
-import CompanyProfile from "./components/pages/company/settings/CompanyProfile";
-import Settings from "./components/pages/company/settings/Settings";
 import VndBench from "./components/pages/vendor/bench/VndBench";
 import VndSearchClients from "./components/pages/vendor/clients/VndSearchClients";
-import VndSettings from "./components/pages/vendor/VndSettings";
-import Subscriptions from "./components/pages/company/settings/Subscriptions";
-import Members from "./components/pages/company/settings/Members";
 import MyCandidates from "./components/pages/company/candidates/MyCandidates";
-import UserDetails from "./components/pages/company/accounts/UserDetails";
+import UserDetails from "./components/pages/user/UserDetails";
 import VndRequirementDetails from "./components/pages/vendor/requirements/VndRequirementDetails";
 import VndCandidates from "./components/pages/vendor/candidates/VndCandidates";
 import ClientOnboarding from "./components/pages/vendor/onboarding/ClientOnboarding";
-import VndUserDetails from "./components/pages/vendor/account/VndUserDetails";
 import VndClientDetails from "./components/pages/vendor/clients/VndClientDetails";
-import VndSubscriptions from "./components/pages/vendor/settings/VndSubscriptions";
-import VndMembers from "./components/pages/vendor/settings/VndMembers";
 import Clients from "./components/pages/company/clients/Clients";
 import ClientDetails from "./components/pages/company/clients/ClientDetails";
 import ProtectedRoute from "./components/shared/ProtectedRoute";
+import OrganizationProfile from "./components/pages/settings/OrganizationProfile";
+import Subscriptions from "./components/pages/settings/Subscriptions";
+import Members from "./components/pages/settings/Members";
 
 export default function AppRoutes() {
   const role = JSON.parse(localStorage.getItem("role") || "[]");
@@ -79,8 +73,7 @@ export default function AppRoutes() {
           </Route>
           <Route path="vndonboarding" element={<VendorOnboarding />} />
           <Route path="candidates" element={<MyCandidates />} />
-          <Route path="profile" element={<CompanyProfile />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="profile" element={<OrganizationProfile />} />
           <Route path="subscriptions" element={<Subscriptions />} />
           <Route path="members" element={<Members />} />
           <Route path="account" element={<UserDetails />} />
@@ -107,11 +100,10 @@ export default function AppRoutes() {
             <Route path=":id" element={<VendorCompanyDetails />} />
           </Route>
           <Route path="onboarding" element={<ClientOnboarding />} />
-          <Route path="profile" element={<VndProfile />} />
-          <Route path="account" element={<VndUserDetails />} />
-          <Route path="subscriptions" element={<VndSubscriptions />} />
-          <Route path="members" element={<VndMembers />} />
-          <Route path="settings" element={<VndSettings />} />
+          <Route path="profile" element={<OrganizationProfile />} />
+          <Route path="subscriptions" element={<Subscriptions />} />
+          <Route path="members" element={<Members />} />
+          <Route path="account" element={<UserDetails />} />
         </Route>
 
         <Route path="/404" element={<NotFound />} />
