@@ -35,26 +35,27 @@ const invitedData = [
   },
 ];
 
-const requestedData = [{
-  id: 4,
-  name: "SDET Tech Pvt. Ltd",
-  description:
-    "Square builds common business tools in unconventional ways and used best technologies...",
-  tags: ["Onsite", "0-10", "App Tech"],
-  place: "Mumbai",
-  contracts: "Pending Approval",
-  logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-},
-{
-  id: 5,
-  name: "JigNect Technologies",
-  description:
-    "Take control of your money. Truebill develops a mobile app for you business...",
-  tags: ["Onsite", "100-500", "Other Tech"],
-  place: "Pune",
-  contracts: "Approved",
-  logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-},
+const requestedData = [
+  {
+    id: 4,
+    name: "SDET Tech Pvt. Ltd",
+    description:
+      "Square builds common business tools in unconventional ways and used best technologies...",
+    tags: ["Onsite", "0-10", "App Tech"],
+    place: "Mumbai",
+    contracts: "Pending Approval",
+    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+  },
+  {
+    id: 5,
+    name: "JigNect Technologies",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "100-500", "Other Tech"],
+    place: "Pune",
+    contracts: "Approved",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
 ];
 
 export default function VendorOnboarding() {
@@ -65,7 +66,7 @@ export default function VendorOnboarding() {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-1">
       <Tabs
         value={value}
         onChange={handleChange}
@@ -77,9 +78,9 @@ export default function VendorOnboarding() {
         <Tab value="Requested" label="Requested for Empanelment" />
       </Tabs>
 
-        <div className="mt-4">
-          {/* Invited */}
-      {(value == "Invited") && (
+      <div className="mt-3">
+        {/* Invited */}
+        {value == "Invited" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {invitedData.map((company, idx) => (
@@ -107,11 +108,7 @@ export default function VendorOnboarding() {
                         <p className="text-title font-bold">{company.name}</p>
                         <p className="text-base">{company.place}</p>
                         {company.contracts && (
-                          <Link
-                            href="#"
-                            underline="none"
-                            fontSize={12}
-                          >
+                          <Link href="#" underline="none" fontSize={12}>
                             {company.contracts}
                           </Link>
                         )}
@@ -144,10 +141,10 @@ export default function VendorOnboarding() {
               ))}
             </Grid>
           </Grid>
-      )}
+        )}
 
-{/* Requested */}
-{(value == "Requested") && (
+        {/* Requested */}
+        {value == "Requested" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {requestedData.map((company, idx) => (
@@ -175,11 +172,7 @@ export default function VendorOnboarding() {
                         <p className="text-title font-bold">{company.name}</p>
                         <p className="text-base">{company.place}</p>
                         {company.contracts && (
-                          <Link
-                            href="#"
-                            underline="none"
-                            fontSize={12}
-                          >
+                          <Link href="#" underline="none" fontSize={12}>
                             {company.contracts}
                           </Link>
                         )}
@@ -212,8 +205,8 @@ export default function VendorOnboarding() {
               ))}
             </Grid>
           </Grid>
-      )}
-        </div>
+        )}
+      </div>
     </div>
   );
 }

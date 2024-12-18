@@ -197,7 +197,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           <p className="text-base">No Applicants</p>
         </div>
       </div>
-      <div className="flex-1 p-6">
+      <div className="flex-1 px-4 pb-4">
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
           <JobStatistics />

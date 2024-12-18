@@ -15,7 +15,7 @@ import {
   InputAdornment,
   Tabs,
   Tab,
-  Box
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -51,29 +51,30 @@ const activeData = [
     place: "Gurgaon",
     contracts: "12",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-  }
+  },
 ];
 
-const archivedData = [{
-  id: 4,
-  name: "SDET Tech Pvt. Ltd",
-  description:
-    "Square builds common business tools in unconventional ways and used best technologies...",
-  tags: ["Onsite", "0-10", "App Tech"],
-  place: "Mumbai",
-  contracts: "16",
-  logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-},
-{
-  id: 5,
-  name: "JigNect Technologies",
-  description:
-    "Take control of your money. Truebill develops a mobile app for you business...",
-  tags: ["Onsite", "100-500", "Other Tech"],
-  place: "Pune",
-  contracts: "18",
-  logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-},
+const archivedData = [
+  {
+    id: 4,
+    name: "SDET Tech Pvt. Ltd",
+    description:
+      "Square builds common business tools in unconventional ways and used best technologies...",
+    tags: ["Onsite", "0-10", "App Tech"],
+    place: "Mumbai",
+    contracts: "16",
+    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+  },
+  {
+    id: 5,
+    name: "JigNect Technologies",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "100-500", "Other Tech"],
+    place: "Pune",
+    contracts: "18",
+    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+  },
 ];
 
 const MyVendors = () => {
@@ -89,9 +90,9 @@ const MyVendors = () => {
     setTabValue(newValue);
   };
   return (
-    <div className="px-6">
+    <div className="px-4">
       {/* Header */}
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between mb-3 mt-1">
         <div className="w-1/2">
           <Tabs
             value={tabValue}
@@ -105,7 +106,7 @@ const MyVendors = () => {
           </Tabs>
         </div>
         <div className="w-1/2 flex justify-end">
-          <div className="flex justify-end items-center my-4">
+          <div className="flex justify-end items-center">
             <Box className="flex items-center justify-end my-2">
               <Box className="flex items-center space-x-4">
                 <TextField
@@ -115,7 +116,9 @@ const MyVendors = () => {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   InputProps={{
-                    startAdornment: <Search className="mr-2" fontSize="small" />,
+                    startAdornment: (
+                      <Search className="mr-2" fontSize="small" />
+                    ),
                   }}
                 />
                 <Button variant="outlined" startIcon={<FilterList />}>
@@ -128,7 +131,7 @@ const MyVendors = () => {
       </div>
       <>
         {/* Active */}
-        {(tabValue == "Active") && (
+        {tabValue == "Active" && (
           <Grid container spacing={4}>
             <Grid item xs={12} md={12}>
               <Grid container spacing={3}>
@@ -194,7 +197,7 @@ const MyVendors = () => {
         )}
 
         {/* Archived */}
-        {(tabValue == "Archived") && (
+        {tabValue == "Archived" && (
           <Grid container spacing={4}>
             <Grid item xs={12} md={12}>
               <Grid container spacing={3}>
