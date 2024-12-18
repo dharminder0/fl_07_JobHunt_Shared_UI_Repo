@@ -28,8 +28,6 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log('side menu');
-    console.log('side menu2');
     // Remove login session data from localStorage
     localStorage.removeItem("isLoggedIn"); // Optionally, clear other stored user-related data
 
@@ -292,7 +290,6 @@ interface SidebarItemProps {
 const SidebarItem: React.FC<SidebarItemProps> = ({
   route
 }) => {
-  console.log(route);
   return <ListItemButton sx={{
     padding: 0
   }}>
