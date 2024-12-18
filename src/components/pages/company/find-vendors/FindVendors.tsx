@@ -64,7 +64,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-200", "Other Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.ucodice.com/images/new_logo_for_white_background.png",
   },
   {
     id: 6,
@@ -73,7 +73,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "50-100", "App Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.shadowinfosystem.com/static/media/shadow-png-logo2-1.53ac2f8235b19116a576.png",
   },
   {
     id: 7,
@@ -82,7 +82,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-200", "Other Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://nexthoughts.com/wp-content/uploads/2019/12/cropped-Fevicon-logo-192x192.png",
   },
   {
     id: 8,
@@ -91,7 +91,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "10-50", "Web Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://static.wixstatic.com/media/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png",
   },
   {
     id: 7,
@@ -100,7 +100,7 @@ const companies = [
       "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "50-100", "App Tech"],
     place: "Pune",
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+    logo: "https://www.essindia.com/assets/img/favicon.png",
   },
 ];
 
