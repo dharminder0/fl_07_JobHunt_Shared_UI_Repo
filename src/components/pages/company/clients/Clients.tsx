@@ -55,11 +55,13 @@ const clientDataObj = [
 export default function Clients() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const handleRowClick = (id: number, Tab: string) => {
-    navigate(`/company/clients/${id}`, {
-      state: { type: Tab }, // Passing state data
+
+  const handleRowClick = (id: number, tab: string) => {
+    navigate(`${id}`, {
+      state: { type: tab }, // Passing state data
     });
   };
+
   return (
     <div className="px-4 py-1">
       <Box className="flex items-center justify-end my-2">
@@ -93,23 +95,27 @@ export default function Clients() {
           </thead>
           <tbody>
             {clientDataObj.map((item, index) => (
-              <tr
-                className="cursor-pointer"
-                key={index}               
-              >
-                <th className="add-right-shadow wide-250"  onClick={() => handleRowClick(item.id,'active')}>                
+              <tr className="cursor-pointer" key={index}>
+                <th
+                  className="add-right-shadow wide-250"
+                  onClick={() => handleRowClick(item.id, "active")}
+                >
                   <div className="flex">
                     <img
                       src={item.logo}
                       style={{ height: 16, width: 16 }}
                       className="me-1"
                     />
-                   {item.name}
-                  </div>                 
+                    {item.name}
+                  </div>
                 </th>
                 <td>{item.requirement}</td>
-                <td onClick={() => handleRowClick(item.id,'active')}>{item.activeContracts}</td>
-                <td onClick={() => handleRowClick(item.id,'past')} >{item.pastContracts}</td>
+                <td onClick={() => handleRowClick(item.id, "active")}>
+                  {item.activeContracts}
+                </td>
+                <td onClick={() => handleRowClick(item.id, "past")}>
+                  {item.pastContracts}
+                </td>
                 <td>{item.status}</td>
               </tr>
             ))}
