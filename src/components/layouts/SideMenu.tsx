@@ -90,7 +90,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         path: "/company/messages"
       }],
       settings: [{
-        text: "Company Profile",
+        text: "Organization Profile",
         icon: <ContactPageOutlinedIcon fontSize="inherit" />,
         id: 0,
         path: "/company/profile"
@@ -104,12 +104,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         icon: <PeopleOutlinedIcon fontSize="inherit" />,
         id: 2,
         path: "/company/members"
-      } // {
-      //   text: "Settings",
-      //   icon: <Settings fontSize="inherit" />,
-      //   id: 3,
-      //   path: "/company/settings",
-      // },
+      }
       ],
       account: [{
         id: 0,
@@ -165,7 +160,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         path: "/vendor/messages"
       }],
       settings: [{
-        text: "Vendor Profile",
+        text: "Organization Profile",
         icon: <PersonOutlineOutlined fontSize="inherit" />,
         id: 0,
         path: "/vendor/profile"
@@ -192,58 +187,60 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     setOpenItem(prev => prev === path ? null : path);
   };
 
-  return <div className="w-[180px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
+  return (
+    <div className="w-[180px] h-full overflow-auto bg-primary-light py-2 shadow-[1px_0_0_0_#D6DDEB]">
       <div className="overflow-auto h-[calc(100%-75px)]">
         <List disablePadding>
           {menuItems[organizationType]?.main?.map((item: any, index: number) => item?.child ? <SidebarItemCollapse key={item.path} item={item} isOpen={openItem === item.path} onToggle={() => handleToggle(item.path)} /> : <SidebarItem route={item} />)}
         </List>
         <Divider sx={{
-        marginTop: 1.5,
-        marginBottom: 1.5
-      }} />
+          marginTop: 1.5,
+          marginBottom: 1.5
+        }} />
         <div className="text-base text-secondary-text my-2 px-1">SETTINGS</div>
         <List disablePadding>
           {menuItems[organizationType]?.settings?.map((item: any, index: number) => item?.child ? <SidebarItemCollapse key={item.path} item={item} isOpen={openItem === item.path} onToggle={() => handleToggle(item.path)} /> : <SidebarItem route={item} />)}
         </List>
       </div>
-     
       <List disablePadding>
         {menuItems[organizationType]?.account?.map((item: any, index: number) => <ListItemButton key={item.path} sx={{
-        padding: 0
-      }}>
-              <NavLink to={item.path} className={({
-          isActive
-        }) => `flex w-full p-1 pl-2 gap-1 items-center rounded-md ${isActive ? "bg-primary-hover text-primary" : "text-secondary-text"}`}>
-                {({
+          padding: 0
+        }}>
+          <NavLink to={item.path} className={({
             isActive
-          }) => <>
-                    <img src={"/assets/images/Avatar.png"} alt="" className="rounded-full" style={{
-              height: 32,
-              width: 32
-            }} />
-                    <div className={`w-[110px] ${isActive ? "!text-primary" : "!text-secondary-text"}`}>
-                      <p className="text-base truncate text-ellipsis">
-                        Admin
-                      </p>
-                      <p className="text-info truncate text-ellipsis">
-                        admin@fleek.com
-                      </p>
-                    </div>
-                  </>}
-              </NavLink>
-            </ListItemButton>)}
+          }) => `flex w-full p-1 pl-2 gap-1 items-center rounded-md ${isActive ? "bg-primary-hover text-primary" : "text-secondary-text"}`}>
+            {({
+              isActive
+            }) => <>
+                <img src={"/assets/images/Avatar.png"} alt="" className="rounded-full" style={{
+                  height: 32,
+                  width: 32
+                }} />
+                <div className={`w-[110px] ${isActive ? "!text-primary" : "!text-secondary-text"}`}>
+                  <p className="text-base truncate text-ellipsis">
+                    Admin
+                  </p>
+                  <p className="text-info truncate text-ellipsis">
+                    admin@fleek.com
+                  </p>
+                </div>
+              </>}
+          </NavLink>
+        </ListItemButton>)}
         <Divider sx={{
-        marginTop: 1.5,
-        marginBottom: 1
-      }} />
+          marginTop: 1.5,
+          marginBottom: 1
+        }} />
         <div onClick={handleLogout} className="text-info flex items-center justify-end text-indigo-500 cursor-pointer px-2 hover:text-indigo-700">
           <Logout fontSize="inherit" sx={{
-          mr: 0.5
-        }} />
+            mr: 0.5
+          }} />
           Logout
         </div>
       </List>
-    </div>;
+    </div>
+  );
+
 };
 
 export default SideMenu;
