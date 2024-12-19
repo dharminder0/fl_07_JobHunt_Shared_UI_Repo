@@ -8,21 +8,23 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
 const VndRequirements = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = location.state || {};
   const [searchInput, setSearchInput] = useState<string>("");
   const [filterList, setFilterList] = useState<any>({
     client: ["Self", "Creative Solutions Ltd.", "Data Insights Group"],
-    status: ["Open", "On hold", "Closed"],
+    status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
     client: "",
-    status: "",
+    status: !params?.status ? "" : params?.status,
     requirementType: "",
   });
   const [jobData, setJobData] = useState<any[]>([]);
@@ -87,6 +89,18 @@ const VndRequirements = () => {
       noOfPositions: 8,
       contractPeriod: "18 months",
       logo: "https://careers.coforge.com/coforge/favicon.ico",
+    },
+    {
+      id: 5,
+      role: "Flutter Developer",
+      status: "Hot",
+      datePosted: "01-05-2024",
+      applicants: "2",
+      client: "KPIT Technologiess",
+      requirementType: "Hybrid",
+      noOfPositions: 6,
+      contractPeriod: "18 months",
+      logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
     },
   ];
 
@@ -283,9 +297,9 @@ const VndRequirements = () => {
                 <th>Status</th>
                 <th>Date Posted</th>
                 <th>Requirement Type</th>
-                <th>No. of Positions</th>
-                <th>Contract period</th>
                 <th>Applicants</th>
+                <th>Contract period</th>
+                <th>No. of Positions</th>
               </tr>
             </thead>
             <tbody>
@@ -313,9 +327,9 @@ const VndRequirements = () => {
                   </td>
                   <td>{job.datePosted}</td>
                   <td>{job.requirementType}</td>
-                  <td>{job.noOfPositions}</td>
-                  <td>{job.contractPeriod}</td>
                   <td>{job.applicants}</td>
+                  <td>{job.contractPeriod}</td>
+                  <td>{job.noOfPositions}</td>
                 </tr>
               ))}
             </tbody>

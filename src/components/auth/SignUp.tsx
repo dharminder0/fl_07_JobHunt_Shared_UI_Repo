@@ -29,23 +29,29 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen container">
       {/* Left Section */}
       <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
         <div className="mb-8 bg-white p-4 w-40">
-          <img src={'/assets/images/bar.png'} alt="JobHunty Logo" className="h-8 w-auto mb-4" />
-          <h2 className="font-bold text-xl">10K+</h2>
-          <p className="text-gray-600 font-medium">People got hired</p>
+          <img
+            src={"/assets/images/bar.png"}
+            alt="JobHunty Logo"
+            className="h-8 w-auto mb-4"
+          />
+          <h2 className="font-bold text-title">10K+</h2>
+          <p className="text-gray-600 text-base">People got hired</p>
         </div>
         <div className="self-center">
-          <img src={'/assets/images/banner-person.png'} alt="JobHunty Logo" className="w-auto" />
+          <img
+            src={"/assets/images/banner-person.png"}
+            alt="JobHunty Logo"
+            className="w-[60%]"
+          />
         </div>
       </div>
       <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
         <div className="w-full max-w-md mb-8">
-          <h1 className="text-4xl font-bold font-display text-gray-700 mb-4">
-            Get more opportunities
-          </h1>
+          <h1 className="text-heading text-gray-700">Get more opportunities</h1>
         </div>
 
         {/* Signup Form */}
@@ -56,6 +62,7 @@ export default function SignUp() {
             onChange={(e) => setCompanyName(e.target.value)}
             fullWidth
             variant="outlined"
+            size="small"
           />
           <TextField
             label="Email Address"
@@ -64,6 +71,7 @@ export default function SignUp() {
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
             variant="outlined"
+            size="small"
           />
           <TextField
             label="Password"
@@ -72,13 +80,12 @@ export default function SignUp() {
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
             variant="outlined"
+            size="small"
           />
 
           {/* Error message */}
           {errorMessage && (
-            <Typography color="error" variant="body2">
-              {errorMessage}
-            </Typography>
+            <p className="text-info text-red-500">{errorMessage}</p>
           )}
 
           <Button
@@ -92,7 +99,7 @@ export default function SignUp() {
           </Button>
         </form>
 
-        <p className="text-sm text-gray-500 mt-4">
+        <p className="text-base text-gray-500 mt-4">
           Already have an account?{" "}
           <span
             className="text-blue-500 cursor-pointer"
@@ -101,7 +108,7 @@ export default function SignUp() {
             Login
           </span>
         </p>
-        <p className="text-sm text-gray-500 mt-4">
+        <p className="text-info text-gray-500 mt-4">
           By clicking 'Continue', you acknowledge that you have read and accept
           the Terms of Service and Privacy Policy.
         </p>
