@@ -86,7 +86,7 @@ const VndRequirements = () => {
       requirementType: "Hybrid",
       noOfPositions: 8,
       contractPeriod: "18 months",
-      logo: "https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
+      logo: "https://careers.coforge.com/coforge/favicon.ico",
     },
   ];
 

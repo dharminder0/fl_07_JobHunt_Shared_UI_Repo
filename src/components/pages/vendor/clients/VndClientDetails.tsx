@@ -56,7 +56,7 @@ const VndClientDetails = () => {
       endDate: "10-12-2024",
       client: "Coforge",
       resource: "Vinod Agarwal",
-      logo: "https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
+      logo: "https://careers.coforge.com/coforge/favicon.ico",
     },
   ];
 
@@ -159,7 +159,7 @@ const VndClientDetails = () => {
       noOfPositions: 20,
       contractPeriod: "18 months",
       visibility: "Empanelled",
-      logo: "https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
+      logo: "https://careers.coforge.com/coforge/favicon.ico",
     },
   ];
 

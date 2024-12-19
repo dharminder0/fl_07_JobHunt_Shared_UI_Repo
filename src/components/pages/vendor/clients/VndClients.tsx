@@ -52,7 +52,7 @@ const archivedClients = [
     tags: ["Onsite", "100-500", "Other Tech"],
     place: "Pune",
     contracts: "18",
-    logo: "https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
+    logo: "https://careers.coforge.com/coforge/favicon.ico",
   },
 ];
 
