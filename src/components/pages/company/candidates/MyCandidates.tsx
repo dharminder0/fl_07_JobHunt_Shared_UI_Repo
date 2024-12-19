@@ -1,4 +1,9 @@
-import { FilterList, PictureAsPdf, Search } from "@mui/icons-material";
+import {
+  Download,
+  FilterList,
+  PictureAsPdf,
+  Search,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -7,10 +12,11 @@ import {
   MenuItem,
   Select,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const applicantData = [
   {
@@ -20,8 +26,10 @@ const applicantData = [
     client: "Airtel",
     status: "In Review",
     date: "13-07-2024",
-    vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    clientLogo:"https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
+    vendorLogo:
+      "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    clientLogo:
+      "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
     vendor: "DevStringX Technologies",
@@ -30,8 +38,10 @@ const applicantData = [
     client: "IBM Consulting",
     status: "Shortlisted",
     date: "12-06-2024",
-    vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    clientLogo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
+    vendorLogo:
+      "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    clientLogo:
+      "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
     vendor: "Binemiles Technologies",
@@ -40,8 +50,10 @@ const applicantData = [
     client: "Capgemini",
     status: "Declined",
     date: "18-05-2024",
-    vendorLogo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-    clientLogo:"https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
+    vendorLogo:
+      "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
+    clientLogo:
+      "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
   },
   {
     vendor: "SDET Tech Pvt. Ltd",
@@ -50,8 +62,10 @@ const applicantData = [
     client: "NTT DATA",
     status: "Hired",
     date: "11-04-2024",
-    vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo:"https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
+    vendorLogo:
+      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    clientLogo:
+      "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
     vendor: "Fleek IT Solutions",
@@ -60,8 +74,10 @@ const applicantData = [
     client: "Airtel",
     status: "Hired",
     date: "13-07-2024",
-    vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    clientLogo:"https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
+    vendorLogo:
+      "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    clientLogo:
+      "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
     vendor: "SDET Tech Pvt. Ltd",
@@ -70,8 +86,10 @@ const applicantData = [
     client: "NTT DATA",
     status: "Interview Scheduled",
     date: "11-04-2024",
-    vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
+    vendorLogo:
+      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    clientLogo:
+      "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
     vendor: "DevStringX Technologies",
@@ -80,8 +98,10 @@ const applicantData = [
     client: "IBM Consulting",
     status: "Shortlisted",
     date: "12-06-2024",
-    vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    clientLogo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
+    vendorLogo:
+      "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    clientLogo:
+      "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
     vendor: "Binemiles Technologies",
@@ -90,8 +110,10 @@ const applicantData = [
     client: "Capgemini",
     status: "Declined",
     date: "18-05-2024",
-    vendorLogo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-    clientLogo:"https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    vendorLogo:
+      "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    clientLogo:
+      "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
   {
     vendor: "SDET Tech Pvt. Ltd",
@@ -100,15 +122,18 @@ const applicantData = [
     client: "NTT DATA",
     status: "Interview Scheduled ",
     date: "11-04-2024",
-    vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo:"https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    vendorLogo:
+      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+    clientLogo:
+      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
   },
 ];
 
 export default function MyCandidates() {
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
+  const [search, setSearch] = useState("");
   const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
 
   const [filterList, setFilterList] = useState<any>({
@@ -124,6 +149,17 @@ export default function MyCandidates() {
     searchValue: "",
     status: !params?.status ? "" : params?.status,
   });
+
+  const handleRowClick = (id: number, type: string) => {
+    switch (type) {
+      case "vendor":
+        navigate(`/company/myvendors/${id}`);
+        break;
+      case "client":
+        navigate(`/company/clients/${id}`);
+        break;
+    }
+  };
 
   useEffect(() => {
     // Filtering logic
@@ -187,23 +223,44 @@ export default function MyCandidates() {
           <thead>
             <tr>
               <th className="add-right-shadow">Candidate Name</th>
-              <th>Vendor</th>
+              {/* <th>Vendor</th> */}
               <th>Requirement</th>
               <th>Client</th>
               <th>Status</th>
               <th>Application Date</th>
-              <th>CV</th>
+              {/* <th>CV</th> */}
             </tr>
           </thead>
           <tbody>
             {filteredApplicants.map((applicant, index) => (
-              <tr
-                className="cursor-pointer"
-                key={index}
-                // onClick={() => handleRowClick(applicant.id)}
-              >
-                <th className="add-right-shadow">{applicant.name}</th>
-                <td className="wide-250">
+              <tr key={index}>
+                <th className="add-right-shadow">
+                  <div>{applicant.name}</div>
+                  <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                    <div
+                      className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                      onClick={() => handleRowClick(applicant.id, "vendor")}
+                    >
+                      <img
+                        src={applicant.vendorLogo}
+                        style={{ height: 12, width: 12 }}
+                        className="me-1"
+                      />
+                      <Tooltip title={applicant.vendor} arrow>
+                        <span className="text-ellipsis overflow-hidden truncate">
+                          {applicant.vendor}
+                        </span>
+                      </Tooltip>
+                    </div>
+                    <div className="flex text-info">
+                      <Button variant="text" size="small">
+                        <Download fontSize="inherit" />
+                        <span className="text-info">CV</span>
+                      </Button>
+                    </div>
+                  </div>
+                </th>
+                {/* <td className="wide-250">
                   <div className="flex ">
                     <img
                       src={applicant.vendorLogo}
@@ -212,10 +269,13 @@ export default function MyCandidates() {
                     />
                     {applicant.vendor}
                   </div>
-                  </td>
+                </td> */}
                 <td>{applicant.requirement}</td>
-                <td className="wide-250">
-                <div className="flex">
+                <td
+                  className="wide-250 cursor-pointer hover:text-indigo-700"
+                  onClick={() => handleRowClick(applicant.id, "client")}
+                >
+                  <div className="flex">
                     <img
                       src={applicant.clientLogo}
                       style={{ height: 16, width: 16 }}
@@ -236,7 +296,7 @@ export default function MyCandidates() {
                   </Typography>
                 </td>
                 <td>{applicant.date}</td>
-                <td>
+                {/* <td>
                   <Button
                     variant="outlined"
                     size="small"
@@ -244,7 +304,7 @@ export default function MyCandidates() {
                   >
                     Download
                   </Button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

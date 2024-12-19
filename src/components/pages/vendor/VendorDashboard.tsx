@@ -132,7 +132,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             <Typography variant="h5" className="!text-indigo-950">
               5
             </Typography>
-            <p className="text-base">Open Requirements</p>
+            <p className="text-base">Open Positions</p>
           </div>
 
           <div
@@ -175,7 +175,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Top Clients</p>
-                <p className="pt-4 text-title">Requirments</p>
+                <p className="pt-4 text-title">Positions</p>
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
@@ -206,7 +206,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Trending Technologies</p>
-                <p className="pt-4 text-title">Requirments</p>
+                <p className="pt-4 text-title">Positions</p>
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">

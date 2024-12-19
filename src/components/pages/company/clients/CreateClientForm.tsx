@@ -88,7 +88,7 @@ const CreateClientForm = () => {
   return (
     <div className="">
       <Button
-        variant="contained"
+        variant="outlined"
         onClick={toggleDrawer(true)}
         startIcon={<Add />}
       >
@@ -188,11 +188,8 @@ const CreateClientForm = () => {
                   </div>
                   {/* Logo Upload */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                    <FileUploadBox title="upload logo" fileSize="500 x 500" />
-                    <FileUploadBox
-                      title="upload favicon"
-                      fileSize="200 x 200"
-                    />
+                    <FileUploadBox title="upload logo" fileSize="500 x 500" iconType="image"/>
+                    <FileUploadBox title="upload favicon"  fileSize="200 x 200" iconType="image" />
                   </div>
                   {/* Submit Button */}
                   <div className="flex justify-end">

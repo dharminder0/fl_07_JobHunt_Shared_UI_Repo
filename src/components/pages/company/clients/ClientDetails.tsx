@@ -3,18 +3,17 @@ import { Typography, Box, Tabs, Tab, Link, Grid2 } from "@mui/material";
 import { Language, MailOutline, Phone } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 
-
 const ClientDetails = () => {
-  const [value, setValue] = React.useState("active");
   const location = useLocation();
-  const handleRowClick = (id: any) => {};
   const params = location.state || {};
+  const [value, setValue] = React.useState("active");
+  const handleRowClick = (id: any) => {};
 
   useEffect(() => {
-    if(params){
-      params.type == 'active' ? setValue('active') : setValue('past');
+    if (params) {
+      !params.type ? setValue("active") : setValue(params.type);
     }
-  }, [params]); 
+  }, [params.type]);
 
   const activeContracts = [
     {
@@ -24,7 +23,8 @@ const ClientDetails = () => {
       endDate: "12-08-2024",
       client: "Fleek IT Solutions",
       resource: "Raj Kumar",
-      vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",      
+      vendorLogo:
+        "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 2,
@@ -33,7 +33,8 @@ const ClientDetails = () => {
       endDate: "16-09-2024",
       client: "DevStringX Technologies",
       resource: "Sajid Sarkar",
-      vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+      vendorLogo:
+        "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
     },
     {
       id: 3,
@@ -42,7 +43,8 @@ const ClientDetails = () => {
       endDate: "06-10-2024",
       client: "Binemiles Technologies",
       resource: "Amit Thakur",
-      vendorLogo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+      vendorLogo:
+        "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
     },
     {
       id: 4,
@@ -51,7 +53,8 @@ const ClientDetails = () => {
       endDate: "18-11-2024",
       client: "SDET Tech Pvt. Ltd",
       resource: "Harshit Pandey",
-      vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+      vendorLogo:
+        "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
     {
       id: 1,
@@ -60,7 +63,8 @@ const ClientDetails = () => {
       endDate: "10-12-2024",
       client: "JigNect Technologies",
       resource: "Vinod Agarwal",
-      vendorLogo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+      vendorLogo:
+        "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
     },
   ];
 
@@ -104,7 +108,7 @@ const ClientDetails = () => {
       id: 1,
       role: "Social Media Assistant",
       status: "Open",
-      datePosted: "20 May 2020",
+      datePosted: "20-05-2020",
       applicants: "19",
       client: "Self",
       requirementType: "Remote",
@@ -116,19 +120,19 @@ const ClientDetails = () => {
       id: 2,
       role: "Senior Designer",
       status: "On hold",
-      datePosted: "16 May 2020",
+      datePosted: "16-05-2020",
       applicants: "1,234",
       client: "Creative Solutions Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
       contractPeriod: "12 months",
-      visibility: "Empanelled",
+      visibility: "Empaneled",
     },
     {
       id: 3,
       role: "Visual Designer",
       status: "Open",
-      datePosted: "15 May 2020",
+      datePosted: "15-05-2020",
       applicants: "2,435",
       client: "Design Pros Inc.",
       requirementType: "Onsite",
@@ -140,7 +144,7 @@ const ClientDetails = () => {
       id: 4,
       role: "Data Science",
       status: "Closed",
-      datePosted: "13 May 2020",
+      datePosted: "13-05-2020",
       applicants: "6,234",
       client: "Self",
       requirementType: "Remote",
@@ -152,13 +156,13 @@ const ClientDetails = () => {
       id: 5,
       role: "Kotlin Developer",
       status: "Closed",
-      datePosted: "12 May 2020",
+      datePosted: "12-05-2020",
       applicants: "12",
       client: "Tech Innovators LLC",
       requirementType: "Hybrid",
       noOfPositions: 20,
       contractPeriod: "18 months",
-      visibility: "Empanelled",
+      visibility: "Empaneled",
     },
   ];
 

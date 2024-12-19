@@ -3,6 +3,7 @@ import { Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateClientForm from "./CreateClientForm";
+import ImportClientForm from "./ImportClientForm";
 
 const clientDataObj = [
   {
@@ -79,6 +80,7 @@ export default function Clients() {
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
+          <ImportClientForm />
           <CreateClientForm />
         </Box>
       </Box>
