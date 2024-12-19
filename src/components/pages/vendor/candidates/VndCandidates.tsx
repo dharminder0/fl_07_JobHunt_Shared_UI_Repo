@@ -10,10 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const applicantData = [
   {
+    id: 1,
     name: "Harshit Tandon",
     requirement: "React js Developer",
     client: "Sterlite Technologies",
@@ -22,6 +23,7 @@ const applicantData = [
     logo: "https://static.ambitionbox.com/assets/v2/images/rs:fit:200:200:false:false/bG9jYWw6Ly8vbG9nb3Mvb3JpZ2luYWxzL3N0ZXJsaXRlLXRlY2hub2xvZ2llcy5qcGc.webp",
   },
   {
+    id: 2,
     name: "Raj Pathar",
     requirement: "Sr. Angular developer",
     client: "upGrad",
@@ -30,6 +32,7 @@ const applicantData = [
     logo: "https://prod-mphs.upgrad.com/hubfs/45938370-0-Gloop-01%20(1).webp",
   },
   {
+    id: 3,
     name: "Sajid Sarkar",
     requirement: "React Native mobile developer",
     client: "Xoriant",
@@ -38,6 +41,7 @@ const applicantData = [
     logo: "https://www.xoriant.com/cdn/ff/2zqY0wtIPH_7bO8GKthC5LM_btmFMJbTa_6fDC9hg-M/1693224947/public/favicon.png",
   },
   {
+    id: 4,
     name: "Amit Kumar",
     requirement: "Frontend developer",
     client: "Iris Software",
@@ -46,6 +50,7 @@ const applicantData = [
     logo: "https://www.irissoftware.com/wp-content/uploads/2020/11/favicon.png",
   },
   {
+    id: 5,
     name: "Harshit Tandon",
     requirement: ".Net developer",
     client: "Infinite Computer Solutions",
@@ -54,6 +59,7 @@ const applicantData = [
     logo: "https://www.infinite.com/wp-content/uploads/2023/03/favicon.png",
   },
   {
+    id: 6,
     name: "Raj Pathar",
     requirement: ".Net MVC Support",
     client: "QualityKiosk Technologies",
@@ -62,6 +68,7 @@ const applicantData = [
     logo: "https://qualitykiosk.com/wp-content/uploads/2021/08/Logo_QK_Brand-Mark_Black-300x300.png",
   },
   {
+    id: 7,
     name: "Sajid Sarkar",
     requirement: "Azure Devops Engineer",
     client: "Zoho",
@@ -70,6 +77,7 @@ const applicantData = [
     logo: "https://www.zohowebstatic.com/sites/zweb/images/favicon.ico",
   },
   {
+    id: 8,
     name: "Amit Kumar",
     requirement: "Devops AWS Certified engineer",
     client: "Onward Technologies",
@@ -124,6 +132,11 @@ export default function VndCandidates() {
     });
     setFilteredApplicants(filtered);
   }, [searchFilter]);
+
+  const navigate = useNavigate();
+  const handleRowClick = (id: number) => {
+    navigate(`/vendor/clients/${id}`);
+  };
 
   return (
     <div className="px-4 py-1">
@@ -207,8 +220,11 @@ export default function VndCandidates() {
               >
                 <th className="add-right-shadow">{applicant.name}</th>
                 <td>{applicant.requirement}</td>
-                <td>
-                  <div className="flex items-center wide-250">
+                <td
+                  className="wide-250"
+                  onClick={() => handleRowClick(applicant.id)}
+                >
+                  <div className="flex items-center">
                     <img
                       src={applicant.logo}
                       style={{ height: 16, width: 16 }}

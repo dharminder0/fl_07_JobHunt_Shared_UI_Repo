@@ -107,6 +107,10 @@ const VndRequirements = () => {
   const handleRowClick = (id: number) => {
     navigate(`${id}`);
   };
+   
+  const handleClickToClient = (id: number) => {
+    navigate(`/vendor/clients/${id}`);
+  };
 
   useEffect(() => {
     // Filtering logic
@@ -303,10 +307,9 @@ const VndRequirements = () => {
                 <tr
                   className="cursor-pointer"
                   key={index}
-                  onClick={() => handleRowClick(job.id)}
                 >
-                  <th className="add-right-shadow">{job.role}</th>
-                  <td className="flex items-center wide-250">
+                  <th className="add-right-shadow"  onClick={() => handleRowClick(job.id)}>{job.role}</th>
+                  <td className="flex items-center wide-250"  onClick={() => handleClickToClient(job.id)}>
                     <img
                       src={job.logo}
                       style={{ height: 16, width: 16 }}

@@ -261,7 +261,7 @@ const VndClientDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">{item.title}</th>
-                          <td className="wide-200">
+                          <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={item.logo}
@@ -295,7 +295,7 @@ const VndClientDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">{item.title}</th>
-                          <td className="wide-200">
+                          <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={item.logo}
@@ -331,7 +331,7 @@ const VndClientDetails = () => {
                       {jobData.map((job, index) => (
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
                           <th className="add-right-shadow">{job.role}</th>
-                           <td className="wide-200">
+                           <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={job.logo}
