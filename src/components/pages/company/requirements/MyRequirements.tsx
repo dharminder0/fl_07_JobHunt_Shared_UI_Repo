@@ -27,7 +27,11 @@ const MyRequirements = () => {
   const params = location.state || {};
   const [searchInput, setSearchInput] = useState<string>("");
   const [filterList, setFilterList] = useState<any>({
-    client: ["OpsTree Solutions", "Creative Solutions Ltd.", "Data Insights Group"],
+    client: [
+      "OpsTree Solutions",
+      "Creative Solutions Ltd.",
+      "Data Insights Group",
+    ],
     status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
@@ -328,7 +332,6 @@ const MyRequirements = () => {
       logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
   ];
-  console.log(searchFilter);
 
   const handleRowClick = (id: number) => {
     navigate(`${id}`);
