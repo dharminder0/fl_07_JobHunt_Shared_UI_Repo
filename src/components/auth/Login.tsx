@@ -130,7 +130,7 @@ export default function Login() {
 
       <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
         <div className="w-full max-w-md mb-8">
-          <h1 className="text-heading font-display">Welcome Back, Dude</h1>
+          <h1 className="text-heading font-display">Welcome Back</h1>
         </div>
 
         {/* Login Form */}
@@ -168,6 +168,7 @@ export default function Login() {
                 color="primary"
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
+                size="small"
               />
             }
             label="Remember me"
