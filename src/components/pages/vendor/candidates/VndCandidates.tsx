@@ -84,7 +84,7 @@ export default function VndCandidates() {
     applicant.name.toLowerCase().includes(search.toLowerCase())
   );
    const navigate = useNavigate();
-   const handleRowClick = (id: number) => {debugger
+   const handleRowClick = (id: number) => {
     navigate(`/vendor/clients/${id}`);
   };
 
@@ -121,14 +121,13 @@ export default function VndCandidates() {
           </thead>
           <tbody>
             {filteredApplicants.map((applicant, index) => (
-              <tr
-                className="cursor-pointer"
+              <tr               
                 key={index}
                 // onClick={() => handleRowClick(applicant.id)}
               >
                 <th className="add-right-shadow">{applicant.name}</th>
                 <td>{applicant.requirement}</td>
-                <td className="wide-250" onClick={() => handleRowClick(applicant.id)}>
+                <td className="wide-250 cursor-pointer" onClick={() => handleRowClick(applicant.id)}>
                   <div className="flex items-center">
                     <img
                       src={applicant.logo}

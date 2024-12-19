@@ -290,12 +290,9 @@ const VndRequirements = () => {
             </thead>
             <tbody>
               {jobData.map((job, index) => (
-                <tr
-                  className="cursor-pointer"
-                  key={index}
-                >
-                  <th className="add-right-shadow"  onClick={() => handleRowClick(job.id)}>{job.role}</th>
-                  <td className="flex items-center wide-250"  onClick={() => handleClickToClient(job.id)}>
+                <tr key={index} >
+                  <th className="add-right-shadow cursor-pointer"  onClick={() => handleRowClick(job.id)}>{job.role}</th>
+                  <td className="flex items-center wide-250 cursor-pointer" onClick={() => handleClickToClient(job.id)}>
                     <img
                       src={job.logo}
                       style={{ height: 16, width: 16 }}
