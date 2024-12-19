@@ -27,7 +27,11 @@ const MyRequirements = () => {
   const params = location.state || {};
   const [searchInput, setSearchInput] = useState<string>("");
   const [filterList, setFilterList] = useState<any>({
-    client: ["OpsTree Solutions", "Creative Solutions Ltd.", "Data Insights Group"],
+    client: [
+      "OpsTree Solutions",
+      "Creative Solutions Ltd.",
+      "Data Insights Group",
+    ],
     status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
@@ -328,10 +332,19 @@ const MyRequirements = () => {
       logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
   ];
-  console.log(searchFilter);
 
-  const handleRowClick = (id: number) => {
-    navigate(`${id}`);
+  const handleRowClick = (id: number, type: string) => {
+    switch (type) {
+      case 'applicant':        
+        navigate(`/company/candidates`);
+        break;
+      case 'client':
+        navigate(`/company/clients/${id}`);
+        break;
+      default:
+        navigate(`${id}`);
+        break;
+    }
   };
 
   useEffect(() => {
@@ -535,12 +548,10 @@ const MyRequirements = () => {
             <tbody>
               {jobData.map((job, index) => (
                 <tr
-                  className="cursor-pointer"
-                  key={index}
-                  onClick={() => handleRowClick(job.id)}
+                  key={index}                 
                 >
-                  <th className="add-right-shadow">{job.role}</th>
-                  <td className="flex items-center wide-250">
+                  <th className="add-right-shadow cursor-pointer"  onClick={() => handleRowClick(job.id,'requirement')}>{job.role}</th>
+                  <td className="flex items-center cursor-pointer wide-250" onClick={() => handleRowClick(job.id,'client')}>
                     <img
                       src={job.logo}
                       style={{ height: 16, width: 16 }}
@@ -571,7 +582,7 @@ const MyRequirements = () => {
                     {job.requirementType}
                     {/* </Typography> */}
                   </td>
-                  <td>{job.applicants}</td>
+                  <td className="cursor-pointer"  onClick={() => handleRowClick(job.id,'applicant')}>{job.applicants}</td>
                   <td>{job.contractPeriod}</td>
                   <td>{job.visibility}</td>
                   <td>{job.noOfPositions}</td>

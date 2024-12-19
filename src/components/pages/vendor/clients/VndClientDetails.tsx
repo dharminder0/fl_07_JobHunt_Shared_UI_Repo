@@ -18,45 +18,45 @@ const VndClientDetails = () => {
       title: "Social Media Assistant",
       startDate: "20-04-2024",
       endDate: "12-08-2024",
-      client: "Airtel",
+      client: "Teleperformance",
       resource: "Raj Kumar",
-      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
+      logo:"https://www.teleperformance.com/css/assets/favicon.ico",
     },
     {
       id: 2,
       title: "Android Developer",
       startDate: "18-03-2024",
       endDate: "16-09-2024",
-      client: "IBM",
+      client: "KPIT Technologiess",
       resource: "Sajid Sarkar",
-      logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
+      logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
     },
     {
       id: 3,
       title: "Angular Developer",
       startDate: "02-01-2024",
       endDate: "06-10-2024",
-      client: "SDET Tech",
+      client: "Mphasis",
       resource: "Amit Thakur",
-      logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+      logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
     },
     {
       id: 4,
       title: "iOS Developer",
       startDate: "26-04-2024",
       endDate: "18-11-2024",
-      client: "DevStringx",
+      client: "Fidelity Information Services",
       resource: "Harshit Pandey",
-      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+      logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
     },
     {
       id: 1,
       title: "QA Automation",
       startDate: "13-05-2024",
       endDate: "10-12-2024",
-      client: "JigNect Technologies",
+      client: "Coforge",
       resource: "Vinod Agarwal",
-      logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+      logo: "https://careers.coforge.com/coforge/favicon.ico",
     },
   ];
 
@@ -102,12 +102,12 @@ const VndClientDetails = () => {
       status: "Open",
       datePosted: "20 May 2020",
       applicants: "19",
-      client: "OpsTree Solutions",
+      client: "Teleperformance",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
-      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+      logo:"https://www.teleperformance.com/css/assets/favicon.ico",
     },
     {
       id: 2,
@@ -115,12 +115,12 @@ const VndClientDetails = () => {
       status: "On hold",
       datePosted: "16 May 2020",
       applicants: "1,234",
-      client: "Creative Solutions Ltd.",
+      client: "KPIT Technologiess",
       requirementType: "Hybrid",
       noOfPositions: 5,
       contractPeriod: "12 months",
       visibility: "Empanelled",
-      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
+      logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
     },
     {
       id: 3,
@@ -128,12 +128,12 @@ const VndClientDetails = () => {
       status: "Open",
       datePosted: "15 May 2020",
       applicants: "2,435",
-      client: "Design Pros Inc.",
+      client: "Mphasis",
       requirementType: "Onsite",
       noOfPositions: 2,
       contractPeriod: "3 months",
       visibility: "Limited",
-      logo: "https://www.prototypehouse.com/favicon.ico",
+      logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
     },
     {
       id: 4,
@@ -141,12 +141,12 @@ const VndClientDetails = () => {
       status: "Closed",
       datePosted: "13 May 2020",
       applicants: "6,234",
-      client: "OpsTree Solutions",
+      client: "Fidelity Information Services",
       requirementType: "Remote",
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
-      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+      logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
     },
     {
       id: 5,
@@ -154,12 +154,12 @@ const VndClientDetails = () => {
       status: "Closed",
       datePosted: "12 May 2020",
       applicants: "12",
-      client: "Tech Innovators LLC",
+      client: "Coforge",
       requirementType: "Hybrid",
       noOfPositions: 20,
       contractPeriod: "18 months",
       visibility: "Empanelled",
-      logo: "https://techinnovators.dev/icon_dark.ico",
+      logo: "https://careers.coforge.com/coforge/favicon.ico",
     },
   ];
 
@@ -261,7 +261,7 @@ const VndClientDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">{item.title}</th>
-                          <td className="wide-200">
+                          <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={item.logo}
@@ -295,7 +295,7 @@ const VndClientDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">{item.title}</th>
-                          <td className="wide-200">
+                          <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={item.logo}
@@ -331,7 +331,7 @@ const VndClientDetails = () => {
                       {jobData.map((job, index) => (
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
                           <th className="add-right-shadow">{job.role}</th>
-                           <td className="wide-200">
+                           <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={job.logo}
