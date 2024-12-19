@@ -1,4 +1,9 @@
-import { FilterList, PictureAsPdf, Search } from "@mui/icons-material";
+import {
+  Download,
+  FilterList,
+  PictureAsPdf,
+  Search,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -7,6 +12,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -205,24 +211,43 @@ export default function VndCandidates() {
             <tr>
               <th className="add-right-shadow">Candidate Name</th>
               <th>Requirement</th>
-              <th>Client</th>
+              {/* <th>Client</th> */}
               <th>Status</th>
               <th>Application Date</th>
-              <th>CV</th>
+              {/* <th>CV</th> */}
             </tr>
           </thead>
           <tbody>
             {filteredApplicants.map((applicant, index) => (
-              <tr
-                key={index}
-                // onClick={() => handleRowClick(applicant.id)}
-              >
-                <th className="add-right-shadow">{applicant.name}</th>
+              <tr key={index}>
+                <th className="add-right-shadow">
+                  <div>{applicant.name}</div>
+                  <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                    <div
+                      className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                      onClick={() => handleRowClick(applicant.id)}
+                    >
+                      <img
+                        src={applicant.logo}
+                        style={{ height: 12, width: 12 }}
+                        className="me-1"
+                      />
+                      <Tooltip title={applicant.vendor} arrow>
+                        <span className="text-ellipsis overflow-hidden truncate">
+                          {applicant.client}
+                        </span>
+                      </Tooltip>
+                    </div>
+                    <div className="flex text-info">
+                      <Button variant="text" size="small">
+                        <Download fontSize="inherit" />
+                        <span className="text-info">CV</span>
+                      </Button>
+                    </div>
+                  </div>
+                </th>
                 <td>{applicant.requirement}</td>
-                <td
-                  className="wide-250 cursor-pointer"
-                  onClick={() => handleRowClick(applicant.id)}
-                >
+                {/* <td className="wide-250 cursor-pointer">
                   <div className="flex items-center">
                     <img
                       src={applicant.logo}
@@ -231,7 +256,7 @@ export default function VndCandidates() {
                     />
                     {applicant.client}
                   </div>
-                </td>
+                </td> */}
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full ${
@@ -244,7 +269,7 @@ export default function VndCandidates() {
                   </Typography>
                 </td>
                 <td>{applicant.date}</td>
-                <td>
+                {/* <td>
                   <Button
                     variant="outlined"
                     size="small"
@@ -252,7 +277,7 @@ export default function VndCandidates() {
                   >
                     Download
                   </Button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

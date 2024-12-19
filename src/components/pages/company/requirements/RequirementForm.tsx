@@ -245,9 +245,9 @@ const RequirementForm = () => {
                       label="Specific Vendor"
                     />
                     <FormControlLabel
-                      value="empanelled"
+                      value="empaneled"
                       control={<Radio size="small" />}
-                      label="All Empanelled Vendors"
+                      label="All Empaneled Vendors"
                     />
                     <FormControlLabel
                       value="global"

@@ -1,4 +1,9 @@
-import { FilterList, PictureAsPdf, Search } from "@mui/icons-material";
+import {
+  Download,
+  FilterList,
+  PictureAsPdf,
+  Search,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -11,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const applicantData = [
   {
@@ -125,9 +130,10 @@ const applicantData = [
 ];
 
 export default function MyCandidates() {
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
+  const [search, setSearch] = useState("");
   const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
 
   const [filterList, setFilterList] = useState<any>({
@@ -143,6 +149,17 @@ export default function MyCandidates() {
     searchValue: "",
     status: !params?.status ? "" : params?.status,
   });
+
+  const handleRowClick = (id: number, type: string) => {
+    switch (type) {
+      case "vendor":
+        navigate(`/company/myvendors/${id}`);
+        break;
+      case "client":
+        navigate(`/company/clients/${id}`);
+        break;
+    }
+  };
 
   useEffect(() => {
     // Filtering logic
@@ -206,27 +223,23 @@ export default function MyCandidates() {
           <thead>
             <tr>
               <th className="add-right-shadow">Candidate Name</th>
-              <th>Vendor</th>
+              {/* <th>Vendor</th> */}
               <th>Requirement</th>
               <th>Client</th>
               <th>Status</th>
               <th>Application Date</th>
-              <th>CV</th>
+              {/* <th>CV</th> */}
             </tr>
           </thead>
           <tbody>
             {filteredApplicants.map((applicant, index) => (
-              <tr
-                className="cursor-pointer"
-                key={index}
-                // onClick={() => handleRowClick(applicant.id)}
-              >
+              <tr key={index}>
                 <th className="add-right-shadow">
                   <div>{applicant.name}</div>
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                      // onClick={() => handleRowClick(job.id, "client")}
+                      onClick={() => handleRowClick(applicant.id, "vendor")}
                     >
                       <img
                         src={applicant.vendorLogo}
@@ -239,25 +252,15 @@ export default function MyCandidates() {
                         </span>
                       </Tooltip>
                     </div>
-                    {/* <div className="flex w-[128px]">
-                      <div className="flex items-center ms-1">
-                        <LocationOnOutlined
-                          fontSize="inherit"
-                          className="mr-1"
-                        />
-                        <span>{job.requirementType}</span>
-                      </div>
-                      <div className="flex items-center ms-1">
-                        <AccessTimeOutlined
-                          fontSize="inherit"
-                          className="mr-1"
-                        />
-                        <span>{job.contractPeriod}</span>
-                      </div>
-                    </div> */}
+                    <div className="flex text-info">
+                      <Button variant="text" size="small">
+                        <Download fontSize="inherit" />
+                        <span className="text-info">CV</span>
+                      </Button>
+                    </div>
                   </div>
                 </th>
-                <td className="wide-250">
+                {/* <td className="wide-250">
                   <div className="flex ">
                     <img
                       src={applicant.vendorLogo}
@@ -266,9 +269,12 @@ export default function MyCandidates() {
                     />
                     {applicant.vendor}
                   </div>
-                </td>
+                </td> */}
                 <td>{applicant.requirement}</td>
-                <td className="wide-250">
+                <td
+                  className="wide-250 cursor-pointer hover:text-indigo-700"
+                  onClick={() => handleRowClick(applicant.id, "client")}
+                >
                   <div className="flex">
                     <img
                       src={applicant.clientLogo}
@@ -290,7 +296,7 @@ export default function MyCandidates() {
                   </Typography>
                 </td>
                 <td>{applicant.date}</td>
-                <td>
+                {/* <td>
                   <Button
                     variant="outlined"
                     size="small"
@@ -298,7 +304,7 @@ export default function MyCandidates() {
                   >
                     Download
                   </Button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
