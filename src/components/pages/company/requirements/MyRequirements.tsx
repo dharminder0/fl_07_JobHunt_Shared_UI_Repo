@@ -625,8 +625,8 @@ const MyRequirements = () => {
   return (
     <>
       <div className='px-2 py-3 h-full'>
-        <div className="flex flex-row gap-1 justify-end mb-2">
-          <div className='flex flex-row gap-1 p-2 overflow-hidden'>
+        <div className="flex flex-row gap-1 justify-end mb-1">
+          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
             <div className='flex text-center flex-nowrap my-auto'>
               <div className='flex grow w-[220px] mr-2'>
                 <div className='flex-col flex-grow'>
