@@ -1,4 +1,4 @@
-import { FilterList, PictureAsPdf, Search } from "@mui/icons-material";
+import { FilterList, PictureAsPdf, Search,} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -246,13 +246,14 @@ export default function VndCandidates() {
                 <td>{applicant.date}</td>
                 <td>
                   <Button
+                  className="pointer-events-none"
                     variant="outlined"
                     size="small"
                     startIcon={<PictureAsPdf />}
                   >
                     Download
                   </Button>
-                </td>
+                  </td>                 
               </tr>
             ))}
           </tbody>
