@@ -53,7 +53,7 @@ const JobStatistics = () => {
             series={[
               {
                 data: viewsData, // Line for "views"
-                label: "Requirements",
+                label: "Positions",
                 color: "#007FFF",
               },
               {
@@ -102,7 +102,7 @@ const JobStatistics = () => {
           series={[
             {
               data: requirementData.map((item) => item.count),
-              label: "Requirements",
+              label: "Positions",
               color: "#007FFF", // Tailwind's yellow-500
             },
             {

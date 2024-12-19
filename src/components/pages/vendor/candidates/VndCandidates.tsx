@@ -271,6 +271,7 @@ export default function VndCandidates() {
                 <td>{applicant.date}</td>
                 {/* <td>
                   <Button
+                  className="pointer-events-none"
                     variant="outlined"
                     size="small"
                     startIcon={<PictureAsPdf />}
