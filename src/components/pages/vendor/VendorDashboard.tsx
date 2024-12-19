@@ -50,32 +50,32 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
   ];
   const applicantItems = [
     {
-      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-      label: "Airtel",
+      logo: "https://www.teleperformance.com/css/assets/favicon.ico",
+      label: "Teleperformance",
       value: 21,
       color: "bg-purple-500",
     },
     {
-      logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-      label: "IBM Consulting",
+      logo:  "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
+      label: "KPIT Technologiess",
       value: 17,
       color: "bg-green-500",
     },
     {
-      logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-      label: "Capgemini",
+      logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
+      label: "Mphasis",
       value: 18,
       color: "bg-blue-500",
     },
     {
-      logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
-      label: "NTT DATA",
+      logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
+      label: "Fidelity Information Services",
       value: 16,
       color: "bg-yellow-500",
     },
     {
-      logo: "https://companieslogo.com/img/orig/CTSH-82a8444b.png",
-      label: "Cognizant",
+      logo: "https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
+      label: "Coforge",
       value: 21,
       color: "bg-red-500",
     },
