@@ -7,9 +7,11 @@ import {
   InputAdornment,
   FormControl,
   InputLabel,
+  Tooltip,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import { AccessTimeOutlined, LocationOnOutlined } from "@mui/icons-material";
 
 const VndRequirements = () => {
   const navigate = useNavigate();
@@ -35,10 +37,11 @@ const VndRequirements = () => {
       role: "Social Media Assistant",
       status: "Open",
       datePosted: "20-11-2024",
-      applicants: "1",
+      applicants: "5",
       client: "Teleperformance",
       requirementType: "Remote",
       noOfPositions: 3,
+      placed: 1,
       contractPeriod: "6 months",
       logo: "https://www.teleperformance.com/css/assets/favicon.ico",
     },
@@ -51,6 +54,7 @@ const VndRequirements = () => {
       client: "KPIT Technologiess",
       requirementType: "Hybrid",
       noOfPositions: 5,
+      placed: 0,
       contractPeriod: "12 months",
       logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
     },
@@ -63,6 +67,7 @@ const VndRequirements = () => {
       client: "Mphasis",
       requirementType: "Onsite",
       noOfPositions: 2,
+      placed: 0,
       contractPeriod: "3 months",
       logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
     },
@@ -75,6 +80,7 @@ const VndRequirements = () => {
       client: "Fidelity Information Services",
       requirementType: "Remote",
       noOfPositions: 4,
+      placed: 0,
       contractPeriod: "9 months",
       logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
     },
@@ -87,6 +93,7 @@ const VndRequirements = () => {
       client: "Coforge",
       requirementType: "Hybrid",
       noOfPositions: 8,
+      placed: 1,
       contractPeriod: "18 months",
       logo: "https://careers.coforge.com/coforge/favicon.ico",
     },
@@ -99,6 +106,7 @@ const VndRequirements = () => {
       client: "KPIT Technologiess",
       requirementType: "Hybrid",
       noOfPositions: 6,
+      placed: 1,
       contractPeriod: "18 months",
       logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
     },
@@ -107,7 +115,7 @@ const VndRequirements = () => {
   const handleRowClick = (id: number) => {
     navigate(`${id}`);
   };
-   
+
   const handleClickToClient = (id: number) => {
     navigate(`/vendor/clients/${id}`);
   };
@@ -293,27 +301,70 @@ const VndRequirements = () => {
             <thead>
               <tr>
                 <th className="add-right-shadow">Role</th>
-                <th>Client</th>
+                {/* <th>Client</th> */}
                 <th>Status</th>
                 <th>Date Posted</th>
-                <th>Requirement Type</th>
+                {/* <th>Requirement Type</th> */}
+                <th>Positions (Placed)</th>
                 <th>Applicants</th>
-                <th>Contract period</th>
-                <th>No. of Positions</th>
+                {/* <th>Contract period</th> */}
               </tr>
             </thead>
             <tbody>
               {jobData.map((job, index) => (
-                <tr key={index} >
-                  <th className="add-right-shadow cursor-pointer"  onClick={() => handleRowClick(job.id)}>{job.role}</th>
-                  <td className="flex items-center wide-250 cursor-pointer" onClick={() => handleClickToClient(job.id)}>
+                <tr key={index}>
+                  <th className="add-right-shadow">
+                    <div
+                      onClick={() => handleRowClick(job.id)}
+                      className="cursor-pointer hover:text-indigo-700"
+                    >
+                      {job.role}
+                    </div>
+                    <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                      <div
+                        className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                        onClick={() => handleClickToClient(job.id)}
+                      >
+                        <img
+                          src={job.logo}
+                          style={{ height: 12, width: 12 }}
+                          className="me-1"
+                        />
+                        <Tooltip title={job.client} arrow>
+                          <span className="text-ellipsis overflow-hidden truncate">
+                            {job.client}
+                          </span>
+                        </Tooltip>
+                      </div>
+                      <div className="flex w-[128px]">
+                        <div className="flex items-center ms-1">
+                          <LocationOnOutlined
+                            fontSize="inherit"
+                            className="mr-1"
+                          />
+                          <span>{job.requirementType}</span>
+                        </div>
+                        <div className="flex items-center ms-1">
+                          <AccessTimeOutlined
+                            fontSize="inherit"
+                            className="mr-1"
+                          />
+                          <span>{job.contractPeriod}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  {/* <td
+                    className="flex items-center wide-250 cursor-pointer"
+                    onClick={() => handleClickToClient(job.id)}
+                  >
                     <img
                       src={job.logo}
                       style={{ height: 16, width: 16 }}
                       className="me-1"
                     />
                     {job.client}
-                  </td>
+                  </td> */}
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base rounded-full ${
@@ -326,10 +377,12 @@ const VndRequirements = () => {
                     </Typography>
                   </td>
                   <td>{job.datePosted}</td>
-                  <td>{job.requirementType}</td>
+                  {/* <td>{job.requirementType}</td> */}
+                  <td>
+                    {job.noOfPositions} ({job.placed})
+                  </td>
                   <td>{job.applicants}</td>
-                  <td>{job.contractPeriod}</td>
-                  <td>{job.noOfPositions}</td>
+                  {/* <td>{job.contractPeriod}</td> */}
                 </tr>
               ))}
             </tbody>

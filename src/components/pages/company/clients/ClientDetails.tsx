@@ -3,18 +3,17 @@ import { Typography, Box, Tabs, Tab, Link, Grid2 } from "@mui/material";
 import { Language, MailOutline, Phone } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 
-
 const ClientDetails = () => {
-  const [value, setValue] = React.useState("active");
   const location = useLocation();
-  const handleRowClick = (id: any) => {};
   const params = location.state || {};
+  const [value, setValue] = React.useState("active");
+  const handleRowClick = (id: any) => {};
 
   useEffect(() => {
-    if(params){
-      params.type == 'active' ? setValue('active') : setValue('past');
+    if (params) {
+      !params.type ? setValue("active") : setValue(params.type);
     }
-  }, [params]); 
+  }, [params.type]);
 
   const activeContracts = [
     {
@@ -24,7 +23,8 @@ const ClientDetails = () => {
       endDate: "12-08-2024",
       client: "Fleek IT Solutions",
       resource: "Raj Kumar",
-      vendorLogo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",      
+      vendorLogo:
+        "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       id: 2,
@@ -33,7 +33,8 @@ const ClientDetails = () => {
       endDate: "16-09-2024",
       client: "DevStringX Technologies",
       resource: "Sajid Sarkar",
-      vendorLogo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+      vendorLogo:
+        "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
     },
     {
       id: 3,
@@ -42,7 +43,8 @@ const ClientDetails = () => {
       endDate: "06-10-2024",
       client: "Binemiles Technologies",
       resource: "Amit Thakur",
-      vendorLogo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+      vendorLogo:
+        "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
     },
     {
       id: 4,
@@ -51,7 +53,8 @@ const ClientDetails = () => {
       endDate: "18-11-2024",
       client: "SDET Tech Pvt. Ltd",
       resource: "Harshit Pandey",
-      vendorLogo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+      vendorLogo:
+        "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
     {
       id: 1,
@@ -60,7 +63,8 @@ const ClientDetails = () => {
       endDate: "10-12-2024",
       client: "JigNect Technologies",
       resource: "Vinod Agarwal",
-      vendorLogo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
+      vendorLogo:
+        "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
     },
   ];
 
