@@ -128,7 +128,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
       client: "Capgemini",
       label: "React native developer",
       logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-      vendor: "Empanelled Vendors",
+      vendor: "Empaneled Vendors",
     },
     {
       id: 4,

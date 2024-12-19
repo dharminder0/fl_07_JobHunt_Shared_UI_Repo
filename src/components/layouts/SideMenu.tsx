@@ -51,7 +51,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         id: 1,
         path: "/company/myrequirements"
       }, {
-        text: "Candidates",
+        text: "Applicants",
         icon: <GroupAddOutlinedIcon fontSize="inherit" />,
         id: 2,
         path: "/company/candidates"
@@ -65,7 +65,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         icon: <BusinessOutlinedIcon fontSize="inherit" />,
         id: 4,
         child: [{
-          text: "Empanelled",
+          text: "Empaneled",
           icon: <BusinessOutlinedIcon fontSize="inherit" />,
           id: 1,
           path: "/company/myvendors"
@@ -121,7 +121,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         id: 1,
         path: "/vendor/requirements"
       }, {
-        text: "Candidates",
+        text: "Applicants",
         icon: <GroupAddOutlinedIcon fontSize="inherit" />,
         id: 2,
         path: "/vendor/candidate"
@@ -136,7 +136,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
         id: 4,
         path: "/vendor/clients",
         child: [{
-          text: "Empanelled",
+          text: "Empaneled",
           icon: <BusinessOutlinedIcon fontSize="inherit" />,
           id: 11,
           path: "/vendor/clients"

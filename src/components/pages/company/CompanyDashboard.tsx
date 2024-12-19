@@ -353,7 +353,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     className="my-1 me-1"
                   />
                   <Chip
-                    label="12/12/2024"
+                    label="12-12-2024"
                     variant="outlined"
                     sx={{ fontSize: 12 }}
                     className="my-1 me-1"
