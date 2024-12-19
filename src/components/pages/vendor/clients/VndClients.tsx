@@ -27,8 +27,7 @@ const activieClients = [
   {
     id: 3,
     name: "Mphasis",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
+    description: "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "500+", "Other Tech"],
     place: "Gurgaon",
     contracts: "12",
@@ -40,8 +39,7 @@ const archivedClients = [
   {
     id: 4,
     name: "Fidelity Information Services",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
+    description:"Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
     place: "Mumbai",
     contracts: "16",
@@ -49,12 +47,12 @@ const archivedClients = [
   },
   {
     id: 5,
-    name: "coforge",
+    name: "Coforge",
     description: "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-500", "Other Tech"],
     place: "Pune",
     contracts: "18",
-    logo: "	https://www.coforge.com/hubfs/website-assets/coforge-logo.svg",
+    logo: "https://careers.coforge.com/coforge/favicon.ico",
   },
 ];
 
