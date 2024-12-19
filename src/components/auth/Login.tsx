@@ -27,16 +27,19 @@ export default function Login() {
       email: "company@vendorscloud.com",
       password: "password",
       role: ["company"],
+      companyIcon:"https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
     {
       email: "vendor@vendorscloud.com",
       password: "password",
       role: ["vendor"],
+      companyIcon: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       email: "both@vendorscloud.com",
       password: "password",
       role: ["vendor", "company"],
+      companyIcon: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
   ];
 
@@ -58,6 +61,7 @@ export default function Login() {
     const storedEmail = localStorage.getItem("email");
     const storedPassword = localStorage.getItem("password");
     const storedRole = localStorage.getItem("role");
+    const companyIcon = localStorage.getItem("companyIcon");
 
     if (storedEmail && storedPassword) {
       // If credentials exist in localStorage, verify them
@@ -85,6 +89,7 @@ export default function Login() {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("email", user.email);
       localStorage.setItem("password", user.password);
+      localStorage.setItem("companyIcon", user.companyIcon);
       localStorage.setItem("role", JSON.stringify(user.role));
 
       setErrorMessage(""); // Clear error message
@@ -130,7 +135,7 @@ export default function Login() {
 
       <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
         <div className="w-full max-w-md mb-8">
-          <h1 className="text-heading font-display">Welcome Back, Dude</h1>
+          <h1 className="text-heading font-display">Welcome Back</h1>
         </div>
 
         {/* Login Form */}
@@ -168,6 +173,7 @@ export default function Login() {
                 color="primary"
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
+                size="small"
               />
             }
             label="Remember me"

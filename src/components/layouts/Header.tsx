@@ -9,6 +9,7 @@ interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const role = JSON.parse(localStorage.getItem("role") || "[]");
+  const companyIcon = localStorage.companyIcon;
   const routesData = [
     {
       title: "Company",
@@ -88,12 +89,10 @@ const Header: React.FC<HeaderProps> = () => {
               d="M27.8783 8.91113L21.7143 12.5597V19.9238L15.5383 16.2154L9.59961 19.7306V35.1226L15.7636 31.3002V23.015L22.3473 27.2177L27.8783 23.7879V8.91113Z"
               fill="white"
             />
-          </svg> */}
-          {organizationType == 'company' ?
-            <img className="rounded-full h-8" src={'https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png'} alt="JobHunty Logo" />
-            : <img className="rounded-full h-8" src={'https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png'} alt="JobHunty Logo" />
-          }
-                
+          </svg> */}         
+
+            <img className="rounded-full h-8" src={companyIcon} alt="JobHunty Logo" />
+  
         </div>
         <div
           className="cursor-pointer flex flex-row gap-2"
