@@ -131,15 +131,15 @@ export default function SignUp() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" className="!text-heading">
-          {"Use Google's location service?"}
+          {"Registration sucessful"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText
             id="alert-dialog-description"
             className="!text-base"
           >
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            Please check you given email({email}) to onboard you company/vendor and
+            activate your account.
           </DialogContentText>
           <DialogActions className="!mt-4">
             <Button onClick={handleClose} variant="outlined" autoFocus>
