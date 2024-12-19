@@ -41,7 +41,7 @@ const VndRequirementDetails = () => {
       name: "Raj Pathar",
       stage: "Shortlisted",
       date: "12-06-2024",
-      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico"
+      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
     },
     {
       vendor: "Binemiles Technologies",
@@ -73,7 +73,7 @@ const VndRequirementDetails = () => {
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
             onClick={() => {
-              navigate("/company/myrequirements");
+              navigate(-1);
             }}
           >
             <ArrowBackIcon />
@@ -249,7 +249,7 @@ const VndRequirementDetails = () => {
               <thead>
                 <tr>
                   <th className="add-right-shadow">Name</th>
-                  <th>Vendor</th>
+                  {/* <th>Vendor</th> */}
                   <th>Status</th>
                   <th>Application Date</th>
                   <th>CV</th>
@@ -263,7 +263,7 @@ const VndRequirementDetails = () => {
                     // onClick={() => handleRowClick(applicant.id)}
                   >
                     <th className="add-right-shadow">{applicant.name}</th>
-                    <td className="wide-250">
+                    {/* <td className="wide-250">
                       <div className="flex items-center">
                         <img
                           src={applicant.logo}
@@ -272,7 +272,7 @@ const VndRequirementDetails = () => {
                         />
                         {applicant.vendor}
                       </div>
-                    </td>
+                    </td> */}
                     <td>
                       <Typography
                         className={`inline-block px-3 py-1 !text-base rounded-full ${

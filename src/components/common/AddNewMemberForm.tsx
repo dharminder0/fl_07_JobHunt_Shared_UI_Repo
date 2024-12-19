@@ -39,7 +39,7 @@ const AddNewMemberForm = () => {
   return (
     <div className="">
       <Button
-        variant="contained"
+         variant="outlined"
         onClick={toggleDrawer(true)}
         startIcon={<Add />}
       >

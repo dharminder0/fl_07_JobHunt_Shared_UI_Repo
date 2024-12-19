@@ -47,6 +47,12 @@ export default function Login() {
     }
   }, []);
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   const handleLogin = () => {
     // Step 1: Check if credentials already exist in localStorage
     const storedEmail = localStorage.getItem("email");
@@ -101,7 +107,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen container">
       {/* Left Section */}
       <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
         <div className="mb-8 bg-white p-4 w-40">
@@ -110,23 +116,21 @@ export default function Login() {
             alt="JobHunty Logo"
             className="h-8 w-auto mb-4"
           />
-          <h2 className="font-bold text-xl">10K+</h2>
-          <p className="text-gray-600 font-medium">People got hired</p>
+          <h2 className="font-bold text-title">10K+</h2>
+          <p className="text-gray-600 text-base">People got hired</p>
         </div>
         <div className="self-center">
           <img
             src={"/assets/images/banner-person.png"}
             alt="JobHunty Logo"
-            className="w-auto"
+            className="w-[60%]"
           />
         </div>
       </div>
 
       <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
         <div className="w-full max-w-md mb-8">
-          <h1 className="text-4xl font-bold font-display text-gray-700 mb-4">
-            Welcome Back, Dude
-          </h1>
+          <h1 className="text-heading font-display">Welcome Back, Dude</h1>
         </div>
 
         {/* Login Form */}
@@ -138,14 +142,17 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             fullWidth
             variant="outlined"
+            size="small"
           />
           <TextField
             label="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyPress}
             fullWidth
             variant="outlined"
+            size="small"
           />
 
           {/* Error message */}
@@ -164,7 +171,11 @@ export default function Login() {
               />
             }
             label="Remember me"
-            className="text-sm"
+            sx={{
+              "& .MuiTypography-root": {
+                fontSize: "12px",
+              },
+            }}
           />
           <Button
             onClick={handleLogin}
@@ -177,7 +188,7 @@ export default function Login() {
           </Button>
         </form>
 
-        <p className="text-sm text-gray-500 mt-4">
+        <p className="text-base text-gray-500 mt-4">
           Don’t have an account?{" "}
           <span
             className="text-blue-500 cursor-pointer"

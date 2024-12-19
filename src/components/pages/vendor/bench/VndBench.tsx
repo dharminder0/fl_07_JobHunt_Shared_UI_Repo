@@ -9,7 +9,8 @@ const benchData = [
   {
     id: 1,
     resource: "Raj Pathar",
-    skills: "Software Associate",
+    role: "Software Associate",
+    skills: "Angular, React, DevOps",
     experience: "8 years",
     location: "Noida",
     availability: "Immediate",
@@ -17,7 +18,8 @@ const benchData = [
   {
     id: 2,
     resource: "Harshit Tandon ",
-    skills: "Front End Lead",
+    role: "Front End Lead",
+    skills: "Angular, DevOps, .net, C#",
     experience: "8 years",
     location: "Hyderabad",
     availability: "Immediate",
@@ -25,7 +27,8 @@ const benchData = [
   {
     id: 3,
     resource: "Sajid Sarkar ",
-    skills: "Software Developer",
+    role: "Software Developer",
+    skills: "Angular, React, Azure",
     experience: "4 years",
     location: "Noida",
     availability: "Immediate",
@@ -33,7 +36,8 @@ const benchData = [
   {
     id: 4,
     resource: "Vaibav Rastogi",
-    skills: "Front End Developer",
+    role: "Front End Developer",
+    skills: "Angular, React",
     experience: "3 years",
     location: "Hyderabad",
     availability: "Immediate",
@@ -69,6 +73,7 @@ const VndBench: React.FC<VndBench> = () => {
           <thead>
             <tr>
               <th className="add-right-shadow">Resource name</th>
+              <th>Role</th>
               <th>Skill Set</th>
               <th>Experience</th>
               <th>Location</th>
@@ -79,6 +84,7 @@ const VndBench: React.FC<VndBench> = () => {
             {benchData.map((item, index) => (
               <tr key={index}>
                 <th className="add-right-shadow">{item.resource}</th>
+                <td>{item.role}</td>
                 <td>{item.skills}</td>
                 <td>{item.experience}</td>
                 <td>{item.location}</td>

@@ -3,6 +3,7 @@ import { Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateClientForm from "./CreateClientForm";
+import ImportClientForm from "./ImportClientForm";
 
 const clientDataObj = [
   {
@@ -79,6 +80,7 @@ export default function Clients() {
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
+          <ImportClientForm />
           <CreateClientForm />
         </Box>
       </Box>
@@ -95,9 +97,9 @@ export default function Clients() {
           </thead>
           <tbody>
             {clientDataObj.map((item, index) => (
-              <tr className="cursor-pointer" key={index}>
+              <tr key={index}>
                 <th
-                  className="add-right-shadow wide-250"
+                  className="add-right-shadow wide-250 cursor-pointer"
                   onClick={() => handleRowClick(item.id, "active")}
                 >
                   <div className="flex">
@@ -110,10 +112,10 @@ export default function Clients() {
                   </div>
                 </th>
                 <td>{item.requirement}</td>
-                <td onClick={() => handleRowClick(item.id, "active")}>
+                <td  className="cursor-pointer" onClick={() => handleRowClick(item.id, "active")}>
                   {item.activeContracts}
                 </td>
-                <td onClick={() => handleRowClick(item.id, "past")}>
+                <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "past")}>
                   {item.pastContracts}
                 </td>
                 <td>{item.status}</td>

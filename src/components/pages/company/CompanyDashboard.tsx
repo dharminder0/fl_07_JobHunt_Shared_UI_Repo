@@ -154,7 +154,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             76
           </Typography>
           {/* <p className="text-white text-heading mb-2">76</p> */}
-          <p className="text-base">Open Requirements</p>
+          <p className="text-base">Open Positions</p>
         </div>
 
         <div
@@ -247,7 +247,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Top Clients</p>
-                <p className="pt-4 text-title">Requirments</p>
+                <p className="pt-4 text-title">Positions</p>
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
@@ -286,7 +286,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Trending Technologies</p>
-                <p className="pt-4 text-title">Requirments</p>
+                <p className="pt-4 text-title">Positions</p>
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
@@ -353,7 +353,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     className="my-1 me-1"
                   />
                   <Chip
-                    label="12/12/2024"
+                    label="12-12-2024"
                     variant="outlined"
                     sx={{ fontSize: 12 }}
                     className="my-1 me-1"

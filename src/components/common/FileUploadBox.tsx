@@ -1,7 +1,7 @@
-import { Image } from "@mui/icons-material";
+import { Image, UploadFile } from "@mui/icons-material";
 import React, { useState } from "react";
 
-const FileUploadBox = ({ title = "", fileSize = "" }) => {
+const FileUploadBox = ({ title = "", fileSize = "", iconType=""  }) => {
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,14 +35,15 @@ const FileUploadBox = ({ title = "", fileSize = "" }) => {
           <div className="flex flex-col items-center justify-center">
             {/* Icon */}
             <div className="mb-3">
-              <Image color="primary" fontSize="small" />
+              {iconType == 'image' && <Image color="primary" fontSize="small" /> } 
+              {iconType == 'file' && <UploadFile color="primary" fontSize="small" /> }
             </div>
 
             {/* Upload Text */}
             <p className="text-blue-500 text-base">Click to {title}</p>
-            <p className="mt-1 text-info text-gray-400">
+            {fileSize && <p className="mt-1 text-info text-gray-400">
               SVG, PNG, JPG or GIF (max. {fileSize})
-            </p>
+            </p>}
           </div>
           <input
             id="file-upload"
@@ -55,7 +56,7 @@ const FileUploadBox = ({ title = "", fileSize = "" }) => {
       </div>
       {/* File Name Preview */}
       {file && (
-        <p className="mt-3 text-base text-gray-700 text-center">
+        <p className={`mt-3 text-base text-gray-700 ${iconType == 'image' ? 'text-center' : ''}`}>
           Selected File: {file.name}
         </p>
       )}

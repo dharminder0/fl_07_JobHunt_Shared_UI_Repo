@@ -17,11 +17,20 @@ import {
   InputAdornment,
   FormControl,
   InputLabel,
+  Tooltip,
   Menu,
-  IconButton,
-} from "@mui/material";
+  IconButton
+  } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import {
+  AccessTimeOutlined,
+  Delete,
+  Edit,
+  LocationCityOutlined,
+  LocationOnOutlined,
+  TimeToLeave,
+} from "@mui/icons-material";
 import SearchBar from "../../../../components/sharedComponents/Search";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
@@ -55,11 +64,12 @@ const MyRequirements = () => {
       id: 1,
       role: "Social Media Assistant",
       status: "Open",
-      datePosted: "20 May 2020",
+      datePosted: "20-05-2020",
       applicants: 19,
       client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
+      placed: 1,
       contractPeriod: "6 months",
       visibility: "Global",
       logo:
@@ -69,24 +79,26 @@ const MyRequirements = () => {
       id: 2,
       role: "Senior Designer",
       status: "On hold",
-      datePosted: "16 May 2020",
+      datePosted: "16-05-2020",
       applicants: 0,
       client: "Creative Solutions Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
+      placed: 2,
       contractPeriod: "12 months",
-      visibility: "Empanelled",
+      visibility: "Empaneled",
       logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
     },
     {
       id: 3,
       role: "Visual Designer",
       status: "Open",
-      datePosted: "15 May 2020",
+      datePosted: "15-05-2020",
       applicants: 4,
       client: "Design Pros Inc.",
       requirementType: "Onsite",
       noOfPositions: 2,
+      placed: 1,
       contractPeriod: "3 months",
       visibility: "Limited",
       logo: "https://www.prototypehouse.com/favicon.ico",
@@ -95,11 +107,12 @@ const MyRequirements = () => {
       id: 4,
       role: "Data Science",
       status: "Closed",
-      datePosted: "13 May 2020",
+      datePosted: "13-05-2020",
       applicants: 6,
       client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 1,
+      placed: 1,
       contractPeriod: "9 months",
       visibility: "Global",
       logo:
@@ -109,24 +122,26 @@ const MyRequirements = () => {
       id: 5,
       role: "Kotlin Developer",
       status: "Closed",
-      datePosted: "12 May 2020",
+      datePosted: "12-06-2020",
       applicants: 12,
       client: "Tech Innovators LLC",
       requirementType: "Hybrid",
       noOfPositions: 1,
+      placed: 0,
       contractPeriod: "18 months",
-      visibility: "Empanelled",
+      visibility: "Empaneled",
       logo: "https://techinnovators.dev/icon_dark.ico",
     },
     {
       id: 6,
       role: "React Developer",
       status: "Hot",
-      datePosted: "11 May 2020",
+      datePosted: "11-05-2020",
       applicants: 14,
       client: "Code Crafters Co.",
       requirementType: "Onsite",
       noOfPositions: 3,
+      placed: 1,
       contractPeriod: "12 months",
       visibility: "Limited",
       logo: "https://codecrafters.io/favicon.ico",
@@ -135,7 +150,7 @@ const MyRequirements = () => {
       id: 7,
       role: "Social Media Assistant",
       status: "On hold",
-      datePosted: "20 May 2020",
+      datePosted: "20-05-2020",
       applicants: 19,
       client: "OpsTree Solutions",
       requirementType: "Remote",
@@ -149,25 +164,40 @@ const MyRequirements = () => {
       id: 8,
       role: "Senior Designer",
       status: "Open",
-      datePosted: "16 May 2020",
+      datePosted: "16-05-2020",
       applicants: 0,
+      client: "OpsTree Solutions",
+      requirementType: "Remote",
+      noOfPositions: 3,
+      placed: 0,
+      contractPeriod: "6 months",
+      visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+    },
+    {
+      id: 8,
+      role: "Senior Designer",
+      status: "Open",
+      datePosted: "16 May 2020",
+      applicants: 21,
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
+      placed: 2,
       contractPeriod: "12 months",
-      visibility: "Empanelled",
-      logo:
-        "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
+      visibility: "Empaneled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
       role: "Visual Designer",
       status: "On hold",
-      datePosted: "15 May 2020",
+      datePosted: "15-05-2020",
       applicants: 2,
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
+      placed: 0,
       contractPeriod: "3 months",
       visibility: "Limited",
       logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
@@ -176,49 +206,46 @@ const MyRequirements = () => {
       id: 10,
       role: "Data Science",
       status: "Closed",
-      datePosted: "13 May 2020",
+      datePosted: "13-05-2020",
       applicants: 4,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
       contractPeriod: "9 months",
       visibility: "Global",
-      logo:
-        "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
     },
     {
       id: 7,
       role: "Social Media Assistant",
       status: "On hold",
-      datePosted: "20 May 2020",
+      datePosted: "20-05-2020",
       applicants: 19,
       client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
-      logo:
-        "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
     {
       id: 8,
       role: "Senior Designer",
       status: "Open",
-      datePosted: "16 May 2020",
+      datePosted: "16-05-2020",
       applicants: 4,
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
       contractPeriod: "12 months",
-      visibility: "Empanelled",
-      logo:
-        "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
+      visibility: "Empaneled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
     },
     {
       id: 9,
       role: "Visual Designer",
       status: "On hold",
-      datePosted: "15 May 2020",
+      datePosted: "15-05-2020",
       applicants: 5,
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
@@ -231,11 +258,175 @@ const MyRequirements = () => {
       id: 10,
       role: "Data Science",
       status: "Hot",
-      datePosted: "13 May 2020",
+      datePosted: "13-05-2020",
       applicants: 0,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
+      contractPeriod: "9 months",
+      visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
+    },
+    {
+      id: 7,
+      role: "Social Media Assistant",
+      status: "On hold",
+      datePosted: "20-05-2020",
+      applicants: 9,
+      client: "OpsTree Solutions",
+      requirementType: "Remote",
+      noOfPositions: 3,
+      contractPeriod: "6 months",
+      visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+    },
+    {
+      id: 8,
+      role: "Senior Designer",
+      status: "Open",
+      datePosted: "16-05-2020",
+      applicants: 4,
+      client: "Visionary Designs Ltd.",
+      requirementType: "Hybrid",
+      noOfPositions: 5,
+      contractPeriod: "12 months",
+      visibility: "Empaneled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
+    },
+    {
+      id: 9,
+      role: "Visual Designer",
+      status: "Hot",
+      datePosted: "15-05-2020",
+      applicants: 2,
+      client: "Creative Solutions Ltd.",
+      requirementType: "Onsite",
+      noOfPositions: 2,
+      contractPeriod: "3 months",
+      visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
+    },
+    {
+      id: 10,
+      role: "Data Science",
+      status: "Closed",
+      datePosted: "13-05-2020",
+      applicants: 6,
+      client: "Data Insights Group",
+      requirementType: "Remote",
+      noOfPositions: 10,
+      contractPeriod: "9 months",
+      visibility: "Global",
+      logo:
+        "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
+    },
+    {
+      id: 7,
+      role: "Social Media Assistant",
+      status: "On hold",
+      datePosted: "20-05-2020",
+      applicants: 1,
+      client: "OpsTree Solutions",
+      requirementType: "Remote",
+      noOfPositions: 3,
+      contractPeriod: "6 months",
+      visibility: "Global",
+      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+    },
+    {
+      id: 8,
+      role: "Senior Designer",
+      status: "Open",
+      datePosted: "16-05-2020",
+      applicants: 4,
+      client: "Visionary Designs Ltd.",
+      requirementType: "Hybrid",
+      noOfPositions: 5,
+      contractPeriod: "12 months",
+      visibility: "Empaneled",
+      logo: "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
+    },
+    {
+      id: 9,
+      role: "Visual Designer",
+      status: "On hold",
+      datePosted: "15-05-2020",
+      applicants: 2,
+      client: "Creative Solutions Ltd.",
+      requirementType: "Onsite",
+      noOfPositions: 2,
+      contractPeriod: "3 months",
+      visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
+    },
+    {
+      id: 10,
+      role: "Data Science",
+      status: "Closed",
+      datePosted: "13-05-2020",
+      applicants: 7,
+      client: "Data Insights Group",
+      requirementType: "Remote",
+      noOfPositions: 10,
+      placed: 4,
+      contractPeriod: "9 months",
+      visibility: "Global",
+      logo: "https://data-insights.com/wp-content/uploads/2018/01/DataInsights_favicon-01.png",
+    },
+    {
+      id: 7,
+      role: "Social Media Assistant",
+      status: "On hold",
+      datePosted: "20 May 2020",
+      applicants: 19,
+      client: "OpsTree Solutions",
+      requirementType: "Remote",
+      noOfPositions: 3,
+      placed: 1,
+      contractPeriod: "6 months",
+      visibility: "Global",
+      logo:
+        "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+    },
+    {
+      id: 8,
+      role: "Senior Designer",
+      status: "Open",
+      datePosted: "16 May 2020",
+      applicants: 4,
+      client: "Visionary Designs Ltd.",
+      requirementType: "Hybrid",
+      noOfPositions: 5,
+      placed: 2,
+      contractPeriod: "12 months",
+      visibility: "Empanelled",
+      logo:
+        "https://www.visionarydesign.co.in/wp-content/uploads/2019/09/favicon.png",
+    },
+    {
+      id: 9,
+      role: "Visual Designer",
+      status: "On hold",
+      datePosted: "15 May 2020",
+      applicants: 0,
+      client: "Creative Solutions Ltd.",
+      requirementType: "Onsite",
+      noOfPositions: 2,
+      placed: 0,
+      contractPeriod: "3 months",
+      visibility: "Limited",
+      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
+    },
+    {
+      id: 10,
+      role: "Data Science",
+      status: "Hot",
+      datePosted: "13 May 2020",
+      applicants: 24,
+      client: "Data Insights Group",
+      requirementType: "Remote",
+      noOfPositions: 10,
+      placed: 4,
       contractPeriod: "9 months",
       visibility: "Global",
       logo:
@@ -250,6 +441,7 @@ const MyRequirements = () => {
       client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
+      placed: 1,
       contractPeriod: "6 months",
       visibility: "Global",
       logo:
@@ -264,6 +456,7 @@ const MyRequirements = () => {
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
+      placed: 1,
       contractPeriod: "12 months",
       visibility: "Empanelled",
       logo:
@@ -278,6 +471,7 @@ const MyRequirements = () => {
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
+      placed: 0,
       contractPeriod: "3 months",
       visibility: "Limited",
       logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
@@ -287,10 +481,11 @@ const MyRequirements = () => {
       role: "Data Science",
       status: "Closed",
       datePosted: "13 May 2020",
-      applicants: 6,
+      applicants: 16,
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
+      placed: 6,
       contractPeriod: "9 months",
       visibility: "Global",
       logo:
@@ -305,6 +500,7 @@ const MyRequirements = () => {
       client: "OpsTree Solutions",
       requirementType: "Remote",
       noOfPositions: 3,
+      placed: 0,
       contractPeriod: "6 months",
       visibility: "Global",
       logo:
@@ -319,6 +515,7 @@ const MyRequirements = () => {
       client: "Visionary Designs Ltd.",
       requirementType: "Hybrid",
       noOfPositions: 5,
+      placed: 2,
       contractPeriod: "12 months",
       visibility: "Empanelled",
       logo:
@@ -333,6 +530,7 @@ const MyRequirements = () => {
       client: "Creative Solutions Ltd.",
       requirementType: "Onsite",
       noOfPositions: 2,
+      placed: 0,
       contractPeriod: "3 months",
       visibility: "Limited",
       logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
@@ -346,6 +544,7 @@ const MyRequirements = () => {
       client: "Data Insights Group",
       requirementType: "Remote",
       noOfPositions: 10,
+      placed: 3,
       contractPeriod: "9 months",
       visibility: "Global",
       logo:
@@ -353,8 +552,18 @@ const MyRequirements = () => {
     },
   ];
 
-  const handleRowClick = (id: number) => {
-    navigate(`${id}`);
+  const handleRowClick = (id: number, type: string) => {
+    switch (type) {
+      case "applicant":
+        navigate(`/company/candidates`);
+        break;
+      case "client":
+        navigate(`/company/clients/${id}`);
+        break;
+      default:
+        navigate(`${id}`);
+        break;
+    }
   };
 
   useEffect(() => {
@@ -546,32 +755,60 @@ const MyRequirements = () => {
           <table>
             <thead>
               <tr>
-                <th className='add-right-shadow'>Role</th>
-                <th>Client</th>
+                <th className="add-right-shadow">Role</th>
                 <th>Status</th>
                 <th>Date Posted</th>
-                <th>Requirement Type</th>
+                {/* <th>Requirement Type</th> */}
+                <th>Positions (Placed)</th>
                 <th>Applicants</th>
-                <th>Contract period</th>
+                {/* <th>Contract period</th> */}
                 <th>Visibility</th>
-                <th>No. of Positions</th>
               </tr>
             </thead>
             <tbody>
               {jobData.map((job, index) => (
-                <tr
-                  className='cursor-pointer'
-                  key={index}
-                  onClick={() => handleRowClick(job.id)}>
-                  <th className='add-right-shadow'>{job.role}</th>
-                  <td className='flex items-center wide-250'>
-                    <img
-                      src={job.logo}
-                      style={{ height: 16, width: 16 }}
-                      className='me-1'
-                    />
-                    {job.client}
-                  </td>
+                <tr key={index}>
+                  <th className="add-right-shadow">
+                    <div
+                      onClick={() => handleRowClick(job.id, "requirement")}
+                      className="cursor-pointer hover:text-indigo-700"
+                    >
+                      {job.role}
+                    </div>
+                    <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                      <div
+                        className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                        onClick={() => handleRowClick(job.id, "client")}
+                      >
+                        <img
+                          src={job.logo}
+                          style={{ height: 12, width: 12 }}
+                          className="me-1"
+                        />
+                        <Tooltip title={job.client} arrow>
+                          <span className="text-ellipsis overflow-hidden truncate">
+                            {job.client}
+                          </span>
+                        </Tooltip>
+                      </div>
+                      <div className="flex w-[128px]">
+                        <div className="flex items-center ms-1">
+                          <LocationOnOutlined
+                            fontSize="inherit"
+                            className="mr-1"
+                          />
+                          <span>{job.requirementType}</span>
+                        </div>
+                        <div className="flex items-center ms-1">
+                          <AccessTimeOutlined
+                            fontSize="inherit"
+                            className="mr-1"
+                          />
+                          <span>{job.contractPeriod}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </th>
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base rounded-full ${
@@ -583,46 +820,23 @@ const MyRequirements = () => {
                     </Typography>
                   </td>
                   <td>{job.datePosted}</td>
+                  {/* <td>{job.requirementType}</td> */}
                   <td>
-                    {/* <Typography
-                      className={`inline-block px-3 py-1 !text-base rounded-full ${
-                        job.status === "Open"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    > */}
-                    {job.requirementType}
-                    {/* </Typography> */}
+                    {job.noOfPositions} ({job.placed})
                   </td>
-                  <td>{job.applicants}</td>
-                  <td>{job.contractPeriod}</td>
+                  <td
+                    className="cursor-pointer"
+                    onClick={() => handleRowClick(job.id, "applicant")}
+                  >
+                    {job.applicants}
+                  </td>
+                  {/* <td>{job.contractPeriod}</td> */}
                   <td>{job.visibility}</td>
-                  <td>{job.noOfPositions}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        {/* Footer */}
-        {/* <Box className="flex justify-between items-center mt-6">
-          <Box className="flex items-center">
-            <Typography className="mr-2 text-gray-600">View</Typography>
-            <Select
-              defaultValue={10}
-              className="bg-white rounded-md mx-2"
-              size="small"
-            >
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={20}>20</MenuItem>
-              <MenuItem value={30}>30</MenuItem>
-            </Select>
-            <Typography className="ml-2 text-gray-600">
-              Applicants per page
-            </Typography>
-          </Box>
-          <Pagination count={2} variant="outlined" shape="rounded" />
-        </Box> */}
       </div>
     </>
   );
