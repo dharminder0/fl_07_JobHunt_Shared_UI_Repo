@@ -214,14 +214,13 @@ export default function VndCandidates() {
           <tbody>
             {filteredApplicants.map((applicant, index) => (
               <tr
-                className="cursor-pointer"
                 key={index}
                 // onClick={() => handleRowClick(applicant.id)}
               >
                 <th className="add-right-shadow">{applicant.name}</th>
                 <td>{applicant.requirement}</td>
                 <td
-                  className="wide-250"
+                  className="wide-250 cursor-pointer"
                   onClick={() => handleRowClick(applicant.id)}
                 >
                   <div className="flex items-center">
