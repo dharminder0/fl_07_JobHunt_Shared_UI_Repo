@@ -41,7 +41,7 @@ const VndRequirementDetails = () => {
       name: "Raj Pathar",
       stage: "Shortlisted",
       date: "12-06-2024",
-      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico"
+      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
     },
     {
       vendor: "Binemiles Technologies",
@@ -73,7 +73,7 @@ const VndRequirementDetails = () => {
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
             onClick={() => {
-              navigate("/company/myrequirements");
+              navigate(-1);
             }}
           >
             <ArrowBackIcon />
