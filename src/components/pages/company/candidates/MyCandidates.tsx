@@ -306,7 +306,7 @@ export default function MyCandidates() {
                     </div>
                     <div className="flex text-info items-center">
                       <div
-                        className="flex cursor-pointer"
+                        className="flex cursor-pointer hover:text-indigo-700"
                         onClick={() => handleMatchingDialog(applicant.ai)}
                       >
                         <svg
@@ -338,7 +338,7 @@ export default function MyCandidates() {
                         </svg>
                         <span> {applicant.ai}%</span>
                       </div>
-                      <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
+                      <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700">
                         <Download fontSize="inherit" />
                         <span className="text-info">CV</span>
                       </div>
