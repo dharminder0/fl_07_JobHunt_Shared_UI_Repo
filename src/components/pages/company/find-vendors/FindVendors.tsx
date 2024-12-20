@@ -20,7 +20,6 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { FilterList, Search } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
@@ -136,13 +135,11 @@ const MyClients = () => {
 
       {/* Search and Filters */}
       <div className="flex justify-between items-center mt-1">
-        <h5 className="text-heading">Find Vendors</h5>
-
-        <div className="flex justify-end items-center">
+        <h5 className="text-heading">Find Vendors</h5>        
             <div className="flex flex-row gap-1 justify-end mb-1">
               <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-                <div className='flex text-center gap-3 flex-nowrap my-auto'>
-                  <div className='flex grow w-[220px]'>
+                <div className='flex text-center flex-nowrap my-auto'>
+                  <div className='flex grow w-[220px] mr-2'>
                     <div className='flex-col flex-grow'>
                       <TextField
                         size='small'
@@ -167,14 +164,12 @@ const MyClients = () => {
                       />
                     </div>
                   </div>
-                  <IconButton aria-label='filter'>
-                    <FilterListOutlinedIcon />
-                  </IconButton>
                 </div>
+                <IconButton aria-label='filter'>
+                  <FilterListOutlinedIcon />
+                </IconButton>
               </div>
             </div>
-          </div>
-       
         {/* <Box className="flex items-center justify-end my-2">
           <Box className="flex items-center space-x-4">
             <TextField

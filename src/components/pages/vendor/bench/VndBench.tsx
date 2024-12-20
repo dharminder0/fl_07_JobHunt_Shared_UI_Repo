@@ -5,10 +5,13 @@ import {
   Search,
   WorkHistory,
 } from "@mui/icons-material";
-import { Button, Box, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Button, Box, TextField, InputAdornment, IconButton } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import AddBenchForm from "./AddBenchForm";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 
 // interface VndBench {}
 
@@ -58,7 +61,37 @@ const benchData = [
 const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
   const [search, setSearch] = useState("");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
+  const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
+  const [filterList, setFilterList] = useState<any>({
+    availability: ["Immediate"],
+    roles: ["Software Associate", "Front End Lead", "Software Developer", "Front End Developer"],
+  });
+  const [searchFilter, setSearchFilter] = useState<any>({
+    searchValue: "",
+    availability: [],
+    roles: [],
+  });
   const [matchingScore, setMatchingScore] = React.useState(0);
+
+  useEffect(() => {    
+    // Filtering logic
+    const filtered = benchData.filter((item) => {
+      // Check search input
+      const availabilityMatch =
+        searchFilter.availability.length === 0 ||
+        searchFilter.availability.includes(item.availability);
+      const roleMatch =
+        searchFilter.roles.length === 0 ||
+        searchFilter.roles.includes(item.role);
+      const searchMatch =
+        searchFilter.searchValue === "" ||
+        item.role.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+      return (
+        searchMatch && roleMatch && availabilityMatch
+      );
+    });
+    setbenchFliterData(filtered);
+  }, [searchFilter]);
 
   const handleMatchingDialog = (score: number) => {
     setIsMatchOpen(true);
@@ -72,28 +105,60 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
           <h5 className="text-heading">Apply</h5>
         </div>
       )}
-      <div className="px-4 py-3">
-        <div className="flex justify-end items-center">
-          <Box className="flex items-center justify-end">
-            <Box className="flex items-center space-x-4">
-              <TextField
-                variant="outlined"
-                size="small"
-                placeholder="Search Bench"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                InputProps={{
-                  startAdornment: <Search className="mr-2" fontSize="small" />,
-                }}
-              />
-              <Button variant="outlined" startIcon={<FilterList />}>
-                Filter
-              </Button>
-              {!isDrawer && <AddBenchForm />}
-            </Box>
-          </Box>
+      <div className="px-4 py-3 h-full">
+        <div className="flex flex-row gap-1 justify-end mb-1">
+          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+            <div className='flex text-center flex-nowrap my-auto'>
+              <div className='flex grow w-[220px] mr-2'>
+                <div className='flex-col flex-grow'>
+                  <TextField
+                    size='small'
+                    className='w-full'
+                    value={searchFilter.searchValue}
+                    onChange={(event) =>
+                      setSearchFilter({
+                        ...searchFilter,
+                        searchValue: event.target.value,
+                      })
+                    }
+                    placeholder="Search Vendors"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <SearchIcon fontSize='inherit' />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+              <div className='max-w-full shrink-0'>
+                <MenuDrpDwn
+                  menuList={filterList?.roles}
+                  placeholder='Roles'
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, roles: selectedItems });
+                  }}
+                />
+              </div>
+              <div className='max-w-full shrink-0'>
+                <MenuDrpDwn
+                  menuList={filterList?.availability}
+                  placeholder='Availability'
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, availability: selectedItems });
+                  }}
+                />
+              </div>
+            </div>
+            <IconButton aria-label='filter'>
+              <FilterListOutlinedIcon />
+            </IconButton>
+          </div>
         </div>
-        <div className="table-body my-3">
+        <div className="table-body">
           <table>
             <thead>
               <tr>
@@ -106,7 +171,7 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
               </tr>
             </thead>
             <tbody>
-              {benchData.map((item, index) => (
+              {benchFliterData.map((item, index) => (
                 <tr key={index}>
                   <th className="add-right-shadow">
                     <div className="flex items-center justify-between text-info">

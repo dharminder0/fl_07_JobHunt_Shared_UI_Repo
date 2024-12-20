@@ -1,9 +1,10 @@
 // App.tsx
-import React, { useState } from "react";
-import { TextField, Button, Chip, Tabs, Tab, Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { TextField, Button, Chip, Tabs, Tab, Box, InputAdornment, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FilterList, Search } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
 const activieClients = [
   {
@@ -65,9 +66,25 @@ const VndClients = () => {
       state: { previousUrl: location.pathname },
     })
   }
+  const [activefilterData, setactivefilterData] = useState<any[]>([]);
+  const [archivedfilterData, setarchivedfilterData] = useState<any[]>([]);
+  const [searchFilter, setSearchFilter] = useState<any>({
+    searchValue: "",
+  });
   
 
   const [tabValue, setTabValue] = React.useState("Active");
+   useEffect(() => {
+      const activeTabData = tabValue === 'Active' ? activieClients : archivedClients;
+      const filtered = activeTabData.filter((item) => {
+        const searchMatch =
+          !searchFilter.searchValue ||
+          item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+        return searchMatch;
+      });
+  
+      tabValue === 'Active' ? setactivefilterData(filtered) : setarchivedfilterData(filtered);
+    }, [searchFilter, tabValue]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -91,7 +108,7 @@ const VndClients = () => {
         </div>
 
         <div className="w-1/2 flex justify-end">
-          <Box className="flex items-center justify-end my-2">
+          {/* <Box className="flex items-center justify-end my-2">
             <Box className="flex items-center space-x-4">
               <TextField
                 variant="outlined"
@@ -107,7 +124,39 @@ const VndClients = () => {
                 Filter
               </Button>
             </Box>
-          </Box>
+          </Box> */}
+          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+            <div className='flex text-center flex-nowrap my-auto'>
+              <div className='flex grow w-[220px] mr-2'>
+                <div className='flex-col flex-grow'>
+                  <TextField
+                    size='small'
+                    className='w-full'
+                    value={searchFilter.searchValue}
+                    onChange={(event) =>
+                      setSearchFilter({
+                        ...searchFilter,
+                        searchValue: event.target.value,
+                      })
+                    }
+                    placeholder="Search Vendors"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <SearchIcon fontSize='inherit' />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+              <IconButton aria-label='filter'>
+                <FilterListOutlinedIcon />
+              </IconButton>
+          </div>
         </div>
       </div>
 
@@ -117,7 +166,7 @@ const VndClients = () => {
           <Grid container spacing={4}>
             <Grid size={12}>
               <Grid container spacing={3}>
-                {activieClients.map((company, idx) => (
+                {activefilterData.map((company, idx) => (
                   <Grid
                     size={3}
                     key={idx}
@@ -147,7 +196,7 @@ const VndClients = () => {
                       </div>
                       <p className="text-base">{company.description}</p>
                       <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag, idx) => (
+                        {company.tags.map((tag:string, idx:any) => (
                           <Chip
                             key={idx}
                             label={tag}
@@ -171,7 +220,7 @@ const VndClients = () => {
           <Grid container spacing={4}>
             <Grid size={12}>
               <Grid container spacing={3}>
-                {archivedClients.map((company, idx) => (
+                {archivedfilterData.map((company, idx) => (
                   <Grid
                     size={3}
                     key={idx}
@@ -201,7 +250,7 @@ const VndClients = () => {
                       </div>
                       <p className="text-base">{company.description}</p>
                       <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag, idx) => (
+                        {company.tags.map((tag:string, idx:any) => (
                           <Chip
                             key={idx}
                             label={tag}

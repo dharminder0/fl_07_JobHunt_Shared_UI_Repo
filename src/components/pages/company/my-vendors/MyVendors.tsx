@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { FilterList, Search } from "@mui/icons-material";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
 const activeData = [
@@ -123,42 +122,38 @@ const MyVendors = () => {
             <Tab value="Archived" label="Archived Vendors" />
           </Tabs>
         </div>
-        <div className="w-1/2 flex justify-end">
-          <div className="flex justify-end items-center">
-            <div className="flex flex-row gap-1 justify-end mb-1">
-              <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-                <div className='flex text-center gap-3 flex-nowrap my-auto'>
-                  <div className='flex grow w-[220px]'>
-                    <div className='flex-col flex-grow'>
-                      <TextField
-                        size='small'
-                        className='w-full'
-                        value={searchFilter.searchValue}
-                        onChange={(event) =>
-                          setSearchFilter({
-                            ...searchFilter,
-                            searchValue: event.target.value,
-                          })
-                        }
-                        placeholder="Search Vendors"
-                        slotProps={{
-                          input: {
-                            startAdornment: (
-                              <InputAdornment position='start'>
-                                <SearchIcon fontSize='inherit' />
-                              </InputAdornment>
-                            ),
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <IconButton aria-label='filter'>
-                    <FilterListOutlinedIcon />
-                  </IconButton>
+        <div className="w-1/2 flex flex-row justify-end">
+          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+            <div className='flex text-center flex-nowrap my-auto'>
+              <div className='flex grow w-[220px] mr-2'>
+                <div className='flex-col flex-grow'>
+                  <TextField
+                    size='small'
+                    className='w-full'
+                    value={searchFilter.searchValue}
+                    onChange={(event) =>
+                      setSearchFilter({
+                        ...searchFilter,
+                        searchValue: event.target.value,
+                      })
+                    }
+                    placeholder="Search Vendors"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <SearchIcon fontSize='inherit' />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
                 </div>
               </div>
             </div>
+              <IconButton aria-label='filter'>
+                <FilterListOutlinedIcon />
+              </IconButton>
           </div>
         </div>
       </div>

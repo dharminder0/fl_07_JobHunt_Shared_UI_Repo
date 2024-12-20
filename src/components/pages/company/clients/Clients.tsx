@@ -84,18 +84,18 @@ export default function Clients() {
     });
     setclientData(filtered);
   }, [searchFilter]);
-     
+
 
   const handleRowClick = (id: number, tab: string) => {
-    navigate(`${id}?type=${tab}`, { state: { previousUrl: location.pathname },})
+    navigate(`${id}?type=${tab}`, { state: { previousUrl: location.pathname }, })
   };
 
   return (
-    <div className="px-4 py-1 h-full">     
+    <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
         <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-          <div className='flex text-center gap-3 flex-nowrap my-auto'>
-            <div className='flex grow w-[220px]'>
+          <div className='flex text-center flex-nowrap my-auto'>
+            <div className='flex grow w-[220px] mr-2'>
               <div className='flex-col flex-grow'>
                 <TextField
                   size='small'
@@ -121,20 +121,18 @@ export default function Clients() {
               </div>
             </div>
             <div className='max-w-full shrink-0'>
-            <MenuDrpDwn
-                  menuList={filterList?.status}
-                  placeholder='Status'
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, status: selectedItems });
-                  }}
-                />
-              </div>
-            <div> 
-              <IconButton aria-label='filter'>
-              <FilterListOutlinedIcon />
-            </IconButton>
+              <MenuDrpDwn
+                menuList={filterList?.status}
+                placeholder='Status'
+                handleSelectedItem={(selectedItems) => {
+                  setSearchFilter({ ...searchFilter, status: selectedItems });
+                }}
+              />
             </div>
           </div>
+          <IconButton aria-label='filter'>
+            <FilterListOutlinedIcon />
+          </IconButton>
         </div>
         <ImportClientForm />
         <CreateClientForm />
@@ -167,7 +165,7 @@ export default function Clients() {
                   </div>
                 </th>
                 <td>{item.requirement}</td>
-                <td  className="cursor-pointer" onClick={() => handleRowClick(item.id, "activeView")}>
+                <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "activeView")}>
                   {item.activeContracts}
                 </td>
                 <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "pastView")}>

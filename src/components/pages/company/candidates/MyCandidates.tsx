@@ -217,7 +217,7 @@ export default function MyCandidates() {
   };
 
   return (
-    <div className="px-4 py-1">
+    <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
         <div className="flex flex-row gap-1 p-1 overflow-hidden">
           <div className="flex text-center flex-nowrap my-auto">
