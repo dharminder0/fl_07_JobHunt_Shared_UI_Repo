@@ -59,10 +59,6 @@ const CompanyInfo = () => {
 
   return (
     <form className="w-3/5 m-auto p-6 bg-white rounded-lg shadow-md space-y-4 h-auto">
-      <Typography variant="h5" className="font-bold">
-        Company Information
-      </Typography>
-
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <TextField
@@ -72,6 +68,7 @@ const CompanyInfo = () => {
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
             required
+            size="small"
           />
         </Grid>
         <Grid item xs={6}>
@@ -84,6 +81,7 @@ const CompanyInfo = () => {
             value={companyStrength}
             onChange={(e) => setCompanyStrength(e.target.value)}
             required
+            size="small"
           />
         </Grid>
       </Grid>
@@ -98,6 +96,7 @@ const CompanyInfo = () => {
         onChange={(e) => setCompanyPortfolio(e.target.value)}
         placeholder="Brief description of your company portfolio"
         required
+        size="small"
       />
 
       <Grid container spacing={2}>
@@ -111,6 +110,7 @@ const CompanyInfo = () => {
             onChange={(e) => setContactMail(e.target.value)}
             placeholder="Enter your contact email"
             required
+            size="small"
           />
         </Grid>
         <Grid item xs={6}>
@@ -123,6 +123,7 @@ const CompanyInfo = () => {
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
             required
+            size="small"
           />
         </Grid>
       </Grid>
@@ -135,6 +136,7 @@ const CompanyInfo = () => {
         onChange={(e) => setCompanyWebsite(e.target.value)}
         placeholder="Enter your website URL"
         required
+        size="small"
       />
 
       {/* Location Fields */}
@@ -150,6 +152,7 @@ const CompanyInfo = () => {
               setLocation({ ...location, state: e.target.value })
             }
             required
+            size="small"
           />
         </Grid>
         <Grid item xs={6}>
@@ -161,26 +164,10 @@ const CompanyInfo = () => {
             value={location.city}
             onChange={(e) => setLocation({ ...location, city: e.target.value })}
             required
+            size="small"
           />
         </Grid>
       </Grid>
-      {/* Tier Selection */}
-      <FormControl fullWidth>
-        <InputLabel id="tier-label">Tier Level</InputLabel>
-        <Select
-          labelId="tier-label"
-          value={tierLevel}
-          onChange={(e) => setTierLevel(e.target.value)}
-          label="Tier Level"
-          required
-        >
-          {tiers.map((tier) => (
-            <MenuItem key={tier} value={tier}>
-              {tier}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
       {/* Error Message */}
       {errorMessage && (

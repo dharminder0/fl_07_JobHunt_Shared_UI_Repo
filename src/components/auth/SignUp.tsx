@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
@@ -8,6 +17,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [open, setOpen] = React.useState(false);
 
   const handleSignup = () => {
     if (companyName && email && password) {
@@ -18,14 +28,15 @@ export default function SignUp() {
       localStorage.setItem("isLoggedIn", "true");
 
       setErrorMessage("");
-      alert("Account created successfully!");
-
-      // Redirect to home page after signup
-      // navigate("/login");
-      navigate("/onboard");
+      setOpen(true);
     } else {
       setErrorMessage("Please fill in all the fields.");
     }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/onboard");
   };
 
   return (
@@ -113,6 +124,30 @@ export default function SignUp() {
           the Terms of Service and Privacy Policy.
         </p>
       </div>
+
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" className="!text-heading">
+          {"Registration sucessful"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            className="!text-base"
+          >
+            Please check you given email({email}) to onboard you company/vendor and
+            activate your account.
+          </DialogContentText>
+          <DialogActions className="!mt-4">
+            <Button onClick={handleClose} variant="outlined" autoFocus>
+              Continue
+            </Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import CompanyInfo from "./CompanyInfo";
 import CompanyService from "./CompanyService";
 import CompanyTechnologiesForm from "./CompanyTechnologiesForm";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../Navbar";
 import { useNavigate } from "react-router-dom";
 
 const steps = [
@@ -41,7 +41,8 @@ export default function OnBoarding() {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     } else {
-      navigate("/dashboard");
+      localStorage.setItem("role", JSON.stringify(["company"]));
+      navigate("/company/dashboard");
     }
   };
 

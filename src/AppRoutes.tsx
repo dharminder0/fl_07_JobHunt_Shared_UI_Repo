@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
-import OnBoarding from "./pages/boarding/OnBoarding";
+import OnBoarding from "./components/pages/boarding/OnBoarding";
 import VendorDashboard from "./components/pages/vendor/VendorDashboard";
 import CompanyDashboard from "./components/pages/company/CompanyDashboard";
 import FindClients from "./components/pages/company/FindClients";
