@@ -70,7 +70,11 @@ export default function StatusDialog({
                   </RadioGroup>
                 </div>
               )}
-              <div className="min-w-[250px] max-w-[350px] border-s px-4">
+              <div
+                className={`min-w-[250px] max-w-[350px] px-4 ${
+                  !isVendor ? "border-s" : ""
+                }`}
+              >
                 <Stepper
                   activeStep={currentStep}
                   orientation="vertical"

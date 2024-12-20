@@ -9,18 +9,22 @@ import {
   InputLabel,
   Tooltip,
   IconButton,
+  Drawer,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccessTimeOutlined, LocationOnOutlined } from "@mui/icons-material";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import VndBench from "../bench/VndBench";
 
 const VndRequirements = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
   const [searchInput, setSearchInput] = useState<string>("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const [filterList, setFilterList] = useState<any>({
     client: ["Teleperformance", "KPIT Technologies", "Mphasis","Fidelity Information Services","Coforge"],
     status: ["Open", "Hot", "On hold", "Closed"],
@@ -125,8 +129,17 @@ const VndRequirements = () => {
         state: { previousUrl: location.pathname },
       });
     }
-  }
+  };
 
+  const toggleDrawer = (open: any) => (event: any) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
+  };
 
  useEffect(() => {
     // Filtering logic
@@ -394,16 +407,26 @@ const VndRequirements = () => {
               {jobData.map((job, index) => (
                 <tr key={index}>
                   <th className="add-right-shadow">
-                    <div
-                      onClick={() => handleRowClick(job.id)}
-                      className="cursor-pointer hover:text-indigo-700"
-                    >
-                      {job.role}
+                    <div className="flex items-center justify-between text-info">
+                      <div
+                        onClick={() => handleRowClick(job.id)}
+                        className="cursor-pointer hover:text-indigo-700"
+                      >
+                        {job.role}
+                      </div>
+                      <div
+                        className="text-info text-secondary-text cursor-pointer hover:text-indigo-700"
+                        onClick={() => setDrawerOpen(true)}
+                      >
+                        Apply
+                      </div>
                     </div>
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
                         className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                        onClick={() => handleClickToClient(job.id,'activeView')}
+                        onClick={() =>
+                          handleClickToClient(job.id, "activeView")
+                        }
                       >
                         <img
                           src={job.logo}
@@ -458,7 +481,10 @@ const VndRequirements = () => {
                   </td>
                   <td>{job.datePosted}</td>
                   {/* <td>{job.requirementType}</td> */}
-                  <td className="cursor-pointer hover:text-indigo-700"  onClick={() => handleClickToClient(job.id,'openView')}>
+                  <td
+                    className="cursor-pointer hover:text-indigo-700"
+                    onClick={() => handleClickToClient(job.id, "openView")}
+                  >
                     {job.noOfPositions} ({job.placed})
                   </td>
                   <td>{job.applicants}</td>
@@ -468,6 +494,11 @@ const VndRequirements = () => {
             </tbody>
           </table>
         </div>
+        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+          <div style={{ width: "calc(100vw - 250px)" }}>
+            <VndBench isDrawer={true} />
+          </div>
+        </Drawer>
       </div>
     </>
   );
