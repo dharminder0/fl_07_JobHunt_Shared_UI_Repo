@@ -1,5 +1,5 @@
-import React from "react";
-import { Typography, Grid, Box, Tabs, Tab, Chip, Link } from "@mui/material";
+import React, { useEffect } from "react";
+import { Typography, Grid, Box, Tabs, Tab, Chip, Link, IconButton } from "@mui/material";
 import {
   Language,
   LocationOnOutlined,
@@ -7,10 +7,27 @@ import {
   Phone,
   PictureAsPdf,
 } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const VndClientDetails = () => {
-  const [value, setValue] = React.useState("one");
-  const handleRowClick = (id: any) => {};
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get('type');
+  const [value, setValue] = React.useState("activeView");
+  const [previousUrl, setpreviousUrl] = React.useState("");
+  const handleRowClick = (id: any) => { };
+
+
+  useEffect(() => {
+    if (location.state && location.state.previousUrl) {
+      setpreviousUrl(location.state.previousUrl);
+    }
+    if (type) {
+      !type ? setValue("activeView") : setValue(type);
+    }
+  }, [type,location.state]);
 
   const activeContracts = [
     {
@@ -20,7 +37,7 @@ const VndClientDetails = () => {
       endDate: "12-08-2024",
       client: "Teleperformance",
       resource: "Raj Kumar",
-      logo:"https://www.teleperformance.com/css/assets/favicon.ico",
+      logo: "https://www.teleperformance.com/css/assets/favicon.ico",
     },
     {
       id: 2,
@@ -107,7 +124,7 @@ const VndClientDetails = () => {
       noOfPositions: 3,
       contractPeriod: "6 months",
       visibility: "Global",
-      logo:"https://www.teleperformance.com/css/assets/favicon.ico",
+      logo: "https://www.teleperformance.com/css/assets/favicon.ico",
     },
     {
       id: 2,
@@ -165,6 +182,7 @@ const VndClientDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    navigate(`?type=${newValue}`)
   };
 
   return (
@@ -172,6 +190,16 @@ const VndClientDetails = () => {
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
+          <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            className="!w-[50px] !h-[50px]"
+            onClick={() => {
+              navigate(previousUrl);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           <div>
             <img
               src={
@@ -181,7 +209,7 @@ const VndClientDetails = () => {
             />
           </div>
           <div>
-            <p className="text-heading">Fleek IT Solutions</p>
+            <p className="text-heading">Fleek IT Solutions g</p>
             <div className="mt-1">
               <Chip
                 label="Web Development"
@@ -241,12 +269,12 @@ const VndClientDetails = () => {
                 indicatorColor="primary"
                 aria-label="secondary tabs example"
               >
-                <Tab value="one" label="Active Contracts" />
-                <Tab value="two" label="Past Contracts" />
-                <Tab value="three" label="Open Positions" />
-                <Tab value="four" label="Bench Strength" />
+                <Tab value="activeView" label="Active Contracts" />
+                <Tab value="pastView" label="Past Contracts" />
+                <Tab value="openView" label="Open Positions" />
+                <Tab value="benchView" label="Bench Strength" />
               </Tabs>
-              {value === "one" && (
+              {value === "activeView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -279,7 +307,7 @@ const VndClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "two" && (
+              {value === "pastView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -314,7 +342,7 @@ const VndClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "three" && (
+              {value === "openView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -331,7 +359,7 @@ const VndClientDetails = () => {
                       {jobData.map((job, index) => (
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
                           <th className="add-right-shadow">{job.role}</th>
-                           <td className="wide-250">
+                          <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={job.logo}
@@ -344,11 +372,10 @@ const VndClientDetails = () => {
                           <td>{job.datePosted}</td>
                           <td>
                             <Typography
-                              className={`px-3 py-1 rounded-full !text-base text-center ${
-                                job.requirementType === "Onsite"
+                              className={`px-3 py-1 rounded-full !text-base text-center ${job.requirementType === "Onsite"
                                   ? "text-blue-700 border border-blue-700"
                                   : "text-yellow-700 border border-yellow-700"
-                              }`}
+                                }`}
                             >
                               {job.requirementType}
                             </Typography>
@@ -361,7 +388,7 @@ const VndClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "four" && (
+              {value === "benchView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>

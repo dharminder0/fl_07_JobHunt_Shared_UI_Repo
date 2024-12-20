@@ -17,6 +17,7 @@ import {
   DialogActions,
   useMediaQuery,
   useTheme,
+  IconButton,
 } from "@mui/material";
 import {
   Language,
@@ -26,9 +27,12 @@ import {
   PictureAsPdf,
   Share,
 } from "@mui/icons-material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 
 const VendorDetails = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [value, setValue] = React.useState("bench");
   const handleRowClick = (id: any) => {};
   const [open, setOpen] = React.useState(false);
@@ -86,6 +90,16 @@ const VendorDetails = () => {
       {/* Header Section */}
       <div className="mb-6">
         <div className="flex items-center gap-4 mb-4">
+        <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            className="!w-[50px] !h-[50px]"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           <div>
             <img
               src={
