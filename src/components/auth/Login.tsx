@@ -27,19 +27,22 @@ export default function Login() {
       email: "company@vendorscloud.com",
       password: "password",
       role: ["company"],
-      companyIcon:"https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
+      companyIcon:
+        "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
     {
       email: "vendor@vendorscloud.com",
       password: "password",
       role: ["vendor"],
-      companyIcon: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+      companyIcon:
+        "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
     },
     {
       email: "both@vendorscloud.com",
       password: "password",
       role: ["vendor", "company"],
-      companyIcon: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+      companyIcon:
+        "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
   ];
 
@@ -112,97 +115,99 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-screen container">
-      {/* Left Section */}
-      <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
-        <div className="mb-8 bg-white p-4 w-40">
-          <img
-            src={"/assets/images/bar.png"}
-            alt="JobHunty Logo"
-            className="h-8 w-auto mb-4"
-          />
-          <h2 className="font-bold text-title">10K+</h2>
-          <p className="text-gray-600 text-base">People got hired</p>
-        </div>
-        <div className="self-center">
-          <img
-            src={"/assets/images/banner-person.png"}
-            alt="JobHunty Logo"
-            className="w-[60%]"
-          />
-        </div>
-      </div>
-
-      <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
-        <div className="w-full max-w-md mb-8">
-          <h1 className="text-heading font-display">Welcome Back</h1>
+    <div className="bg-gray-50">
+      <div className="container flex h-screen">
+        {/* Left Section */}
+        <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
+          <div className="mb-8 bg-white p-4 w-40">
+            <img
+              src={"/assets/images/bar.png"}
+              alt="JobHunty Logo"
+              className="h-8 w-auto mb-4"
+            />
+            <h2 className="font-bold text-title">10K+</h2>
+            <p className="text-gray-600 text-base">People got hired</p>
+          </div>
+          <div className="self-center">
+            <img
+              src={"/assets/images/banner-person.png"}
+              alt="JobHunty Logo"
+              className="w-[60%]"
+            />
+          </div>
         </div>
 
-        {/* Login Form */}
-        <form className="w-full max-w-md space-y-4">
-          <TextField
-            label="Email Address"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-            variant="outlined"
-            size="small"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={handleKeyPress}
-            fullWidth
-            variant="outlined"
-            size="small"
-          />
+        <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
+          <div className="w-full max-w-md mb-8">
+            <h1 className="text-heading font-display">Welcome Back</h1>
+          </div>
 
-          {/* Error message */}
-          {errorMessage && (
-            <Typography color="error" variant="body2">
-              {errorMessage}
-            </Typography>
-          )}
+          {/* Login Form */}
+          <form className="w-full max-w-md space-y-4">
+            <TextField
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyPress}
+              fullWidth
+              variant="outlined"
+              size="small"
+            />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-                size="small"
-              />
-            }
-            label="Remember me"
-            sx={{
-              "& .MuiTypography-root": {
-                fontSize: "12px",
-              },
-            }}
-          />
-          <Button
-            onClick={handleLogin}
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2 }}
-          >
-            Login
-          </Button>
-        </form>
+            {/* Error message */}
+            {errorMessage && (
+              <Typography color="error" variant="body2">
+                {errorMessage}
+              </Typography>
+            )}
 
-        <p className="text-base text-gray-500 mt-4">
-          Don’t have an account?{" "}
-          <span
-            className="text-blue-500 cursor-pointer"
-            onClick={() => navigate("/signup")}
-          >
-            Sign Up
-          </span>
-        </p>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="primary"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                  size="small"
+                />
+              }
+              label="Remember me"
+              sx={{
+                "& .MuiTypography-root": {
+                  fontSize: "12px",
+                },
+              }}
+            />
+            <Button
+              onClick={handleLogin}
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              Login
+            </Button>
+          </form>
+
+          <p className="text-base text-gray-500 mt-4">
+            Don’t have an account?{" "}
+            <span
+              className="text-blue-500 cursor-pointer"
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

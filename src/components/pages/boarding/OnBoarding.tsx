@@ -80,11 +80,6 @@ export default function OnBoarding() {
               const labelProps: {
                 optional?: React.ReactNode;
               } = {};
-              // if (isStepOptional(index)) {
-              //   labelProps.optional = (
-              //     <Typography variant="caption">Optional</Typography>
-              //   );
-              // }
               if (isStepSkipped(index)) {
                 stepProps.completed = false;
               }
@@ -95,17 +90,6 @@ export default function OnBoarding() {
               );
             })}
           </Stepper>
-          {/* {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <Button onClick={handleReset}>Reset</Button>
-              </Box>
-            </React.Fragment>
-          ) : ( */}
           <React.Fragment>
             <div
               style={{ minHeight: "675px", maxHeight: "730px" }}
@@ -135,7 +119,6 @@ export default function OnBoarding() {
               </Button>
             </Box>
           </React.Fragment>
-          {/* )} */}
         </Box>
       </div>
     </div>
