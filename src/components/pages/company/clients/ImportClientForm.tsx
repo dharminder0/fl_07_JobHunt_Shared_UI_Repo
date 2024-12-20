@@ -48,7 +48,7 @@ const ImportClientForm = () => {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col my-auto mr-2">
       <Button
         variant="outlined"
         onClick={toggleDrawer(true)}

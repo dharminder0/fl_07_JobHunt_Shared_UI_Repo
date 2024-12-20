@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   TextField,
@@ -16,10 +16,12 @@ import {
   Tabs,
   Tab,
   Box,
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { FilterList, Search } from "@mui/icons-material";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
 const activeData = [
   {
@@ -84,7 +86,23 @@ const MyVendors = () => {
   };
 
   const [tabValue, setTabValue] = React.useState("Active");
-  const [search, setSearch] = useState("");
+  const [activefilterData, setactivefilterData] = useState<any[]>([]);
+  const [archivedDatafilterData, setarchivedDatafilterData] = useState<any[]>([]);
+  const [searchFilter, setSearchFilter] = useState<any>({
+    searchValue: "",
+  });
+
+  useEffect(() => {
+    const activeTabData = tabValue === 'Active' ? activeData : archivedData;
+    const filtered = activeTabData.filter((item) => {
+      const searchMatch =
+        !searchFilter.searchValue ||
+        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+      return searchMatch;
+    });
+
+    tabValue === 'Active' ? setactivefilterData(filtered) : setarchivedDatafilterData(filtered);
+  }, [searchFilter, tabValue]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -107,25 +125,40 @@ const MyVendors = () => {
         </div>
         <div className="w-1/2 flex justify-end">
           <div className="flex justify-end items-center">
-            <Box className="flex items-center justify-end my-2">
-              <Box className="flex items-center space-x-4">
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  placeholder="Search Vendors"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <Search className="mr-2" fontSize="small" />
-                    ),
-                  }}
-                />
-                <Button variant="outlined" startIcon={<FilterList />}>
-                  Filter
-                </Button>
-              </Box>
-            </Box>
+            <div className="flex flex-row gap-1 justify-end mb-1">
+              <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+                <div className='flex text-center gap-3 flex-nowrap my-auto'>
+                  <div className='flex grow w-[220px]'>
+                    <div className='flex-col flex-grow'>
+                      <TextField
+                        size='small'
+                        className='w-full'
+                        value={searchFilter.searchValue}
+                        onChange={(event) =>
+                          setSearchFilter({
+                            ...searchFilter,
+                            searchValue: event.target.value,
+                          })
+                        }
+                        placeholder="Search Vendors"
+                        slotProps={{
+                          input: {
+                            startAdornment: (
+                              <InputAdornment position='start'>
+                                <SearchIcon fontSize='inherit' />
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <IconButton aria-label='filter'>
+                    <FilterListOutlinedIcon />
+                  </IconButton>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -135,7 +168,7 @@ const MyVendors = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} md={12}>
               <Grid container spacing={3}>
-                {activeData.map((company, idx) => (
+                {activefilterData.map((company, idx) => (
                   <Grid
                     item
                     xs={12}
@@ -168,7 +201,7 @@ const MyVendors = () => {
                       </div>
                       <p className="text-base">{company.description}</p>
                       <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag, idx) => (
+                        {company.tags.map((tag: any, idx: any) => (
                           // <Typography
                           //   key={idx}
                           //   variant="caption"
@@ -201,7 +234,7 @@ const MyVendors = () => {
           <Grid container spacing={4}>
             <Grid item xs={12} md={12}>
               <Grid container spacing={3}>
-                {archivedData.map((company, idx) => (
+                {archivedDatafilterData.map((company, idx) => (
                   <Grid
                     item
                     xs={12}
@@ -234,7 +267,7 @@ const MyVendors = () => {
                       </div>
                       <p className="text-base">{company.description}</p>
                       <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag, idx) => (
+                        {company.tags.map((tag: any, idx: any) => (
                           // <Typography
                           //   key={idx}
                           //   variant="caption"

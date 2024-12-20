@@ -86,7 +86,7 @@ const CreateClientForm = () => {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col my-auto">
       <Button
         variant="outlined"
         onClick={toggleDrawer(true)}

@@ -1,9 +1,12 @@
 import { Add, FilterList, Search } from "@mui/icons-material";
-import { Box, Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateClientForm from "./CreateClientForm";
 import ImportClientForm from "./ImportClientForm";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 
 const clientDataObj = [
   {
@@ -56,33 +59,86 @@ const clientDataObj = [
 export default function Clients() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [search, setSearch] = useState("");
+  const [clientData, setclientData] = useState<any[]>([]);
+  const [searchFilter, setSearchFilter] = useState<any>({
+    searchValue: "",
+    status: [],
+  });
+  const [filterList, setFilterList] = useState<any>({
+    status: ["Active", "Inactive"],
+  });
+
+  useEffect(() => {
+    // Filtering logic
+    const filtered = clientDataObj.filter((item) => {
+      // Check search input
+      const statusMatch =
+        searchFilter.status.length === 0 ||
+        searchFilter.status.includes(item.status);
+      const searchMatch =
+        searchFilter.searchValue === "" ||
+        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+      return (
+        searchMatch && statusMatch
+      );
+    });
+    setclientData(filtered);
+  }, [searchFilter]);
+     
 
   const handleRowClick = (id: number, tab: string) => {
     navigate(`${id}?type=${tab}`, { state: { previousUrl: location.pathname },})
   };
 
   return (
-    <div className="px-4 py-1">
-      <Box className="flex items-center justify-end my-2">
-        <Box className="flex items-center space-x-4">
-          <TextField
-            variant="outlined"
-            size="small"
-            placeholder="Search Client"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            InputProps={{
-              startAdornment: <Search className="mr-2" fontSize="small" />,
-            }}
-          />
-          <Button variant="outlined" startIcon={<FilterList />}>
-            Filter
-          </Button>
-          <ImportClientForm />
-          <CreateClientForm />
-        </Box>
-      </Box>
+    <div className="px-4 py-1 h-full">     
+      <div className="flex flex-row gap-1 justify-end mb-1">
+        <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+          <div className='flex text-center gap-3 flex-nowrap my-auto'>
+            <div className='flex grow w-[220px]'>
+              <div className='flex-col flex-grow'>
+                <TextField
+                  size='small'
+                  className='w-full'
+                  value={searchFilter.searchValue}
+                  onChange={(event) =>
+                    setSearchFilter({
+                      ...searchFilter,
+                      searchValue: event.target.value,
+                    })
+                  }
+                  placeholder="Search Client"
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <SearchIcon fontSize='inherit' />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div className='max-w-full shrink-0'>
+            <MenuDrpDwn
+                  menuList={filterList?.status}
+                  placeholder='Status'
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, status: selectedItems });
+                  }}
+                />
+              </div>
+            <div> 
+              <IconButton aria-label='filter'>
+              <FilterListOutlinedIcon />
+            </IconButton>
+            </div>
+          </div>
+        </div>
+        <ImportClientForm />
+        <CreateClientForm />
+      </div>
       <div className="table-body">
         <table>
           <thead>
@@ -95,7 +151,7 @@ export default function Clients() {
             </tr>
           </thead>
           <tbody>
-            {clientDataObj.map((item, index) => (
+            {clientData.map((item, index) => (
               <tr key={index}>
                 <th
                   className="add-right-shadow wide-250 cursor-pointer"
