@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Chip, Tabs, Tab, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FilterList, Search } from "@mui/icons-material";
 
 const activieClients = [
@@ -57,11 +57,15 @@ const archivedClients = [
 ];
 
 const VndClients = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const handleDetails = (id: number) => {
-    navigate(`${id}`);
-  };
+    navigate(`${id}?type=activeView`, {
+      state: { previousUrl: location.pathname },
+    })
+  }
+  
 
   const [tabValue, setTabValue] = React.useState("Active");
 

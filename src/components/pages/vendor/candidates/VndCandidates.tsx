@@ -154,7 +154,9 @@ export default function VndCandidates() {
 
   const navigate = useNavigate();
   const handleRowClick = (id: number) => {
-    navigate(`/vendor/clients/${id}`);
+    navigate(`/vendor/clients/${id}?type=activeView`, {
+      state: { previousUrl: location.pathname },
+    });
   };
 
   const handleStatusDialog = (status: string) => {

@@ -349,10 +349,13 @@ const MyRequirements = () => {
   const handleRowClick = (id: number, type: string) => {
     switch (type) {
       case "applicant":
-        navigate(`/company/candidates`);
+        navigate(`/company/candidates`,{state: { previousUrl: location.pathname }});
         break;
       case "client":
-        navigate(`/company/clients/${id}`);
+        navigate(`/company/clients/${id}?type=activeView`,{state: { previousUrl: location.pathname }});
+        break;
+      case "myvendors":
+        navigate(`/company/myvendors/${id}?type=openView`,{state: { previousUrl: location.pathname }});
         break;
       default:
         navigate(`${id}`);
@@ -554,11 +557,11 @@ const MyRequirements = () => {
                   </td>
                   <td>{job.datePosted}</td>
                   {/* <td>{job.requirementType}</td> */}
-                  <td>
+                  <td className="cursor-pointer hover:text-indigo-700"  onClick={() => handleRowClick(job.id,'myvendors')}>
                     {job.noOfPositions} ({job.placed})
                   </td>
                   <td
-                    className="cursor-pointer"
+                    className="cursor-pointer  hover:text-indigo-700"
                     onClick={() => handleRowClick(job.id, "applicant")}
                   >
                     {job.applicants}

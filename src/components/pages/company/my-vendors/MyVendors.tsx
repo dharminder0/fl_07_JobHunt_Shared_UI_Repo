@@ -80,7 +80,7 @@ const archivedData = [
 const MyVendors = () => {
   const navigate = useNavigate();
   const handleDetails = (id: number) => {
-    navigate(`${id}`);
+    navigate(`${id}?type=activeView`);
   };
 
   const [tabValue, setTabValue] = React.useState("Active");

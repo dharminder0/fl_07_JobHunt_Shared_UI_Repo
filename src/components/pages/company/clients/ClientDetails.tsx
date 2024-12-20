@@ -1,19 +1,26 @@
 import React, { useEffect } from "react";
-import { Typography, Box, Tabs, Tab, Link, Grid2 } from "@mui/material";
+import { Typography, Box, Tabs, Tab, Link, Grid2, IconButton } from "@mui/material";
 import { Language, MailOutline, Phone } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ClientDetails = () => {
   const location = useLocation();
-  const params = location.state || {};
-  const [value, setValue] = React.useState("active");
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get('type'); 
+  const [value, setValue] = React.useState("activeView");
+  const [previousUrl, setpreviousUrl] = React.useState("");
   const handleRowClick = (id: any) => {};
 
-  useEffect(() => {
-    if (params) {
-      !params.type ? setValue("active") : setValue(params.type);
+ useEffect(() => {
+    if (location.state && location.state.previousUrl) {
+      setpreviousUrl(location.state.previousUrl);
     }
-  }, [params.type]);
+    if (type) {
+      !type ? setValue("activeView") : setValue(type);
+    }
+  }, [type,location.state]);
 
   const activeContracts = [
     {
@@ -168,6 +175,7 @@ const ClientDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    navigate(`?type=${newValue}`)    
   };
 
   return (
@@ -175,6 +183,16 @@ const ClientDetails = () => {
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
+        <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            className="!w-[50px] !h-[50px]"
+            onClick={() => {
+              navigate(previousUrl);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           <div>
             <img
               src={
@@ -213,11 +231,11 @@ const ClientDetails = () => {
                 indicatorColor="primary"
                 aria-label="secondary tabs example"
               >
-                <Tab value="active" label="Active Contracts" />
-                <Tab value="past" label="Past Contracts" />
-                <Tab value="open" label="Open Positions" />
+                <Tab value="activeView" label="Active Contracts" />
+                <Tab value="pastView" label="Past Contracts" />
+                <Tab value="openView" label="Open Positions" />
               </Tabs>
-              {value === "active" && (
+              {value === "activeView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -250,7 +268,7 @@ const ClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "past" && (
+              {value === "pastView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -285,7 +303,7 @@ const ClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "open" && (
+              {value === "openView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
