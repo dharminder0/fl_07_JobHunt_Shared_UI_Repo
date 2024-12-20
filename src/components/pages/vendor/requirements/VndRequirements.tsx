@@ -116,7 +116,7 @@ const VndRequirements = () => {
     navigate(`${id}`);
   };
 
-  const handleClickToClient = (id: number, tab: string) => {debugger
+  const handleClickToClient = (id: number, tab: string) => {
     if (tab) {
       navigate(`/vendor/clients/${id}?type=${tab}`, {
         state: { previousUrl: location.pathname },

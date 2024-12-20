@@ -61,7 +61,7 @@ const VndClients = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const handleDetails = (id: number) => {
-    navigate(`${id}`, {
+    navigate(`${id}?type=activeView`, {
       state: { previousUrl: location.pathname },
     })
   }

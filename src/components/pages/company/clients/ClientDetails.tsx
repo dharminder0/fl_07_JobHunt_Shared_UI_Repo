@@ -9,18 +9,18 @@ const ClientDetails = () => {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get('type'); 
-  const params = location.state || {};
   const [value, setValue] = React.useState("activeView");
+  const [previousUrl, setpreviousUrl] = React.useState("");
   const handleRowClick = (id: any) => {};
 
-  useEffect(() => {
-    // if (params) {
-    //   !params.type ? setValue("active") : setValue(params.type);
-    // }
-    if (type) {
-      !type ? setValue("activeView") : setValue(params.type);
+ useEffect(() => {
+    if (location.state && location.state.previousUrl) {
+      setpreviousUrl(location.state.previousUrl);
     }
-  }, [type]);
+    if (type) {
+      !type ? setValue("activeView") : setValue(type);
+    }
+  }, [type,location.state]);
 
   const activeContracts = [
     {
@@ -175,6 +175,7 @@ const ClientDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    navigate(`?type=${newValue}`)    
   };
 
   return (
@@ -187,7 +188,7 @@ const ClientDetails = () => {
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
             onClick={() => {
-              navigate(-1);
+              navigate(previousUrl);
             }}
           >
             <ArrowBackIcon />
@@ -234,7 +235,7 @@ const ClientDetails = () => {
                 <Tab value="pastView" label="Past Contracts" />
                 <Tab value="openView" label="Open Positions" />
               </Tabs>
-              {value === "active" && (
+              {value === "activeView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -267,7 +268,7 @@ const ClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "past" && (
+              {value === "pastView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -302,7 +303,7 @@ const ClientDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "open" && (
+              {value === "openView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>

@@ -15,12 +15,18 @@ const VendorCompanyDetails = () => {
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get('type'); 
   const [value, setValue] = React.useState("activeView");
+  const [previousUrl, setpreviousUrl] = React.useState("");
   const navigate = useNavigate();
   const handleRowClick = (id: any) => {};
 
-  useEffect(() => {
-    !type ? setValue("activeView") : setValue(type);
-  }, [type]);
+ useEffect(() => {
+    if (location.state && location.state.previousUrl) {
+      setpreviousUrl(location.state.previousUrl);
+    }
+    if (type) {
+      !type ? setValue("activeView") : setValue(type);
+    }
+  }, [type,location.state]);
 
   const activeContracts = [
     {
@@ -175,6 +181,7 @@ const VendorCompanyDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    navigate(`?type=${newValue}`)
   };
   
 
@@ -188,7 +195,7 @@ const VendorCompanyDetails = () => {
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
             onClick={() => {
-              navigate(-1);
+              navigate(previousUrl);
             }}
           >
             <ArrowBackIcon />

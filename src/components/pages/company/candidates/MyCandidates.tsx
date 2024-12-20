@@ -162,10 +162,10 @@ export default function MyCandidates() {
   const handleRowClick = (id: number, type: string) => {
     switch (type) {
       case "vendor":
-        navigate(`/company/myvendors/${id}`);
+        navigate(`/company/myvendors/${id}?type=activeView`,{ state: { previousUrl: location.pathname },})
         break;
       case "client":
-        navigate(`/company/clients/${id}`);
+        navigate(`/company/clients/${id}?type=activeView`, { state: { previousUrl: location.pathname },})
         break;
     }
   };

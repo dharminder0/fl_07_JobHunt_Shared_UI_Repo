@@ -1,7 +1,7 @@
 import { Add, FilterList, Search } from "@mui/icons-material";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CreateClientForm from "./CreateClientForm";
 import ImportClientForm from "./ImportClientForm";
 
@@ -55,12 +55,11 @@ const clientDataObj = [
 
 export default function Clients() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [search, setSearch] = useState("");
 
   const handleRowClick = (id: number, tab: string) => {
-    navigate(`${id}`, {
-      state: { type: tab }, // Passing state data
-    });
+    navigate(`${id}?type=${tab}`, { state: { previousUrl: location.pathname },})
   };
 
   return (
@@ -100,7 +99,7 @@ export default function Clients() {
               <tr key={index}>
                 <th
                   className="add-right-shadow wide-250 cursor-pointer"
-                  onClick={() => handleRowClick(item.id, "active")}
+                  onClick={() => handleRowClick(item.id, "activeView")}
                 >
                   <div className="flex">
                     <img
@@ -112,10 +111,10 @@ export default function Clients() {
                   </div>
                 </th>
                 <td>{item.requirement}</td>
-                <td  className="cursor-pointer" onClick={() => handleRowClick(item.id, "active")}>
+                <td  className="cursor-pointer" onClick={() => handleRowClick(item.id, "activeView")}>
                   {item.activeContracts}
                 </td>
-                <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "past")}>
+                <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "pastView")}>
                   {item.pastContracts}
                 </td>
                 <td>{item.status}</td>
