@@ -71,8 +71,9 @@ const AddBenchForm = () => {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col my-auto">
       <Button
+      className="!mr-2"
         variant="outlined"
         onClick={toggleDrawer(true)}
         startIcon={<Add />}

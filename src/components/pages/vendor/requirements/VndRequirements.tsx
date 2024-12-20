@@ -8,11 +8,14 @@ import {
   FormControl,
   InputLabel,
   Tooltip,
+  IconButton,
   Drawer,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
 import { AccessTimeOutlined, LocationOnOutlined } from "@mui/icons-material";
+import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import SearchIcon from "@mui/icons-material/Search";
 import VndBench from "../bench/VndBench";
 
 const VndRequirements = () => {
@@ -23,7 +26,7 @@ const VndRequirements = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [filterList, setFilterList] = useState<any>({
-    client: ["Self", "Creative Solutions Ltd.", "Data Insights Group"],
+    client: ["Teleperformance", "KPIT Technologies", "Mphasis","Fidelity Information Services","Coforge"],
     status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
@@ -55,7 +58,7 @@ const VndRequirements = () => {
       status: "On hold",
       datePosted: "23-09-2024",
       applicants: "2",
-      client: "KPIT Technologiess",
+      client: "KPIT Technologies",
       requirementType: "Hybrid",
       noOfPositions: 5,
       placed: 0,
@@ -107,7 +110,7 @@ const VndRequirements = () => {
       status: "Hot",
       datePosted: "01-05-2024",
       applicants: "2",
-      client: "KPIT Technologiess",
+      client: "KPIT Technologies",
       requirementType: "Hybrid",
       noOfPositions: 6,
       placed: 1,
@@ -138,26 +141,34 @@ const VndRequirements = () => {
     setDrawerOpen(open);
   };
 
-  useEffect(() => {
+ useEffect(() => {
     // Filtering logic
     const filtered = jobDataOrg.filter((item) => {
       // Check client filter
       const clientMatch =
-        searchFilter.client === "" || item.client === searchFilter.client;
+        searchFilter.client.length === 0 ||
+        searchFilter.client.includes(item.client);
       // Check status filter
       const statusMatch =
-        searchFilter.status === "" || item.status === searchFilter.status;
+        searchFilter.status.length === 0 ||
+        searchFilter.status.includes(item.status);
       // Check requirement type filter
       const requirementTypeMatch =
-        searchFilter.requirementType === "" ||
-        item.requirementType === searchFilter.requirementType;
+        searchFilter.requirementType.length === 0 ||
+        searchFilter.requirementType.includes(item.requirementType);
       // Check search input
       const searchMatch =
         searchFilter.searchValue === "" ||
         item.role
           .toLowerCase()
           .includes(searchFilter.searchValue.toLowerCase());
-      return clientMatch && statusMatch && requirementTypeMatch && searchMatch;
+     
+      return (
+        clientMatch &&
+        statusMatch &&
+        requirementTypeMatch &&
+        searchMatch
+      );
     });
     setJobData(filtered);
   }, [searchFilter]);
@@ -165,7 +176,7 @@ const VndRequirements = () => {
   return (
     <>
       <div className="px-2 py-3 h-full">
-        <div className="flex flex-row gap-2 mb-3">
+        {/* <div className="flex flex-row gap-2 mb-3">
           <TextField
             size="small"
             className="bg-primary-light w-[calc(100%-680px)]"
@@ -312,6 +323,70 @@ const VndRequirements = () => {
                 </clipPath>
               </defs>
             </svg>
+          </div>
+        </div> */}
+         <div className="flex flex-row gap-1 justify-end mb-1">
+          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+            <div className='flex text-center flex-nowrap my-auto'>
+              <div className='flex grow w-[220px] mr-2'>
+                <div className='flex-col flex-grow'>
+                  <TextField
+                    size='small'
+                    className='w-full'
+                    value={searchFilter.searchValue}
+                    onChange={(event) =>
+                      setSearchFilter({
+                        ...searchFilter,
+                        searchValue: event.target.value,
+                      })
+                    }
+                    placeholder='Search'
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <SearchIcon fontSize='inherit' />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+              <div className='max-w-full shrink-0'>
+                <MenuDrpDwn
+                  menuList={filterList?.client}
+                  placeholder='Client'
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, client: selectedItems });
+                  }}
+                />
+              </div>
+              <div className='max-w-full shrink-0'>
+                <MenuDrpDwn
+                  menuList={filterList?.status}
+                  placeholder='Status'
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, status: selectedItems });
+                  }}
+                />
+              </div>
+              <div className='max-w-full shrink-0'>
+                <MenuDrpDwn
+                  menuList={filterList?.requirementType}
+                  placeholder='Requirements'
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({
+                      ...searchFilter,
+                      requirementType: selectedItems,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+            <IconButton aria-label='filter'>
+              <FilterListOutlinedIcon />
+            </IconButton>
           </div>
         </div>
         <div className="table-body">

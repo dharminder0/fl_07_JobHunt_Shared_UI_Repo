@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -16,9 +16,12 @@ import {
   Divider,
   Chip,
   Box,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { FilterList, Search } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
 const companies = [
   {
@@ -106,7 +109,23 @@ const companies = [
 
 const MyClients = () => {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
+   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
+  const [searchFilter, setSearchFilter] = useState<any>({
+    searchValue: "",
+  });
+
+
+  useEffect(() => {    
+    const filtered = companies.filter((item) => {
+      const searchMatch =
+        !searchFilter.searchValue ||
+        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+      return searchMatch;
+    });
+    setcompaniesfilterData(filtered)
+
+  }, [searchFilter]);
+
   const handleDetails = (id: number) => {
     navigate(`${id}`);
   };
@@ -116,34 +135,42 @@ const MyClients = () => {
 
       {/* Search and Filters */}
       <div className="flex justify-between items-center mt-1">
-        <h5 className="text-heading">Find Vendors</h5>
-        {/* <div className="flex w-3/5 items-center">
-          <TextField
-            fullWidth
-            label="Company title or keyword"
-            variant="outlined"
-            size="small"
-            // slotProps={{
-            //   input: {
-            //     startAdornment: (
-            //       <InputAdornment position="start">
-            //         <SearchIcon fontSize="inherit" />
-            //       </InputAdornment>
-            //     ),
-            //   },
-            // }}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ width: 170, marginLeft: 2 }}
-          >
-            Search
-          </Button>
-        </div> */}
-
-        <Box className="flex items-center justify-end my-2">
+        <h5 className="text-heading">Find Vendors</h5>        
+            <div className="flex flex-row gap-1 justify-end mb-1">
+              <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+                <div className='flex text-center flex-nowrap my-auto'>
+                  <div className='flex grow w-[220px] mr-2'>
+                    <div className='flex-col flex-grow'>
+                      <TextField
+                        size='small'
+                        className='w-full'
+                        value={searchFilter.searchValue}
+                        onChange={(event) =>
+                          setSearchFilter({
+                            ...searchFilter,
+                            searchValue: event.target.value,
+                          })
+                        }
+                        placeholder="Search Vendors"
+                        slotProps={{
+                          input: {
+                            startAdornment: (
+                              <InputAdornment position='start'>
+                                <SearchIcon fontSize='inherit' />
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <IconButton aria-label='filter'>
+                  <FilterListOutlinedIcon />
+                </IconButton>
+              </div>
+            </div>
+        {/* <Box className="flex items-center justify-end my-2">
           <Box className="flex items-center space-x-4">
             <TextField
               variant="outlined"
@@ -159,7 +186,7 @@ const MyClients = () => {
               Filter
             </Button>
           </Box>
-        </Box>
+        </Box> */}
       </div>
 
       {/* <Typography variant="body2">
@@ -256,7 +283,7 @@ const MyClients = () => {
         {/* Company Cards */}
         <div className="w-[calc(100%-200px)]">
           <Grid container spacing={3}>
-            {companies.map((company, idx) => (
+            {companiesfilterData.map((company, idx) => (
               <Grid
                 item
                 xs={12}
@@ -284,7 +311,7 @@ const MyClients = () => {
                   </div>
                   <p className="text-base">{company.description}</p>
                   <div className="flex flex-wrap mt-2">
-                    {company.tags.map((tag, idx) => (
+                    {company.tags.map((tag:string, idx:any) => (
                       <Chip
                         key={idx}
                         label={tag}

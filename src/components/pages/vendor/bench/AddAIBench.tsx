@@ -48,7 +48,7 @@ const AddAIBench = () => {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col my-auto">
       <Button variant="outlined" onClick={toggleDrawer(true)}>
         <svg
           width="14px"
