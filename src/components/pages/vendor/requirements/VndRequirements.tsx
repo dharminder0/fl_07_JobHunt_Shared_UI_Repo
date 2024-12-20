@@ -116,9 +116,14 @@ const VndRequirements = () => {
     navigate(`${id}`);
   };
 
-  const handleClickToClient = (id: number) => {
-    navigate(`/vendor/clients/${id}`);
-  };
+  const handleClickToClient = (id: number, tab: string) => {debugger
+    if (tab) {
+      navigate(`/vendor/clients/${id}?type=${tab}`, {
+        state: { previousUrl: location.pathname },
+      });
+    }
+  }
+
 
   useEffect(() => {
     // Filtering logic
@@ -323,7 +328,7 @@ const VndRequirements = () => {
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
                         className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                        onClick={() => handleClickToClient(job.id)}
+                        onClick={() => handleClickToClient(job.id,'activeView')}
                       >
                         <img
                           src={job.logo}
@@ -378,7 +383,7 @@ const VndRequirements = () => {
                   </td>
                   <td>{job.datePosted}</td>
                   {/* <td>{job.requirementType}</td> */}
-                  <td>
+                  <td className="cursor-pointer hover:text-indigo-700"  onClick={() => handleClickToClient(job.id,'openView')}>
                     {job.noOfPositions} ({job.placed})
                   </td>
                   <td>{job.applicants}</td>

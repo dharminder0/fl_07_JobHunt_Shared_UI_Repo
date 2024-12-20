@@ -141,7 +141,9 @@ export default function VndCandidates() {
 
   const navigate = useNavigate();
   const handleRowClick = (id: number) => {
-    navigate(`/vendor/clients/${id}`);
+    navigate(`/vendor/clients/${id}`, {
+      state: { previousUrl: location.pathname },
+    });
   };
 
   return (

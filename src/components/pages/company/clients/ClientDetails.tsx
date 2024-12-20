@@ -1,19 +1,26 @@
 import React, { useEffect } from "react";
-import { Typography, Box, Tabs, Tab, Link, Grid2 } from "@mui/material";
+import { Typography, Box, Tabs, Tab, Link, Grid2, IconButton } from "@mui/material";
 import { Language, MailOutline, Phone } from "@mui/icons-material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ClientDetails = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get('type'); 
   const params = location.state || {};
-  const [value, setValue] = React.useState("active");
+  const [value, setValue] = React.useState("activeView");
   const handleRowClick = (id: any) => {};
 
   useEffect(() => {
-    if (params) {
-      !params.type ? setValue("active") : setValue(params.type);
+    // if (params) {
+    //   !params.type ? setValue("active") : setValue(params.type);
+    // }
+    if (type) {
+      !type ? setValue("activeView") : setValue(params.type);
     }
-  }, [params.type]);
+  }, [type]);
 
   const activeContracts = [
     {
@@ -175,6 +182,16 @@ const ClientDetails = () => {
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
+        <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            className="!w-[50px] !h-[50px]"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           <div>
             <img
               src={
@@ -213,9 +230,9 @@ const ClientDetails = () => {
                 indicatorColor="primary"
                 aria-label="secondary tabs example"
               >
-                <Tab value="active" label="Active Contracts" />
-                <Tab value="past" label="Past Contracts" />
-                <Tab value="open" label="Open Positions" />
+                <Tab value="activeView" label="Active Contracts" />
+                <Tab value="pastView" label="Past Contracts" />
+                <Tab value="openView" label="Open Positions" />
               </Tabs>
               {value === "active" && (
                 <div className="table-body mt-4">

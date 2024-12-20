@@ -66,7 +66,7 @@ const VndRequirementDetails = () => {
   return (
     <div className="p-4">
       {/* Header */}
-      <Box className="flex justify-between items-center">
+      <Box className="flex justify-between items-center">        
         <div className="flex flex-row gap-3">
           <IconButton
             color="primary"

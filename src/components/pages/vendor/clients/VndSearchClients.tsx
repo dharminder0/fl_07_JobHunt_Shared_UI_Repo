@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const companies = [
   {
@@ -89,9 +89,12 @@ const companies = [
 
 const VndSearchClients = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [search, setSearch] = useState("");
   const handleDetails = (id: number) => {
-    navigate(`${id}`);
+    navigate(`${id}`, {
+      state: { previousUrl: location.pathname },
+    });
   };
   return (
     <div className="px-4 py-1">

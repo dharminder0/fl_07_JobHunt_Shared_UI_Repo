@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const applicantData = [
   {
+    id:1,
     vendor: "Fleek IT Solutions",
     name: "Harshit Tandon",
     requirement: "React js Developer",
@@ -32,6 +33,7 @@ const applicantData = [
       "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
+    id:2,
     vendor: "DevStringX Technologies",
     name: "Raj Pathar",
     requirement: "Sr. Angular developer",
@@ -44,6 +46,7 @@ const applicantData = [
       "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
+    id:3,
     vendor: "Binemiles Technologies",
     name: "Sajid Sarkar",
     requirement: "React Native mobile developer",
@@ -56,6 +59,7 @@ const applicantData = [
       "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
   },
   {
+    id:4,
     vendor: "SDET Tech Pvt. Ltd",
     name: "Amit Kumar",
     requirement: "Frontend developer",
@@ -68,6 +72,7 @@ const applicantData = [
       "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
+    id:5,
     vendor: "Fleek IT Solutions",
     name: "Harshit Tandon",
     requirement: ".Net developer",
@@ -80,6 +85,7 @@ const applicantData = [
       "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
+    id:6,
     vendor: "SDET Tech Pvt. Ltd",
     name: "Vaibhav Rastogi",
     requirement: "Devops AWS Certified engineer",
@@ -92,6 +98,7 @@ const applicantData = [
       "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
   },
   {
+    id:7,
     vendor: "DevStringX Technologies",
     name: "Raj Pathar",
     requirement: ".Net MVC Support",
@@ -104,6 +111,7 @@ const applicantData = [
       "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
   {
+    id:8,
     vendor: "Binemiles Technologies",
     name: "Sajid Sarkar",
     requirement: "Azure Devops Engineer",
@@ -116,6 +124,7 @@ const applicantData = [
       "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
   {
+    id:9,
     vendor: "SDET Tech Pvt. Ltd",
     name: "Amit Kumar",
     requirement: "Devops AWS Certified engineer",
