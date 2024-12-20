@@ -13,7 +13,7 @@ import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDi
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
-
+import AddAIBench from "./AddAIBench";
 // interface VndBench {}
 
 const benchData = [
@@ -158,6 +158,8 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
               <FilterListOutlinedIcon />
             </IconButton>
           </div>
+          {!isDrawer && <AddBenchForm />}
+          {!isDrawer && <AddAIBench />}
         </div>
         <div className="table-body">
           <table>
