@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
 const companies = [
@@ -29,7 +30,7 @@ const companies = [
     name: "Cyient Limited",
     description:
       "Stripe is a software platform for starting and running internet businesses with this platform.",
-    tags: ["Onsite", "50-100", "QA Testing"],
+    tags: ["Onsite", "50-100", "Full-Stack Development"],
     place: "Noida",
     logo: "https://www.cyient.com/hubfs/enhancer.png",
   },
@@ -38,7 +39,7 @@ const companies = [
     name: "3Pillar Global Noida",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "App Tech"],
+    tags: ["Onsite", "10-50", "Mobile App Development"],
     place: "Delhi(NCR)",
     logo: "https://www.3pillarglobal.com/favicon.png",
   },
@@ -47,7 +48,7 @@ const companies = [
     name: "Exzeo Software Pvt Ltd",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "500+", "Other Tech"],
+    tags: ["Remote", "500+", "Front-End Development"],
     place: "Gurgaon",
     logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
   },
@@ -56,7 +57,7 @@ const companies = [
     name: "Nucleus Software Exports ",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "0-10", "App Tech"],
+    tags: ["Hybrid", "0-10", "Full-Stack Development"],
     place: "Mumbai",
     logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
   },
@@ -65,7 +66,7 @@ const companies = [
     name: "Ucodice Technologies IT ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-200", "Other Tech"],
+    tags: ["Remote", "100-200", "Front-End Development"],
     place: "Pune",
     logo: "https://www.ucodice.com/images/new_logo_for_white_background.png",
   },
@@ -74,7 +75,7 @@ const companies = [
     name: "Shadow infosystem(P) ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "50-100", "App Tech"],
+    tags: ["Hybrid", "50-100", "Cloud Technologies"],
     place: "Pune",
     logo: "https://www.shadowinfosystem.com/static/media/shadow-png-logo2-1.53ac2f8235b19116a576.png",
   },
@@ -83,7 +84,7 @@ const companies = [
     name: "Nexthoughts Software Technologies",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-200", "Other Tech"],
+    tags: ["Onsite", "100-200", "Mobile App Development"],
     place: "Pune",
     logo: "https://nexthoughts.com/wp-content/uploads/2019/12/cropped-Fevicon-logo-192x192.png",
   },
@@ -92,7 +93,7 @@ const companies = [
     name: "GrapeCity India Private ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "Web Tech"],
+    tags: ["Hybrid", "10-50", "DevOps"],
     place: "Pune",
     logo: "https://static.wixstatic.com/media/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png",
   },
@@ -101,26 +102,71 @@ const companies = [
     name: "Eastern Software Solutions",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "50-100", "App Tech"],
+    tags: ["Remote", "50-100", "Full-Stack Development"],
     place: "Pune",
     logo: "https://www.essindia.com/assets/img/favicon.png",
   },
 ];
 
+
+
 const MyClients = () => {
   const navigate = useNavigate();
-   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
+  const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
+    technologies:[],
+    requirementType: [],
+    companyStrength: [],
+  });
+  const [filterList, setFilterList] = useState<any>({
+    TechnologiesList: [
+      "Mobile App Development",
+      "Front-End Development",
+      "Back-End Development",
+      "Full-Stack Development",
+      "Cloud Technologies",
+      "Artificial Intelligence (AI)",
+      "Machine Learning (ML)",
+      "Blockchain Development",
+      "Data Science & Analytics",
+      "Cybersecurity Solutions",
+      "Internet of Things (IoT)",
+      "DevOps",
+      "QA",
+      "QA Automation",
+      "Augmented Reality (AR)",
+      "Virtual Reality (VR)",
+      "Progressive Web Applications (PWA)",
+      "Microservices Architecture",
+      "Low-Code/No-Code Development",
+      "Robotic Process Automation (RPA)",
+      "5G & Edge Computing Solutions",
+    ],
+    requirementType: ["Remote", "Hybrid", "Onsite"],
+    companyStrength: [ "0-10",
+      "10-50",
+      "50-100",
+      "100-500",
+      "500+"],
   });
 
 
-  useEffect(() => {    
+  useEffect(() => {
     const filtered = companies.filter((item) => {
       const searchMatch =
         !searchFilter.searchValue ||
         item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
-      return searchMatch;
+        const TechnologieMatch =
+        searchFilter.technologies.length === 0 ||
+        searchFilter.technologies.some((tech:any) => item.tags.includes(tech));
+        const requirementTypeMatch =
+        searchFilter.requirementType.length === 0 ||
+        searchFilter.requirementType.some((tech:any) => item.tags.includes(tech));
+        const CompanyStrengthMatch =
+        searchFilter.companyStrength.length === 0 ||
+        searchFilter.companyStrength.some((tech:any) => item.tags.includes(tech));
+      return searchMatch && TechnologieMatch && requirementTypeMatch && CompanyStrengthMatch;
     });
     setcompaniesfilterData(filtered)
 
@@ -135,41 +181,68 @@ const MyClients = () => {
 
       {/* Search and Filters */}
       <div className="flex justify-between items-center mt-1">
-        <h5 className="text-heading">Find Vendors</h5>        
-            <div className="flex flex-row gap-1 justify-end mb-1">
-              <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-                <div className='flex text-center flex-nowrap my-auto'>
-                  <div className='flex grow w-[220px] mr-2'>
-                    <div className='flex-col flex-grow'>
-                      <TextField
-                        size='small'
-                        className='w-full'
-                        value={searchFilter.searchValue}
-                        onChange={(event) =>
-                          setSearchFilter({
-                            ...searchFilter,
-                            searchValue: event.target.value,
-                          })
-                        }
-                        placeholder="Search Vendors"
-                        slotProps={{
-                          input: {
-                            startAdornment: (
-                              <InputAdornment position='start'>
-                                <SearchIcon fontSize='inherit' />
-                              </InputAdornment>
-                            ),
-                          },
-                        }}
-                      />
-                    </div>
-                  </div>
+        <h5 className="text-heading">Find Vendors</h5>
+        <div className="flex flex-row gap-1 justify-end mb-1">
+          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
+            <div className='flex text-center flex-nowrap my-auto'>
+              <div className='flex grow w-[220px] mr-2'>
+                <div className='flex-col flex-grow'>
+                  <TextField
+                    size='small'
+                    className='w-full'
+                    value={searchFilter.searchValue}
+                    onChange={(event) =>
+                      setSearchFilter({
+                        ...searchFilter,
+                        searchValue: event.target.value,
+                      })
+                    }
+                    placeholder="Search Vendors"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position='start'>
+                            <SearchIcon fontSize='inherit' />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
                 </div>
-                <IconButton aria-label='filter'>
-                  <FilterListOutlinedIcon />
-                </IconButton>
+              </div>
+              <div className="max-w-full shrink-0">
+                <MenuDrpDwn
+                  menuList={filterList?.TechnologiesList}
+                  placeholder="Technologies"
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, technologies: selectedItems });
+                  }}
+                />
+              </div>
+              <div className="max-w-full shrink-0">
+                <MenuDrpDwn
+                  menuList={filterList?.requirementType}
+                  placeholder="Resources"
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, requirementType: selectedItems });
+                  }}
+                />
+                </div>
+              <div className="max-w-full shrink-0">
+                <MenuDrpDwn
+                  menuList={filterList?.companyStrength}
+                  placeholder="Strength"
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, companyStrength: selectedItems });
+                  }}
+                />
               </div>
             </div>
+            <IconButton aria-label='filter'>
+              <FilterListOutlinedIcon />
+            </IconButton>
+          </div>
+        </div>
         {/* <Box className="flex items-center justify-end my-2">
           <Box className="flex items-center space-x-4">
             <TextField
@@ -200,7 +273,7 @@ const MyClients = () => {
       <div className="flex">
         {/* Sidebar */}
         {/* Sidebar */}
-        <div className="w-[200px]">
+        {/* <div className="w-[200px]">
           <div className="grid">
             <p className="text-title ">Technologies</p>
             {[
@@ -278,7 +351,7 @@ const MyClients = () => {
               />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Company Cards */}
         <div className="w-[calc(100%-200px)]">
@@ -288,7 +361,7 @@ const MyClients = () => {
                 item
                 xs={12}
                 sm={6}
-                md={4}
+                md={3}
                 key={idx}
                 onClick={() => handleDetails(company.id)}
               >
@@ -311,7 +384,7 @@ const MyClients = () => {
                   </div>
                   <p className="text-base">{company.description}</p>
                   <div className="flex flex-wrap mt-2">
-                    {company.tags.map((tag:string, idx:any) => (
+                    {company.tags.map((tag: string, idx: any) => (
                       <Chip
                         key={idx}
                         label={tag}
