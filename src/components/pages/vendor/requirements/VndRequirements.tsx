@@ -26,7 +26,13 @@ const VndRequirements = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [filterList, setFilterList] = useState<any>({
-    client: ["Teleperformance", "KPIT Technologies", "Mphasis","Fidelity Information Services","Coforge"],
+    client: [
+      "Teleperformance",
+      "KPIT Technologies",
+      "Mphasis",
+      "Fidelity Information Services",
+      "Coforge",
+    ],
     status: ["Open", "Hot", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
@@ -141,7 +147,7 @@ const VndRequirements = () => {
     setDrawerOpen(open);
   };
 
- useEffect(() => {
+  useEffect(() => {
     // Filtering logic
     const filtered = jobDataOrg.filter((item) => {
       // Check client filter
@@ -162,13 +168,8 @@ const VndRequirements = () => {
         item.role
           .toLowerCase()
           .includes(searchFilter.searchValue.toLowerCase());
-     
-      return (
-        clientMatch &&
-        statusMatch &&
-        requirementTypeMatch &&
-        searchMatch
-      );
+
+      return clientMatch && statusMatch && requirementTypeMatch && searchMatch;
     });
     setJobData(filtered);
   }, [searchFilter]);
@@ -325,14 +326,14 @@ const VndRequirements = () => {
             </svg>
           </div>
         </div> */}
-         <div className="flex flex-row gap-1 justify-end mb-1">
-          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-            <div className='flex text-center flex-nowrap my-auto'>
-              <div className='flex grow w-[220px] mr-2'>
-                <div className='flex-col flex-grow'>
+        <div className="flex flex-row gap-1 justify-end mb-1">
+          <div className="flex flex-row gap-1 p-1 overflow-hidden">
+            <div className="flex text-center flex-nowrap my-auto">
+              <div className="flex grow w-[220px] mr-2">
+                <div className="flex-col flex-grow">
                   <TextField
-                    size='small'
-                    className='w-full'
+                    size="small"
+                    className="w-full"
                     value={searchFilter.searchValue}
                     onChange={(event) =>
                       setSearchFilter({
@@ -340,12 +341,12 @@ const VndRequirements = () => {
                         searchValue: event.target.value,
                       })
                     }
-                    placeholder='Search'
+                    placeholder="Search"
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <InputAdornment position='start'>
-                            <SearchIcon fontSize='inherit' />
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="inherit" />
                           </InputAdornment>
                         ),
                       },
@@ -353,28 +354,28 @@ const VndRequirements = () => {
                   />
                 </div>
               </div>
-              <div className='max-w-full shrink-0'>
+              <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.client}
-                  placeholder='Client'
+                  placeholder="Client"
                   handleSelectedItem={(selectedItems) => {
                     setSearchFilter({ ...searchFilter, client: selectedItems });
                   }}
                 />
               </div>
-              <div className='max-w-full shrink-0'>
+              <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.status}
-                  placeholder='Status'
+                  placeholder="Status"
                   handleSelectedItem={(selectedItems) => {
                     setSearchFilter({ ...searchFilter, status: selectedItems });
                   }}
                 />
               </div>
-              <div className='max-w-full shrink-0'>
+              <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.requirementType}
-                  placeholder='Requirements'
+                  placeholder="Requirements"
                   handleSelectedItem={(selectedItems) => {
                     setSearchFilter({
                       ...searchFilter,
@@ -384,7 +385,7 @@ const VndRequirements = () => {
                 />
               </div>
             </div>
-            <IconButton aria-label='filter'>
+            <IconButton aria-label="filter">
               <FilterListOutlinedIcon />
             </IconButton>
           </div>
@@ -407,7 +408,7 @@ const VndRequirements = () => {
               {jobData.map((job, index) => (
                 <tr key={index}>
                   <th className="add-right-shadow">
-                    <div className="flex items-center justify-between text-info">
+                    <div className="flex items-center justify-between">
                       <div
                         onClick={() => handleRowClick(job.id)}
                         className="cursor-pointer hover:text-indigo-700"
