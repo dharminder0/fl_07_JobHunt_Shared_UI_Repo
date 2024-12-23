@@ -41,10 +41,10 @@ export default function SignUp() {
     };
 
     return (
-      <div className="bg-gray-50">
+      <div className="bg-white">
         <div className="container flex h-screen">
           {/* Left Section */}
-          <div className="w-2/4 bg-gray-50 my-auto flex flex-col justify-end px-16">  
+          <div className="w-1/2 bg-white my-auto flex flex-col justify-end px-16">  
           <div>
         <Slider />
           </div>
@@ -65,7 +65,7 @@ export default function SignUp() {
               />
             </div> */}
           </div>
-          <div className="w-2/4 mx-auto flex flex-col justify-center items-center px-16">
+          <div className="w-1/2 mx-auto flex flex-col justify-center items-center px-16">
             <div className="w-full max-w-md mb-8">
               <h1 className="text-heading text-gray-700">
                 Get more opportunities

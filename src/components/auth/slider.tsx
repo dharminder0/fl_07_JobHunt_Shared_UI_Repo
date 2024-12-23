@@ -35,15 +35,15 @@ const slides = [
     }, []);
 
     return (
-    <div className="bg-gray-50">
+    <div className="bg-white">
         {/* Title and Subtitle */}
         <div className="my-2 text-center">
-            <p className="text-sm font-bold">{slides[currentSlide].title}</p>
-            <p className="text-xs mt-2">{slides[currentSlide].subtitle}</p>
+            <p className="text-heading  font-bold">{slides[currentSlide].title}</p>
+            <p className="text-base mt-2">{slides[currentSlide].subtitle}</p>
         </div>
 
         {/* Image Carousel */}
-        <div className="relative w-full overflow-hidden h-[495px]">
+        <div className="relative w-full overflow-hidden">
             <img
                 src={slides[currentSlide].image}
                 alt={`Slide ${currentSlide + 1}`}
@@ -52,12 +52,12 @@ const slides = [
         </div>
 
         {/* Dot Indicators */}
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-3">
             {slides.map((_, index) => (
                 <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
-                    className={`w-3 h-3 mx-2 rounded-full transition-colors duration-300 ${index === currentSlide ? "bg-blue-500" : "bg-gray-400"
+                    className={`w-2 h-2 mx-2 rounded-full transition-colors duration-300 ${index === currentSlide ? "bg-blue-500" : "bg-gray-400"
                         }`}
                 />
             ))}
