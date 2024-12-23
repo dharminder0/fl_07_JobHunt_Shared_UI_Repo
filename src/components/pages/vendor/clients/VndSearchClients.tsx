@@ -15,13 +15,14 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 
 const companies = [
   {
     id: 1,
     name: "Motherson Technology",
     description:"Stripe is a software platform for starting and running internet businesses.",
-    tags: ["Onsite", "50-100", "QA Testing"],
+    tags: ["Onsite", "50-100", "Full-Stack Development"],
     place: "Noida",
     logo: "https://www.mothersontechnology.com/wp-content/uploads/2021/06/cropped-cropped-favicon-192x192.png",
   },
@@ -29,7 +30,7 @@ const companies = [
     id: 2,
     name: "Axtria",
     description:"Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "App Tech"],
+    tags: ["Onsite", "10-50", "Mobile App Development"],
     place: "Delhi(NCR)",
     logo: "https://39530062.fs1.hubspotusercontent-na1.net/hub/39530062/hubfs/Axtria/Home/Axtria_Logo-300x102.png?width=300&height=102&name=Axtria_Logo-300x102.png",
   },
@@ -37,7 +38,7 @@ const companies = [
     id: 3,
     name: "MPS Limited",
     description: "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "500+", "Other Tech"],
+    tags: ["Remote", "500+", "Front-End Development"],
     place: "Gurgaon",
     logo: "https://d12ux7ql5zx5ks.cloudfront.net/wp-content/uploads/MPS_LOGO_37df55fb0f6fe049cc780587d3693251-11.png",
   },
@@ -45,7 +46,7 @@ const companies = [
     id: 4,
     name: "Orient Technologies",
     description:"Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "0-10", "App Tech"],
+    tags: ["Hybrid", "0-10", "Full-Stack Development"],
     place: "Mumbai",
     logo: "https://static.ambitionbox.com/assets/v2/images/rs:fit:200:200:false:false/bG9jYWw6Ly8vbG9nb3Mvb3JpZ2luYWxzL29yaWVudC10ZWNobm9sb2dpZXMuanBn.webp",
   },
@@ -53,7 +54,7 @@ const companies = [
     id: 5,
     name: "Nucleus Software Exports",
     description: "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-200", "Other Tech"],
+    tags: ["Remote", "100-200", "Front-End Development"],
     place: "Gujrat",
     logo: "https://static.ambitionbox.com/assets/v2/images/rs:fit:200:200:false:false/bG9jYWw6Ly8vbG9nb3Mvb3JpZ2luYWxzL251Y2xldXMtc29mdHdhcmUtZXhwb3J0cy5qcGc.webp",
   },
@@ -61,7 +62,7 @@ const companies = [
     id: 6,
     name: "Unimoni",
     description:  "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "50-100", "App Tech"],
+    tags: ["Hybrid", "50-100", "Cloud Technologies"],
     place: "Gurgaon",
     logo: "https://www.unimoni.in/images/icon/favicon.ico",
   },
@@ -69,7 +70,7 @@ const companies = [
     id: 7,
     name: "Damco Solutions",
     description:"Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-200", "Other Tech"],
+    tags: ["Onsite", "100-200", "Mobile App Development"],
     place: "Pune",
     logo: "https://www.damcogroup.com/wp-content/themes/DamcoNew/images/favicon.ico",
   },
@@ -77,7 +78,7 @@ const companies = [
     id: 8,
     name: "Foray Software",
     description:  "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "Web Tech"],
+    tags: ["Hybrid", "10-50", "DevOps"],
     place: "Gurgaon",
     logo: "https://www.foraysoft.com/assets/images/favicon.png",
   },
@@ -85,7 +86,7 @@ const companies = [
     id: 7,
     name: "Impetus Technologies",
     description:"Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "50-100", "App Tech"],
+    tags: ["Remote", "50-100", "Full-Stack Development"],
     place: "Pune",
     logo: "https://www.impetus.com/wp-content/uploads/2022/02/cropped-favicon-32x32.png",
   },
@@ -95,19 +96,64 @@ const VndSearchClients = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
-  const [searchFilter, setSearchFilter] = useState<any>({
-      searchValue: "",
-    });
+   const [searchFilter, setSearchFilter] = useState<any>({
+     searchValue: "",
+     technologies:[],
+     requirementType: [],
+     companyStrength: [],
+   });
+   const [filterList, setFilterList] = useState<any>({
+     TechnologiesList: [
+       "Mobile App Development",
+       "Front-End Development",
+       "Back-End Development",
+       "Full-Stack Development",
+       "Cloud Technologies",
+       "Artificial Intelligence (AI)",
+       "Machine Learning (ML)",
+       "Blockchain Development",
+       "Data Science & Analytics",
+       "Cybersecurity Solutions",
+       "Internet of Things (IoT)",
+       "DevOps",
+       "QA",
+       "QA Automation",
+       "Augmented Reality (AR)",
+       "Virtual Reality (VR)",
+       "Progressive Web Applications (PWA)",
+       "Microservices Architecture",
+       "Low-Code/No-Code Development",
+       "Robotic Process Automation (RPA)",
+       "5G & Edge Computing Solutions",
+     ],
+     requirementType: ["Remote", "Hybrid", "Onsite"],
+     companyStrength: [ "0-10",
+       "10-50",
+       "50-100",
+       "100-500",
+       "500+"],
+   });
+ 
 
   useEffect(() => {
-    const filtered = companies.filter((item) => {
-      const searchMatch =
-        !searchFilter.searchValue ||
-        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
-      return searchMatch;
-    });
-    setcompaniesfilterData(filtered);
-  }, [searchFilter]);
+     const filtered = companies.filter((item) => {
+       const searchMatch =
+         !searchFilter.searchValue ||
+         item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+         const TechnologieMatch =
+         searchFilter.technologies.length === 0 ||
+         searchFilter.technologies.some((tech:any) => item.tags.includes(tech));
+         const requirementTypeMatch =
+         searchFilter.requirementType.length === 0 ||
+         searchFilter.requirementType.some((tech:any) => item.tags.includes(tech));
+         const CompanyStrengthMatch =
+         searchFilter.companyStrength.length === 0 ||
+         searchFilter.companyStrength.some((tech:any) => item.tags.includes(tech));
+       return searchMatch && TechnologieMatch && requirementTypeMatch && CompanyStrengthMatch;
+     });
+     setcompaniesfilterData(filtered)
+ 
+   }, [searchFilter]);
 
   const handleDetails = (id: number) => {
     navigate(`${id}?type=activeView`, {
@@ -120,25 +166,7 @@ const VndSearchClients = () => {
 
       {/* Search and Filters */}
       <div className="flex justify-between items-center">
-        <h5 className="text-heading">Search Clients</h5>
-       
-        {/* <Box className="flex items-center justify-end my-2">
-          <Box className="flex items-center space-x-4">
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Search Client"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              InputProps={{
-                startAdornment: <Search className="mr-2" fontSize="small" />,
-              }}
-            />
-            <Button variant="outlined" startIcon={<FilterList />}>
-              Filter
-            </Button>
-          </Box>
-        </Box> */}
+        <h5 className="text-heading">Search Clients</h5>      
          <div className="flex justify-end items-center">
             <div className="flex flex-row gap-1 justify-end mb-1">
               <div className='flex flex-row gap-1 p-1 overflow-hidden'>
@@ -168,6 +196,33 @@ const VndSearchClients = () => {
                       />
                     </div>
                   </div>
+                  <div className="max-w-full shrink-0">
+                <MenuDrpDwn
+                  menuList={filterList?.TechnologiesList}
+                  placeholder="Technologies"
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, technologies: selectedItems });
+                  }}
+                />
+              </div>
+              <div className="max-w-full shrink-0">
+                <MenuDrpDwn
+                  menuList={filterList?.requirementType}
+                  placeholder="Resources"
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, requirementType: selectedItems });
+                  }}
+                />
+                </div>
+              <div className="max-w-full shrink-0">
+                <MenuDrpDwn
+                  menuList={filterList?.companyStrength}
+                  placeholder="Strength"
+                  handleSelectedItem={(selectedItems) => {
+                    setSearchFilter({ ...searchFilter, companyStrength: selectedItems });
+                  }}
+                />
+              </div>
                 </div>
                   <IconButton aria-label='filter'>
                     <FilterListOutlinedIcon />
@@ -180,7 +235,7 @@ const VndSearchClients = () => {
       {/* Sidebar and Companies List */}
       <div className="flex">
         {/* Sidebar */}
-        <div className="w-[200px]">
+        {/* <div className="w-[200px]">
           <div className="grid">
             <p className="text-title ">Technologies</p>
             {[
@@ -258,20 +313,12 @@ const VndSearchClients = () => {
               />
             ))}
           </div>
-        </div>
+        </div> */}
 
-        {/* Company Cards */}
-        <div className="w-[calc(100%-200px)]">
-          <Grid container spacing={3}>
+        {/* Company Cards */}        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
             {companiesfilterData.map((company, idx) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                key={idx}
-                onClick={() => handleDetails(company.id)}
-              >
+              <div onClick={() => handleDetails(company.id)} >
                 <div className="h-100 border p-4 rounded-md cursor-pointer">
                   <div className="flex align-center mb-4">
                     <img
@@ -303,12 +350,11 @@ const VndSearchClients = () => {
                     ))}
                   </div>
                 </div>
-              </Grid>
+              </div>
             ))}
-          </Grid>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

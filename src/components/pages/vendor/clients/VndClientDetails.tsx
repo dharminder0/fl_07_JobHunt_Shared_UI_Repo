@@ -209,7 +209,7 @@ const VndClientDetails = () => {
             />
           </div>
           <div>
-            <p className="text-heading">Fleek IT Solutions g</p>
+            <p className="text-heading">Fleek IT Solutions</p>
             <div className="mt-1">
               <Chip
                 label="Web Development"
