@@ -315,18 +315,10 @@ const VndSearchClients = () => {
           </div>
         </div> */}
 
-        {/* Company Cards */}
-        <div>
-          <Grid container spacing={3}>
+        {/* Company Cards */}        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
             {companiesfilterData.map((company, idx) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={3}
-                key={idx}
-                onClick={() => handleDetails(company.id)}
-              >
+              <div onClick={() => handleDetails(company.id)} >
                 <div className="h-100 border p-4 rounded-md cursor-pointer">
                   <div className="flex align-center mb-4">
                     <img
@@ -358,12 +350,11 @@ const VndSearchClients = () => {
                     ))}
                   </div>
                 </div>
-              </Grid>
+              </div>
             ))}
-          </Grid>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
