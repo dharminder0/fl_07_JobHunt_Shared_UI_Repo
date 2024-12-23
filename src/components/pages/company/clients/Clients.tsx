@@ -152,7 +152,7 @@ export default function Clients() {
             {clientData.map((item, index) => (
               <tr key={index}>
                 <th
-                  className="add-right-shadow wide-250 cursor-pointer"
+                  className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
                   onClick={() => handleRowClick(item.id, "activeView")}
                 >
                   <div className="flex">
@@ -164,11 +164,13 @@ export default function Clients() {
                     {item.name}
                   </div>
                 </th>
-                <td>{item.requirement}</td>
-                <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "activeView")}>
+                <td className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
+                  onClick={() => handleRowClick(item.id, "openView")}>
+                    {item.requirement}</td>
+                <td className="cursor-pointer hover:text-indigo-700" onClick={() => handleRowClick(item.id, "activeView")}>
                   {item.activeContracts}
                 </td>
-                <td className="cursor-pointer" onClick={() => handleRowClick(item.id, "pastView")}>
+                <td className="cursor-pointer hover:text-indigo-700" onClick={() => handleRowClick(item.id, "pastView")}>
                   {item.pastContracts}
                 </td>
                 <td>{item.status}</td>
