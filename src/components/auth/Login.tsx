@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import Slider from "./slider";
 
 export default function Login() {
   const location = useLocation();
@@ -115,11 +116,11 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-white">
       <div className="container flex h-screen">
         {/* Left Section */}
-        <div className="w-2/5 bg-gray-50 flex flex-col justify-end px-16">
-          <div className="mb-8 bg-white p-4 w-40">
+        <div className="w-1/2 bg-white my-auto flex flex-col justify-end px-16">
+          {/* <div className="mb-8 bg-white p-4 w-40">
             <img
               src={"/assets/images/bar.png"}
               alt="JobHunty Logo"
@@ -134,10 +135,13 @@ export default function Login() {
               alt="JobHunty Logo"
               className="w-[60%]"
             />
+          </div> */}
+          <div>
+             <Slider />
           </div>
         </div>
 
-        <div className="w-3/5 mx-auto flex flex-col justify-center items-center px-16">
+        <div className="w-1/2 mx-auto flex flex-col justify-center items-center px-16">
           <div className="w-full max-w-md mb-8">
             <h1 className="text-heading font-display">Welcome Back</h1>
           </div>

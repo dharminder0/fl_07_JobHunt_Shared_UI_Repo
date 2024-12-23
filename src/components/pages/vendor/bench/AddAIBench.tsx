@@ -10,6 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import { fontSize } from "@mui/system";
+import BenchPreview from "./BenchPreview";
 
 const AddAIBench = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -77,17 +78,17 @@ const AddAIBench = () => {
             </g>
           </g>
         </svg>
-        Add AI Bench
+        Add Bench
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div style={{ width: "calc(100vw - 250px)" }}>
+        <div className="w-[calc(100vw-250px)] h-full">
           <div className="p-4 border-b">
-            <h2 className="text-heading">Add AI Bench</h2>
+            <h2 className="text-heading">Add Bench</h2>
           </div>
 
-          <div className="p-4 w-[75%] mx-auto">
-            <Box className="w-full max-w-2xl">
+          <div className="p-4 w-full mx-auto h-[calc(100%-108px)] overflow-auto">
+            <Box className="w-full h-full">
               {/* Stepper */}
               <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
@@ -95,10 +96,10 @@ const AddAIBench = () => {
                     <Step key={label}>
                       <StepLabel
                         sx={{
-                          "& .MuiStepLabel-label": { fontSize: "12px" },
+                          "& .MuiStepLabel-label": { fontSize: "14px" },
                           "& .MuiStepIcon-root": {
-                            height: "16px",
-                            width: "16px",
+                            height: "18px",
+                            width: "18px",
                           },
                         }}
                       >
@@ -110,10 +111,9 @@ const AddAIBench = () => {
               </Stepper>
 
               {/* Step Content */}
-              <Box className="mt-4">
+              <div className="mt-4">
                 {activeStep === 0 && (
-                  <Box className="flex flex-col space-y-4">
-                    {/* <Typography variant="h6">Paste Your CV Data</Typography> */}
+                  <div className="flex flex-col space-y-4">
                     <TextField
                       multiline
                       rows={16}
@@ -124,48 +124,46 @@ const AddAIBench = () => {
                       onChange={(e) => setCvText(e.target.value)}
                       className="w-full"
                     />
-                    <div className="flex justify-end space-x-2">
-                      <Button
-                        variant="contained"
-                        onClick={handleNext}
-                        disabled={!cvText}
-                        className="bg-blue-500 hover:bg-blue-600"
-                      >
-                        Preview
-                      </Button>
-                    </div>
-                  </Box>
+                  </div>
                 )}
 
-                {activeStep === 1 && (
-                  <Box className="flex flex-col space-y-4">
-                    {/* <Typography variant="h6">Preview Your CV</Typography> */}
-                    <Typography
-                      variant="body1"
-                      className="p-4 border border-gray-300 rounded bg-gray-50"
-                    >
-                      {cvText || "No CV data pasted yet."}
-                    </Typography>
-                    <div className="flex justify-between space-x-2">
-                      <Button
-                        variant="outlined"
-                        onClick={handleBack}
-                        className="text-blue-500 border-blue-500 hover:bg-blue-50"
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        variant="contained"
-                        onClick={handleSubmit}
-                        className="bg-green-500 hover:bg-green-600"
-                      >
-                        Submit CV
-                      </Button>
-                    </div>
-                  </Box>
-                )}
-              </Box>
+                {activeStep === 1 && <BenchPreview />}
+              </div>
             </Box>
+          </div>
+          <div
+            className={`flex space-x-2 border-t px-4 py-2 ${
+              activeStep === 0 ? "justify-end" : "justify-between"
+            }`}
+          >
+            {activeStep === 1 && (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={handleBack}
+                  className="text-blue-500 border-blue-500 hover:bg-blue-50"
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleSubmit}
+                  className="bg-green-500 hover:bg-green-600"
+                >
+                  Submit CV
+                </Button>
+              </>
+            )}
+            {activeStep === 0 && (
+              <Button
+                variant="contained"
+                onClick={handleNext}
+                disabled={!cvText}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
+                Preview
+              </Button>
+            )}
           </div>
         </div>
       </Drawer>
