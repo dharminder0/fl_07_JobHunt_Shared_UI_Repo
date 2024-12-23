@@ -354,7 +354,7 @@ const MyClients = () => {
         </div> */}
 
         {/* Company Cards */}
-        <div className="w-[calc(100%-200px)]">
+        <div>
           <Grid container spacing={3}>
             {companiesfilterData.map((company, idx) => (
               <Grid
