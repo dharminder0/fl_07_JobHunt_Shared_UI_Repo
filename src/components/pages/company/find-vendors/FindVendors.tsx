@@ -374,7 +374,7 @@ const MyClients = () => {
                       <p className="text-base">{company.place}</p>
                     </div>
                   </div>
-                  <p className="text-base">{company.description}</p>
+                  <p className="text-base line-clamp-2">{company.description}</p>
                   <div className="flex flex-wrap mt-2">
                     {company.tags.map((tag: string, idx: any) => (
                       <Chip
