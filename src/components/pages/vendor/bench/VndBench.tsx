@@ -6,7 +6,14 @@ import {
   Search,
   WorkHistory,
 } from "@mui/icons-material";
-import { Button, Box, TextField, InputAdornment, IconButton } from "@mui/material";
+import {
+  Button,
+  Box,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Drawer,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBenchForm from "./AddBenchForm";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
@@ -14,6 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import AddAIBench from "./AddAIBench";
+import BenchPreview from "./BenchPreview";
 // interface VndBench {}
 
 const benchData = [
@@ -63,9 +71,15 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
   const [search, setSearch] = useState("");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [filterList, setFilterList] = useState<any>({
     availability: ["Immediate"],
-    roles: ["Software Associate", "Front End Lead", "Software Developer", "Front End Developer"],
+    roles: [
+      "Software Associate",
+      "Front End Lead",
+      "Software Developer",
+      "Front End Developer",
+    ],
   });
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
@@ -74,7 +88,7 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
   });
   const [matchingScore, setMatchingScore] = React.useState(0);
 
-  useEffect(() => {    
+  useEffect(() => {
     // Filtering logic
     const filtered = benchData.filter((item) => {
       // Check search input
@@ -86,10 +100,10 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
         searchFilter.roles.includes(item.role);
       const searchMatch =
         searchFilter.searchValue === "" ||
-        item.role.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
-      return (
-        searchMatch && roleMatch && availabilityMatch
-      );
+        item.role
+          .toLowerCase()
+          .includes(searchFilter.searchValue.toLowerCase());
+      return searchMatch && roleMatch && availabilityMatch;
     });
     setbenchFliterData(filtered);
   }, [searchFilter]);
@@ -97,6 +111,16 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
   const handleMatchingDialog = (score: number) => {
     setIsMatchOpen(true);
     setMatchingScore(score);
+  };
+
+  const toggleDrawer = (open: any) => (event: any) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
   };
 
   return (
@@ -108,13 +132,13 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
       )}
       <div className="px-4 py-3 h-full">
         <div className="flex flex-row gap-1 justify-end mb-1">
-          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-            <div className='flex text-center flex-nowrap my-auto'>
-              <div className='flex grow w-[220px] mr-2'>
-                <div className='flex-col flex-grow'>
+          <div className="flex flex-row gap-1 p-1 overflow-hidden">
+            <div className="flex text-center flex-nowrap my-auto">
+              <div className="flex grow w-[220px] mr-2">
+                <div className="flex-col flex-grow">
                   <TextField
-                    size='small'
-                    className='w-full'
+                    size="small"
+                    className="w-full"
                     value={searchFilter.searchValue}
                     onChange={(event) =>
                       setSearchFilter({
@@ -126,8 +150,8 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <InputAdornment position='start'>
-                            <SearchIcon fontSize='inherit' />
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="inherit" />
                           </InputAdornment>
                         ),
                       },
@@ -135,26 +159,29 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                   />
                 </div>
               </div>
-              <div className='max-w-full shrink-0'>
+              <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.roles}
-                  placeholder='Roles'
+                  placeholder="Roles"
                   handleSelectedItem={(selectedItems) => {
                     setSearchFilter({ ...searchFilter, roles: selectedItems });
                   }}
                 />
               </div>
-              <div className='max-w-full shrink-0'>
+              <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.availability}
-                  placeholder='Availability'
+                  placeholder="Availability"
                   handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, availability: selectedItems });
+                    setSearchFilter({
+                      ...searchFilter,
+                      availability: selectedItems,
+                    });
                   }}
                 />
               </div>
             </div>
-            <IconButton aria-label='filter'>
+            <IconButton aria-label="filter">
               <FilterListOutlinedIcon />
             </IconButton>
           </div>
@@ -183,9 +210,10 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                         className="text-secondary-text"
                       />
                       <div className="ms-2 w-[100%]">
-                        <div className="flex items-center justify-between text-info">
+                        <div className="flex items-center justify-between text-base">
                           <div
-                          // onClick={() => handleRowClick(job.id)}
+                            onClick={() => setDrawerOpen(true)}
+                            className="cursor-pointer hover:text-indigo-700"
                           >
                             {item.resource}
                           </div>
@@ -257,6 +285,12 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
             aiScore={matchingScore}
           />
         )}
+
+        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+          <div className="w-[calc(100vw-250px)] h-full">
+            <BenchPreview />
+          </div>
+        </Drawer>
       </div>
     </>
   );

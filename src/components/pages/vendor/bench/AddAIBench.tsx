@@ -77,7 +77,7 @@ const AddAIBench = () => {
             </g>
           </g>
         </svg>
-        Add AI Bench
+        Add Bench
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>

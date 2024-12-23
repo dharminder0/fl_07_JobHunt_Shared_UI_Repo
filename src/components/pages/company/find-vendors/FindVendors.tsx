@@ -108,14 +108,12 @@ const companies = [
   },
 ];
 
-
-
 const MyClients = () => {
   const navigate = useNavigate();
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
-    technologies:[],
+    technologies: [],
     requirementType: [],
     companyStrength: [],
   });
@@ -144,32 +142,37 @@ const MyClients = () => {
       "5G & Edge Computing Solutions",
     ],
     requirementType: ["Remote", "Hybrid", "Onsite"],
-    companyStrength: [ "0-10",
-      "10-50",
-      "50-100",
-      "100-500",
-      "500+"],
+    companyStrength: ["0-10", "10-50", "50-100", "100-500", "500+"],
   });
-
 
   useEffect(() => {
     const filtered = companies.filter((item) => {
       const searchMatch =
         !searchFilter.searchValue ||
-        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
-        const TechnologieMatch =
+        item.name
+          .toLowerCase()
+          .includes(searchFilter.searchValue.toLowerCase());
+      const TechnologieMatch =
         searchFilter.technologies.length === 0 ||
-        searchFilter.technologies.some((tech:any) => item.tags.includes(tech));
-        const requirementTypeMatch =
+        searchFilter.technologies.some((tech: any) => item.tags.includes(tech));
+      const requirementTypeMatch =
         searchFilter.requirementType.length === 0 ||
-        searchFilter.requirementType.some((tech:any) => item.tags.includes(tech));
-        const CompanyStrengthMatch =
+        searchFilter.requirementType.some((tech: any) =>
+          item.tags.includes(tech)
+        );
+      const CompanyStrengthMatch =
         searchFilter.companyStrength.length === 0 ||
-        searchFilter.companyStrength.some((tech:any) => item.tags.includes(tech));
-      return searchMatch && TechnologieMatch && requirementTypeMatch && CompanyStrengthMatch;
+        searchFilter.companyStrength.some((tech: any) =>
+          item.tags.includes(tech)
+        );
+      return (
+        searchMatch &&
+        TechnologieMatch &&
+        requirementTypeMatch &&
+        CompanyStrengthMatch
+      );
     });
-    setcompaniesfilterData(filtered)
-
+    setcompaniesfilterData(filtered);
   }, [searchFilter]);
 
   const handleDetails = (id: number) => {
@@ -183,13 +186,13 @@ const MyClients = () => {
       <div className="flex justify-between items-center mt-1">
         <h5 className="text-heading">Find Vendors</h5>
         <div className="flex flex-row gap-1 justify-end mb-1">
-          <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-            <div className='flex text-center flex-nowrap my-auto'>
-              <div className='flex grow w-[220px] mr-2'>
-                <div className='flex-col flex-grow'>
+          <div className="flex flex-row gap-1 p-1 overflow-hidden">
+            <div className="flex text-center flex-nowrap my-auto">
+              <div className="flex grow w-[220px] mr-2">
+                <div className="flex-col flex-grow">
                   <TextField
-                    size='small'
-                    className='w-full'
+                    size="small"
+                    className="w-full"
                     value={searchFilter.searchValue}
                     onChange={(event) =>
                       setSearchFilter({
@@ -201,8 +204,8 @@ const MyClients = () => {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <InputAdornment position='start'>
-                            <SearchIcon fontSize='inherit' />
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="inherit" />
                           </InputAdornment>
                         ),
                       },
@@ -215,7 +218,10 @@ const MyClients = () => {
                   menuList={filterList?.TechnologiesList}
                   placeholder="Technologies"
                   handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, technologies: selectedItems });
+                    setSearchFilter({
+                      ...searchFilter,
+                      technologies: selectedItems,
+                    });
                   }}
                 />
               </div>
@@ -224,21 +230,27 @@ const MyClients = () => {
                   menuList={filterList?.requirementType}
                   placeholder="Resources"
                   handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, requirementType: selectedItems });
+                    setSearchFilter({
+                      ...searchFilter,
+                      requirementType: selectedItems,
+                    });
                   }}
                 />
-                </div>
+              </div>
               <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.companyStrength}
                   placeholder="Strength"
                   handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, companyStrength: selectedItems });
+                    setSearchFilter({
+                      ...searchFilter,
+                      companyStrength: selectedItems,
+                    });
                   }}
                 />
               </div>
             </div>
-            <IconButton aria-label='filter'>
+            <IconButton aria-label="filter">
               <FilterListOutlinedIcon />
             </IconButton>
           </div>
