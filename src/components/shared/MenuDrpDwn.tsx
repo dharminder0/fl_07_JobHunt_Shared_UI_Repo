@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   Button,
   Checkbox,
@@ -29,7 +29,7 @@ const MenuDrpDwn: React.FC<MenuDrpDwnProps> = ({ menuList, placeholder, handleSe
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
+ 
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -49,7 +49,7 @@ const MenuDrpDwn: React.FC<MenuDrpDwnProps> = ({ menuList, placeholder, handleSe
 
   // Memoized toggle handler
   const handleToggle = useCallback(
-    (option: string) => { debugger
+    (option: string) => { 
       setSelectedItems((prev) =>
         prev.includes(option)
           ? prev.filter((item) => item !== option)
@@ -111,22 +111,30 @@ const MenuDrpDwn: React.FC<MenuDrpDwnProps> = ({ menuList, placeholder, handleSe
         }}
         slotProps={{
           paper: {
-            sx: { width: 320 },
+            sx: { width: 270 },
           },
         }}
       >
         {/* Search Input */}
-        <div style={{ padding: '8px' }}>
-          <TextField
-            placeholder="Search..."
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </div>
-        <Divider />
+        {
+          menuList.length > 10 && (
+            <>
+              <div style={{ padding: '8px' }}>
+                <TextField
+                  autoFocus 
+                  placeholder="Search..."
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                />
+              </div>
+              <Divider />
+            </>
+
+          )
+        }
 
         {/* Conditionally render virtualized or regular list */}
         <div
@@ -135,7 +143,7 @@ const MenuDrpDwn: React.FC<MenuDrpDwnProps> = ({ menuList, placeholder, handleSe
             overflow: 'auto',
           }}
         >
-          {menuList.length > 0 ? (
+          {menuList.length > 50 && false ? (
             <FixedSizeList
               height={200}
               width="100%"
@@ -164,7 +172,7 @@ const MenuDrpDwn: React.FC<MenuDrpDwnProps> = ({ menuList, placeholder, handleSe
 
         {/* Footer with Clear Button */}
         <div style={{ padding: '8px', textAlign: 'right' }}>
-          <Button variant="text" size="small" onClick={handleClear}>
+          <Button variant="text" size="small" onClick={handleClear} disabled={selectedItems.length === 0}>
             Clear
           </Button>
         </div>
