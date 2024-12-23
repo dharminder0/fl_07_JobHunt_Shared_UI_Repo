@@ -15,7 +15,6 @@ import Messages from "./components/pages/company/Messages";
 import VndRequirements from "./components/pages/vendor/requirements/VndRequirements";
 import VndClients from "./components/pages/vendor/clients/VndClients";
 import RequirementDetails from "./components/pages/company/requirements/RequirementDetails";
-import Layout from "./components/layouts/Layout";
 import NotFound from "./components/pages/NotFound/NotFound";
 import VendorCompanyDetails from "./components/pages/company/my-vendors/VendorCompanyDetails";
 import VendorDetails from "./components/pages/company/find-vendors/VendorDetails";
