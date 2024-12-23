@@ -288,6 +288,10 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
 
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
           <div className="w-[calc(100vw-250px)] h-full">
+            {/* header */}
+            <div className="px-4 py-2 border-b">
+              <h2 className="text-heading">Bench Resource Preview</h2>
+            </div>
             <BenchPreview />
           </div>
         </Drawer>

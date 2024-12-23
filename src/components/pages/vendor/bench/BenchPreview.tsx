@@ -34,11 +34,6 @@ export default function BenchPreview() {
 
   return (
     <>
-      {/* header */}
-      <div className="px-4 py-2 border-b">
-        <h2 className="text-heading">Bench Resource Preview</h2>
-      </div>
-
       {/* body */}
       <div
         className="w-full flex overflow-auto h-[calc(100%-38px)] flex-wrap"
@@ -339,11 +334,6 @@ export default function BenchPreview() {
           </div>
         </div>
       </div>
-
-      {/* footer */}
-      {/* <div className="px-4 py-2 border-t">
-        <h2 className="text-heading">footer</h2>
-      </div> */}
     </>
   );
 }
