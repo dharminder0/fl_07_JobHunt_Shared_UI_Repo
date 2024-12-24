@@ -73,33 +73,20 @@ export default function OnBoarding() {
   return (
     <div className="bg-white h-screen flex flex-col">
       {/* Header */}
-      {/* <div className="px-4 py-3 border-b flex-shrink-0">
-    <h2 className="text-heading">
-    {activeStep === 0 && 'Company Information'}
-    {activeStep === 1 && 'Company Services and Resources'}
-    {activeStep === 2 && 'Technical Expertise'}
-      </h2>
-  </div> */}
-
       <div className="h-[52px] px-5 py-2 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
         <div className="flex gap-3">
           <div className="icon my-auto">
             <img className="rounded-full h-8" src='https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png' alt="JobHunty Logo" />
           </div>
-          <div
-          className="cursor-pointer flex flex-row gap-2"
-          id="basic-button"          
-        >
-          <div className="font-semibold text-title my-auto">
-            {companyName}
-          </div>         
-        </div>
-
+          <div  className="cursor-pointer flex flex-row gap-2"
+            id="basic-button"
+          >
+            <div className="font-semibold text-title my-auto">
+              {companyName}
+            </div>
           </div>
-
         </div>
-
-      
+      </div>
 
       {/* Body */}
       <div className="flex-grow overflow-auto">
