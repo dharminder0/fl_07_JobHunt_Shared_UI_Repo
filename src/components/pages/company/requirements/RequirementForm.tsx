@@ -194,7 +194,7 @@ const RequirementForm = () => {
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div className="h-full">
+        <div className="h-full w-[calc(100vw-250px)]">
           <div className="px-4 py-2 border-b">
             <h2 className="text-heading">Post Requirements</h2>
           </div>
