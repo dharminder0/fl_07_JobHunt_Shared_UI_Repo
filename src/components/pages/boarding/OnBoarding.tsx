@@ -21,6 +21,7 @@ export default function OnBoarding() {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
+  const companyName = localStorage.companyName;
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -70,57 +71,89 @@ export default function OnBoarding() {
   };
 
   return (
-    <div className="bg-gray-50 h-screen">
-      <Navbar />
-      <div className="container mx-auto py-8">
-        <Box sx={{ width: "100%" }}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps: { completed?: boolean } = {};
-              const labelProps: {
-                optional?: React.ReactNode;
-              } = {};
-              if (isStepSkipped(index)) {
-                stepProps.completed = false;
-              }
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          <React.Fragment>
-            <div
-              style={{ minHeight: "675px", maxHeight: "730px" }}
-              className="m-auto flex justify-center align-center"
-            >
-              {activeStep == 0 && <CompanyInfo />}
-              {activeStep == 1 && <CompanyService />}
-              {activeStep == 2 && <CompanyTechnologiesForm />}
+    <div className="bg-white h-screen flex flex-col">
+      {/* Header */}
+      {/* <div className="px-4 py-3 border-b flex-shrink-0">
+    <h2 className="text-heading">
+    {activeStep === 0 && 'Company Information'}
+    {activeStep === 1 && 'Company Services and Resources'}
+    {activeStep === 2 && 'Technical Expertise'}
+      </h2>
+  </div> */}
+
+      <div className="h-[52px] px-5 py-2 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
+        <div className="flex gap-3">
+          <div className="icon my-auto">
+            <img className="rounded-full h-8" src='https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png' alt="JobHunty Logo" />
+          </div>
+          <div
+          className="cursor-pointer flex flex-row gap-2"
+          id="basic-button"          
+        >
+          <div className="font-semibold text-title my-auto">
+            {companyName}
+          </div>         
+        </div>
+
+          </div>
+
+        </div>
+
+      
+
+      {/* Body */}
+      <div className="flex-grow overflow-auto">
+        <div className="container mx-auto py-8">
+          <div className="w-full">
+            <Stepper activeStep={activeStep}>
+              {steps.map((label, index) => {
+                const stepProps: { completed?: boolean } = {};
+                const labelProps: { optional?: React.ReactNode } = {};
+                if (isStepSkipped(index)) {
+                  stepProps.completed = false;
+                }
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+
+            <div className="flex justify-center items-center mt-9">
+              {activeStep === 0 && <CompanyInfo />}
+              {activeStep === 1 && <CompanyService />}
+              {activeStep === 2 && <CompanyTechnologiesForm />}
             </div>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: "1 1 auto" }} />
-              {isStepOptional(activeStep) && (
-                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                  Skip
-                </Button>
-              )}
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </Box>
-          </React.Fragment>
-        </Box>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="px-4 py-3 border-t flex-shrink-0">
+        <div className="flex justify-between">
+          <Button
+            color="inherit"
+            variant="outlined"
+            disabled={activeStep === 0}
+            onClick={handleBack}
+            className="mr-2"
+            sx={{ width: 125 }}
+          >
+            Back
+          </Button>
+          <div className="flex-grow" />
+          {/* {isStepOptional(activeStep) && (
+        <Button variant="contained" color="inherit" onClick={handleSkip} className="mr-2">
+          Skip
+        </Button>
+      )} */}
+          <Button variant="contained" color="primary" onClick={handleNext} sx={{ width: 125 }}>
+            {activeStep === steps.length - 1 ? "Finish" : "Next"}
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
+
