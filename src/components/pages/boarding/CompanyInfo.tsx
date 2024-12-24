@@ -10,6 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form"
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -26,7 +27,13 @@ const CompanyInfo = () => {
 
   const tiers = ["Tier 1", "Tier 2", "Tier 3"];
 
+  const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+  const onSubmit = (data: any) => {
+    console.log(data); // Handle form submission
+  };
+
   const handleSignup = () => {
+    
     if (
       companyName &&
       companyStrength &&
@@ -58,124 +65,144 @@ const CompanyInfo = () => {
   };
 
   return (
-    <form className="w-3/5 m-auto p-6 bg-white rounded-lg shadow-md space-y-4 h-auto">
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+    <form onSubmit={handleSubmit(onSubmit)} className="w-3/5 m-auto p-6 bg-white rounded-lg space-y-4 h-auto">
+    {/* Company Name Field */}
+    <Controller
+        name="companyName"
+        control={control}
+        defaultValue=""
+        rules={{ required: "Company Name is required" }}
+        render={({ field }) => (
           <TextField
+            {...field}
             label="Company Name"
             fullWidth
             variant="outlined"
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            required
             size="small"
+            error={!!errors.companyName}
           />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Company Strength"
-            type="number"
-            fullWidth
-            variant="outlined"
-            placeholder="Number of Employees"
-            value={companyStrength}
-            onChange={(e) => setCompanyStrength(e.target.value)}
-            required
-            size="small"
-          />
-        </Grid>
-      </Grid>
-
-      <TextField
-        label="Company Portfolio"
-        multiline
-        rows={4}
-        fullWidth
-        variant="outlined"
-        value={companyPortfolio}
-        onChange={(e) => setCompanyPortfolio(e.target.value)}
-        placeholder="Brief description of your company portfolio"
-        required
-        size="small"
+        )}
       />
 
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField
-            label="Contact Mail ID"
-            type="email"
-            fullWidth
-            variant="outlined"
-            value={contactMail}
-            onChange={(e) => setContactMail(e.target.value)}
-            placeholder="Enter your contact email"
-            required
-            size="small"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="Mobile Number"
-            type="tel"
-            fullWidth
-            variant="outlined"
-            placeholder="Enter your contact number"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            required
-            size="small"
-          />
-        </Grid>
-      </Grid>
-      <TextField
-        label="Company Website"
-        type="url"
-        fullWidth
-        variant="outlined"
-        value={companyWebsite}
-        onChange={(e) => setCompanyWebsite(e.target.value)}
-        placeholder="Enter your website URL"
-        required
-        size="small"
-      />
-
-      {/* Location Fields */}
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <TextField
-            label="State"
-            fullWidth
-            variant="outlined"
-            placeholder="Enter the State"
-            value={location.state}
-            onChange={(e) =>
-              setLocation({ ...location, state: e.target.value })
-            }
-            required
-            size="small"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            label="City"
-            fullWidth
-            variant="outlined"
-            placeholder="Enter the City"
-            value={location.city}
-            onChange={(e) => setLocation({ ...location, city: e.target.value })}
-            required
-            size="small"
-          />
-        </Grid>
-      </Grid>
-
-      {/* Error Message */}
-      {errorMessage && (
-        <Typography color="error" variant="body2">
-          {errorMessage}
-        </Typography>
+    {/* Company Portfolio Field */}
+    <Controller
+      name="companyPortfolio"
+      control={control}
+      defaultValue=""
+      rules={{ required: "Company Portfolio is required" }}
+      render={({ field }) => (
+        <TextField
+          {...field}
+          label="Company Portfolio"
+          multiline
+          rows={8}
+          fullWidth
+          variant="outlined"
+          placeholder="Brief description of your company portfolio"
+          size="small"
+          error={!!errors.companyPortfolio}
+        />
       )}
-      {/* <Button
+    />
+
+    <Grid container spacing={2}>
+      {/* Contact Mail ID */}
+      <Grid item xs={6}>
+        <Controller
+          name="contactMail"
+          control={control}
+          defaultValue=""
+          rules={{ required: "Contact Mail ID is required" }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Contact Mail ID"              
+              fullWidth
+              variant="outlined"
+              placeholder="Enter your contact email"
+              size="small"
+              error={!!errors.contactMail}
+            />
+          )}
+        />
+      </Grid>
+
+      {/* Mobile Number */}
+      <Grid item xs={6}>
+        <Controller
+          name="mobileNumber"
+          control={control}
+          defaultValue=""
+          rules={{ required: "Mobile Number is required" }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Mobile Number"
+              fullWidth
+              variant="outlined"
+              placeholder="Enter your contact number"
+              size="small"
+              error={!!errors.mobileNumber}
+            />
+          )}
+        />
+      </Grid>
+    </Grid>
+
+    <Grid container spacing={2}>
+      {/* Company Website */}
+      <Grid item xs={6}>
+        <Controller
+          name="companyWebsite"
+          control={control}
+          defaultValue=""
+          rules={{ required: "Company Website is required" }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Company Website"
+              fullWidth
+              variant="outlined"
+              placeholder="Enter your website URL"
+              size="small"
+              error={!!errors.companyWebsite}
+            />
+          )}
+        />
+      </Grid>
+
+      {/* Company Strength */}
+      <Grid item xs={6}>
+        <Controller
+          name="companyStrength"
+          control={control}
+          defaultValue=""
+          rules={{ required: "Company Strength is required"}}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Company Strength"
+              type="number"
+              fullWidth
+              variant="outlined"
+              placeholder="Number of Employees"
+              size="small"
+              error={!!errors.companyStrength}
+            />
+          )}
+        />
+      </Grid>
+    </Grid>
+
+    {/* Error Message */}
+    {errors && (
+      <Typography color="error" variant="body2">
+        {Object.values(errors).map((err: any) => (
+          <div key={err.message}>{err.message}</div>
+        ))}
+      </Typography>
+    )}
+     {/* <Button
         type="submit"
         fullWidth
         variant="contained"
@@ -184,7 +211,7 @@ const CompanyInfo = () => {
       >
         Submit
       </Button> */}
-    </form>
+  </form>
   );
 };
 

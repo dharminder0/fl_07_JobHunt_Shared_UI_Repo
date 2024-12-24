@@ -30,7 +30,7 @@ const FileUploadBox = ({ title = "", fileSize = "", iconType=""  }) => {
       >
         <label
           htmlFor="file-upload"
-          className="w-full max-w-md p-3 text-center border border-dashed border-gray-500 rounded-lg cursor-pointer hover:bg-blue-50"
+          className="w-full p-3 text-center border border-dashed border-gray-500 rounded-lg cursor-pointer hover:bg-blue-50"
         >
           <div className="flex flex-col items-center justify-center">
             {/* Icon */}

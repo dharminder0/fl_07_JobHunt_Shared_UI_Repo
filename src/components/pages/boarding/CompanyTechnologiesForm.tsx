@@ -11,7 +11,9 @@ import {
   TextField,
   Checkbox,
   ListItemText,
+  OutlinedInput,
 } from "@mui/material";
+import MenuDrpDwn from "../../../components/shared/MenuDrpDwn";
 
 const technologies = {
   web: [
@@ -104,26 +106,27 @@ const CompanyTechnologiesForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-lg m-auto p-6 bg-white rounded-lg shadow-md h-auto"
+      className="w-full max-w-lg m-auto p-6 bg-white rounded-lg h-auto"
     >
-      <Typography variant="h5" className="font-bold mb-4">
+      {/* <Typography variant="h5" className="font-bold mb-4">
         Technical Expertise
-      </Typography>
+      </Typography> */}
 
       {/* Web Technologies */}
-      <FormControl fullWidth margin="normal" required>
+      <FormControl size="small" fullWidth margin="normal" required>
         <InputLabel id="web-tech-label">Web Technologies</InputLabel>
         <Select
           labelId="web-tech-label"
           multiple
           value={webTech}
           onChange={(e) => setWebTech(e.target.value as string[])}
+          input={<OutlinedInput label="Web Technologies" />}
           renderValue={(selected) => selected.join(", ")}
         >
           {technologies.web.map((tech) => (
             <MenuItem key={tech} value={tech}>
-              <Checkbox checked={webTech.indexOf(tech) > -1} />
-              <ListItemText primary={tech} />
+              <Checkbox  size="small" checked={webTech.indexOf(tech) > -1} />
+              <ListItemText primary={tech} classes={{primary:'!text-base'}} />
             </MenuItem>
           ))}
         </Select>
@@ -139,19 +142,20 @@ const CompanyTechnologiesForm = () => {
       </FormControl>
 
       {/* App Technologies */}
-      <FormControl fullWidth margin="normal" required>
+      <FormControl size="small" fullWidth margin="normal" required>
         <InputLabel id="app-tech-label">App Technologies</InputLabel>
         <Select
           labelId="app-tech-label"
           multiple
           value={appTech}
+          input={<OutlinedInput label="App Technologies" />}
           onChange={(e) => setAppTech(e.target.value as string[])}
-          renderValue={(selected) => selected.join(", ")}
+          renderValue={(selected) => selected.join(", ")}       
         >
           {technologies.app.map((tech) => (
             <MenuItem key={tech} value={tech}>
-              <Checkbox checked={appTech.indexOf(tech) > -1} />
-              <ListItemText primary={tech} />
+              <Checkbox  size="small" checked={appTech.indexOf(tech) > -1} />
+              <ListItemText primary={tech} classes={{primary:'!text-base'}} />
             </MenuItem>
           ))}
         </Select>
@@ -167,19 +171,20 @@ const CompanyTechnologiesForm = () => {
       </FormControl>
 
       {/* Other Technologies */}
-      <FormControl fullWidth margin="normal" required>
+      <FormControl size="small" fullWidth margin="normal" required>
         <InputLabel id="other-tech-label">Other Technologies</InputLabel>
         <Select
           labelId="other-tech-label"
           multiple
           value={otherTech}
+          input={<OutlinedInput label="Other Technologies" />}
           onChange={(e) => setOtherTech(e.target.value as string[])}
           renderValue={(selected) => selected.join(", ")}
         >
           {technologies.other.map((tech) => (
             <MenuItem key={tech} value={tech}>
-              <Checkbox checked={otherTech.indexOf(tech) > -1} />
-              <ListItemText primary={tech} />
+              <Checkbox size="small" checked={otherTech.indexOf(tech) > -1} />
+              <ListItemText primary={tech} classes={{primary:'!text-base'}}/>
             </MenuItem>
           ))}
         </Select>
@@ -216,3 +221,4 @@ const CompanyTechnologiesForm = () => {
 };
 
 export default CompanyTechnologiesForm;
+
