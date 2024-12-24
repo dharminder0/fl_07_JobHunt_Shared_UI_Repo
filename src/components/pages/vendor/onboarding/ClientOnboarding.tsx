@@ -1,4 +1,4 @@
-import { Link, Tab, Tabs } from "@mui/material";
+import { Link, Tab, Tabs, Tooltip } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
@@ -15,7 +15,7 @@ const invitedData = [
   {
     id: 2,
     name: "Netcracker Technology",
-    description:  "Take control of your money. Truebill develops a mobile app for you business...",
+    description: "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "10-50", "App Tech"],
     place: "Delhi(NCR)",
     contracts: "Declined",
@@ -36,7 +36,7 @@ const RequestedData = [
   {
     id: 4,
     name: "GirnarSoft",
-    description:  "Square builds common business tools in unconventional ways and used best technologies...",
+    description: "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
     place: "Mumbai",
     contracts: "Pending Approval",
@@ -45,7 +45,7 @@ const RequestedData = [
   {
     id: 5,
     name: "RAMTeCH Software Solutions",
-    description:  "Take control of your money. Truebill develops a mobile app for you business...",
+    description: "Take control of your money. Truebill develops a mobile app for you business...",
     tags: ["Onsite", "100-500", "Other Tech"],
     place: "Pune",
     contracts: "Approved",
@@ -85,7 +85,7 @@ export default function ClientOnboarding() {
                   sm={6}
                   md={3}
                   key={idx}
-                  // onClick={() => handleDetails(company.id)}
+                // onClick={() => handleDetails(company.id)}
                 >
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
@@ -100,8 +100,10 @@ export default function ClientOnboarding() {
                         style={{ width: 50, height: 50 }}
                       />
                       <div>
-                        <p className="text-title font-bold">{company.name}</p>
-                        <p className="text-base">{company.place}</p>
+                        <Tooltip title={company.name} arrow>
+                          <p className="text-title line-clamp-1 font-bold">{company.name}</p>
+                        </Tooltip>
+                        <p className="text-base line-clamp-1">{company.place}</p>
                         {company.contracts && (
                           <Link href="#" underline="none" fontSize={12}>
                             {company.contracts}
@@ -109,7 +111,9 @@ export default function ClientOnboarding() {
                         )}
                       </div>
                     </div>
-                    <p className="text-base">{company.description}</p>
+                    <Tooltip title={company.description} arrow>
+                      <p className="text-base line-clamp-2">{company.description}</p>
+                    </Tooltip>
                     <div className="flex flex-wrap mt-2">
                       {company.tags.map((tag, idx) => (
                         <Chip
@@ -140,7 +144,7 @@ export default function ClientOnboarding() {
                   sm={6}
                   md={3}
                   key={idx}
-                  // onClick={() => handleDetails(company.id)}
+                // onClick={() => handleDetails(company.id)}
                 >
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
@@ -155,8 +159,10 @@ export default function ClientOnboarding() {
                         style={{ width: 50, height: 50 }}
                       />
                       <div>
-                        <p className="text-title font-bold">{company.name}</p>
-                        <p className="text-base">{company.place}</p>
+                        <Tooltip title={company.name} arrow>
+                          <p className="text-title font-bold line-clamp-1" >{company.name}</p>
+                        </Tooltip>
+                        <p className="text-base line-clamp-1">{company.place}</p>
                         {company.contracts && (
                           <Link href="#" underline="none" fontSize={12}>
                             {company.contracts}
@@ -164,7 +170,11 @@ export default function ClientOnboarding() {
                         )}
                       </div>
                     </div>
-                    <p className="text-base">{company.description}</p>
+                    <Tooltip title={company.description} arrow>
+                      <p className="text-base line-clamp-2">{company.description}
+                        
+                      </p>
+                    </Tooltip>
                     <div className="flex flex-wrap mt-2">
                       {company.tags.map((tag, idx) => (
                         <Chip

@@ -105,7 +105,6 @@ const RequirementDetails = () => {
   const location = useLocation();
   const params = location.state || {};
   const [activeTab, setActiveTab] = useState(0);
-  const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);

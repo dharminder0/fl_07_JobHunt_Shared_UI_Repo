@@ -1,8 +1,8 @@
-import { Link, Tab, Tabs } from "@mui/material";
+import { Link, Tab, Tabs, Tooltip } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
-const invitedData = [ 
+const invitedData = [
   {
     id: 2,
     name: "Taazaa",
@@ -15,7 +15,7 @@ const invitedData = [
   {
     id: 2,
     name: "Taksh It Solutionsns",
-    description:  "Square builds common business tools in unconventional ways and used best technologies...",
+    description: "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "50-200", "QA Testing"],
     place: "Noida",
     contracts: "Declined",
@@ -33,7 +33,7 @@ const invitedData = [
 
 ];
 
-const requestedData = [ 
+const requestedData = [
   {
     id: 1,
     name: "Topcubit",
@@ -46,7 +46,7 @@ const requestedData = [
   {
     id: 2,
     name: "Vidyatech Solution",
-    description:  "Stripe is a software platform for starting and running internet businesses.",
+    description: "Stripe is a software platform for starting and running internet businesses.",
     tags: ["Onsite", "50-100", "Other Tech"],
     place: "Noida",
     contracts: "Pending Agreements",
@@ -102,8 +102,10 @@ export default function VendorOnboarding() {
                         style={{ width: 50, height: 50 }}
                       />
                       <div>
-                        <p className="text-title font-bold">{company.name}</p>
-                        <p className="text-base">{company.place}</p>
+                        <Tooltip title={company.name} arrow>
+                          <p className="text-title font-bold line-clamp-1" >{company.name}</p>
+                        </Tooltip>
+                        <p className="text-base line-clamp-1">{company.place}</p>
                         {company.contracts && (
                           <Link href="#" underline="none" fontSize={12}>
                             {company.contracts}
@@ -111,7 +113,9 @@ export default function VendorOnboarding() {
                         )}
                       </div>
                     </div>
-                    <p className="text-base">{company.description}</p>
+                    <Tooltip title={company.description} arrow>
+                      <p className="text-base line-clamp-2">{company.description}</p>
+                    </Tooltip>
                     <div className="flex flex-wrap mt-2">
                       {company.tags.map((tag, idx) => (
                         // <Typography
@@ -166,8 +170,10 @@ export default function VendorOnboarding() {
                         style={{ width: 50, height: 50 }}
                       />
                       <div>
-                        <p className="text-title font-bold">{company.name}</p>
-                        <p className="text-base">{company.place}</p>
+                      <Tooltip title={company.name} arrow>
+                        <p className="text-title font-bold line-clamp-1" >{company.name}</p>                            
+                          </Tooltip>
+                        <p className="text-base line-clamp-1">{company.place}</p>
                         {company.contracts && (
                           <Link href="#" underline="none" fontSize={12}>
                             {company.contracts}
@@ -175,7 +181,9 @@ export default function VendorOnboarding() {
                         )}
                       </div>
                     </div>
-                    <p className="text-base">{company.description}</p>
+                    <Tooltip title={company.description} arrow>
+                  <p className="text-base line-clamp-2">{company.description}</p>
+                  </Tooltip>
                     <div className="flex flex-wrap mt-2">
                       {company.tags.map((tag, idx) => (
                         // <Typography

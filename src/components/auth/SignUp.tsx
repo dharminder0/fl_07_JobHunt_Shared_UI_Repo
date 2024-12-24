@@ -137,20 +137,30 @@ export default function SignUp() {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title" className="!text-heading">
-              {"Registration sucessful"}
-            </DialogTitle>
+            {/* <DialogTitle id="alert-dialog-title" className="!text-heading">
+              {"Registration Successful!"}
+            </DialogTitle> */}
             <DialogContent>
-              <DialogContentText
-                id="alert-dialog-description"
-                className="!text-base"
-              >
-                Please check you given email({email}) to onboard you
-                company/vendor and activate your account.
+              <DialogContentText id="alert-dialog-description" className="!text-base">
+                <div className="flex flex-col gap-4 ">
+                  <div className="flex text-heading font-bold justify-center">
+                    Registration Successful!
+                  </div>
+                  <div className="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 84 84" fill="none">
+                      <path d="M29 33.3337L43.118 43.9243C43.9927 44.5803 45.0829 44.8814 46.1703 44.7673C47.2576 44.6532 48.2616 44.1323 48.981 43.309L76.6667 11.667" stroke="#3CCE4B" stroke-width="5" stroke-linecap="round" />
+                      <path d="M81 42.0003C81.0002 50.1492 78.4477 58.0935 73.7012 64.7174C68.9547 71.3413 62.2525 76.312 54.536 78.9313C46.8195 81.5507 38.4763 81.6871 30.6783 79.3215C22.8803 76.9558 16.0192 72.207 11.0586 65.7418C6.098 59.2767 3.28715 51.4201 3.02084 43.2755C2.75453 35.1309 5.04612 27.1075 9.57377 20.3321C14.1014 13.5568 20.6377 8.36982 28.2645 5.49981C35.8913 2.62981 44.2256 2.22093 52.0967 4.33061" stroke="#3CCE4B" stroke-width="5" stroke-linecap="round" />
+                    </svg>
+                  </div>
+                  <div >
+                    You're almost there. Please check your email ({email}) inbox for a verification link to complete your registration.
+                    Make sure to verify your email to access all features of the platform.
+                  </div>
+                </div>
               </DialogContentText>
-              <DialogActions className="!mt-4">
+              <DialogActions>
                 <Button onClick={handleClose} variant="outlined" autoFocus>
-                  Continue
+                  Got it
                 </Button>
               </DialogActions>
             </DialogContent>

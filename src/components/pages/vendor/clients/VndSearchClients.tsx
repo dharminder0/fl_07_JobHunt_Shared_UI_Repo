@@ -10,6 +10,7 @@ import {
   Box,
   InputAdornment,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -78,7 +79,7 @@ const companies = [
     id: 8,
     name: "Foray Software",
     description:  "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Hybrid", "10-50", "DevOps"],
+    tags: ["Hybrid", "10-50", "Mobile App Development"],
     place: "Gurgaon",
     logo: "https://www.foraysoft.com/assets/images/favicon.png",
   },
@@ -332,11 +333,15 @@ const VndSearchClients = () => {
                       style={{ width: 50, height: 50 }}
                     />
                     <div>
-                      <p className="text-title font-bold">{company.name}</p>
-                      <p className="text-base">{company.place}</p>
+                      <Tooltip title={company.name} arrow>
+                        <p className="text-title line-clamp-1 font-bold">{company.name}</p>
+                      </Tooltip>
+                      <p className="line-clamp-1 text-base">{company.place}</p>
                     </div>
                   </div>
+                  <Tooltip title={company.description} arrow>
                   <p className="text-base line-clamp-2">{company.description}</p>
+                  </Tooltip>
                   <div className="flex flex-wrap mt-2">
                     {company.tags.map((tag:string, idx:any) => (
                       <Chip
