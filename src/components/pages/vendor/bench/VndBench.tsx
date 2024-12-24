@@ -1,19 +1,9 @@
 import {
   AccountCircleOutlined,
-  Add,
-  FilterList,
   LocationOn,
-  Search,
   WorkHistory,
 } from "@mui/icons-material";
-import {
-  Button,
-  Box,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Drawer,
-} from "@mui/material";
+import { TextField, InputAdornment, IconButton, Drawer } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBenchForm from "./AddBenchForm";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
@@ -22,6 +12,7 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import AddAIBench from "./AddAIBench";
 import BenchPreview from "./BenchPreview";
+import VndRequirements from "../requirements/VndRequirements";
 // interface VndBench {}
 
 const benchData = [
@@ -34,6 +25,7 @@ const benchData = [
     location: "Noida",
     availability: "Immediate",
     aiScore: 78,
+    matchingJobs: 2,
   },
   {
     id: 2,
@@ -44,6 +36,7 @@ const benchData = [
     location: "Hyderabad",
     availability: "Immediate",
     aiScore: 80,
+    matchingJobs: 3,
   },
   {
     id: 3,
@@ -54,6 +47,7 @@ const benchData = [
     location: "Noida",
     availability: "Immediate",
     aiScore: 75,
+    matchingJobs: 1,
   },
   {
     id: 4,
@@ -64,14 +58,20 @@ const benchData = [
     location: "Hyderabad",
     availability: "Immediate",
     aiScore: 60,
+    matchingJobs: 0,
   },
 ];
 
-const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
+const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
   const [search, setSearch] = useState("");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerObj, setDrawerObj] = useState({
+    type: "bench",
+    isOpen: false,
+    data: {},
+    status: "Open",
+  });
   const [filterList, setFilterList] = useState<any>({
     availability: ["Immediate"],
     roles: [
@@ -113,6 +113,15 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
     setMatchingScore(score);
   };
 
+  const handleDrawer = (useFor: string, isOpen: boolean, obj: object) => {
+    setDrawerObj((prev) => ({
+      ...prev,
+      type: useFor,
+      isOpen: isOpen,
+      data: obj,
+    }));
+  };
+
   const toggleDrawer = (open: any) => (event: any) => {
     if (
       event.type === "keydown" &&
@@ -120,18 +129,35 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
     ) {
       return;
     }
-    setDrawerOpen(open);
+    setDrawerObj((prev) => ({ ...prev, isOpen: open }));
   };
 
   return (
     <>
-      {isDrawer && (
+      {drawerData?.isOpen && (
         <div className="border-b p-4">
           <h5 className="text-heading">Apply</h5>
         </div>
       )}
       <div className="px-4 py-3 h-full">
-        <div className="flex flex-row gap-1 justify-end mb-1">
+        <div className="flex flex-row gap-1 justify-between items-center mb-1">
+          <div>
+            {drawerData?.isOpen && (
+              <div>
+                <p className="text-title">{drawerData?.dataObj.role}</p>
+                <div className="flex items-center text-info">
+                  <img
+                    src={drawerData?.dataObj.clientLogo}
+                    style={{ height: 12, width: 12 }}
+                    className="me-1"
+                  />
+                  <p className="text-base text-secondary-text">
+                    {drawerData?.dataObj.client}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
               <div className="flex grow w-[220px] mr-2">
@@ -146,7 +172,7 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                         searchValue: event.target.value,
                       })
                     }
-                    placeholder="Search Vendors"
+                    placeholder="Search Resources"
                     slotProps={{
                       input: {
                         startAdornment: (
@@ -184,9 +210,9 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
             <IconButton aria-label="filter">
               <FilterListOutlinedIcon />
             </IconButton>
+            {!drawerData?.isOpen && <AddBenchForm />}
+            {!drawerData?.isOpen && <AddAIBench />}
           </div>
-          {!isDrawer && <AddBenchForm />}
-          {!isDrawer && <AddAIBench />}
         </div>
         <div className="table-body">
           <table>
@@ -195,8 +221,6 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                 <th className="add-right-shadow">Resource name</th>
                 <th>Role</th>
                 <th>Skill Set</th>
-                {/* <th>Experience</th>
-                <th>Location</th> */}
                 <th>Availability</th>
               </tr>
             </thead>
@@ -212,7 +236,7 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                       <div className="ms-2 w-[100%]">
                         <div className="flex items-center justify-between text-base">
                           <div
-                            onClick={() => setDrawerOpen(true)}
+                            onClick={() => handleDrawer("bench", true, {})}
                             className="cursor-pointer hover:text-indigo-700"
                           >
                             {item.resource}
@@ -228,7 +252,21 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                               <LocationOn fontSize="inherit" /> {item.location}
                             </p>
                           </div>
-                          {isDrawer && (
+                          {!drawerData?.isOpen && (
+                            <div
+                              className="flex justify-end cursor-pointer hover:text-indigo-700"
+                              onClick={() =>
+                                handleDrawer("requirement", true, {
+                                  resource: item.resource,
+                                  experience: item.experience,
+                                  location: item.location,
+                                })
+                              }
+                            >
+                              {item.matchingJobs} Matching positions
+                            </div>
+                          )}
+                          {drawerData?.isOpen && (
                             <div
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
                               onClick={() => handleMatchingDialog(item.aiScore)}
@@ -268,8 +306,6 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
                   </th>
                   <td>{item.role}</td>
                   <td>{item.skills}</td>
-                  {/* <td>{item.experience}</td>
-                  <td>{item.location}</td> */}
                   <td>{item.availability}</td>
                 </tr>
               ))}
@@ -277,7 +313,7 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
           </table>
         </div>
 
-        {isDrawer && (
+        {drawerData?.isOpen && (
           <MatchingSkillsDialog
             title="Matching Score Analysis"
             isMatchOpen={isMatchOpen}
@@ -286,13 +322,26 @@ const VndBench: React.FC<{ isDrawer?: boolean }> = ({ isDrawer = false }) => {
           />
         )}
 
-        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <Drawer
+          anchor="right"
+          open={drawerObj.isOpen}
+          onClose={toggleDrawer(false)}
+        >
           <div className="w-[calc(100vw-250px)] h-full">
             {/* header */}
             <div className="px-4 py-2 border-b">
-              <h2 className="text-heading">Bench Resource Preview</h2>
+              <h2 className="text-heading">
+                {drawerObj.type === "bench"
+                  ? "Bench Resource Preview"
+                  : "Matching Positions"}
+              </h2>
             </div>
-            <BenchPreview />
+            {drawerObj.type === "bench" && <BenchPreview />}
+            {drawerObj.type === "requirement" && (
+              <div className="px-4">
+                <VndRequirements benchDrawerData={drawerObj} />
+              </div>
+            )}
           </div>
         </Drawer>
       </div>
