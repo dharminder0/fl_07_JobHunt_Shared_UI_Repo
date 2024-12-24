@@ -200,7 +200,7 @@ const RequirementForm = () => {
           </div>
 
           <div className="w-full overflow-auto h-[calc(100%-90px)]">
-            <div className="p-4 md:w-[95%] lg:w-[80%] xl:w-[55%] mx-auto ">
+            <div className="p-4 md:w-[95%] lg:w-[95%] xl:w-[70%] mx-auto ">
               {/* Stepper */}
               <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
@@ -251,27 +251,6 @@ const RequirementForm = () => {
               {activeStep === 1 &&
                 (!isLoader ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    {/* <div className="col-span-2 flex items-center gap-4">
-                  <label className="text-base">Post Type:</label>
-                  <RadioGroup
-                    row
-                    name="postType"
-                    value={formData.postType}
-                    onChange={handleChange}
-                  >
-                    <FormControlLabel
-                      value="single"
-                      control={<Radio size="small" />}
-                      label="Single"
-                    />
-                    <FormControlLabel
-                      value="multiple"
-                      control={<Radio size="small" />}
-                      label="Multiple"
-                    />
-                  </RadioGroup>
-                </div> */}
-
                     {/* Conditional Rendering */}
                     {formData.postType === "single" ? (
                       <>
@@ -476,7 +455,7 @@ const RequirementForm = () => {
                                           fontSize="inherit"
                                           className="text-indigo-600 mr-1"
                                         />
-                                        Candidate: {company.candidate}
+                                        Matching Candidate: {company.candidate}
                                       </span>
 
                                       <div
@@ -567,7 +546,7 @@ const RequirementForm = () => {
                                           fontSize="inherit"
                                           className="text-indigo-600 mr-1"
                                         />
-                                        Candidate: {company.candidate}
+                                        Matching Candidate: {company.candidate}
                                       </span>
 
                                       <div
