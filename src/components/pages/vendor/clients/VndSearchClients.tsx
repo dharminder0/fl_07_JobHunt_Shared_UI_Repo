@@ -334,7 +334,7 @@ const VndSearchClients = () => {
                     />
                     <div>
                       <Tooltip title={company.name} arrow>
-                        <p className="text-title line-clamp-2 font-bold">{company.name}</p>
+                        <p className="text-title line-clamp-1 font-bold">{company.name}</p>
                       </Tooltip>
                       <p className="line-clamp-1 text-base">{company.place}</p>
                     </div>

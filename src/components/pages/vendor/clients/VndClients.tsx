@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Chip, Tabs, Tab, Box, InputAdornment, IconButton } from "@mui/material";
+import { TextField, Button, Chip, Tabs, Tab, Box, InputAdornment, IconButton, Tooltip } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -19,7 +19,7 @@ const activieClients = [
   {
     id: 2,
     name: "KPIT Technologiess",
-    description:"Fully integrated technology & services that power the world’s best brands today and into the future.",
+    description: "Fully integrated technology & services that power the world’s best brands today and into the future.",
     tags: ["Onsite", "10-50", "App Tech"],
     place: "Delhi(NCR)",
     contracts: "10",
@@ -40,7 +40,7 @@ const archivedClients = [
   {
     id: 4,
     name: "Fidelity Information Services",
-    description:"Square builds common business tools in unconventional ways and used best technologies...",
+    description: "Square builds common business tools in unconventional ways and used best technologies...",
     tags: ["Onsite", "0-10", "App Tech"],
     place: "Mumbai",
     contracts: "16",
@@ -71,20 +71,20 @@ const VndClients = () => {
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
   });
-  
+
 
   const [tabValue, setTabValue] = React.useState("Active");
-   useEffect(() => {
-      const activeTabData = tabValue === 'Active' ? activieClients : archivedClients;
-      const filtered = activeTabData.filter((item) => {
-        const searchMatch =
-          !searchFilter.searchValue ||
-          item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
-        return searchMatch;
-      });
-  
-      tabValue === 'Active' ? setactivefilterData(filtered) : setarchivedfilterData(filtered);
-    }, [searchFilter, tabValue]);
+  useEffect(() => {
+    const activeTabData = tabValue === 'Active' ? activieClients : archivedClients;
+    const filtered = activeTabData.filter((item) => {
+      const searchMatch =
+        !searchFilter.searchValue ||
+        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
+      return searchMatch;
+    });
+
+    tabValue === 'Active' ? setactivefilterData(filtered) : setarchivedfilterData(filtered);
+  }, [searchFilter, tabValue]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -153,9 +153,9 @@ const VndClients = () => {
                 </div>
               </div>
             </div>
-              <IconButton aria-label='filter'>
-                <FilterListOutlinedIcon />
-              </IconButton>
+            <IconButton aria-label='filter'>
+              <FilterListOutlinedIcon />
+            </IconButton>
           </div>
         </div>
       </div>
@@ -185,8 +185,10 @@ const VndClients = () => {
                           style={{ width: 50, height: 50 }}
                         />
                         <div>
-                          <p className="text-title font-bold">{company.name}</p>
-                          <p className="text-base">{company.place}</p>
+                          <Tooltip title={company.name} arrow>
+                            <p className="text-title font-bold line-clamp-1">{company.name}</p>
+                          </Tooltip>
+                          <p className="text-base line-clamp-1">{company.place}</p>
                           {company.contracts && (
                             <p className="text-base">
                               {company.contracts} Contracts
@@ -194,9 +196,11 @@ const VndClients = () => {
                           )}
                         </div>
                       </div>
-                      <p className="text-base">{company.description}</p>
+                      <Tooltip title={company.description} arrow>
+                        <p className="text-base line-clamp-2">{company.description}</p>
+                      </Tooltip>
                       <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag:string, idx:any) => (
+                        {company.tags.map((tag: string, idx: any) => (
                           <Chip
                             key={idx}
                             label={tag}
@@ -239,8 +243,10 @@ const VndClients = () => {
                           style={{ width: 50, height: 50 }}
                         />
                         <div>
-                          <p className="text-title font-bold">{company.name}</p>
-                          <p className="text-base">{company.place}</p>
+                          <Tooltip title={company.name} arrow>
+                            <p className="text-title font-bold line-clamp-1">{company.name}</p>
+                          </Tooltip>
+                          <p className="text-base line-clamp-1">{company.place}</p>
                           {company.contracts && (
                             <p className="text-base">
                               {company.contracts} Contracts
@@ -248,9 +254,11 @@ const VndClients = () => {
                           )}
                         </div>
                       </div>
-                      <p className="text-base">{company.description}</p>
+                      <Tooltip title={company.description} arrow>
+                        <p className="text-base line-clamp-2">{company.description}</p>
+                      </Tooltip>
                       <div className="flex flex-wrap mt-2">
-                        {company.tags.map((tag:string, idx:any) => (
+                        {company.tags.map((tag: string, idx: any) => (
                           <Chip
                             key={idx}
                             label={tag}

@@ -17,6 +17,7 @@ import {
   Tab,
   Box,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -151,9 +152,9 @@ const MyVendors = () => {
                 </div>
               </div>
             </div>
-              <IconButton aria-label='filter'>
-                <FilterListOutlinedIcon />
-              </IconButton>
+            <IconButton aria-label='filter'>
+              <FilterListOutlinedIcon />
+            </IconButton>
           </div>
         </div>
       </div>
@@ -185,8 +186,10 @@ const MyVendors = () => {
                           style={{ width: 50, height: 50 }}
                         />
                         <div>
-                          <p className="text-title font-bold">{company.name}</p>
-                          <p className="text-base">{company.place}</p>
+                          <Tooltip title={company.name} arrow>
+                            <p className="text-title font-bold line-clamp-1" >{company.name}</p>
+                          </Tooltip>
+                          <p className="text-base line-clamp-1">{company.place}</p>
                           {company.contracts && (
                             <p className="text-base">
                               {company.contracts} Contracts
@@ -194,7 +197,9 @@ const MyVendors = () => {
                           )}
                         </div>
                       </div>
-                      <p className="text-base">{company.description}</p>
+                      <Tooltip title={company.description} arrow>
+                        <p className="text-base line-clamp-2">{company.description}</p>
+                      </Tooltip>
                       <div className="flex flex-wrap mt-2">
                         {company.tags.map((tag: any, idx: any) => (
                           // <Typography
@@ -251,8 +256,10 @@ const MyVendors = () => {
                           style={{ width: 50, height: 50 }}
                         />
                         <div>
-                          <p className="text-title font-bold">{company.name}</p>
-                          <p className="text-base">{company.place}</p>
+                          <Tooltip title={company.name} arrow>
+                            <p className="text-title font-bold line-clamp-1" >{company.name}</p>
+                          </Tooltip>
+                          <p className="text-base line-clamp-1">{company.place}</p>
                           {company.contracts && (
                             <p className="text-base">
                               {company.contracts} Contracts
@@ -260,7 +267,9 @@ const MyVendors = () => {
                           )}
                         </div>
                       </div>
-                      <p className="text-base">{company.description}</p>
+                      <Tooltip title={company.description} arrow>
+                        <p className="text-base line-clamp-2">{company.description}</p>
+                      </Tooltip>
                       <div className="flex flex-wrap mt-2">
                         {company.tags.map((tag: any, idx: any) => (
                           // <Typography
