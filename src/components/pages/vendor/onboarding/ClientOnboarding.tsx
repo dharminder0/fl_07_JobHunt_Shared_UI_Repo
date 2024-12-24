@@ -1,4 +1,4 @@
-import { Link, Tab, Tabs } from "@mui/material";
+import { Link, Tab, Tabs, Tooltip } from "@mui/material";
 import React from "react";
 import { Grid, Chip } from "@mui/material";
 
@@ -100,7 +100,9 @@ export default function ClientOnboarding() {
                         style={{ width: 50, height: 50 }}
                       />
                       <div>
+                      <Tooltip title={company.name} arrow>
                         <p className="text-title font-bold">{company.name}</p>
+                        </Tooltip>
                         <p className="text-base">{company.place}</p>
                         {company.contracts && (
                           <Link href="#" underline="none" fontSize={12}>
@@ -109,7 +111,9 @@ export default function ClientOnboarding() {
                         )}
                       </div>
                     </div>
-                    <p className="text-base">{company.description}</p>
+                    <Tooltip title={company.description} arrow>
+                    <p className="text-base line-clamp-2">{company.description}</p>
+                    </Tooltip>
                     <div className="flex flex-wrap mt-2">
                       {company.tags.map((tag, idx) => (
                         <Chip
@@ -155,7 +159,7 @@ export default function ClientOnboarding() {
                         style={{ width: 50, height: 50 }}
                       />
                       <div>
-                        <p className="text-title font-bold">{company.name}</p>
+                        <p className="text-title font-bold" title={company.name}>{company.name}</p>
                         <p className="text-base">{company.place}</p>
                         {company.contracts && (
                           <Link href="#" underline="none" fontSize={12}>

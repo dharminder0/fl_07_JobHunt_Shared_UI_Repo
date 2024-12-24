@@ -18,6 +18,7 @@ import {
   Box,
   IconButton,
   InputAdornment,
+  Tooltip,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -93,7 +94,7 @@ const companies = [
     name: "GrapeCity India Private ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Hybrid", "10-50", "DevOps"],
+    tags: ["Hybrid", "10-50", "Mobile App Development"],
     place: "Pune",
     logo: "https://static.wixstatic.com/media/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png",
   },
@@ -370,12 +371,16 @@ const MyClients = () => {
                       style={{ width: 50, height: 50 }}
                     />
                     <div>
-                      <p className="text-title font-bold">{company.name}</p>
-                      <p className="text-base">{company.place}</p>
+                    <Tooltip title={company.name} arrow>                        
+                      <p className="text-title line-clamp-2 font-bold">{company.name}</p>
+                      </Tooltip>
+                      <p className="line-clamp-1 text-base">{company.place}</p>
                     </div>
                   </div>
+                  <Tooltip title={company.description} arrow>
                   <p className="text-base line-clamp-2">{company.description}</p>
-                  <div className="flex flex-wrap mt-2">
+                  </Tooltip>
+                  <div className="flex flex-wrap h-16 mt-2">
                     {company.tags.map((tag: string, idx: any) => (
                       <Chip
                         key={idx}
