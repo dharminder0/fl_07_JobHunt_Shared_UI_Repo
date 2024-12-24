@@ -78,7 +78,7 @@ const AddBenchForm = () => {
         onClick={toggleDrawer(true)}
         startIcon={<Add />}
       >
-        Add Bench
+        Import Bench
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
