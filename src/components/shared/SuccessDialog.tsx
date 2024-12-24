@@ -15,6 +15,10 @@ export default function SuccessDialog({
     setIsOpenModal(false);
   };
 
+  setTimeout(() => {
+    handleClose();
+  }, 3000);
+
   return (
     <div>
       <Dialog
@@ -22,26 +26,20 @@ export default function SuccessDialog({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        {/* <DialogTitle id="alert-dialog-title" className="!text-heading">
-            {title}
-          </DialogTitle> */}
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <div className="min-w-[400px] max-w-[600px]">
-              <div className="flex items-center text-title mb-1">
+              <div className="text-title mb-1 text-center">
                 <CheckCircleOutlineOutlined
                   className="text-green-500"
                   fontSize="large"
                 />
-                <p className="text-base ms-1">Success</p>
+                <p className="text-title font-bold mt-4">
+                  Application has been submitted successfully
+                </p>
               </div>
             </div>
           </DialogContentText>
-          <DialogActions className="!mt-4">
-            <Button onClick={handleClose} variant="outlined" autoFocus>
-              Close
-            </Button>
-          </DialogActions>
         </DialogContent>
       </Dialog>
     </div>

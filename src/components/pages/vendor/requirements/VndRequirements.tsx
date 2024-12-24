@@ -66,6 +66,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       contractPeriod: "6 months",
       logo: "https://www.teleperformance.com/css/assets/favicon.ico",
       aiScore: 60,
+      matchingCandidate: 3,
     },
     {
       id: 2,
@@ -80,6 +81,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       contractPeriod: "12 months",
       logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
       aiScore: 70,
+      matchingCandidate: 2,
     },
     {
       id: 3,
@@ -94,6 +96,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       contractPeriod: "3 months",
       logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
       aiScore: 80,
+      matchingCandidate: 1,
     },
     {
       id: 4,
@@ -108,6 +111,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       contractPeriod: "9 months",
       logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
       aiScore: 66,
+      matchingCandidate: 4,
     },
     {
       id: 5,
@@ -122,6 +126,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       contractPeriod: "18 months",
       logo: "https://careers.coforge.com/coforge/favicon.ico",
       aiScore: 75,
+      matchingCandidate: 1,
     },
     {
       id: 5,
@@ -136,6 +141,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       contractPeriod: "18 months",
       logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
       aiScore: 80,
+      matchingCandidate: 2,
     },
   ];
 
@@ -375,7 +381,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             )
                           }
                         >
-                          Apply
+                          {job.matchingCandidate} Matching Candidates
                         </div>
                       </div>
                     </div>
@@ -460,6 +466,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           />
         )}
 
+        {isSuccessPopup && (
+          <SuccessDialog
+            isOpenModal={isSuccessPopup}
+            setIsOpenModal={setIsSuccessPopup}
+          />
+        )}
       </div>
     </>
   );
