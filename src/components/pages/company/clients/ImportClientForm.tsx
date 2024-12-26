@@ -60,7 +60,7 @@ const ImportClientForm = () => {
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         <div className="h-full w-[calc(100vw-250px)]">
           <div className="p-4  py-2  border-b">
-            <h2 className="text-xl">Import</h2>
+            <h2 className="text-heading">Import</h2>
           </div>
           <div className="p-4 w-[50%] overflow-auto h-[calc(100%-95px)] mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
