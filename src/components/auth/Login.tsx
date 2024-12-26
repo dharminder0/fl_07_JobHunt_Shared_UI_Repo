@@ -17,12 +17,6 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const creds: any = {
-    email: "admin@fleek.com",
-    password: "Admin",
-    role: ["company"],
-  };
-
   const credsList: any[] = [
     {
       email: "company@vendorscloud.com",
@@ -41,7 +35,7 @@ export default function Login() {
     {
       email: "both@vendorscloud.com",
       password: "password",
-      role: ["vendor", "company"],
+      role: ["company", "vendor"],
       companyIcon:
         "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
     },
@@ -49,8 +43,9 @@ export default function Login() {
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    if (isLoggedIn) {
-      navigate("/dashboard");
+    const role = JSON.parse(localStorage.getItem("role") || "[]");
+    if (role?.length > 0 && isLoggedIn) {
+      navigate(`/${role[0]}`);
     }
   }, []);
 
@@ -137,7 +132,7 @@ export default function Login() {
             />
           </div> */}
           <div>
-             <Slider />
+            <Slider />
           </div>
         </div>
 
