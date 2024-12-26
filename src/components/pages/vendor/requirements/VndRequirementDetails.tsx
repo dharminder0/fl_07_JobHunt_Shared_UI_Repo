@@ -167,7 +167,7 @@ const VndRequirementDetails = () => {
     <div className="flex">
       {/* Header */}
 
-      <div className="w-[70%]  p-3">
+      <div className="w-[70%] min-h-screen p-3">
         <Box className="flex justify-between items-center">
           <div className="flex flex-row gap-3">
             <IconButton
@@ -186,7 +186,7 @@ const VndRequirementDetails = () => {
                 <div className="group/edit invisible group-hover/item:visible">
                   <span className="group-hover/edit:text-gray-700 ">
                     <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                      <Edit fontSize="inherit" />
+                      <Edit fontSize="small" />
                     </IconButton>
                   </span>
                 </div>

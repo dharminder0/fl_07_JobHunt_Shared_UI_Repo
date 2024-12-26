@@ -241,7 +241,7 @@ const RequirementDetails = () => {
 
   return (
     <div className="flex flex-1">
-      <div className="w-[70%] p-3 border-e">
+      <div className="w-[70%] p-3 border-e min-h-screen">
         {/* Header */}
         <Box className="flex justify-between items-center">
           <div className="flex flex-row gap-3">
@@ -261,7 +261,7 @@ const RequirementDetails = () => {
                 <div className="group/edit invisible group-hover/item:visible">
                   <span className="group-hover/edit:text-gray-700 ">
                     <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                      <Edit fontSize="inherit" />
+                      <Edit fontSize="small" />
                     </IconButton>
                   </span>
                 </div>
