@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { BarChart, LineChart, PieChart } from "@mui/x-charts";
 import { fontSize, style } from "@mui/system";
 
-const JobStatistics = () => {
+const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -40,6 +40,7 @@ const JobStatistics = () => {
   return (
     <Box className="flex-1 flex justify-between">
       <div className="border p-3 rounded-md w-[33%]">
+        {lineTitle && <div className="text-title">{lineTitle}</div>}
         <Box className="flex-1">
           <LineChart
             xAxis={[
@@ -70,25 +71,7 @@ const JobStatistics = () => {
         </Box>
       </div>
       <div className="w-[33%] border p-3 rounded-md">
-        {/* <BarChart
-          xAxis={[
-            {
-              data: requirementData.map((item) => item.owner),
-              label: "Owners",
-              scaleType: "band", // Set the x-axis type to "band",
-              labelStyle: { fontSize: 12 },
-              tickLabelStyle: { fontSize: 10 },
-            },
-          ]}
-          series={[
-            {
-              data: requirementData.map((item) => item.count),
-              label: "Workload",
-              color: "#007FFF", // Tailwind's yellow-500
-            },
-          ]}
-          height={300}
-        /> */}
+        {barTitle && <div className="text-title">{barTitle}</div>}
         <BarChart
           xAxis={[
             {
@@ -116,17 +99,9 @@ const JobStatistics = () => {
             labelStyle: { fontSize: 12 }, // Font size for the series labels
           }}
         />
-        {/* <LineChart
-          xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-          series={[
-            {
-              data: [2, 5.5, 2, 8.5, 1.5, 5],
-            },
-          ]}
-          height={300}
-        /> */}
       </div>
       <div className="w-[33%] border p-3 rounded-md">
+        {pieTitle && <div className="text-title">{pieTitle}</div>}
         <PieChart
           series={[
             {

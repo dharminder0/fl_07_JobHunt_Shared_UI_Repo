@@ -167,7 +167,11 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
         </div>
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
-          <JobStatistics />
+          <JobStatistics
+            lineTitle="Requirements"
+            barTitle="Requirements"
+            pieTitle="Requirements"
+          />
         </div>
         <div className="flex space-x-3">
           <Box className="gap-6 w-[33%]">

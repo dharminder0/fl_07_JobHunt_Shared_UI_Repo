@@ -200,7 +200,11 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
       <div className="flex-1 px-4 pb-4">
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
-          <JobStatistics />
+          <JobStatistics
+            lineTitle="Requirements"
+            barTitle="Requirements"
+            pieTitle="Requirements"
+          />
         </div>
         <div className="flex justify-between">
           <Box className="gap-6 w-[33%]">
