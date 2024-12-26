@@ -58,26 +58,30 @@ const ImportClientForm = () => {
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div style={{ width: "calc(100vw - 250px)" }}>
-          <div className="p-4 border-b">
+        <div className="h-full w-[calc(100vw-250px)]">
+          <div className="p-4  py-2  border-b">
             <h2 className="text-xl">Import</h2>
           </div>
-          <div className="p-4 w-[50%] mx-auto">
+          <div className="p-4 w-[50%] overflow-auto h-[calc(100%-95px)] mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="p-4">
                 <div className="space-y-4">
                   <label className="block text-title">Import the file</label>
-                  <FileUploadBox title="upload file"  iconType="file" />
-                  
-                  {/* Submit Button */}
-                  <div className="flex">
-                    <Button type="submit" variant="contained" color="primary">
-                      Submit
-                    </Button>
-                  </div>
+                  <FileUploadBox title="upload file" iconType="file" />
+
+
                 </div>
               </div>
             </form>
+          </div>
+          <div className="px-4 py-2 border-t">
+            <div className="flex justify-end">
+              <Button variant="contained" color="primary" onClick={handleSubmit}
+                sx={{ width: 125 }}
+              >
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
       </Drawer>

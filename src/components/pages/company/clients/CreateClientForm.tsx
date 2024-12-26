@@ -96,11 +96,11 @@ const CreateClientForm = () => {
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div style={{ width: "calc(100vw - 250px)" }}>
-          <div className="p-4 border-b">
+        <div className="h-full w-[calc(100vw-250px)]">
+          <div className="p-4  py-2  border-b">
             <h2 className="text-xl">Add new client</h2>
           </div>
-          <div className="p-4 w-[50%] mx-auto">
+          <div className="p-4 w-[50%] overflow-auto h-[calc(100%-95px)] mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="p-4">
                 <div className="space-y-4">
@@ -188,18 +188,21 @@ const CreateClientForm = () => {
                   </div>
                   {/* Logo Upload */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                    <FileUploadBox title="upload logo" fileSize="500 x 500" iconType="image"/>
-                    <FileUploadBox title="upload favicon"  fileSize="200 x 200" iconType="image" />
+                    <FileUploadBox title="upload logo" fileSize="500 x 500" iconType="image" />
+                    <FileUploadBox title="upload favicon" fileSize="200 x 200" iconType="image" />
                   </div>
-                  {/* Submit Button */}
-                  <div className="flex justify-end">
-                    <Button type="submit" variant="contained" color="primary">
-                      Submit
-                    </Button>
-                  </div>
+
                 </div>
               </div>
             </form>
+          </div>
+          {/* Submit Button */}
+          <div className="px-4 py-2 border-t">
+            <div className="flex justify-end">
+              <Button variant="contained" color="primary" sx={{ width: 125 }} >
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
       </Drawer>
