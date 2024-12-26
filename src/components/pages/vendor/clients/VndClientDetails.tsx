@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
-import { Typography, Grid, Box, Tabs, Tab, Chip, Link, IconButton } from "@mui/material";
+import { Typography, Grid, Box, Tabs, Tab, Chip, Link, IconButton, Tooltip } from "@mui/material";
 import {
+  AccessTimeOutlined,
   Language,
+  LocationOn,
   LocationOnOutlined,
   MailOutline,
   Phone,
   PictureAsPdf,
+  WorkHistory,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -27,7 +30,7 @@ const VndClientDetails = () => {
     if (type) {
       !type ? setValue("activeView") : setValue(type);
     }
-  }, [type,location.state]);
+  }, [type, location.state]);
 
   const activeContracts = [
     {
@@ -280,7 +283,6 @@ const VndClientDetails = () => {
                     <thead>
                       <tr>
                         <th className="add-right-shadow">Title</th>
-                        <th>Client</th>
                         <th>Start Date</th>
                         <th>Resource</th>
                       </tr>
@@ -288,17 +290,25 @@ const VndClientDetails = () => {
                     <tbody>
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
-                          <th className="add-right-shadow">{item.title}</th>
-                          <td className="wide-250">
-                            <div className="flex">
-                              <img
-                                src={item.logo}
-                                style={{ height: 16, width: 16 }}
-                                className="me-1"
-                              />
-                              {item.client}
+                          {/* <th className="add-right-shadow">{item.title}</th> */}
+                          <th className="add-right-shadow">
+                            {item.title}
+                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                              >
+                                <img
+                                  src={item.logo}
+                                  style={{ height: 12, width: 12 }}
+                                  className="me-1"
+                                />
+                                <Tooltip title={item.client} arrow>
+                                  <span className="text-ellipsis overflow-hidden truncate">
+                                    {item.client}
+                                  </span>
+                                </Tooltip>
+                              </div>
                             </div>
-                          </td>
+                          </th>
                           <td>{item.startDate}</td>
                           <td>{item.resource}</td>
                         </tr>
@@ -313,7 +323,7 @@ const VndClientDetails = () => {
                     <thead>
                       <tr>
                         <th className="add-right-shadow">Title</th>
-                        <th>Client</th>
+                        {/* <th>Client</th> */}
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Resource</th>
@@ -322,8 +332,25 @@ const VndClientDetails = () => {
                     <tbody>
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
-                          <th className="add-right-shadow">{item.title}</th>
-                          <td className="wide-250">
+                          <th className="add-right-shadow">
+                            {item.title}
+                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                              >
+                                <img
+                                  src={item.logo}
+                                  style={{ height: 12, width: 12 }}
+                                  className="me-1"
+                                />
+                                <Tooltip title={item.client} arrow>
+                                  <span className="text-ellipsis overflow-hidden truncate">
+                                    {item.client}
+                                  </span>
+                                </Tooltip>
+                              </div>
+                            </div>
+                          </th>
+                          {/* <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={item.logo}
@@ -332,7 +359,7 @@ const VndClientDetails = () => {
                               />
                               {item.client}
                             </div>
-                          </td>
+                          </td> */}
                           <td>{item.startDate}</td>
                           <td>{item.endDate}</td>
                           <td>{item.resource}</td>
@@ -348,18 +375,56 @@ const VndClientDetails = () => {
                     <thead>
                       <tr>
                         <th className="add-right-shadow">Role</th>
-                        <th>Client</th>
+                        {/* <th>Client</th> */}
                         <th>Date Posted</th>
-                        <th>Requirement Type</th>
+                        {/* <th>Requirement Type</th> */}
                         <th>No. of Positions</th>
-                        <th>Contract period</th>
+                        {/* <th>Contract period</th> */}
                       </tr>
                     </thead>
                     <tbody>
                       {jobData.map((job, index) => (
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
-                          <th className="add-right-shadow">{job.role}</th>
-                          <td className="wide-250">
+                          {/* <th className="add-right-shadow">{job.role}</th> */}
+                          <th className="add-right-shadow">
+                            <div className="cursor-pointer hover:text-indigo-700"
+                            >
+                              {job.role}
+                            </div>
+                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                              <div
+                                className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                              >
+                                <img
+                                  src={job.logo}
+                                  style={{ height: 12, width: 12 }}
+                                  className="me-1"
+                                />
+                                <Tooltip title={job.client} arrow>
+                                  <span className="text-ellipsis overflow-hidden truncate">
+                                    {job.client}
+                                  </span>
+                                </Tooltip>
+                              </div>
+                              <div className="flex w-[128px]">
+                                <div className="flex items-center ms-1">
+                                  <LocationOnOutlined
+                                    fontSize="inherit"
+                                    className="mr-1"
+                                  />
+                                  <span>{job.requirementType}</span>
+                                </div>
+                                <div className="flex items-center ms-1">
+                                  <AccessTimeOutlined
+                                    fontSize="inherit"
+                                    className="mr-1"
+                                  />
+                                  <span>{job.contractPeriod}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </th>
+                          {/* <td className="wide-250">
                             <div className="flex">
                               <img
                                 src={job.logo}
@@ -368,20 +433,20 @@ const VndClientDetails = () => {
                               />
                               {job.client}
                             </div>
-                          </td>
+                          </td> */}
                           <td>{job.datePosted}</td>
-                          <td>
+                          {/* <td>
                             <Typography
                               className={`px-3 py-1 rounded-full !text-base text-center ${job.requirementType === "Onsite"
-                                  ? "text-blue-700 border border-blue-700"
-                                  : "text-yellow-700 border border-yellow-700"
+                                ? "text-blue-700 border border-blue-700"
+                                : "text-yellow-700 border border-yellow-700"
                                 }`}
                             >
                               {job.requirementType}
                             </Typography>
-                          </td>
+                          </td> */}
                           <td>{job.noOfPositions}</td>
-                          <td>{job.contractPeriod}</td>
+                          {/* <td>{job.contractPeriod}</td> */}
                         </tr>
                       ))}
                     </tbody>
@@ -395,18 +460,34 @@ const VndClientDetails = () => {
                       <tr>
                         <th className="add-right-shadow">Resource name</th>
                         <th>Skill Set</th>
-                        <th>Experience</th>
-                        <th>Location</th>
+                        {/* <th>Experience</th> */}
+                        {/* <th>Location</th> */}
                         <th>Availability</th>
                       </tr>
                     </thead>
                     <tbody>
                       {benchData.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
-                          <th className="add-right-shadow">{item.resource}</th>
+                          <th className="add-right-shadow">
+                            {item.resource}
+                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                              <div className="flex items-center min-w-[135px] max-w-[150px]"
+                              >
+                                <div className="flex">
+                                  <p>
+                                    <WorkHistory fontSize="inherit" />{" "}
+                                    {item.experience}
+                                  </p>
+                                  <p className="ms-1">
+                                    <LocationOn fontSize="inherit" /> {item.location}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </th>
                           <td>{item.skills}</td>
-                          <td>{item.experience}</td>
-                          <td>{item.location}</td>
+                          {/* <td>{item.experience}</td>
+                          <td>{item.location}</td> */}
                           <td>{item.availability}</td>
                         </tr>
                       ))}

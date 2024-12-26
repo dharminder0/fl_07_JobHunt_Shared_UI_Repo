@@ -397,7 +397,7 @@ const ClientDetails = () => {
                             <div> {job.role} </div>
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div className="flex">
-                                <div className="flex items-center ms-1">
+                                <div className="flex items-center">
                                   <LocationOnOutlined
                                     fontSize="inherit"
                                     className="mr-1"
