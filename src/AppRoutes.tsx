@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
@@ -38,7 +39,6 @@ import Subscriptions from "./components/pages/settings/Subscriptions";
 import Members from "./components/pages/settings/Members";
 
 export default function AppRoutes() {
-  const role = JSON.parse(localStorage.getItem("role") || "[]");
   return (
     <Router>
       <Routes>
@@ -50,25 +50,34 @@ export default function AppRoutes() {
         <Route path="/onboard" element={<OnBoarding />} />
 
         {/* Company Layout */}
-        <Route path="/company" element={<ProtectedRoute allowedRoles={["company"]} />}>
+        <Route
+          path="/company"
+          element={<ProtectedRoute allowedRoles={["company"]} />}
+        >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<CompanyDashboard />} />
           <Route path="myrequirements">
-            <Route index element={<MyRequirements />} /> {/* List all applications */}
-            <Route path=":id" element={<RequirementDetails />} /> {/* View specific application */}
+            <Route index element={<MyRequirements />} />{" "}
+            {/* List all applications */}
+            <Route path=":id" element={<RequirementDetails />} />{" "}
+            {/* View specific application */}
           </Route>
           <Route path="myvendors">
-            <Route index element={<MyVendors />} /> {/* List all applications */}
-            <Route path=":id" element={<VendorCompanyDetails />} /> {/* View specific application */}
+            <Route index element={<MyVendors />} />{" "}
+            {/* List all applications */}
+            <Route path=":id" element={<VendorCompanyDetails />} />{" "}
+            {/* View specific application */}
           </Route>
           <Route path="findvendors">
-            <Route index element={<FindVendors />} /> {/* List all applications */}
-            <Route path=":id" element={<VendorDetails />} /> {/* View specific application */}
+            <Route index element={<FindVendors />} />{" "}
+            {/* List all applications */}
+            <Route path=":id" element={<VendorDetails />} />{" "}
+            {/* View specific application */}
           </Route>
           <Route path="findclients" element={<FindClients />} />
           <Route path="clients">
             <Route index element={<Clients />} />
-            <Route path=":id" element={<ClientDetails />} /> 
+            <Route path=":id" element={<ClientDetails />} />
           </Route>
           <Route path="vndonboarding" element={<VendorOnboarding />} />
           <Route path="candidates" element={<MyCandidates />} />
@@ -80,21 +89,26 @@ export default function AppRoutes() {
         </Route>
 
         {/* Vendor Layout */}
-        <Route path="/vendor" element={<ProtectedRoute allowedRoles={["vendor"]} />}>
+        <Route
+          path="/vendor"
+          element={<ProtectedRoute allowedRoles={["vendor"]} />}
+        >
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<VendorDashboard />} />
           <Route path="messages" element={<Messages />} />
           <Route path="requirements">
-            <Route index element={<VndRequirements />} /> {/* List all applications */}
-            <Route path=":id" element={<VndRequirementDetails />} /> {/* View specific application */}
+            <Route index element={<VndRequirements />} />{" "}
+            {/* List all applications */}
+            <Route path=":id" element={<VndRequirementDetails />} />{" "}
+            {/* View specific application */}
           </Route>
           <Route path="bench" element={<VndBench />} />
           <Route path="candidate" element={<VndCandidates />} />
-          <Route path="clients" >
+          <Route path="clients">
             <Route index element={<VndClients />} />
-            <Route path=":id" element={<VndClientDetails />} /> 
+            <Route path=":id" element={<VndClientDetails />} />
           </Route>
-          <Route path="searchclient" >
+          <Route path="searchclient">
             <Route index element={<VndSearchClients />} />
             <Route path=":id" element={<VendorCompanyDetails />} />
           </Route>
