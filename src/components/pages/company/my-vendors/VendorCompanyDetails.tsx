@@ -472,8 +472,8 @@ const VendorCompanyDetails = () => {
                       <tr>
                         <th className="add-right-shadow">Resource name</th>
                         <th>Skill Set</th>
-                        <th>Experience</th>
-                        <th>Location</th>
+                        {/* <th>Experience</th> */}
+                        {/* <th>Location</th> */}
                         <th>Availability</th>
                       </tr>
                     </thead>
@@ -483,7 +483,7 @@ const VendorCompanyDetails = () => {
                           <th className="add-right-shadow">
                             {item.resource}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                              <div className="flex items-center min-w-[135px] max-w-[150px]"
                               >
                                 <div className="flex">
                                   <p>
@@ -498,8 +498,8 @@ const VendorCompanyDetails = () => {
                             </div>
                           </th>
                           <td>{item.skills}</td>
-                          <td>{item.experience}</td>
-                          <td>{item.location}</td>
+                          {/* <td>{item.experience}</td> */}
+                          {/* <td>{item.location}</td> */}
                           <td>{item.availability}</td>
                         </tr>
                       ))}
