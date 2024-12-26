@@ -40,7 +40,7 @@ export default function OnBoarding() {
       setSkipped(newSkipped);
     } else {
       localStorage.setItem("role", JSON.stringify(["company"]));
-      navigate("/company/dashboard");
+      navigate("/company");
     }
   };
 
@@ -73,11 +73,13 @@ export default function OnBoarding() {
       <div className="h-[52px] px-5 py-2 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
         <div className="flex gap-3">
           <div className="icon my-auto">
-            <img className="rounded-full h-8" src='https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png' alt="JobHunty Logo" />
+            <img
+              className="rounded-full h-8"
+              src="https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png"
+              alt="JobHunty Logo"
+            />
           </div>
-          <div  className="cursor-pointer flex flex-row gap-2"
-            id="basic-button"
-          >
+          <div className="cursor-pointer flex flex-row gap-2" id="basic-button">
             <div className="font-semibold text-title my-auto">
               {companyName}
             </div>
@@ -132,7 +134,12 @@ export default function OnBoarding() {
           Skip
         </Button>
       )} */}
-          <Button variant="contained" color="primary" onClick={handleNext} sx={{ width: 125 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleNext}
+            sx={{ width: 125 }}
+          >
             {activeStep === steps.length - 1 ? "Finish" : "Next"}
           </Button>
         </div>
@@ -140,4 +147,3 @@ export default function OnBoarding() {
     </div>
   );
 }
-
