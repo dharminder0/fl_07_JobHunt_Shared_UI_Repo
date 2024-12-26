@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <div className="h-[52px] px-5 py-2 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
+    <div className="h-[52px] px-5 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className="flex gap-3">
         <div className="icon my-auto">
           <img
@@ -104,7 +104,7 @@ const Header: React.FC<HeaderProps> = () => {
           ))}
         </Menu>
       </div>
-      <div className="flex flex-row gap-8">
+      <div className="flex flex-row gap-8 items-center">
         <svg
           className="my-auto"
           width="25"

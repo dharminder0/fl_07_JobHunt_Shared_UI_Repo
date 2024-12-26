@@ -1,12 +1,14 @@
-import { Add, FilterList, Search } from "@mui/icons-material";
-import { Box, Button, IconButton, InputAdornment, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateClientForm from "./CreateClientForm";
 import ImportClientForm from "./ImportClientForm";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import { useDispatch } from "react-redux";
+import { openDrawer } from "../../../features/drawerSlice";
+import { AppDispatch } from "../../../redux/store";
 
 const clientDataObj = [
   {
@@ -77,29 +79,36 @@ export default function Clients() {
         searchFilter.status.includes(item.status);
       const searchMatch =
         searchFilter.searchValue === "" ||
-        item.name.toLowerCase().includes(searchFilter.searchValue.toLowerCase());
-      return (
-        searchMatch && statusMatch
-      );
+        item.name
+          .toLowerCase()
+          .includes(searchFilter.searchValue.toLowerCase());
+      return searchMatch && statusMatch;
     });
     setclientData(filtered);
   }, [searchFilter]);
 
-
   const handleRowClick = (id: number, tab: string) => {
-    navigate(`${id}?type=${tab}`, { state: { previousUrl: location.pathname }, })
+    navigate(`${id}?type=${tab}`, {
+      state: { previousUrl: location.pathname },
+    });
+  };
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const handleOpenDrawer = () => {
+    dispatch(openDrawer());
   };
 
   return (
     <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
-        <div className='flex flex-row gap-1 p-1 overflow-hidden'>
-          <div className='flex text-center flex-nowrap my-auto'>
-            <div className='flex grow w-[220px] mr-2'>
-              <div className='flex-col flex-grow'>
+        <div className="flex flex-row gap-1 p-1 overflow-hidden">
+          <div className="flex text-center flex-nowrap my-auto">
+            <div className="flex grow w-[220px] mr-2">
+              <div className="flex-col flex-grow">
                 <TextField
-                  size='small'
-                  className='w-full'
+                  size="small"
+                  className="w-full"
                   value={searchFilter.searchValue}
                   onChange={(event) =>
                     setSearchFilter({
@@ -111,8 +120,8 @@ export default function Clients() {
                   slotProps={{
                     input: {
                       startAdornment: (
-                        <InputAdornment position='start'>
-                          <SearchIcon fontSize='inherit' />
+                        <InputAdornment position="start">
+                          <SearchIcon fontSize="inherit" />
                         </InputAdornment>
                       ),
                     },
@@ -120,17 +129,17 @@ export default function Clients() {
                 />
               </div>
             </div>
-            <div className='max-w-full shrink-0'>
+            <div className="max-w-full shrink-0">
               <MenuDrpDwn
                 menuList={filterList?.status}
-                placeholder='Status'
+                placeholder="Status"
                 handleSelectedItem={(selectedItems) => {
                   setSearchFilter({ ...searchFilter, status: selectedItems });
                 }}
               />
             </div>
           </div>
-          <IconButton aria-label='filter'>
+          <IconButton aria-label="filter" onClick={handleOpenDrawer}>
             <FilterListOutlinedIcon />
           </IconButton>
         </div>
@@ -164,13 +173,22 @@ export default function Clients() {
                     {item.name}
                   </div>
                 </th>
-                <td className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
-                  onClick={() => handleRowClick(item.id, "openView")}>
-                    {item.requirement}</td>
-                <td className="cursor-pointer hover:text-indigo-700" onClick={() => handleRowClick(item.id, "activeView")}>
+                <td
+                  className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
+                  onClick={() => handleRowClick(item.id, "openView")}
+                >
+                  {item.requirement}
+                </td>
+                <td
+                  className="cursor-pointer hover:text-indigo-700"
+                  onClick={() => handleRowClick(item.id, "activeView")}
+                >
                   {item.activeContracts}
                 </td>
-                <td className="cursor-pointer hover:text-indigo-700" onClick={() => handleRowClick(item.id, "pastView")}>
+                <td
+                  className="cursor-pointer hover:text-indigo-700"
+                  onClick={() => handleRowClick(item.id, "pastView")}
+                >
                   {item.pastContracts}
                 </td>
                 <td>{item.status}</td>

@@ -137,7 +137,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
 
           <div
             className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-            onClick={() => handleCardClick("requirements", "Hot")}
+            onClick={() => handleCardClick("requirements", "Open")}
           >
             <Typography variant="h5" className="!text-indigo-800">
               3
@@ -167,7 +167,11 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
         </div>
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
-          <JobStatistics />
+          <JobStatistics
+            lineTitle="Requirements"
+            barTitle="Requirements"
+            pieTitle="Requirements"
+          />
         </div>
         <div className="flex space-x-3">
           <Box className="gap-6 w-[33%]">

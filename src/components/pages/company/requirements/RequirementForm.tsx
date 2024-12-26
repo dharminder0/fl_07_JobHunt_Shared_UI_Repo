@@ -184,7 +184,7 @@ const RequirementForm = () => {
   };
 
   return (
-    <div className="h-screen">
+    <div>
       <Button
         variant="contained"
         onClick={toggleDrawer(true)}
