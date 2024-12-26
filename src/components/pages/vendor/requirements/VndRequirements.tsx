@@ -21,6 +21,8 @@ import SuccessDialog from "../../../../components/shared/SuccessDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import VndBench from "../bench/VndBench";
+import StatusDialog from "../../../../components/shared/StatusDialog";
+import React from "react";
 
 const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const navigate = useNavigate();
@@ -33,6 +35,8 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const [matchingObj, setMatchingObj] = useState({ isOpen: false, score: 0 });
   const [jobData, setJobData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedStatus, setSelectedStatus] = React.useState("Open");
 
   const [filterList, setFilterList] = useState<any>({
     client: [
@@ -214,6 +218,11 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     });
     setJobData(filtered);
   }, [searchFilter]);
+
+  const handleStatusDialog = (status: string) => {
+    setIsDialogOpen(true);
+    setSelectedStatus(status);
+  };
 
   return (
     <>
@@ -423,11 +432,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                   </th>
                   <td>
                     <Typography
-                      className={`inline-block px-3 py-1 !text-base rounded-full ${
+                      className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${
                         job.status === "Open"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
                       }`}
+                      onClick={() => handleStatusDialog(job.status)}
                     >
                       {job.status}
                     </Typography>
@@ -473,6 +483,15 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           />
         )}
       </div>
+
+      <StatusDialog
+        title="Applicant Status"
+        statusData={filterList.status}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        selectedStatus={selectedStatus}
+        isVendor={true}
+      />
     </>
   );
 };

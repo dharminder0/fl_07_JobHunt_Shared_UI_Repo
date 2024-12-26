@@ -5,19 +5,20 @@ import {
   InputAdornment,
   Tooltip,
   IconButton,
-  Chip,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { AccessTimeOutlined, LocationOnOutlined } from "@mui/icons-material";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import StatusDialog from "../../../../components/shared/StatusDialog";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
-  const [searchInput, setSearchInput] = useState<string>("");
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedStatus, setSelectedStatus] = React.useState("Open");
   const [filterList, setFilterList] = useState<any>({
     client: [
       "OpsTree Solutions",
@@ -406,29 +407,11 @@ const MyRequirements = () => {
     setJobData(filtered);
   }, [searchFilter]);
 
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [menuType, setMenuType] = useState<null | string>(null);
+  const handleStatusDialog = (status: string) => {
+    setIsDialogOpen(true);
+    setSelectedStatus(status);
+  };
 
-  const handleMenuOpen = (
-    event: React.MouseEvent<HTMLElement>,
-    type: string
-  ) => {
-    setAnchorEl(event.currentTarget);
-    setMenuType(type);
-  };
-  const handleMenuClose = (filter?: any) => {
-    if (menuType) {
-      let filterObj: any = {};
-      filterObj[menuType] = filter;
-      setSearchFilter((prev: any) => ({
-        ...prev,
-        ...filterObj,
-      }));
-    }
-    setAnchorEl(null);
-    setMenuType(null);
-  };
   return (
     <>
       <div className="px-2 py-3 h-full">
@@ -563,11 +546,12 @@ const MyRequirements = () => {
                   </th>
                   <td>
                     <Typography
-                      className={`inline-block px-3 py-1 !text-base rounded-full ${
+                      className={`inline-block px-3 py-1 !text-base cursor-pointer rounded-full ${
                         job.status === "Open"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
                       }`}
+                      onClick={() => handleStatusDialog(job.status)}
                     >
                       {job.status}
                     </Typography>
@@ -594,6 +578,14 @@ const MyRequirements = () => {
           </table>
         </div>
       </div>
+
+      <StatusDialog
+        title="Applicant Status"
+        statusData={filterList.status}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        selectedStatus={selectedStatus}
+      />
     </>
   );
 };
