@@ -19,7 +19,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 
@@ -81,8 +81,9 @@ const archivedData = [
 
 const MyVendors = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const handleDetails = (id: number) => {
-    navigate(`${id}?type=activeView`);
+    navigate(`${id}?type=activeView`, { state: { previousUrl: location.pathname }});    
   };
 
   const [tabValue, setTabValue] = React.useState("Active");
