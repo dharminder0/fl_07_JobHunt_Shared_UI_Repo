@@ -42,7 +42,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       "Fidelity Information Services",
       "Coforge",
     ],
-    status: ["Open", "Hot", "On hold", "Closed"],
+    status: ["Open", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
   const [searchFilter, setSearchFilter] = useState<any>({
@@ -131,7 +131,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     {
       id: 5,
       role: "Flutter Developer",
-      status: "Hot",
+      status: "Open",
       datePosted: "01-05-2024",
       applicants: "2",
       client: "KPIT Technologies",

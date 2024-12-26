@@ -137,7 +137,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
 
           <div
             className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-            onClick={() => handleCardClick("requirements", "Hot")}
+            onClick={() => handleCardClick("requirements", "Open")}
           >
             <Typography variant="h5" className="!text-indigo-800">
               3

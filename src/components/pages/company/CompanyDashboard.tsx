@@ -159,7 +159,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
         <div
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-          onClick={() => handleCardClick("myrequirements", "Hot")}
+          onClick={() => handleCardClick("myrequirements", "Open")}
         >
           <Typography variant="h5" className="!text-indigo-800">
             13

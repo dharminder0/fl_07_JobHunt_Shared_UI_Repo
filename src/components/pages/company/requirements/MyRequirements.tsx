@@ -5,6 +5,7 @@ import {
   InputAdornment,
   Tooltip,
   IconButton,
+  Chip,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -23,7 +24,7 @@ const MyRequirements = () => {
       "Creative Solutions Ltd.",
       "Data Insights Group",
     ],
-    status: ["Open", "Hot", "On hold", "Closed"],
+    status: ["Open", "On hold", "Closed"],
     requirementType: ["Remote", "Hybrid", "Onsite"],
   });
   const [searchFilter, setSearchFilter] = useState<any>({
@@ -49,6 +50,7 @@ const MyRequirements = () => {
       contractPeriod: "6 months",
       visibility: "Global",
       logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
+      type: "Hot",
     },
     {
       id: 2,
@@ -77,6 +79,7 @@ const MyRequirements = () => {
       contractPeriod: "3 months",
       visibility: "Limited",
       logo: "https://www.prototypehouse.com/favicon.ico",
+      type: "Hot",
     },
     {
       id: 4,
@@ -109,7 +112,7 @@ const MyRequirements = () => {
     {
       id: 6,
       role: "React Developer",
-      status: "Hot",
+      status: "Open",
       datePosted: "11-05-2024",
       applicants: 14,
       client: "Code Crafters Co.",
@@ -119,6 +122,7 @@ const MyRequirements = () => {
       contractPeriod: "12 months",
       visibility: "Limited",
       logo: "https://codecrafters.io/favicon.ico",
+      type: "Hot",
     },
     {
       id: 7,
@@ -221,7 +225,7 @@ const MyRequirements = () => {
     {
       id: 10,
       role: "Data Science",
-      status: "Hot",
+      status: "Open",
       datePosted: "13-05-2024",
       applicants: 0,
       client: "Data Insights Group",
@@ -263,7 +267,7 @@ const MyRequirements = () => {
     {
       id: 9,
       role: "Visual Designer",
-      status: "Hot",
+      status: "Open",
       datePosted: "15-05-2024",
       applicants: 2,
       client: "Creative Solutions Ltd.",
@@ -349,13 +353,19 @@ const MyRequirements = () => {
   const handleRowClick = (id: number, type: string) => {
     switch (type) {
       case "applicant":
-        navigate(`/company/candidates`,{state: { previousUrl: location.pathname }});
+        navigate(`/company/candidates`, {
+          state: { previousUrl: location.pathname },
+        });
         break;
       case "client":
-        navigate(`/company/clients/${id}?type=activeView`,{state: { previousUrl: location.pathname }});
+        navigate(`/company/clients/${id}?type=activeView`, {
+          state: { previousUrl: location.pathname },
+        });
         break;
       case "myvendors":
-        navigate(`/company/myvendors/${id}?type=openView`,{state: { previousUrl: location.pathname }});
+        navigate(`/company/myvendors/${id}?type=openView`, {
+          state: { previousUrl: location.pathname },
+        });
         break;
       default:
         navigate(`${id}`);
@@ -504,11 +514,18 @@ const MyRequirements = () => {
               {jobData.map((job, index) => (
                 <tr key={index}>
                   <th className="add-right-shadow">
-                    <div
-                      onClick={() => handleRowClick(job.id, "requirement")}
-                      className="cursor-pointer hover:text-indigo-700"
-                    >
-                      {job.role}
+                    <div className="flex items-center justify-between">
+                      <div
+                        onClick={() => handleRowClick(job.id, "requirement")}
+                        className="cursor-pointer hover:text-indigo-700"
+                      >
+                        {job.role}
+                      </div>
+                      {job?.type && (
+                        <div className="text-info text-red-700 border px-2 rounded-full border-red-700">
+                          {job?.type}
+                        </div>
+                      )}
                     </div>
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
@@ -557,7 +574,10 @@ const MyRequirements = () => {
                   </td>
                   <td>{job.datePosted}</td>
                   {/* <td>{job.requirementType}</td> */}
-                  <td className="cursor-pointer hover:text-indigo-700"  onClick={() => handleRowClick(job.id,'myvendors')}>
+                  <td
+                    className="cursor-pointer hover:text-indigo-700"
+                    onClick={() => handleRowClick(job.id, "myvendors")}
+                  >
                     {job.noOfPositions} ({job.placed})
                   </td>
                   <td

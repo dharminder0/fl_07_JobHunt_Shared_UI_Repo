@@ -2,26 +2,17 @@ import React, { useState } from "react";
 import {
   Box,
   Typography,
-  Button,
   Tabs,
   Tab,
-  TextField,
   IconButton,
   Chip,
-  Collapse,
   Tooltip,
 } from "@mui/material";
-import {
-  Search,
-  FilterList,
-  Edit,
-  Download,
-  AccessTimeOutlined,
-  LocationOnOutlined,
-} from "@mui/icons-material";
+import { Edit, Download } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
+import StatusDialog from "../../../../components/shared/StatusDialog";
 
 const jobDataOrg = [
   {
@@ -100,13 +91,24 @@ const jobDataOrg = [
     matchingCandidate: 2,
   },
 ];
-
+const status = [
+  "New",
+  "In Review",
+  "Shortlisted",
+  "Technical Assessment",
+  "Interview Round I",
+  "Interview Round II",
+  "Rejected",
+  "Placed",
+];
 const VndRequirementDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(0);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedStatus, setSelectedStatus] = React.useState("New");
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -132,7 +134,7 @@ const VndRequirementDetails = () => {
     {
       vendor: "Binemiles Technologies",
       name: "Sajid Sarkar",
-      stage: "Declined",
+      stage: "Rejected",
       date: "18-05-2024",
       ai: 80,
       logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
@@ -140,12 +142,17 @@ const VndRequirementDetails = () => {
     {
       vendor: "SDET Tech Pvt. Ltd",
       name: "Amit Kumar",
-      stage: "Hired",
+      stage: "Placed",
       date: "11-04-2024",
       ai: 90,
       logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
     },
   ];
+
+  const handleStatusDialog = (status: string) => {
+    setIsDialogOpen(true);
+    setSelectedStatus(status);
+  };
 
   const handleMatchingDialog = (score: number) => {
     setIsMatchOpen(true);
@@ -239,55 +246,15 @@ const VndRequirementDetails = () => {
           </div>
 
           {/* Responsibilities */}
-          <Box className="mb-4">
+          <Box>
             <p className="text-title mb-2">Responsibilities</p>
-            <ul className="list-none space-y-1">
+            <ul className="list-none">
               {[
                 "Community engagement to ensure that is supported and actively represented online",
                 "Focus on social media content development and publication",
                 "Marketing and strategy support",
                 "Stay on top of trends on social media platforms, and suggest content ideas to the team",
                 "Engage with online communities",
-              ].map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center text-gray-600 text-base"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Box>
-
-          {/* Who You Are */}
-          <Box className="mb-4">
-            <p className="text-gray-700 mb-2 text-title">Who You Are</p>
-            <ul className="list-none space-y-1">
-              {[
-                "You get energy from people and building the ideal work environment",
-                "You have a sense for beautiful spaces and office experiences",
-                "You are a confident office manager, ready for added responsibilities",
-                "You're detail-oriented and creative",
-                "You're a growth marketer and know how to run campaigns",
-              ].map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center text-gray-600 text-base"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Box>
-
-          {/* Nice-To-Haves */}
-          <Box className="mb-6">
-            <p className="text-title text-gray-700 mb-2">Nice-To-Haves</p>
-            <ul className="list-none space-y-1">
-              {[
-                "Fluent in English",
-                "Project management skills",
-                "Copy editing skills",
               ].map((item, index) => (
                 <li
                   key={index}
@@ -325,7 +292,6 @@ const VndRequirementDetails = () => {
                 <tbody>
                   {applicantData.map((applicant, index) => (
                     <tr
-                      className="cursor-pointer"
                       key={index}
                       // onClick={() => handleRowClick(applicant.id)}
                     >
@@ -374,11 +340,16 @@ const VndRequirementDetails = () => {
                       </th>
                       <td>
                         <Typography
-                          className={`inline-block px-3 py-1 !text-base rounded-full ${
-                            applicant.stage === "Hired"
+                          className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
+                            applicant.stage === "Placed"
                               ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
+                              : applicant.stage === "Rejected"
+                              ? "bg-red-100 text-red-700"
+                              : applicant.stage === "New"
+                              ? "bg-orange-100 text-orange-700"
+                              : "bg-indigo-100 text-indigo-700"
                           }`}
+                          onClick={() => handleStatusDialog(applicant.stage)}
                         >
                           {applicant.stage}
                         </Typography>
@@ -429,6 +400,15 @@ const VndRequirementDetails = () => {
         isMatchOpen={isMatchOpen}
         setIsMatchOpen={setIsMatchOpen}
         aiScore={matchingScore}
+      />
+
+      <StatusDialog
+        title="Applicant Status"
+        statusData={status}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        selectedStatus={selectedStatus}
+        isVendor={true}
       />
     </div>
   );
