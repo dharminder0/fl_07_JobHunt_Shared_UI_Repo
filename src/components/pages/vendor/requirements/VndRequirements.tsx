@@ -478,6 +478,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
         {isSuccessPopup && (
           <SuccessDialog
+            title="Application has been submitted successfully"
             isOpenModal={isSuccessPopup}
             setIsOpenModal={setIsSuccessPopup}
           />

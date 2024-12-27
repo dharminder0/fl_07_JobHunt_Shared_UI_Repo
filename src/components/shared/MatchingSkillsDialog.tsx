@@ -4,13 +4,10 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
 } from "@mui/material";
 import { CircularProgressWithLabel } from "./CircularProgressWithLabel";
 import {
   CancelOutlined,
-  CheckBox,
-  CheckBoxOutlined,
   CheckCircleOutlineOutlined,
 } from "@mui/icons-material";
 
