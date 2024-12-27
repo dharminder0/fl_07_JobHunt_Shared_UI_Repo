@@ -485,7 +485,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       </div>
 
       <StatusDialog
-        title="Applicant Status"
+        title="Requirement Status"
         statusData={filterList.status}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
