@@ -292,7 +292,7 @@ const VndRequirementDetails = () => {
                 <tbody>
                   {applicantData.map((applicant, index) => (
                     <tr
-                      key={index}
+                      key={applicant.name}
                       // onClick={() => handleRowClick(applicant.id)}
                     >
                       <th className="add-right-shadow">

@@ -57,6 +57,7 @@ export default function StatusDialog({
                       statusData.map((item: any) => (
                         <FormControlLabel
                           value={item}
+                          key={item}
                           control={<Radio size="small" />}
                           label={item}
                           checked={item === selectedStatus}

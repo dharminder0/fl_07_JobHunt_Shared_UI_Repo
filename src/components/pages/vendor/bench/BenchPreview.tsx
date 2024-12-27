@@ -278,6 +278,7 @@ export default function BenchPreview() {
             {certifications.map((item) => (
               <>
                 <Chip
+                  key={item}
                   label={item}
                   variant="outlined"
                   sx={{ fontSize: 12 }}
@@ -304,6 +305,7 @@ export default function BenchPreview() {
             {skills.map((item) => (
               <>
                 <Chip
+                  key={item}
                   label={item}
                   variant="outlined"
                   sx={{ fontSize: 12 }}
