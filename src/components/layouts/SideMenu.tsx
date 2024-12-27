@@ -32,22 +32,24 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   const { organizationType } = useOrganizationType();
   const navigate = useNavigate();
   const location = useLocation();
+  const activeRole = localStorage.getItem("activeRole") || "";
   const handleLogout = () => {
     // Remove login session data from localStorage
     localStorage.removeItem("isLoggedIn"); // Optionally, clear other stored user-related data
 
     localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("password");  
+    localStorage.removeItem("activeRole");
     localStorage.removeItem("role"); // Redirect to the login page
 
     navigate("/login");
   };
 
   useEffect(() => {
-    if (!location.pathname.includes(`/${organizationType}`)) {
-      navigate(`/${organizationType}`);
+    if (!location.pathname.includes(`/${activeRole}`)) {
+      navigate(`/${activeRole}`);
     }
-  }, [organizationType]);
+  }, [activeRole]);
 
   const menuItems: any = {
     company: {

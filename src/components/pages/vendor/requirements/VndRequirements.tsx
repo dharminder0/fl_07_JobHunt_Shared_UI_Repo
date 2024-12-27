@@ -390,7 +390,9 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             )
                           }
                         >
-                          {job.matchingCandidate} Matching Candidates
+                          {benchDrawerData.isOpen
+                            ? "Apply"
+                            : `${job.matchingCandidate} Matching Candidates`}
                         </div>
                       </div>
                     </div>
@@ -478,6 +480,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
         {isSuccessPopup && (
           <SuccessDialog
+            title="Application has been submitted successfully"
             isOpenModal={isSuccessPopup}
             setIsOpenModal={setIsSuccessPopup}
           />
@@ -485,7 +488,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       </div>
 
       <StatusDialog
-        title="Applicant Status"
+        title="Requirement Status"
         statusData={filterList.status}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}

@@ -1,17 +1,12 @@
 import {
   AccessTimeOutlined,
-  Download,
   DownloadOutlined,
   Edit,
-  Email,
   EmailOutlined,
   LinkedIn,
   Phone,
-  Timelapse,
-  TimeToLeaveOutlined,
 } from "@mui/icons-material";
 import { Button, Chip, IconButton } from "@mui/material";
-import React from "react";
 import { Link } from "react-router-dom";
 
 const skills = ["React js", "jQuery", "Angular", "React native", "Android"];
@@ -35,10 +30,7 @@ export default function BenchPreview() {
   return (
     <>
       {/* body */}
-      <div
-        className="w-full flex overflow-auto h-[calc(100%-38px)] flex-wrap"
-        id="printSection"
-      >
+      <div className="w-full flex flex-wrap" id="printSection">
         <div className="p-6 w-[70%] mx-auto space-y-4 border-e">
           <div className="flex justify-between">
             <div className="flex">
@@ -278,6 +270,7 @@ export default function BenchPreview() {
             {certifications.map((item) => (
               <>
                 <Chip
+                  key={item}
                   label={item}
                   variant="outlined"
                   sx={{ fontSize: 12 }}
@@ -304,6 +297,7 @@ export default function BenchPreview() {
             {skills.map((item) => (
               <>
                 <Chip
+                  key={item}
                   label={item}
                   variant="outlined"
                   sx={{ fontSize: 12 }}

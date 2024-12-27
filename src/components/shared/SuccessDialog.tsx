@@ -1,13 +1,8 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogContentText } from "@mui/material";
 import { CheckCircleOutlineOutlined } from "@mui/icons-material";
 
 export default function SuccessDialog({
+  title = "",
   isOpenModal = false,
   setIsOpenModal = (value: boolean) => {},
 }: any) {
@@ -34,9 +29,7 @@ export default function SuccessDialog({
                   className="text-green-500"
                   fontSize="large"
                 />
-                <p className="text-title font-bold mt-4">
-                  Application has been submitted successfully
-                </p>
+                {title && <p className="text-title font-bold mt-4">{title}</p>}
               </div>
             </div>
           </DialogContentText>

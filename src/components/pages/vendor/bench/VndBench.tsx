@@ -3,7 +3,13 @@ import {
   LocationOn,
   WorkHistory,
 } from "@mui/icons-material";
-import { TextField, InputAdornment, IconButton, Drawer } from "@mui/material";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Drawer,
+  Button,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBenchForm from "./AddBenchForm";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
@@ -13,7 +19,7 @@ import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import AddAIBench from "./AddAIBench";
 import BenchPreview from "./BenchPreview";
 import VndRequirements from "../requirements/VndRequirements";
-// interface VndBench {}
+import SuccessDialog from "../../../../components/shared/SuccessDialog";
 
 const benchData = [
   {
@@ -62,10 +68,12 @@ const benchData = [
   },
 ];
 
-const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
-  const [search, setSearch] = useState("");
+export default function VndBench({ drawerData = {} }: any) {
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
+  const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [matchingScore, setMatchingScore] = React.useState(0);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [drawerObj, setDrawerObj] = useState({
     type: "bench",
     isOpen: false,
@@ -86,7 +94,6 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
     availability: [],
     roles: [],
   });
-  const [matchingScore, setMatchingScore] = React.useState(0);
 
   useEffect(() => {
     // Filtering logic
@@ -113,13 +120,20 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
     setMatchingScore(score);
   };
 
-  const handleDrawer = (useFor: string, isOpen: boolean, obj: object) => {
-    setDrawerObj((prev) => ({
-      ...prev,
-      type: useFor,
-      isOpen: isOpen,
-      data: obj,
-    }));
+  const handleDrawer = (useFor: string, isOpen: boolean, obj: any) => {
+    if (drawerData?.isOpen) {
+      window.open(
+        window.location.origin + `/vendor/bench/${obj?.id}`,
+        "_blank"
+      );
+    } else {
+      setDrawerObj((prev) => ({
+        ...prev,
+        type: useFor,
+        isOpen: isOpen,
+        data: obj,
+      }));
+    }
   };
 
   const toggleDrawer = (open: any) => (event: any) => {
@@ -132,11 +146,51 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
     setDrawerObj((prev) => ({ ...prev, isOpen: open }));
   };
 
+  const toggleRowSelection = (row: any) => {
+    setSelectedRows((prevSelectedRows) => {
+      const exists = prevSelectedRows.some(
+        (selectedRow) => selectedRow.id === row.id
+      );
+      if (exists) {
+        // Remove the row if it's already selected
+        return prevSelectedRows.filter(
+          (selectedRow) => selectedRow.id !== row.id
+        );
+      }
+      // Add the row if it's not selected
+      return [...prevSelectedRows, row];
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedRows.length === benchData.length) {
+      setSelectedRows([]); // Deselect all
+    } else {
+      setSelectedRows(benchData); // Select all
+    }
+  };
+
+  const isSelected = (id: number) => selectedRows.some((row) => row.id === id);
+  const isAllSelected = selectedRows.length === benchData.length;
+
+  const handleApply = () => {
+    setIsSuccessPopup(true);
+    setSelectedRows([]);
+  };
+
   return (
     <>
       {drawerData?.isOpen && (
-        <div className="border-b p-4">
+        <div className="border-b py-2 px-4 flex justify-between items-center">
           <h5 className="text-heading">Matching Candidates</h5>
+          <Button
+            variant="contained"
+            size="small"
+            disabled={selectedRows?.length <= 0}
+            onClick={handleApply}
+          >
+            Apply
+          </Button>
         </div>
       )}
       <div className="px-4 py-3 h-full">
@@ -218,6 +272,16 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
           <table>
             <thead>
               <tr>
+                {drawerData?.isOpen && (
+                  <th className="multi-select">
+                    <input
+                      type="checkbox"
+                      checked={isAllSelected}
+                      onChange={toggleSelectAll}
+                      className="cursor-pointer"
+                    />
+                  </th>
+                )}
                 <th className="add-right-shadow">Resource name</th>
                 <th>Role</th>
                 <th>Skill Set</th>
@@ -226,7 +290,22 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
             </thead>
             <tbody>
               {benchFliterData.map((item, index) => (
-                <tr key={index}>
+                <tr
+                  key={item?.id}
+                  className={`${
+                    isSelected(item.id) ? "bg-blue-100" : "bg-white"
+                  }`}
+                >
+                  {drawerData?.isOpen && (
+                    <th className="multi-select">
+                      <input
+                        type="checkbox"
+                        checked={isSelected(item.id)}
+                        onChange={() => toggleRowSelection(item)}
+                        className="cursor-pointer"
+                      />
+                    </th>
+                  )}
                   <th className="add-right-shadow">
                     <div className="flex items-center">
                       <AccountCircleOutlined
@@ -236,7 +315,9 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
                       <div className="ms-2 w-[100%]">
                         <div className="flex items-center justify-between text-base">
                           <div
-                            onClick={() => handleDrawer("bench", true, {})}
+                            onClick={() =>
+                              handleDrawer("bench", true, { id: item?.id })
+                            }
                             className="cursor-pointer hover:text-indigo-700"
                           >
                             {item.resource}
@@ -257,6 +338,7 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
                               onClick={() =>
                                 handleDrawer("requirement", true, {
+                                  id: item?.id,
                                   resource: item.resource,
                                   experience: item.experience,
                                   location: item.location,
@@ -336,7 +418,11 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
                   : "Matching Positions"}
               </h2>
             </div>
-            {drawerObj.type === "bench" && <BenchPreview />}
+            {drawerObj.type === "bench" && (
+              <div className="overflow-auto h-[calc(100%-38px)]">
+                <BenchPreview />
+              </div>
+            )}
             {drawerObj.type === "requirement" && (
               <div className="px-4">
                 <VndRequirements benchDrawerData={drawerObj} />
@@ -345,8 +431,13 @@ const VndBench: React.FC<{ drawerData?: any }> = ({ drawerData = {} }) => {
           </div>
         </Drawer>
       </div>
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="Application has been submitted successfully"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
+      )}
     </>
   );
-};
-
-export default VndBench;
+}
