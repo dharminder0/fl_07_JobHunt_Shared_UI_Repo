@@ -206,13 +206,13 @@ const VendorCompanyDetails = () => {
           <div>
             <img
               src={
-                "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png"
+                "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png"
               }
               style={{ width: 65, height: 65 }}
             />
           </div>
           <div>
-            <p className="text-heading">Fleek IT Solutions</p>
+            <p className="text-heading">Airtel</p>
             <div className="mt-1">
               <Chip
                 label="Web Development"
@@ -514,22 +514,22 @@ const VendorCompanyDetails = () => {
         {/* Tech Stack and Office Location */}
         <Grid item xs={12} md={3}>
           <div>
-            <h5 className="text-heading mb-2">Contact Informat  ss   ion</h5>
+            <h5 className="text-heading mb-2">Contact Information</h5>
 
             <ul className="text-gray-700 text-base">
               <li>
-                <Link href="mailto:sales@fleekitsolutions.com" underline="none">
-                  <MailOutline fontSize="small" /> sales@fleekitsolutions.com
+                <Link href="mailto:sales@airtel.com" underline="none">
+                  <MailOutline fontSize="small" /> sales@airtel.com
                 </Link>
               </li>
               <li>
-                <Link href="tel:+91 971181234" underline="none">
-                  <Phone fontSize="small" /> +91 971181234
+                <Link href="tel:+91 8811818880" underline="none">
+                  <Phone fontSize="small" /> +91 8811818880
                 </Link>
               </li>
               <li>
-                <Link href="www.fleekitsolutions.com" underline="none">
-                  <Language fontSize="small" /> www.fleekitsolutions.com
+                <Link href="www.airtel.com" underline="none">
+                  <Language fontSize="small" /> www.airtel.com
                 </Link>
               </li>
             </ul>
