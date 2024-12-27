@@ -37,6 +37,7 @@ import ProtectedRoute from "./components/shared/ProtectedRoute";
 import OrganizationProfile from "./components/pages/settings/OrganizationProfile";
 import Subscriptions from "./components/pages/settings/Subscriptions";
 import Members from "./components/pages/settings/Members";
+import BenchPreview from "./components/pages/vendor/bench/BenchPreview";
 
 export default function AppRoutes() {
   return (
@@ -97,12 +98,15 @@ export default function AppRoutes() {
           <Route path="dashboard" element={<VendorDashboard />} />
           <Route path="messages" element={<Messages />} />
           <Route path="requirements">
-            <Route index element={<VndRequirements />} />{" "}
+            <Route index element={<VndRequirements />} />
             {/* List all applications */}
-            <Route path=":id" element={<VndRequirementDetails />} />{" "}
+            <Route path=":id" element={<VndRequirementDetails />} />
             {/* View specific application */}
           </Route>
-          <Route path="bench" element={<VndBench />} />
+          <Route path="bench">
+            <Route index element={<VndBench />} />
+            <Route path=":id" element={<BenchPreview />} />
+          </Route>
           <Route path="candidate" element={<VndCandidates />} />
           <Route path="clients">
             <Route index element={<VndClients />} />

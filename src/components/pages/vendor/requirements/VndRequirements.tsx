@@ -390,7 +390,9 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             )
                           }
                         >
-                          {job.matchingCandidate} Matching Candidates
+                          {benchDrawerData.isOpen
+                            ? "Apply"
+                            : `${job.matchingCandidate} Matching Candidates`}
                         </div>
                       </div>
                     </div>

@@ -42,10 +42,12 @@ export default function Login() {
   ];
 
   useEffect(() => {
+    const activeRole = localStorage.getItem("activeRole") || "";
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const role = JSON.parse(localStorage.getItem("role") || "[]");
-    if (role?.length > 0 && isLoggedIn) {
-      navigate(`/${role[0]}`);
+    if (isLoggedIn && activeRole) {
+      navigate(`/${activeRole}`);
+    } else {
+      navigate("/login");
     }
   }, []);
 
@@ -90,6 +92,7 @@ export default function Login() {
       localStorage.setItem("password", user.password);
       localStorage.setItem("companyIcon", user.companyIcon);
       localStorage.setItem("role", JSON.stringify(user.role));
+      localStorage.setItem("activeRole", user.role[0]);
 
       setErrorMessage(""); // Clear error message
 
@@ -101,12 +104,11 @@ export default function Login() {
   };
 
   const redirectBasedOnRole = (roles: string[]) => {
-    if (roles.includes("company")) {
-      navigate("/company");
-    } else if (roles.includes("vendor")) {
-      navigate("/vendor");
+    const activeRole = localStorage.getItem("activeRole") || "";
+    if (roles.includes(activeRole)) {
+      navigate(`/${activeRole}`);
     } else {
-      navigate("/dashboard"); // Fallback route
+      navigate("/login"); // Fallback route
     }
   };
 

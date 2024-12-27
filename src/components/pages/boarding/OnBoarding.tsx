@@ -40,6 +40,7 @@ export default function OnBoarding() {
       setSkipped(newSkipped);
     } else {
       localStorage.setItem("role", JSON.stringify(["company"]));
+      localStorage.setItem("activeRole", "company");
       navigate("/company");
     }
   };

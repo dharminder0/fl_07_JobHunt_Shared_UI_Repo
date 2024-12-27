@@ -120,13 +120,20 @@ export default function VndBench({ drawerData = {} }: any) {
     setMatchingScore(score);
   };
 
-  const handleDrawer = (useFor: string, isOpen: boolean, obj: object) => {
-    setDrawerObj((prev) => ({
-      ...prev,
-      type: useFor,
-      isOpen: isOpen,
-      data: obj,
-    }));
+  const handleDrawer = (useFor: string, isOpen: boolean, obj: any) => {
+    if (drawerData?.isOpen) {
+      window.open(
+        window.location.origin + `/vendor/bench/${obj?.id}`,
+        "_blank"
+      );
+    } else {
+      setDrawerObj((prev) => ({
+        ...prev,
+        type: useFor,
+        isOpen: isOpen,
+        data: obj,
+      }));
+    }
   };
 
   const toggleDrawer = (open: any) => (event: any) => {
@@ -308,7 +315,9 @@ export default function VndBench({ drawerData = {} }: any) {
                       <div className="ms-2 w-[100%]">
                         <div className="flex items-center justify-between text-base">
                           <div
-                            onClick={() => handleDrawer("bench", true, {})}
+                            onClick={() =>
+                              handleDrawer("bench", true, { id: item?.id })
+                            }
                             className="cursor-pointer hover:text-indigo-700"
                           >
                             {item.resource}
@@ -329,6 +338,7 @@ export default function VndBench({ drawerData = {} }: any) {
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
                               onClick={() =>
                                 handleDrawer("requirement", true, {
+                                  id: item?.id,
                                   resource: item.resource,
                                   experience: item.experience,
                                   location: item.location,
@@ -408,7 +418,11 @@ export default function VndBench({ drawerData = {} }: any) {
                   : "Matching Positions"}
               </h2>
             </div>
-            {drawerObj.type === "bench" && <BenchPreview />}
+            {drawerObj.type === "bench" && (
+              <div className="overflow-auto h-[calc(100%-38px)]">
+                <BenchPreview />
+              </div>
+            )}
             {drawerObj.type === "requirement" && (
               <div className="px-4">
                 <VndRequirements benchDrawerData={drawerObj} />
