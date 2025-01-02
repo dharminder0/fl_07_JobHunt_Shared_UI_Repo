@@ -62,7 +62,7 @@ const activeData = [
 
 const allVendors = [
   {
-    id: 1,
+    id: 4,
     name: "Cyient Limited",
     description:
       "Stripe is a software platform for starting and running internet businesses with this platform.",
@@ -73,7 +73,7 @@ const allVendors = [
     avgScore: 75,
   },
   {
-    id: 2,
+    id: 5,
     name: "3Pillar Global Noida",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
@@ -84,7 +84,7 @@ const allVendors = [
     avgScore: 60,
   },
   {
-    id: 3,
+    id: 6,
     name: "Exzeo Software Pvt Ltd",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
@@ -95,7 +95,7 @@ const allVendors = [
     avgScore: 70,
   },
   {
-    id: 4,
+    id: 7,
     name: "Nucleus Software Exports ",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
@@ -106,7 +106,7 @@ const allVendors = [
     avgScore: 65,
   },
   {
-    id: 5,
+    id: 8,
     name: "Ucodice Technologies IT ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
@@ -124,6 +124,7 @@ const RequirementForm = () => {
   const [tabValue, setTabValue] = React.useState("empaneled");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
+  const [selectedCards, setSelectedCards] = useState([]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -156,6 +157,25 @@ const RequirementForm = () => {
     // shareType: "specific",
     file: null, // File upload for multiple post type
   });
+
+  const handleCardClick = (company: any) => {
+    setSelectedCards((prevSelected: any) => {
+      const isSelected = prevSelected.some(
+        (item: any) => item.id === company.id
+      );
+
+      if (isSelected) {
+        // Remove card if already selected
+        return prevSelected.filter((item: any) => item.id !== company.id);
+      } else {
+        // Add card if not selected
+        return [...prevSelected, company];
+      }
+    });
+  };
+
+  const isCardSelected = (company: any) =>
+    selectedCards.some((item: any) => item.id === company.id);
 
   const handleNext = () => {
     setIsLoader(true);
@@ -423,9 +443,15 @@ const RequirementForm = () => {
                                   sm={6}
                                   md={4}
                                   key={idx}
-                                  // onClick={() => handleDetails(company.id)}
+                                  onClick={() => handleCardClick(company)}
                                 >
-                                  <div className="h-100 border p-3 rounded-md cursor-pointer">
+                                  <div
+                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
+                                      isCardSelected(company)
+                                        ? "!bg-indigo-100 border-indigo-600"
+                                        : ""
+                                    }`}
+                                  >
                                     <div className="flex items-center mb-4">
                                       <img
                                         src={
@@ -514,9 +540,15 @@ const RequirementForm = () => {
                                   sm={6}
                                   md={4}
                                   key={idx}
-                                  // onClick={() => handleDetails(company.id)}
+                                  onClick={() => handleCardClick(company)}
                                 >
-                                  <div className="h-100 border p-3 rounded-md cursor-pointer">
+                                  <div
+                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
+                                      isCardSelected(company)
+                                        ? "!bg-indigo-100 border-indigo-600"
+                                        : ""
+                                    }`}
+                                  >
                                     <div className="flex items-center mb-4">
                                       <img
                                         src={

@@ -75,7 +75,7 @@ export default function ClientOnboarding() {
 
       <div className="mt-4">
         {/* Invited */}
-        {value == "Invited" && (
+        {value === "Invited" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {invitedData.map((company, idx) => (
@@ -134,7 +134,7 @@ export default function ClientOnboarding() {
         )}
 
         {/* Requested */}
-        {value == "Requested" && (
+        {value === "Requested" && (
           <Grid item xs={12} md={12}>
             <Grid container spacing={3}>
               {RequestedData.map((company, idx) => (

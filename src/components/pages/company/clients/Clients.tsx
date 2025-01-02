@@ -6,9 +6,6 @@ import ImportClientForm from "./ImportClientForm";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
-import { useDispatch } from "react-redux";
-import { openDrawer } from "../../../features/drawerSlice";
-import { AppDispatch } from "../../../redux/store";
 
 const clientDataObj = [
   {
@@ -93,12 +90,6 @@ export default function Clients() {
     });
   };
 
-  const dispatch: AppDispatch = useDispatch();
-
-  const handleOpenDrawer = () => {
-    dispatch(openDrawer());
-  };
-
   return (
     <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
@@ -139,7 +130,7 @@ export default function Clients() {
               />
             </div>
           </div>
-          <IconButton aria-label="filter" onClick={handleOpenDrawer}>
+          <IconButton aria-label="filter">
             <FilterListOutlinedIcon />
           </IconButton>
         </div>
