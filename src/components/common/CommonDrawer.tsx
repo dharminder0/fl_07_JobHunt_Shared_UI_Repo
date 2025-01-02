@@ -3,25 +3,37 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeDrawer } from "../features/drawerSlice";
 import Drawer from "@mui/material/Drawer"; // Material-UI Drawer
 import { RootState } from "../redux/store";
+import AddNewMemberForm from "./AddNewMemberForm";
+import { Button } from "@mui/material";
 
-const CommonDrawer: React.FC = () => {
+interface CommonDrawerProps {
+  name: string; // Unique name for the drawer
+  children?: React.ReactNode; // Drawer content
+}
+
+const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
   const dispatch = useDispatch();
-  const isOpen = useSelector((state: RootState) => state.drawer.isOpen);
+  const { isOpen, currentDrawer } = useSelector(
+    (state: RootState) => state.drawer
+  );
 
   const handleClose = () => {
     dispatch(closeDrawer());
   };
 
   return (
-    <Drawer anchor="right" open={isOpen} onClose={handleClose}>
-      <div style={{ width: "calc(100vw - 250px)" }}>
-        <div className="p-4 border-b">
-          <h2 className="text-heading">Add new team member</h2>
-        </div>
-
-        <div className="p-4 w-[50%] mx-auto">
-          <p className="text-center text-title my-4">Invite memeber</p>
-        </div>
+    <Drawer
+      anchor="right"
+      open={isOpen && currentDrawer === name}
+      onClose={handleClose}
+    >
+      <div className="h-full w-[calc(100vw-250px)]">
+        {(currentDrawer === "UpdateDetails" ||
+          currentDrawer === "InviteNewMember") && (
+          <AddNewMemberForm
+            isEditable={currentDrawer === "UpdateDetails" ? true : false}
+          />
+        )}
       </div>
     </Drawer>
   );

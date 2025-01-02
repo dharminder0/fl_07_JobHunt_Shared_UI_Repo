@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Typography, Grid, Box, Button, Chip } from "@mui/material";
+import { Typography, Box, Button, Chip, Grid2 } from "@mui/material";
 import JobStatistics from "../../common/JobStatistics";
 import { Share } from "@mui/icons-material";
 
@@ -200,9 +200,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
       <div className="flex-1 px-4 pb-4">
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
-          <JobStatistics
-            pieTitle="Requirements"
-          />
+          <JobStatistics pieTitle="Requirements" />
         </div>
         <div className="flex justify-between">
           <Box className="gap-6 w-[33%]">
@@ -322,10 +320,15 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         {/* Job Updates */}
         <p className="text-heading mb-4 mt-6">Requirements need attention</p>
 
-        <Grid container spacing={2}>
+        <Grid2 container spacing={2}>
           {attentionData.map((requirement) => (
-            <Grid item xs={12} sm={6} md={3} key={requirement.id}>
-              <div className="border rounded-md p-4">
+            <Grid2 size={3} key={requirement.id}>
+              <div
+                className="border rounded-md p-3 hover:bg-indigo-50 hover:border-indigo-700 cursor-pointer"
+                onClick={() =>
+                  navigate(`/company/myrequirements/${requirement.id}`)
+                }
+              >
                 <div className="flex">
                   <img
                     src={
@@ -341,34 +344,34 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                     <p className="text-base">{requirement.client}</p>
                   </div>
                 </div>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap mb-1">
                   <Chip
                     label="Remote"
                     variant="outlined"
-                    sx={{ fontSize: 12 }}
-                    className="my-1 me-1"
+                    className="my-1 me-1 !text-info"
+                    size="small"
                   />
                   <Chip
                     label="Positions: 3"
                     variant="outlined"
-                    sx={{ fontSize: 12 }}
-                    className="my-1 me-1"
+                    className="my-1 me-1 !text-info"
+                    size="small"
                   />
                   <Chip
                     label="12-12-2024"
                     variant="outlined"
-                    sx={{ fontSize: 12 }}
-                    className="my-1 me-1"
+                    className="my-1 me-1 !text-info"
+                    size="small"
                   />
                 </div>
 
-                <Button variant="text" startIcon={<Share />}>
+                <Button variant="text" startIcon={<Share />} size="small">
                   {requirement.vendor}
                 </Button>
               </div>
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
       </div>
     </div>
   );

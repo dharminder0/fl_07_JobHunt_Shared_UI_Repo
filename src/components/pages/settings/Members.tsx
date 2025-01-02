@@ -1,7 +1,15 @@
 import { useState } from "react";
-import { FilterList, Search } from "@mui/icons-material";
+import {
+  Add,
+  DeleteOutlineOutlined,
+  FilterList,
+  Search,
+} from "@mui/icons-material";
 import { Box, Button, TextField } from "@mui/material";
 import AddNewMemberForm from "../../../components/common/AddNewMemberForm";
+import { openDrawer } from "../../../components/features/drawerSlice";
+import { AppDispatch } from "../../../components/redux/store";
+import { useDispatch } from "react-redux";
 
 const applicantData = [
   {
@@ -23,10 +31,16 @@ const applicantData = [
 ];
 
 export default function Members() {
+  const dispatch: AppDispatch = useDispatch();
+
   const [search, setSearch] = useState("");
   const filteredApplicants = applicantData.filter((applicant) =>
     applicant.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleOpenDrawer = (name: string) => {
+    dispatch(openDrawer(name));
+  };
 
   return (
     <div className="px-4 py-3">
@@ -45,7 +59,14 @@ export default function Members() {
           <Button variant="outlined" startIcon={<FilterList />}>
             Filter
           </Button>
-          <AddNewMemberForm />
+          {/* <AddNewMemberForm /> */}
+          <Button
+            variant="outlined"
+            onClick={() => handleOpenDrawer("InviteNewMember")}
+            startIcon={<Add />}
+          >
+            Invite new team member
+          </Button>
         </Box>
       </Box>
       <div className="table-body">
@@ -62,12 +83,20 @@ export default function Members() {
           </thead>
           <tbody>
             {filteredApplicants.map((applicant, index) => (
-              <tr
-                className="cursor-pointer"
-                key={index}
-                // onClick={() => handleRowClick(applicant.id)}
-              >
-                <th className="add-right-shadow">{applicant.name}</th>
+              <tr key={index}>
+                <th className="add-right-shadow group/item ">
+                  <div
+                    onClick={() => handleOpenDrawer("UpdateDetails")}
+                    className="cursor-pointer hover:text-indigo-700"
+                  >
+                    {applicant.name}
+                  </div>
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <div className="text-info text-red-700">
+                      <DeleteOutlineOutlined fontSize="inherit" /> Delete
+                    </div>
+                  </div>
+                </th>
                 <td>{applicant.email}</td>
                 <td>{applicant.phone}</td>
                 <td>{applicant.access}</td>

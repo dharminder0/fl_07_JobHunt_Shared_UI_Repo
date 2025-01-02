@@ -29,9 +29,8 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
 
   const items = [
     { id: "id_A", value: 10, label: "Open", color: "#007FFF" },
-    { id: "id_B", value: 15, label: "In Progress", color: "#5DB996" },
-    { id: "id_C", value: 20, label: "Closed", color: "#7e22ce" },
-    { id: "id_D", value: 10, label: "Placed", color: "#06b6d4" },
+    { id: "id_B", value: 15, label: "Closed", color: "#5DB996" },
+    { id: "id_C", value: 20, label: "On hold", color: "#7e22ce" },
   ];
   const dayLabels = data.map((item) => item.day);
   const viewsData = data.map((item) => item.views);
