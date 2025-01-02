@@ -5,7 +5,7 @@ import {
   FilterList,
   Search,
 } from "@mui/icons-material";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField } from "@mui/material";
 import AddNewMemberForm from "../../../components/common/AddNewMemberForm";
 import { openDrawer } from "../../../components/features/drawerSlice";
 import { AppDispatch } from "../../../components/redux/store";
@@ -84,16 +84,18 @@ export default function Members() {
           <tbody>
             {filteredApplicants.map((applicant, index) => (
               <tr key={index}>
-                <th className="add-right-shadow group/item ">
-                  <div
-                    onClick={() => handleOpenDrawer("UpdateDetails")}
-                    className="cursor-pointer hover:text-indigo-700"
-                  >
-                    {applicant.name}
-                  </div>
-                  <div className="group/edit invisible group-hover/item:visible">
-                    <div className="text-info text-red-700">
-                      <DeleteOutlineOutlined fontSize="inherit" /> Delete
+                <th className="add-right-shadow group/item">
+                  <div className="flex justify-between">
+                    <div
+                      onClick={() => handleOpenDrawer("UpdateDetails")}
+                      className="cursor-pointer hover:text-indigo-700"
+                    >
+                      {applicant.name}
+                    </div>
+                    <div className="group/edit invisible group-hover/item:visible">
+                      <div className="text-title text-red-700 cursor-pointer">
+                        <DeleteOutlineOutlined fontSize="inherit" />
+                      </div>
                     </div>
                   </div>
                 </th>
