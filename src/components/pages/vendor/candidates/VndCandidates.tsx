@@ -13,6 +13,9 @@ import StatusDialog from "../../../../components/shared/StatusDialog";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../components/redux/store";
+import { openDrawer } from "../../../../components/features/drawerSlice";
 
 const applicantData = [
   {
@@ -100,7 +103,8 @@ const applicantData = [
 export default function VndCandidates() {
   const location = useLocation();
   const params = location.state || {};
-  const [search, setSearch] = useState("");
+  const dispatch: AppDispatch = useDispatch();
+
   const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
@@ -169,6 +173,10 @@ export default function VndCandidates() {
     setMatchingScore(score);
   };
 
+  const handleOpenDrawer = (name: string) => {
+    dispatch(openDrawer(name));
+  };
+
   return (
     <div className="px-4 py-1">
       <div className="flex flex-row gap-1 justify-end mb-1">
@@ -229,17 +237,17 @@ export default function VndCandidates() {
             <tr>
               <th className="add-right-shadow">Candidate Name</th>
               <th>Requirement</th>
-              {/* <th>Client</th> */}
               <th>Status</th>
               <th>Application Date</th>
-              {/* <th>CV</th> */}
             </tr>
           </thead>
           <tbody>
             {filteredApplicants.map((applicant, index) => (
               <tr key={index}>
                 <th className="add-right-shadow">
-                  <div>{applicant.name}</div>
+                  <div className="cursor-pointer hover:text-indigo-700" onClick={()=> handleOpenDrawer('benchPreview')}>
+                    {applicant.name}
+                  </div>
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
@@ -298,16 +306,6 @@ export default function VndCandidates() {
                   </div>
                 </th>
                 <td>{applicant.requirement}</td>
-                {/* <td className="wide-250 cursor-pointer">
-                  <div className="flex items-center">
-                    <img
-                      src={applicant.logo}
-                      style={{ height: 16, width: 16 }}
-                      className="me-1"
-                    />
-                    {applicant.client}
-                  </div>
-                </td> */}
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
@@ -325,16 +323,6 @@ export default function VndCandidates() {
                   </Typography>
                 </td>
                 <td>{applicant.date}</td>
-                {/* <td>
-                  <Button
-                  className="pointer-events-none"
-                    variant="outlined"
-                    size="small"
-                    startIcon={<PictureAsPdf />}
-                  >
-                    Download
-                  </Button>
-                </td> */}
               </tr>
             ))}
           </tbody>

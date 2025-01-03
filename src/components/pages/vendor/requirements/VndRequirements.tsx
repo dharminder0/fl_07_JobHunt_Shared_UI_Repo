@@ -31,7 +31,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const paramStatus = !params?.status
     ? benchDrawerData?.status
     : params?.status;
-  const [drawerObj, setDrawerObj] = useState({ dataObj: {}, isOpen: false });
+  const [drawerObj, setDrawerObj] = useState({ data: {}, isOpen: false });
   const [matchingObj, setMatchingObj] = useState({ isOpen: false, score: 0 });
   const [jobData, setJobData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
@@ -174,7 +174,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     if (benchDrawerData.isOpen) {
       setIsSuccessPopup(true);
     } else {
-      setDrawerObj((prev) => ({ ...prev, dataObj: data, isOpen: isOpen }));
+      setDrawerObj((prev) => ({ ...prev, data: data, isOpen: isOpen }));
     }
   };
 

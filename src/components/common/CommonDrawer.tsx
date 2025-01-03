@@ -5,6 +5,7 @@ import Drawer from "@mui/material/Drawer"; // Material-UI Drawer
 import { RootState } from "../redux/store";
 import AddNewMemberForm from "./AddNewMemberForm";
 import { Button } from "@mui/material";
+import BenchPreview from "../pages/vendor/bench/BenchPreview";
 
 interface CommonDrawerProps {
   name: string; // Unique name for the drawer
@@ -34,6 +35,7 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
             isEditable={currentDrawer === "UpdateDetails" ? true : false}
           />
         )}
+        {currentDrawer === "benchPreview" && (<BenchPreview />)}
       </div>
     </Drawer>
   );

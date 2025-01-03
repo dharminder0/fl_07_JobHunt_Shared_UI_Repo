@@ -223,31 +223,33 @@ export default function BenchPreview() {
             </p>
             <ul>
               <li>
-                <Link
+                <a
                   className="text-base hover:text-indigo-700"
-                  to={"mailto:raj@fleekitsolutions.com"}
+                  href="mailto:raj@fleekitsolutions.com"
                 >
                   <EmailOutlined fontSize="inherit" className="me-1" />
                   raj@fleekitsolutions.com
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   className="text-base hover:text-indigo-700"
-                  to={"tel:9111292929"}
+                  href="tel:9111292929"
                 >
                   <Phone fontSize="inherit" className="me-1" />
                   9111292929
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   className="text-base hover:text-indigo-700"
-                  to={"https://www.linkedin.com/in/bertjan-wolfs-24593b59"}
+                  href="https://www.linkedin.com/in/bertjan-wolfs-24593b59"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <LinkedIn fontSize="inherit" className="me-1" />
                   https://www.linkedin.com/in/bertjan-wolfs-24593b59
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
