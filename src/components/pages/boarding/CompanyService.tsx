@@ -16,7 +16,11 @@ import {
 import FileUploadBox from "../../common/FileUploadBox";
 
 const CompanyService = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [rateCard, setRateCard] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -28,7 +32,12 @@ const CompanyService = () => {
     "All of the Above",
   ];
 
-  const resourcesOptions: Array<string> = ["Onsite", "Offsite", "Hybrid", "All of the Above"];
+  const resourcesOptions: Array<string> = [
+    "Onsite",
+    "Offsite",
+    "Hybrid",
+    "All of the Above",
+  ];
 
   const handleFileUpload = (e: any) => {
     const file = e.target.files?.[0];
@@ -38,7 +47,13 @@ const CompanyService = () => {
   };
 
   const onSubmit = (data: any) => {
-    if (data.companyModule && data.resources && data.clientsServed && data.internationalProjects && rateCard) {
+    if (
+      data.companyModule &&
+      data.resources &&
+      data.clientsServed &&
+      data.internationalProjects &&
+      rateCard
+    ) {
       alert("Form submitted successfully!");
       // Optionally save the data to localStorage or process it
       console.log({
@@ -109,7 +124,9 @@ const CompanyService = () => {
 
       {/* Upload Rate Card */}
       <Box mt={2}>
-        <Typography className="!text-base">Company Rate Card (Upload)</Typography>
+        <Typography className="!text-base">
+          Company Rate Card (Upload)
+        </Typography>
         {/* <input type="file" onChange={handleFileUpload} className="mt-2" />
         {rateCard && <p>Selected File: {rateCard.name}</p>} */}
         <div className="mt-2">
@@ -139,7 +156,9 @@ const CompanyService = () => {
       />
 
       {/* International Projects Experience */}
-      <Typography className="!text-base" sx={{ mt: 2 }}>International Projects Experience</Typography>
+      <Typography className="!text-base" sx={{ mt: 2 }}>
+        International Projects Experience
+      </Typography>
       <Controller
         name="internationalProjects"
         control={control}
