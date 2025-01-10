@@ -8,11 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import PlanSelection from "./PlanSelection";
 
-const steps = [
-  "Company Information",
-  "Subscription Plans",
-  // "Technical Expertise",
-];
+const steps = ["Company Information", "Subscription Plans"];
 
 export default function OnBoarding() {
   const navigate = useNavigate();
@@ -22,15 +18,41 @@ export default function OnBoarding() {
   const childRef = useRef<{ submitForm: () => void }>(null);
 
   const handleNext = () => {
-    if (activeStep !== steps.length) {
+    if (activeStep !== steps.length - 1) {
       if (activeStep === 0 && childRef.current) {
         childRef.current.submitForm();
       }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
-      localStorage.setItem("role", JSON.stringify(["company"]));
-      localStorage.setItem("activeRole", "company");
-      navigate("/company");
+      localStorage.setItem(
+        "role",
+        JSON.stringify(
+          companyType === "client"
+            ? ["company"]
+            : companyType === "vendor"
+            ? ["vendor"]
+            : companyType === "both"
+            ? ["company", "vendor"]
+            : []
+        )
+      );
+      localStorage.setItem(
+        "activeRole",
+        companyType === "client"
+          ? "company"
+          : companyType === "vendor"
+          ? "vendor"
+          : "company"
+      );
+      navigate(
+        `/${
+          companyType === "client"
+            ? "company"
+            : companyType === "vendor"
+            ? "vendor"
+            : "company"
+        }`
+      );
     }
   };
 
@@ -62,7 +84,7 @@ export default function OnBoarding() {
       <div className="flex-grow overflow-auto">
         <div className="container mx-auto py-3">
           <div className="w-full">
-            <div className="w-[70%] mx-auto">
+            <div className="w-3/5 mx-auto">
               <Stepper activeStep={activeStep}>
                 {steps.map((label) => {
                   const stepProps: { completed?: boolean } = {};
