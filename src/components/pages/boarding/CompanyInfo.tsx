@@ -24,7 +24,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
   const navigate = useNavigate();
 
   const company = localStorage.companyName;
-  const [companyType, setCompanyType] = useState("Vendor");
+  const [companyType, setCompanyType] = useState("vendor");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const {

@@ -21,7 +21,7 @@ const PlanSelection = () => {
   const plans = [
     {
       id: "vendorTrial",
-      title: "Trial Plan",
+      title: "30 Days Free Trial",
       details: [
         "3 empanelment requests.",
         "Manage up to 5 resources.",
@@ -29,24 +29,24 @@ const PlanSelection = () => {
         "Single member access only.",
       ],
       type: "vendor",
-      priceMonthly: 25,
-      priceAnnually: 250,
+      priceMonthly: 0,
+      priceAnnually: 0,
     },
     {
       id: "clientTrial",
-      title: "Trial Plan",
+      title: "30 Days Free Trial",
       details: [
         "3 empanelment invites.",
         "Post up to 5 requirements.",
         "Single member access only.",
       ],
       type: "client",
-      priceMonthly: 20,
-      priceAnnually: 200,
+      priceMonthly: 0,
+      priceAnnually: 0,
     },
     {
       id: "vendorClientTrial",
-      title: "Trial Plan",
+      title: "30 Days Free Trial",
       details: [
         "3 empanelment requests and invites.",
         "Manage up to 5 resources.",
@@ -55,8 +55,8 @@ const PlanSelection = () => {
         "Single member access only.",
       ],
       type: "both",
-      priceMonthly: 45,
-      priceAnnually: 450,
+      priceMonthly: 0,
+      priceAnnually: 0,
     },
     {
       id: "vendorBusiness",
@@ -126,68 +126,65 @@ const PlanSelection = () => {
   return (
     <div>
       {/* Show this section only if a business plan is selected */}
-      {isBusinessPlanSelected && (
-        <div className="mb-8 text-center">
-          <h2 className="mb-2 text-heading">
-            The Right Plan for Your Business
-          </h2>
-          <p className="text-base text-gray-500 mb-8 text-center">
-            We have several powerful plans to showcase your business and get
-            discovered as a creative entrepreneur. Everything you need.
-          </p>
-          <div className="flex justify-center mb-8 space-x-6">
-            <FormControl component="fieldset">
-              <ButtonGroup
-                color="primary"
-                aria-label="billing frequency"
-                onChange={handleBillingChange}
-              >
-                <Button
-                  value="monthly"
-                  onClick={() => setBillingFrequency("monthly")}
-                  className={
-                    billingFrequency === "monthly"
-                      ? "!bg-indigo-500 !text-white"
-                      : ""
-                  }
-                >
-                  Monthly
-                </Button>
-                <Button
-                  value="annually"
-                  onClick={() => setBillingFrequency("annually")}
-                  className={
-                    billingFrequency === "annually"
-                      ? "!bg-indigo-500 !text-white"
-                      : ""
-                  }
-                >
-                  Annually
-                </Button>
-              </ButtonGroup>
-            </FormControl>
 
-            <div className="w-full max-w-xs">
-              <Slider
-                value={users}
-                onChange={(e: any) => handleUsers(e, e.target.value)}
-                valueLabelDisplay="auto"
-                step={1}
-                min={1}
-                max={50}
-                valueLabelFormat={(value) => `${value} Users`}
-              />
-            </div>
+      <div className="mb-8 text-center">
+        <h2 className="mb-2 text-heading">The Right Plan for Your Business</h2>
+        <p className="text-base text-gray-500 mb-8 text-center">
+          We have several powerful plans to showcase your business and get
+          discovered as a creative entrepreneur. Everything you need.
+        </p>
+        <div className="flex justify-center mb-8 space-x-6">
+          <FormControl component="fieldset">
+            <ButtonGroup
+              color="primary"
+              aria-label="billing frequency"
+              onChange={handleBillingChange}
+            >
+              <Button
+                value="monthly"
+                onClick={() => setBillingFrequency("monthly")}
+                className={
+                  billingFrequency === "monthly"
+                    ? "!bg-indigo-500 !text-white"
+                    : ""
+                }
+              >
+                Monthly
+              </Button>
+              <Button
+                value="annually"
+                onClick={() => setBillingFrequency("annually")}
+                className={
+                  billingFrequency === "annually"
+                    ? "!bg-indigo-500 !text-white"
+                    : ""
+                }
+              >
+                Annually
+              </Button>
+            </ButtonGroup>
+          </FormControl>
+
+          <div className="w-full max-w-xs">
+            <Slider
+              value={users}
+              onChange={(e: any) => handleUsers(e, e.target.value)}
+              valueLabelDisplay="auto"
+              step={1}
+              min={1}
+              max={50}
+              valueLabelFormat={(value) => `${value} Users`}
+            />
           </div>
         </div>
-      )}
+      </div>
 
       {/* Plans Cards */}
       <div className="flex flex-wrap justify-center space-x-4">
         {filteredPlans.map((plan: any) => (
           <div
             key={plan.id}
-            className={`w-[325px] cursor-pointer py-10 px-6 rounded-md border border-indigo-500 hover:shadow-xl hover:-translate-y-1 relative ${
+            className={`w-[325px] cursor-pointer py-10 px-6 rounded-md border border-indigo-500 hover:shadow-xl hover:-translate-y-2 relative transition-transform duration-300 ${
               selectedCard === plan.id ? "!bg-blue-100" : "bg-white"
             }`}
             onClick={() => handleCardClick(plan.id)}
@@ -212,7 +209,9 @@ const PlanSelection = () => {
             </div>
             <div className="flex justify-center">
               <Button variant="contained" className="w-[150px]">
-                Choose
+                {plan.title.includes("Business Plan")
+                  ? "Choose"
+                  : "Try for Free"}
               </Button>
             </div>
           </div>

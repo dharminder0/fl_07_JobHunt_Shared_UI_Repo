@@ -63,7 +63,7 @@ export default function Login() {
     const storedPassword = localStorage.getItem("password");
     const storedRole = localStorage.getItem("role");
     const companyIcon = localStorage.getItem("companyIcon");
-
+    console.log(storedRole);
     if (storedEmail && storedPassword) {
       // If credentials exist in localStorage, verify them
       if (email === storedEmail && password === storedPassword) {
@@ -93,6 +93,10 @@ export default function Login() {
       localStorage.setItem("companyIcon", user.companyIcon);
       localStorage.setItem("role", JSON.stringify(user.role));
       localStorage.setItem("activeRole", user.role[0]);
+      localStorage.setItem(
+        "companyType",
+        user.role[0] === "company" ? "client" : "vendor"
+      );
 
       setErrorMessage(""); // Clear error message
 
