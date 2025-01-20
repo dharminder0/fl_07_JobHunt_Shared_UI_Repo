@@ -1,41 +1,70 @@
 import React, { useState } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   TextField,
 } from "@mui/material";
+import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import Slider from "./slider";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { usertUser } from "../sharedService/apiService";
+import { closeBackdrop, openBackdrop } from "../features/drawerSlice";
+import { AppDispatch, RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = React.useState(false);
+  const [isLoader, setIsLoader] = React.useState(false);
 
-  const handleSignup = () => {
-    if (companyName && email && password) {
-      // Save user details to localStorage
-      localStorage.setItem("companyName", companyName);
-      localStorage.setItem("email", email);
-      localStorage.setItem("password", password);
-      localStorage.setItem("isLoggedIn", "true");
-
-      setErrorMessage("");
-      setOpen(true);
-    } else {
-      setErrorMessage("Please fill in all the fields.");
-    }
-  };
+  const dispatch: AppDispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
     navigate("/onboard");
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit: SubmitHandler<any> = (data: any) => {
+    usertUser(data)
+      .then((res: any) => {
+        handleBackDropOpen();
+        setIsLoader(true);
+        if (res?.success) {
+          setEmail(data.email);
+          localStorage.setItem("companyName", data.companyName);
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("userId", res?.content);
+          localStorage.setItem("isLoggedIn", "true");
+          setTimeout(() => {
+            handleBackDropClose();
+            setIsLoader(true);
+            setOpen(true);
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(true);
+          handleBackDropClose();
+        }, 1000);
+      });
+  };
+
+  const handleBackDropClose = () => {
+    dispatch(closeBackdrop());
+  };
+  const handleBackDropOpen = () => {
+    dispatch(openBackdrop());
   };
 
   return (
@@ -46,22 +75,6 @@ export default function SignUp() {
           <div>
             <Slider />
           </div>
-          {/* <div className="bg-white p-4 w-40">
-              <img
-                src={"/assets/images/bar.png"}
-                alt="JobHunty Logo"
-                className="h-8 w-auto mb-4"
-              />
-              <h2 className="font-bold text-title">10K+</h2>
-              <p className="text-gray-600 text-base">People got hired</p>
-            </div> */}
-          {/* <div className="self-center">
-              <img
-                src={"/assets/images/banner-person.png"}
-                alt="JobHunty Logo"
-                className="w-[60%]"
-              />
-            </div> */}
         </div>
         <div className="w-1/2 mx-auto flex flex-col justify-center items-center px-16">
           <div className="w-full max-w-md mb-8">
@@ -71,41 +84,62 @@ export default function SignUp() {
           </div>
 
           {/* Signup Form */}
-          <form className="w-full max-w-md space-y-4">
+          <form
+            className="w-full max-w-md space-y-4"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <TextField
               label="Company Name"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
+              {...register("companyName", {
+                required: "Company Name",
+              })}
+              error={!!errors.companyName}
             />
             <TextField
               label="Email Address"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
+              {...register("email", {
+                required: "Email Address",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email address",
+                },
+              })}
+              error={!!errors.email}
             />
             <TextField
               label="Password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               fullWidth
               variant="outlined"
               size="small"
+              {...register("password", {
+                required: "Password ",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
+              error={!!errors.password}
             />
 
             {/* Error message */}
-            {errorMessage && (
-              <p className="text-info text-red-500">{errorMessage}</p>
+            {errors && (
+              <p className="text-info text-red-500">
+                {/* {Object.values(errors)
+                  .map((err) => err?.message)
+                  .join(", ")} */}
+              </p>
             )}
 
             <Button
-              onClick={handleSignup}
+              type="submit"
               variant="contained"
               color="primary"
               fullWidth
@@ -135,9 +169,6 @@ export default function SignUp() {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          {/* <DialogTitle id="alert-dialog-title" className="!text-heading">
-              {"Registration Successful!"}
-            </DialogTitle> */}
           <DialogContent>
             <DialogContentText
               id="alert-dialog-description"
@@ -187,4 +218,7 @@ export default function SignUp() {
       </div>
     </div>
   );
+}
+function dispatch(arg0: { payload: undefined; type: "drawer/closeBackdrop" }) {
+  throw new Error("Function not implemented.");
 }

@@ -7,6 +7,9 @@ import CompanyInfo from "./CompanyInfo";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import PlanSelection from "./PlanSelection";
+import { useSelector } from "react-redux";
+import { RootState } from "@/components/redux/store";
+import { RoleType } from "../../sharedService/enums";
 
 const steps = ["Company Information", "Subscription Plans"];
 
@@ -16,43 +19,50 @@ export default function OnBoarding() {
   const companyName = localStorage.companyName;
   const companyType = localStorage.companyType;
   const childRef = useRef<{ submitForm: () => void }>(null);
+  const isBackdropOpen = useSelector(
+    (state: RootState) => state.drawer.isBackdropOpen
+  );
 
   const handleNext = () => {
-    if (activeStep !== steps.length - 1) {
-      if (activeStep === 0 && childRef.current) {
-        childRef.current.submitForm();
-      }
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    } else {
-      localStorage.setItem(
-        "role",
-        JSON.stringify(
-          companyType === "client"
-            ? ["company"]
-            : companyType === "vendor"
-            ? ["vendor"]
-            : companyType === "both"
-            ? ["company", "vendor"]
-            : []
-        )
-      );
-      localStorage.setItem(
-        "activeRole",
-        companyType === "client"
-          ? "company"
-          : companyType === "vendor"
-          ? "vendor"
-          : "company"
-      );
-      navigate(
-        `/${
-          companyType === "client"
+    if (!isBackdropOpen) {
+      if (activeStep !== steps.length - 1) {
+        if (activeStep === 0 && childRef.current) {
+          childRef.current.submitForm();
+        }
+        setTimeout(() => {
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }, 1000);
+      } else {
+        localStorage.setItem(
+          "role",
+          JSON.stringify(
+            companyType === RoleType.Client
+              ? ["company"]
+              : companyType === RoleType.Vendor
+              ? ["vendor"]
+              : companyType === RoleType.Both
+              ? ["company", "vendor"]
+              : []
+          )
+        );
+        localStorage.setItem(
+          "activeRole",
+          companyType === RoleType.Client
             ? "company"
-            : companyType === "vendor"
+            : companyType === RoleType.Vendor
             ? "vendor"
             : "company"
-        }`
-      );
+        );
+        navigate(
+          `/${
+            companyType === RoleType.Client
+              ? "company"
+              : companyType === RoleType.Vendor
+              ? "vendor"
+              : "company"
+          }`
+        );
+      }
     }
   };
 

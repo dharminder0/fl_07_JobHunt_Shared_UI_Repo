@@ -8,15 +8,21 @@ import { OrganizationTypeProvider } from "./contexts/OrganizationTypeContext";
 import CommonDrawer from "./components/common/CommonDrawer";
 import { useSelector } from "react-redux";
 import { RootState } from "./components/redux/store";
+import BackDropLoader from "./components/shared/BackDropLoader";
 
 function App() {
   const { currentDrawer } = useSelector((state: RootState) => state.drawer);
+  const isBackdropOpen = useSelector(
+    (state: RootState) => state.drawer.isBackdropOpen
+  );
+
   return (
     <OrganizationTypeProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppRoutes />
         <CommonDrawer name={!currentDrawer ? "" : currentDrawer} />
+        {isBackdropOpen && <BackDropLoader />}
       </ThemeProvider>
     </OrganizationTypeProvider>
   );

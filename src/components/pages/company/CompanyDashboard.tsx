@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Box, Button, Chip, Grid2 } from "@mui/material";
 import JobStatistics from "../../common/JobStatistics";
 import { Share } from "@mui/icons-material";
+import { getAllUsers } from "../../sharedService/apiService";
 
 interface CompanyDashboardProps {}
 
@@ -136,6 +137,12 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
       vendor: "DevStingX Technologies",
     },
   ];
+
+  useEffect(() => {
+    getAllUsers().then((res: any) => {
+      console.log(res);
+    });
+  }, []);
 
   const handleCardClick = (page: string, status: any) => {
     navigate(`/company/${page}`, {

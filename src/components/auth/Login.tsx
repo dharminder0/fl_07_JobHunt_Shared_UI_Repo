@@ -63,7 +63,7 @@ export default function Login() {
     const storedPassword = localStorage.getItem("password");
     const storedRole = localStorage.getItem("role");
     const companyIcon = localStorage.getItem("companyIcon");
-    console.log(storedRole);
+
     if (storedEmail && storedPassword) {
       // If credentials exist in localStorage, verify them
       if (email === storedEmail && password === storedPassword) {
@@ -121,22 +121,6 @@ export default function Login() {
       <div className="container flex h-screen">
         {/* Left Section */}
         <div className="w-1/2 bg-white my-auto flex flex-col justify-end px-16">
-          {/* <div className="mb-8 bg-white p-4 w-40">
-            <img
-              src={"/assets/images/bar.png"}
-              alt="JobHunty Logo"
-              className="h-8 w-auto mb-4"
-            />
-            <h2 className="font-bold text-title">10K+</h2>
-            <p className="text-gray-600 text-base">People got hired</p>
-          </div>
-          <div className="self-center">
-            <img
-              src={"/assets/images/banner-person.png"}
-              alt="JobHunty Logo"
-              className="w-[60%]"
-            />
-          </div> */}
           <div>
             <Slider />
           </div>
