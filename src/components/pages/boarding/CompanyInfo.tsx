@@ -4,28 +4,31 @@ import {
   Typography,
   Popover,
   FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   IconButton,
   Grid2,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
-  FormHelperText,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { InfoOutlined } from "@mui/icons-material";
+import { RoleType } from "../../sharedService/enums";
+import { usertCompanyInfo } from "../../../components/sharedService/apiService";
+import { AppDispatch } from "../../../components/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  closeBackdrop,
+  openBackdrop,
+} from "../../../components/features/drawerSlice";
 
 type ChildProps = {};
 const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
-  const navigate = useNavigate();
-
+  const userData = JSON.parse(localStorage.userData);
   const company = localStorage.companyName;
-  const [companyType, setCompanyType] = useState("vendor");
+  const [companyType, setCompanyType] = useState(RoleType.Vendor);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const dispatch: AppDispatch = useDispatch();
 
   const {
     control,
@@ -36,13 +39,31 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
   useImperativeHandle(ref, () => ({
     submitForm: () => {
+      setValue("userId", userData.userId);
       localStorage.setItem("companyType", companyType);
       handleSubmit(onSubmit)();
     },
   }));
 
   const onSubmit = (data: any) => {
+    dispatch(openBackdrop());
     console.log("Form Submitted:", data);
+    userData.role = data?.registrationType;
+    usertCompanyInfo(data)
+      .then((result: any) => {
+        console.log("Form result:", result);
+        localStorage.setItem("userData", JSON.stringify(userData));
+        if (result?.success) {
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
 
   useEffect(() => {
@@ -59,20 +80,12 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
   const open = Boolean(anchorEl);
 
-  // useImperativeHandle(ref, () => ({
-  //   handleSignup() {
-  //     // Save user details to localStorage
-  //     localStorage.setItem("companyName", companyName);
-  //     localStorage.setItem("companyStrength", companyStrength);
-  //     localStorage.setItem("companyPortfolio", companyPortfolio);
-  //     localStorage.setItem("contactMail", contactMail);
-  //     localStorage.setItem("companyWebsite", companyWebsite);
-  //     localStorage.setItem("mobileNumber", mobileNumber);
-  //     localStorage.setItem("location", JSON.stringify(location));
-  //     localStorage.setItem("tierLevel", tierLevel);
-  //     localStorage.setItem("isLoggedIn", "true");
-  //   },
-  // }));
+  const handleBackDropClose = () => {
+    dispatch(closeBackdrop());
+  };
+  const handleBackDropOpen = () => {
+    dispatch(openBackdrop());
+  };
 
   return (
     <>
@@ -113,20 +126,20 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
                     row // Add this prop to align the radios horizontally
                   >
                     <FormControlLabel
-                      value="vendor"
+                      value={RoleType?.Vendor}
                       control={<Radio size="small" />}
                       label="Vendor"
                       defaultChecked={true}
                       onClick={(e: any) => setCompanyType(e.target.value)}
                     />
                     <FormControlLabel
-                      value="client"
+                      value={RoleType?.Client}
                       control={<Radio size="small" />}
                       label="Client"
                       onClick={(e: any) => setCompanyType(e.target.value)}
                     />
                     <FormControlLabel
-                      value="both"
+                      value={RoleType?.Both}
                       control={<Radio size="small" />}
                       label="Both"
                       onClick={(e: any) => setCompanyType(e.target.value)}
@@ -158,7 +171,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
         {/* Company Portfolio Field */}
         <Controller
-          name="companyPortfolio"
+          name="portfolio"
           control={control}
           defaultValue=""
           rules={{ required: "Company Portfolio is required" }}
@@ -172,7 +185,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
               variant="outlined"
               placeholder="Brief description of your company portfolio"
               size="small"
-              error={!!errors.companyPortfolio}
+              error={!!errors.portfolio}
             />
           )}
         />
@@ -202,7 +215,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
           {/* Mobile Number */}
           <Grid2 size={6}>
             <Controller
-              name="mobileNumber"
+              name="phone"
               control={control}
               defaultValue=""
               rules={{ required: "Mobile Number is required" }}
@@ -214,7 +227,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
                   variant="outlined"
                   placeholder="Enter your contact number"
                   size="small"
-                  error={!!errors.mobileNumber}
+                  error={!!errors.phone}
                 />
               )}
             />
@@ -225,7 +238,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
           {/* Company Website */}
           <Grid2 size={6}>
             <Controller
-              name="companyWebsite"
+              name="website"
               control={control}
               defaultValue=""
               rules={{ required: "Company Website is required" }}
@@ -237,7 +250,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
                   variant="outlined"
                   placeholder="Enter your website URL"
                   size="small"
-                  error={!!errors.companyWebsite}
+                  error={!!errors.website}
                 />
               )}
             />
@@ -246,7 +259,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
           {/* Company Strength */}
           <Grid2 size={6}>
             <Controller
-              name="companyStrength"
+              name="strength"
               control={control}
               defaultValue=""
               rules={{ required: "Company Strength is required" }}
@@ -259,7 +272,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
                   variant="outlined"
                   placeholder="Number of Employees"
                   size="small"
-                  error={!!errors.companyStrength}
+                  error={!!errors.strength}
                 />
               )}
             />
@@ -267,13 +280,13 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
         </Grid2>
 
         {/* Error Message */}
-        {errors && (
+        {/* {errors && (
           <Typography color="error" variant="body2">
             {Object.values(errors).map((err: any) => (
               <div key={err.message}>{err.message}</div>
             ))}
           </Typography>
-        )}
+        )} */}
       </form>
 
       <Popover

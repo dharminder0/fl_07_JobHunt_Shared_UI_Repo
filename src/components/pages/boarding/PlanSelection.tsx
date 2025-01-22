@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { CheckOutlined } from "@mui/icons-material";
 import { Slider, FormControl, Button, ButtonGroup } from "@mui/material";
+import { RoleType } from "../../sharedService/enums";
 
 const PlanSelection = () => {
   const companyType = localStorage.companyType;
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string>(
-    !companyType ? "vendor" : companyType
+    !companyType ? RoleType.Vendor : companyType
   );
   const [users, setUsers] = useState<number>(1); // Default to 12 months
   const [billingFrequency, setBillingFrequency] = useState<string>("monthly");
@@ -28,7 +29,7 @@ const PlanSelection = () => {
         "Submit up to 5 applications.",
         "Single member access only.",
       ],
-      type: "vendor",
+      type: "1",
       priceMonthly: 0,
       priceAnnually: 0,
     },
@@ -40,7 +41,7 @@ const PlanSelection = () => {
         "Post up to 5 requirements.",
         "Single member access only.",
       ],
-      type: "client",
+      type: "2",
       priceMonthly: 0,
       priceAnnually: 0,
     },
@@ -54,7 +55,7 @@ const PlanSelection = () => {
         "Post up to 5 requirements.",
         "Single member access only.",
       ],
-      type: "both",
+      type: "3",
       priceMonthly: 0,
       priceAnnually: 0,
     },
@@ -67,7 +68,7 @@ const PlanSelection = () => {
         "Submit unlimited applications.",
         "Multi-member access.",
       ],
-      type: "vendor",
+      type: "1",
       priceMonthly: 90,
       priceAnnually: 900,
     },
@@ -79,7 +80,7 @@ const PlanSelection = () => {
         "Post unlimited requirements.",
         "Multi-member access.",
       ],
-      type: "client",
+      type: "2",
       priceMonthly: 75,
       priceAnnually: 750,
     },
@@ -93,7 +94,7 @@ const PlanSelection = () => {
         "Post unlimited requirements.",
         "Multi-member access.",
       ],
-      type: "both",
+      type: "3",
       priceMonthly: 150,
       priceAnnually: 1500,
     },

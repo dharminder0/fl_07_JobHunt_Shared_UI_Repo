@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DrawerState {
   isOpen: boolean;
-  currentDrawer: string | null; // Stores the name of the open drawer
+  currentDrawer: string | null;
+  isBackdropOpen: boolean;
 }
 
 const initialState: DrawerState = {
   isOpen: false,
   currentDrawer: null,
+  isBackdropOpen: false,
 };
 
 const drawerSlice = createSlice({
@@ -31,9 +33,25 @@ const drawerSlice = createSlice({
         state.currentDrawer = action.payload;
       }
     },
+    openBackdrop(state) {
+      state.isBackdropOpen = true;
+    },
+    closeBackdrop(state) {
+      state.isBackdropOpen = false;
+    },
+    setBackdrop(state, action: PayloadAction<boolean>) {
+      state.isBackdropOpen = action.payload;
+    },
   },
 });
 
-export const { openDrawer, closeDrawer, toggleDrawer } = drawerSlice.actions;
+export const {
+  openDrawer,
+  closeDrawer,
+  toggleDrawer,
+  openBackdrop,
+  closeBackdrop,
+  setBackdrop,
+} = drawerSlice.actions;
 
 export default drawerSlice.reducer;
