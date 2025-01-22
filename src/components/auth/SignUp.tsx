@@ -14,12 +14,12 @@ import { usertUser } from "../sharedService/apiService";
 import { closeBackdrop, openBackdrop } from "../features/drawerSlice";
 import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import { RoleType } from "../sharedService/enums";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [open, setOpen] = React.useState(false);
-  const [isLoader, setIsLoader] = React.useState(false);
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -35,26 +35,21 @@ export default function SignUp() {
   } = useForm();
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
+    setEmail(data.email);
     usertUser(data)
       .then((res: any) => {
         handleBackDropOpen();
-        setIsLoader(true);
         if (res?.success) {
-          setEmail(data.email);
-          localStorage.setItem("companyName", data.companyName);
-          localStorage.setItem("email", data.email);
-          localStorage.setItem("userId", res?.content);
           localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userData", JSON.stringify(res?.content));
           setTimeout(() => {
             handleBackDropClose();
-            setIsLoader(true);
             setOpen(true);
           }, 1000);
         }
       })
       .catch((error: any) => {
         setTimeout(() => {
-          setIsLoader(true);
           handleBackDropClose();
         }, 1000);
       });

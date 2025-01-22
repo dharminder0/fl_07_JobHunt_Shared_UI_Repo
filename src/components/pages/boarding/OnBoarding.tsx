@@ -16,12 +16,14 @@ const steps = ["Company Information", "Subscription Plans"];
 export default function OnBoarding() {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
+  const userData = JSON.parse(localStorage.userData);
   const companyName = localStorage.companyName;
   const companyType = localStorage.companyType;
   const childRef = useRef<{ submitForm: () => void }>(null);
   const isBackdropOpen = useSelector(
     (state: RootState) => state.drawer.isBackdropOpen
   );
+  console.log(userData)
 
   const handleNext = () => {
     if (!isBackdropOpen) {

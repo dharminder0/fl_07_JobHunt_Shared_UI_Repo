@@ -23,8 +23,8 @@ import {
 
 type ChildProps = {};
 const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
+  const userData = JSON.parse(localStorage.userData);
   const company = localStorage.companyName;
-  const userId = localStorage.userId;
   const [companyType, setCompanyType] = useState(RoleType.Vendor);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -39,7 +39,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
   useImperativeHandle(ref, () => ({
     submitForm: () => {
-      setValue("userId", userId);
+      setValue("userId", userData.userId);
       localStorage.setItem("companyType", companyType);
       handleSubmit(onSubmit)();
     },
@@ -48,8 +48,11 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
   const onSubmit = (data: any) => {
     dispatch(openBackdrop());
     console.log("Form Submitted:", data);
+    userData.role = data?.registrationType;
     usertCompanyInfo(data)
       .then((result: any) => {
+        console.log("Form result:", result);
+        localStorage.setItem("userData", JSON.stringify(userData));
         if (result?.success) {
           setTimeout(() => {
             dispatch(closeBackdrop());

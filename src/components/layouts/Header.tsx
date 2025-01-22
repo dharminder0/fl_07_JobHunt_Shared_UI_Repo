@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useOrganizationType } from "../../contexts/OrganizationTypeContext";
@@ -80,10 +80,15 @@ const Header: React.FC<HeaderProps> = () => {
     <div className="h-[52px] px-5 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className="flex gap-3">
         <div className="icon my-auto">
-          <img
+          {/* <img
             className="rounded-full h-8"
             src={companyIcon}
             alt="JobHunty Logo"
+          /> */}
+          <Avatar
+            alt="You"
+            src={companyIcon}
+            className="rounded-full !h-8 !w-8"
           />
         </div>
         <div

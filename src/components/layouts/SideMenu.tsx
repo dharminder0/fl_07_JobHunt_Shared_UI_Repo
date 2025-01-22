@@ -33,17 +33,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const activeRole = localStorage.getItem("activeRole") || "";
-  const handleLogout = () => {
-    // Remove login session data from localStorage
-    localStorage.removeItem("isLoggedIn");
 
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("activeRole");
     localStorage.removeItem("role");
-    localStorage.removeItem("companyName");
-    localStorage.removeItem("companyType");
-
+    localStorage.removeItem("userData");
     navigate("/login");
   };
 

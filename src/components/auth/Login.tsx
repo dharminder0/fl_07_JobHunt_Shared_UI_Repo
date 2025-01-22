@@ -8,14 +8,30 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Slider from "./slider";
+import { Controller, useForm } from "react-hook-form";
+import { userLogin } from "../sharedService/apiService";
+import { AppDispatch } from "../redux/store";
+import { useDispatch } from "react-redux";
+import { closeBackdrop, openBackdrop } from "../features/drawerSlice";
+import { RoleType } from "../sharedService/enums";
+import { RoleData } from "../sharedService/shareData";
+
+type FormData = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
 
 export default function Login() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch: AppDispatch = useDispatch();
+
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<FormData>();
 
   const credsList: any[] = [
     {
@@ -51,65 +67,76 @@ export default function Login() {
     }
   }, []);
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleLogin();
-    }
-  };
-
-  const handleLogin = () => {
-    // Step 1: Check if credentials already exist in localStorage
-    const storedEmail = localStorage.getItem("email");
-    const storedPassword = localStorage.getItem("password");
-    const storedRole = localStorage.getItem("role");
-    const companyIcon = localStorage.getItem("companyIcon");
-
-    if (storedEmail && storedPassword) {
-      // If credentials exist in localStorage, verify them
-      if (email === storedEmail && password === storedPassword) {
-        setErrorMessage("");
-        redirectBasedOnRole(JSON.parse(storedRole || "[]"));
+  const onSubmit = (data: FormData) => {
+    console.log("Form Data: ", data);
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    if (userData && userData?.email) {
+      if (data.email === userData?.email) {
+        redirectBasedOnRole();
         return;
       } else {
-        logWithCreds();
-        setErrorMessage("Stored credentials do not match. Please try again.");
+        logWithCreds(data);
         return;
       }
     } else {
-      logWithCreds();
+      logWithCreds(data);
     }
   };
 
-  const logWithCreds = () => {
-    const user = credsList.find(
-      (cred) => cred.email === email && cred.password === password
-    );
-
-    if (user) {
-      // Successful login: Store user credentials in localStorage
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("email", user.email);
-      localStorage.setItem("password", user.password);
-      localStorage.setItem("companyIcon", user.companyIcon);
-      localStorage.setItem("role", JSON.stringify(user.role));
-      localStorage.setItem("activeRole", user.role[0]);
-      localStorage.setItem(
-        "companyType",
-        user.role[0] === "company" ? "client" : "vendor"
-      );
-
-      setErrorMessage(""); // Clear error message
-
-      // Redirect based on role
-      redirectBasedOnRole(user.role);
-    } else {
-      setErrorMessage("Invalid email or password. Please try again.");
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSubmit(onSubmit);
     }
   };
 
-  const redirectBasedOnRole = (roles: string[]) => {
+  const logWithCreds = (data: any) => {
+    if (data && data?.email) {
+      const payload = {
+        email: data?.email ?? "",
+        password: data?.password ?? "",
+      };
+      dispatch(openBackdrop());
+      userLogin(payload)
+        .then((res: any) => {
+          if (res?.success) {
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem(
+              "activeRole",
+              res.content?.role === RoleType.Vendor ? "vendor" : "company"
+            );
+            localStorage.setItem("userData", JSON.stringify(res?.content));
+            const roles: any =
+              res.content?.role === RoleType.Vendor
+                ? ["vendor"]
+                : res.content?.role === RoleType.Client
+                ? ["company"]
+                : res.content?.role === RoleType.Both
+                ? ["company", "vendor"]
+                : [];
+            localStorage.setItem("role", JSON.stringify(roles));
+            redirectBasedOnRole();
+          } else {
+            setError("password", {
+              type: "manual",
+              message: res.message || "Invalid email or password",
+            });
+          }
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+          console.log("login data", res);
+        })
+        .catch((error: any) => {
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+        });
+    }
+  };
+
+  const redirectBasedOnRole = () => {
     const activeRole = localStorage.getItem("activeRole") || "";
-    if (roles.includes(activeRole)) {
+    if (activeRole && RoleData.find((item: any) => item.role === activeRole)) {
       navigate(`/${activeRole}`);
     } else {
       navigate("/login"); // Fallback route
@@ -131,53 +158,91 @@ export default function Login() {
             <h1 className="text-heading font-display">Welcome Back</h1>
           </div>
 
-          {/* Login Form */}
-          <form className="w-full max-w-md space-y-4">
-            <TextField
-              label="Email Address"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={handleKeyPress}
-              fullWidth
-              variant="outlined"
-              size="small"
-            />
-
-            {/* Error message */}
-            {errorMessage && (
-              <Typography color="error" variant="body2">
-                {errorMessage}
-              </Typography>
-            )}
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
-                  size="small"
-                />
-              }
-              label="Remember me"
-              sx={{
-                "& .MuiTypography-root": {
-                  fontSize: "12px",
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full max-w-md space-y-4"
+          >
+            {/* Email Field */}
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Enter a valid email address",
                 },
               }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+              )}
             />
+
+            {/* Password Field */}
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  onKeyDown={handleKeyPress}
+                />
+              )}
+            />
+
+            {/* Remember Me Checkbox */}
+            <Controller
+              name="rememberMe"
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      {...field}
+                      color="primary"
+                      checked={field.value}
+                      size="small"
+                    />
+                  }
+                  label="Remember me"
+                  sx={{
+                    "& .MuiTypography-root": {
+                      fontSize: "12px",
+                    },
+                  }}
+                />
+              )}
+            />
+
+            {/* Submit Button */}
             <Button
-              onClick={handleLogin}
+              type="submit"
               variant="contained"
               color="primary"
               fullWidth
