@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import Layout from "../layouts/Layout";
+import DashboardLayoutBasic from "../layouts/DashboardLayoutBasic";
 
 interface ProtectedRouteProps {
   allowedRoles: string[];
@@ -15,6 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     isLoggedIn && role.some((r: string) => allowedRoles.includes(r));
 
   return hasAccess ? <Layout /> : <Navigate to="/login" replace />;
+  // return hasAccess ? <DashboardLayoutBasic /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

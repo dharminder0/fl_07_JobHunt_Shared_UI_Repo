@@ -39,6 +39,8 @@ const SideMenu: React.FC<SideMenuProps> = () => {
     localStorage.removeItem("activeRole");
     localStorage.removeItem("role");
     localStorage.removeItem("userData");
+    localStorage.removeItem("companyName");
+    localStorage.removeItem("companyType");
     navigate("/login");
   };
 

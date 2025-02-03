@@ -23,7 +23,6 @@ export default function OnBoarding() {
   const isBackdropOpen = useSelector(
     (state: RootState) => state.drawer.isBackdropOpen
   );
-  console.log(userData)
 
   const handleNext = () => {
     if (!isBackdropOpen) {

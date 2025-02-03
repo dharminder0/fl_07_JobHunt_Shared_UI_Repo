@@ -36,6 +36,7 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
     setEmail(data.email);
+    localStorage.setItem("companyName", data?.companyName);
     usertUser(data)
       .then((res: any) => {
         handleBackDropOpen();
@@ -83,6 +84,23 @@ export default function SignUp() {
             className="w-full max-w-md space-y-4"
             onSubmit={handleSubmit(onSubmit)}
           >
+            <TextField
+              label="First Name"
+              fullWidth
+              variant="outlined"
+              size="small"
+              {...register("firstName", {
+                required: "First Name",
+              })}
+              error={!!errors.companyName}
+            />
+            <TextField
+              label="Last Name"
+              fullWidth
+              variant="outlined"
+              size="small"
+              {...register("lastName")}
+            />
             <TextField
               label="Company Name"
               fullWidth

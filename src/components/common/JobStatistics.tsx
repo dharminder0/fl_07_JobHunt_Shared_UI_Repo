@@ -37,8 +37,8 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
   const appliedData = data.map((item) => item.applied);
 
   return (
-    <Box className="flex-1 flex justify-between">
-      <div className="border p-3 rounded-md w-[33%]">
+    <Box className="flex-1 flex justify-between md:flex-wrap sm:flex-col md:flex-row">
+      <div className="border p-3 rounded-md sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
         {lineTitle && <div className="text-title">{lineTitle}</div>}
         <Box className="flex-1">
           <LineChart
@@ -69,7 +69,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
           />
         </Box>
       </div>
-      <div className="w-[33%] border p-3 rounded-md">
+      <div className="sm:w-[99%] border p-3 rounded-md lg:w-[33%] md:w-[49%] mb-4">
         {barTitle && <div className="text-title">{barTitle}</div>}
         <BarChart
           xAxis={[
@@ -99,7 +99,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
           }}
         />
       </div>
-      <div className="w-[33%] border p-3 rounded-md">
+      <div className="sm:w-[99%] border p-3 rounded-md lg:w-[33%] md:w-[49%] mb-4">
         {pieTitle && <div className="text-title">{pieTitle}</div>}
         <PieChart
           series={[

@@ -67,7 +67,7 @@ const MenuDrpDwn: React.FC<MenuDrpDwnProps> = ({ menuList, placeholder, handleSe
   // Sync selected items with parent handler
   useEffect(() => {
     handleSelectedItem(selectedItems);
-  }, [selectedItems, handleSelectedItem]);
+  }, [selectedItems]);
 
   // Render row for virtualized list
   const RenderRow = ({ index, style }: { index: number; style: React.CSSProperties }) => {

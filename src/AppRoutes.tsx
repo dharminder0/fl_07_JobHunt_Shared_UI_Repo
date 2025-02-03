@@ -38,6 +38,7 @@ import OrganizationProfile from "./components/pages/settings/OrganizationProfile
 import Subscriptions from "./components/pages/settings/Subscriptions";
 import Members from "./components/pages/settings/Members";
 import BenchPreview from "./components/pages/vendor/bench/BenchPreview";
+import DashboardLayoutBasic from "./components/layouts/DashboardLayoutBasic";
 
 export default function AppRoutes() {
   return (
