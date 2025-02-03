@@ -68,7 +68,6 @@ export default function Login() {
   }, []);
 
   const onSubmit = (data: FormData) => {
-    console.log("Form Data: ", data);
     const userData = JSON.parse(localStorage.getItem("userData") || "{}");
     if (userData && userData?.email) {
       if (data.email === userData?.email) {
@@ -98,22 +97,26 @@ export default function Login() {
       dispatch(openBackdrop());
       userLogin(payload)
         .then((res: any) => {
+          debugger;
           if (res?.success) {
+            debugger;
+            const roles: any =
+              res.content?.role?.length === 1 &&
+              res.content?.role[0] === RoleType.Vendor
+                ? ["vendor"]
+                : res.content?.role?.length === 1 &&
+                    res.content?.role[0] === RoleType.Client
+                  ? ["company"]
+                  : res.content?.role?.length > 1
+                    ? ["company", "vendor"]
+                    : [];
+            localStorage.setItem("role", JSON.stringify(roles));
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem(
               "activeRole",
               res.content?.role === RoleType.Vendor ? "vendor" : "company"
             );
             localStorage.setItem("userData", JSON.stringify(res?.content));
-            const roles: any =
-              res.content?.role === RoleType.Vendor
-                ? ["vendor"]
-                : res.content?.role === RoleType.Client
-                ? ["company"]
-                : res.content?.role === RoleType.Both
-                ? ["company", "vendor"]
-                : [];
-            localStorage.setItem("role", JSON.stringify(roles));
             redirectBasedOnRole();
           } else {
             setError("password", {
@@ -124,7 +127,6 @@ export default function Login() {
           setTimeout(() => {
             dispatch(closeBackdrop());
           }, 1000);
-          console.log("login data", res);
         })
         .catch((error: any) => {
           setTimeout(() => {
@@ -196,8 +198,8 @@ export default function Login() {
               rules={{
                 required: "Password is required",
                 minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters long",
+                  value: 5,
+                  message: "Password must be at least 5 characters long",
                 },
               }}
               render={({ field }) => (

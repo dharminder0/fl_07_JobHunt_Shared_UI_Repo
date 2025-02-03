@@ -8,6 +8,8 @@ import { getAllUsers } from "../../sharedService/apiService";
 interface CompanyDashboardProps {}
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
+  
+  console.log("amit dashboard 333");
   const navigate = useNavigate();
   const openViewList = (typeofList: string) => {
     let currentPath = window.location.pathname;
@@ -138,11 +140,11 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     },
   ];
 
-  useEffect(() => {
-    getAllUsers().then((res: any) => {
-      console.log(res);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getAllUsers().then((res: any) => {
+  //     console.log(res);
+  //   });
+  // }, []);
 
   const handleCardClick = (page: string, status: any) => {
     navigate(`/company/${page}`, {
@@ -152,7 +154,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
   return (
     <div className="">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
         <div
           className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover"
           onClick={() => handleCardClick("myrequirements", "Open")}
@@ -209,8 +211,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         <div className="flex justify-between mb-4">
           <JobStatistics pieTitle="Requirements" />
         </div>
-        <div className="flex justify-between">
-          <Box className="gap-6 w-[33%]">
+        <div className="flex justify-between md:flex-wrap sm:flex-col md:flex-row">
+          <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
@@ -249,7 +251,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </div>
             </Box>
           </Box>
-          <Box className="gap-6 w-[33%]">
+          <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
@@ -288,7 +290,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </Box>
             </Box>
           </Box>
-          <Box className="gap-6 w-[33%]">
+          <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
@@ -327,7 +329,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         {/* Job Updates */}
         <p className="text-heading mb-4 mt-6">Requirements need attention</p>
 
-        <Grid2 container spacing={2}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {attentionData.map((requirement) => (
             <Grid2 size={3} key={requirement.id}>
               <div
@@ -378,7 +380,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </div>
             </Grid2>
           ))}
-        </Grid2>
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 const api = axios.create({
   baseURL:
     process.env.API_BASE_URL ||
-    "https://fl-07-jobhunt-shared-api-test.azurewebsites.net/api/",
+    "https://fl-07-jobhunt-shared-api-test.azurewebsites.net/api/V1/",
   headers: {
     "Content-type": "application/json; charset=UTF-8",
     Accept: "*",
@@ -21,17 +21,17 @@ export const getAllUsers = async () => {
 };
 
 export const usertUser = async (payload: object) => {
-  const response = await api.post("User/signUp", payload);
+  const response = await api.post("users/signUp", payload);
   return response.data;
 };
 
 export const userLogin = async (payload: object) => {
-  const response = await api.post("User/login", payload);
+  const response = await api.post("users/login", payload);
   return response.data;
 };
 
-export const usertCompanyInfo = async (payload: object) => {
-  const response = await api.post("Company/CompanyInfo", payload);
+export const upsertCompanyInfo = async (payload: object) => {
+  const response = await api.post("Organization/AddInfo", payload);
   return response.data;
 };
 

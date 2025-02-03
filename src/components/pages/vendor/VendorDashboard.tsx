@@ -172,7 +172,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
           />
         </div>
         <div className="flex space-x-3">
-          <Box className="gap-6 w-[33%]">
+          <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
@@ -203,7 +203,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
               </Box>
             </Box>
           </Box>
-          <Box className="gap-6 w-[33%]">
+          <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">

@@ -13,7 +13,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { InfoOutlined } from "@mui/icons-material";
 import { RoleType } from "../../sharedService/enums";
-import { usertCompanyInfo } from "../../../components/sharedService/apiService";
+import { upsertCompanyInfo } from "../../../components/sharedService/apiService";
 import { AppDispatch } from "../../../components/redux/store";
 import { useDispatch } from "react-redux";
 import {
@@ -47,9 +47,13 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
   const onSubmit = (data: any) => {
     dispatch(openBackdrop());
-    console.log("Form Submitted:", data);
-    userData.role = data?.registrationType;
-    usertCompanyInfo(data)
+    data.registrationType =
+      data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
+
+    userData.role =
+      data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
+
+    upsertCompanyInfo(data)
       .then((result: any) => {
         console.log("Form result:", result);
         localStorage.setItem("userData", JSON.stringify(userData));
@@ -67,7 +71,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
   };
 
   useEffect(() => {
-    setValue("companyName", company);
+    setValue("orgName", company);
   }, []);
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -79,13 +83,6 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
   };
 
   const open = Boolean(anchorEl);
-
-  const handleBackDropClose = () => {
-    dispatch(closeBackdrop());
-  };
-  const handleBackDropOpen = () => {
-    dispatch(openBackdrop());
-  };
 
   return (
     <>
@@ -153,7 +150,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
         {/* Company Name Field */}
         <Controller
-          name="companyName"
+          name="orgName"
           control={control}
           defaultValue=""
           rules={{ required: "Company Name is required" }}
@@ -164,7 +161,8 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
               fullWidth
               variant="outlined"
               size="small"
-              error={!!errors.companyName}
+              defaultValue={userData?.orgName}
+              error={!!errors.orgName}
             />
           )}
         />
