@@ -71,7 +71,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
   };
 
   useEffect(() => {
-    setValue("orgName", company);
+    setValue("orgName", userData?.companyName);
   }, []);
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {

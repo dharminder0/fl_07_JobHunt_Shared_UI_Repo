@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 const api = axios.create({
   baseURL:
     process.env.API_BASE_URL ||
-    "https://fl-07-jobhunt-shared-api-test.azurewebsites.net/api/V1/",
+    "https://fl-07-jobhunt-shared-api-test.azurewebsites.net/api/",
   headers: {
     "Content-type": "application/json; charset=UTF-8",
     Accept: "*",
@@ -16,22 +16,53 @@ const api = axios.create({
 });
 
 export const getAllUsers = async () => {
-  const response = await api.get("User/getAllUsers");
+  const response = await api.get("V1/User/getAllUsers");
   return response.data;
 };
 
 export const usertUser = async (payload: object) => {
-  const response = await api.post("users/signUp", payload);
+  const response = await api.post("V1/users/signUp", payload);
   return response.data;
 };
 
 export const userLogin = async (payload: object) => {
-  const response = await api.post("users/login", payload);
+  const response = await api.post("V1/users/login", payload);
   return response.data;
 };
 
+export const userLogout = () => {
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("activeRole");
+  localStorage.removeItem("role");
+  localStorage.removeItem("userData");
+  localStorage.removeItem("companyName");
+  localStorage.removeItem("companyType");
+};
+
 export const upsertCompanyInfo = async (payload: object) => {
-  const response = await api.post("Organization/AddInfo", payload);
+  const response = await api.post("V1/Organization/AddInfo", payload);
+  return response.data;
+};
+
+export const upsertRequirement = async (payload: object) => {
+  const response = await api.post("V1/Requirement/Upsert", payload);
+  return response.data;
+};
+
+export const generateRequirement = async (payload: object) => {
+  const response = await api.post("V1/Prompt/GenerateContent", payload);
+  return response.data;
+};
+
+export const resendEVerify = async (email: object) => {
+  const response = await api.post(`V1/users/resend-email?EmailId=${email}`);
+  return response.data;
+};
+
+export const setEVerify = async (token: string, otp: string) => {
+  const response = await api.post(
+    `/V1/users/Email/Verify?userToken=${token}&otp=${otp}`
+  );
   return response.data;
 };
 

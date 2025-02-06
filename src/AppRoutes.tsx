@@ -39,6 +39,7 @@ import Subscriptions from "./components/pages/settings/Subscriptions";
 import Members from "./components/pages/settings/Members";
 import BenchPreview from "./components/pages/vendor/bench/BenchPreview";
 import DashboardLayoutBasic from "./components/layouts/DashboardLayoutBasic";
+import EmailVerification from "./components/auth/EmailVerification";
 
 export default function AppRoutes() {
   return (
@@ -50,6 +51,7 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/onboard" element={<OnBoarding />} />
+        <Route path="/everify/:token/:otp" element={<EmailVerification />} />
 
         {/* Company Layout */}
         <Route

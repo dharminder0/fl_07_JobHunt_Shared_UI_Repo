@@ -4,12 +4,14 @@ interface DrawerState {
   isOpen: boolean;
   currentDrawer: string | null;
   isBackdropOpen: boolean;
+  isEVerifyDialogOpen: boolean;
 }
 
 const initialState: DrawerState = {
   isOpen: false,
   currentDrawer: null,
   isBackdropOpen: false,
+  isEVerifyDialogOpen: false,
 };
 
 const drawerSlice = createSlice({
@@ -42,6 +44,12 @@ const drawerSlice = createSlice({
     setBackdrop(state, action: PayloadAction<boolean>) {
       state.isBackdropOpen = action.payload;
     },
+    openEVerifyDialog(state) {
+      state.isEVerifyDialogOpen = true; // Open the eVerify dialog
+    },
+    closeEVerifyDialog(state) {
+      state.isEVerifyDialogOpen = false; // Close the eVerify dialog
+    },
   },
 });
 
@@ -52,6 +60,8 @@ export const {
   openBackdrop,
   closeBackdrop,
   setBackdrop,
+  openEVerifyDialog,
+  closeEVerifyDialog,
 } = drawerSlice.actions;
 
 export default drawerSlice.reducer;
