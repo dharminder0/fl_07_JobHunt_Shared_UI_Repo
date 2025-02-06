@@ -227,21 +227,20 @@ export default function EmailVerification() {
       .then((result: any) => {
         if (result.success) {
           setOpen(true);
-          userLogout();
           setTimeout(() => {
-            navigate("/login");
+            navigate("/onboard");
           }, 2000);
         } else {
           setError(result.message);
         }
         setTimeout(() => {
-          setOpen(true);
+          setOpen(false);
           dispatch(closeBackdrop());
         }, 1000);
       })
       .catch((error: any) => {
         setTimeout(() => {
-          setOpen(true);
+          setOpen(false);
           dispatch(closeBackdrop());
         }, 1000);
       });

@@ -1,36 +1,29 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   Snackbar,
-  TextField,
 } from "@mui/material";
-import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../redux/store";
-import {
-  closeBackdrop,
-  closeEVerifyDialog,
-  openBackdrop,
-} from "../features/drawerSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import { resendEVerify } from "../sharedService/apiService";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function EverifyDialog() {
   const navigate = useNavigate();
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-  const dispatch: AppDispatch = useDispatch();
   const isOpen = useSelector(
     (state: RootState) => state.drawer.isEVerifyDialogOpen
   );
 
   const handleResendEVerify = () => {
-    // dispatch(openBackdrop());
     setIsLoader(true);
     resendEVerify(userData?.email)
       .then((result: any) => {
@@ -38,16 +31,19 @@ function EverifyDialog() {
           setOpen(true);
         }
         setTimeout(() => {
-          //   dispatch(closeBackdrop());
           setIsLoader(false);
         }, 1000);
       })
       .catch((error: any) => {
         setTimeout(() => {
-          //   dispatch(closeBackdrop());
           setIsLoader(false);
         }, 1000);
       });
+  };
+
+  const handleLogin = () => {
+    setOpen(false);
+    navigate("/login");
   };
 
   const handleClose = () => {
@@ -93,23 +89,50 @@ function EverifyDialog() {
                     />
                   </svg>
                 </div>
-                <div>
-                  You're almost there. Please check your email (
-                  {userData?.email}) inbox for a verification link to complete
-                  your registration. Make sure to verify your email to access
-                  all features of the platform.
+                <div className="text-secondary-text">
+                  You're almost there! A verification link has been sent to{" "}
+                  <b>{userData?.email}</b>. Please check your inbox (and spam
+                  folder) to complete your registration.
                 </div>
               </div>
             </DialogContentText>
+            <div className="flex mt-5 text-base justify-between text-secondary-text">
+              <p>
+                Already verified?{" "}
+                <Link
+                  to={""}
+                  onClick={handleLogin}
+                  className="text-indigo-500 hover:text-indigo-700"
+                >
+                  Log in
+                </Link>
+              </p>
+              <p>
+                Didn't receive the email?{" "}
+                <Link
+                  to={""}
+                  onClick={handleResendEVerify}
+                  className="text-indigo-500 hover:text-indigo-700"
+                >
+                  {isLoader && (
+                    <CircularProgress
+                      size={10}
+                      className="mx-1 !text-indigo-500"
+                    />
+                  )}
+                  Resend Verification
+                </Link>
+              </p>
+            </div>
             <DialogActions>
-              <Button
+              {/* <Button
                 onClick={handleResendEVerify}
                 variant="outlined"
                 autoFocus
                 loading={isLoader}
               >
                 Resend
-              </Button>
+              </Button> */}
             </DialogActions>
           </DialogContent>
         </Dialog>

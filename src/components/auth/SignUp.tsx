@@ -34,17 +34,17 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<any> = (data: any) => {
     localStorage.setItem("companyName", data?.companyName);
+    handleBackDropOpen();
     usertUser(data)
       .then((res: any) => {
-        handleBackDropOpen();
         if (res?.success) {
           localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userData", JSON.stringify(res?.content));
-          setTimeout(() => {
-            handleBackDropClose();
-            dispatch(openEVerifyDialog());
-          }, 1000);
         }
+        setTimeout(() => {
+          handleBackDropClose();
+          dispatch(openEVerifyDialog());
+        }, 1000);
       })
       .catch((error: any) => {
         setTimeout(() => {
