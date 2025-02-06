@@ -7,9 +7,27 @@ import CompanyInfo from "./CompanyInfo";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import PlanSelection from "./PlanSelection";
-import { useSelector } from "react-redux";
-import { RootState } from "@/components/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/components/redux/store";
 import { RoleType } from "../../sharedService/enums";
+import {
+  FormControl,
+  FormControlLabel,
+  Grid2,
+  IconButton,
+  Popover,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import { InfoOutlined } from "@mui/icons-material";
+import { Controller, useForm } from "react-hook-form";
+import { upsertCompanyInfo } from "../../../components/sharedService/apiService";
+import {
+  closeBackdrop,
+  openBackdrop,
+} from "../../../components/features/drawerSlice";
+import { RoleData } from "../../../components/sharedService/shareData";
 
 const steps = ["Company Information", "Subscription Plans"];
 
@@ -18,32 +36,64 @@ export default function OnBoarding() {
   const [activeStep, setActiveStep] = React.useState(0);
   const userData = JSON.parse(localStorage.userData);
   const companyName = localStorage.companyName;
-  const companyType = localStorage.companyType;
   const childRef = useRef<{ submitForm: () => void }>(null);
+  const dispatch: AppDispatch = useDispatch();
   const isBackdropOpen = useSelector(
     (state: RootState) => state.drawer.isBackdropOpen
   );
 
-  const handleNext = () => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [companyType, setCompanyType] = React.useState("");
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    dispatch(openBackdrop());
+    data.userId = userData.userId;
+    userData.role =
+      data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
+
+    upsertCompanyInfo(data)
+      .then((result: any) => {
+        console.log("Form result:", result);
+        localStorage.setItem("userData", JSON.stringify(userData));
+        if (result?.success) {
+          setTimeout(() => {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            dispatch(closeBackdrop());
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
+  };
+
+  const handleNext = async () => {
     if (!isBackdropOpen) {
       if (activeStep !== steps.length - 1) {
-        if (activeStep === 0 && childRef.current) {
-          childRef.current.submitForm();
+        if (activeStep === 0) {
+          handleSubmit(onSubmit)(); // If valid, submit the form
         }
-        setTimeout(() => {
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        }, 1000);
       } else {
+        // Save role type to localStorage and navigate
         localStorage.setItem(
           "role",
           JSON.stringify(
             companyType === RoleType.Client
               ? ["company"]
               : companyType === RoleType.Vendor
-              ? ["vendor"]
-              : companyType === RoleType.Both
-              ? ["company", "vendor"]
-              : []
+                ? ["vendor"]
+                : companyType === RoleType.Both
+                  ? ["company", "vendor"]
+                  : []
           )
         );
         localStorage.setItem(
@@ -51,24 +101,40 @@ export default function OnBoarding() {
           companyType === RoleType.Client
             ? "company"
             : companyType === RoleType.Vendor
-            ? "vendor"
-            : "company"
+              ? "vendor"
+              : "company"
         );
         navigate(
           `/${
             companyType === RoleType.Client
               ? "company"
               : companyType === RoleType.Vendor
-              ? "vendor"
-              : "company"
+                ? "vendor"
+                : "company"
           }`
         );
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+
+  const handleCompanyTypeChange = (event: any) => {
+    const value = event.target.value;
+    setCompanyType(value);
+    setValue("registrationType", value === "3" ? ["1", "2"] : [value]);
   };
 
   return (
@@ -110,7 +176,210 @@ export default function OnBoarding() {
             </div>
 
             <div className="flex justify-center items-center mt-9">
-              {activeStep === 0 && <CompanyInfo ref={childRef} />}
+              {/* {activeStep === 0 && <CompanyInfo ref={childRef} />} */}
+              {activeStep === 0 && (
+                <>
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-3/5 m-auto p-6 bg-white rounded-lg space-y-4"
+                  >
+                    {/* Registration Type - MUI Select */}
+                    <div className="flex items-center space-x-6">
+                      <p className="text-base">
+                        Select your registration type
+                        <IconButton
+                          size="small"
+                          onClick={handlePopoverOpen}
+                          aria-label="registration details"
+                        >
+                          <InfoOutlined fontSize="inherit" />
+                        </IconButton>
+                      </p>
+
+                      <Controller
+                        name="registrationType"
+                        control={control}
+                        rules={{ required: "Registration Type is required" }}
+                        render={({ field }) => (
+                          <FormControl
+                            size="small"
+                            error={!!errors.registrationType}
+                            required
+                          >
+                            <RadioGroup
+                              {...field}
+                              row
+                              onChange={handleCompanyTypeChange}
+                            >
+                              {RoleData.map((item: any) => (
+                                <FormControlLabel
+                                  key={item?.id}
+                                  value={item.id}
+                                  control={<Radio size="small" required />}
+                                  label={item.name}
+                                />
+                              ))}
+                            </RadioGroup>
+                            {/* {errors.registrationType && (
+                              <p className="text-red-500 text-xs mt-1">
+                                {errors.registrationType.message}
+                              </p>
+                            )} */}
+                          </FormControl>
+                        )}
+                      />
+                    </div>
+
+                    {/* Company Name */}
+                    <Controller
+                      name="orgName"
+                      control={control}
+                      rules={{ required: "Company Name is required" }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Company Name"
+                          fullWidth
+                          variant="outlined"
+                          size="small"
+                          error={!!errors.orgName}
+                        />
+                      )}
+                    />
+
+                    {/* Company Portfolio */}
+                    <Controller
+                      name="portfolio"
+                      control={control}
+                      rules={{ required: "Company Portfolio is required" }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Company Portfolio"
+                          multiline
+                          rows={8}
+                          fullWidth
+                          variant="outlined"
+                          placeholder="Brief description of your company portfolio"
+                          size="small"
+                          error={!!errors.portfolio}
+                        />
+                      )}
+                    />
+
+                    <Grid2 container spacing={2}>
+                      <Grid2 size={6}>
+                        <Controller
+                          name="contactMail"
+                          control={control}
+                          rules={{ required: "Contact Mail ID is required" }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Contact Mail ID"
+                              fullWidth
+                              variant="outlined"
+                              placeholder="Enter your contact email"
+                              size="small"
+                              error={!!errors.contactMail}
+                            />
+                          )}
+                        />
+                      </Grid2>
+                      <Grid2 size={6}>
+                        <Controller
+                          name="phone"
+                          control={control}
+                          rules={{ required: "Mobile Number is required" }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Mobile Number"
+                              fullWidth
+                              variant="outlined"
+                              placeholder="Enter your contact number"
+                              size="small"
+                              error={!!errors.phone}
+                            />
+                          )}
+                        />
+                      </Grid2>
+                    </Grid2>
+
+                    <Grid2 container spacing={2}>
+                      <Grid2 size={6}>
+                        <Controller
+                          name="website"
+                          control={control}
+                          rules={{ required: "Company Website is required" }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Company Website"
+                              fullWidth
+                              variant="outlined"
+                              placeholder="Enter your website URL"
+                              size="small"
+                              error={!!errors.website}
+                            />
+                          )}
+                        />
+                      </Grid2>
+                      <Grid2 size={6}>
+                        <Controller
+                          name="strength"
+                          control={control}
+                          rules={{ required: "Company Strength is required" }}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Company Strength"
+                              type="number"
+                              fullWidth
+                              variant="outlined"
+                              placeholder="Number of Employees"
+                              size="small"
+                              error={!!errors.strength}
+                            />
+                          )}
+                        />
+                      </Grid2>
+                    </Grid2>
+                  </form>
+
+                  <Popover
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handlePopoverClose}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
+                    <div className="p-3">
+                      <p className="text-base mb-1">Vendor</p>
+                      <p className="text-info">
+                        "Register as a vendor to find job opportunities and
+                        connect with clients."
+                      </p>
+                      <p className="text-base my-1">Client</p>
+                      <p className="text-info">
+                        "Register as a client to post job requirements and
+                        manage vendors."
+                      </p>
+                      <p className="text-base my-1">Both</p>
+                      <p className="text-info">
+                        "Register as both a vendor and a client to access all
+                        features."
+                      </p>
+                    </div>
+                  </Popover>
+                </>
+              )}
               {/* {activeStep === 1 && <CompanyService />} */}
               {activeStep === 1 && <PlanSelection />}
               {/* {activeStep === 2 && <CompanyTechnologiesForm />} */}

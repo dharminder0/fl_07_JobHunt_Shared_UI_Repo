@@ -66,4 +66,11 @@ export const setEVerify = async (token: string, otp: string) => {
   return response.data;
 };
 
+export const getOrgProfileDetails = async (orgCode: string) => {
+  const response = await api.get(
+    `V1/Get/Organization/Profile?orgCode=${orgCode}`
+  );
+  return response.data;
+};
+
 export default api;
