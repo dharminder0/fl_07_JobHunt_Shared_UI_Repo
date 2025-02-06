@@ -276,15 +276,6 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
             />
           </Grid2>
         </Grid2>
-
-        {/* Error Message */}
-        {/* {errors && (
-          <Typography color="error" variant="body2">
-            {Object.values(errors).map((err: any) => (
-              <div key={err.message}>{err.message}</div>
-            ))}
-          </Typography>
-        )} */}
       </form>
 
       <Popover

@@ -407,7 +407,7 @@ const RequirementForm = () => {
                   {/* Conditional Rendering */}
 
                   <div className="col-span-2">
-                    <p className="text-info mb-1">
+                    <p className="text-info mb-4">
                       Paste the raw requirement text in the box below. Our AI
                       will format and structure it to match the required format,
                       making it easier to manage and process.
@@ -416,6 +416,7 @@ const RequirementForm = () => {
                       label="Paste Requirements"
                       name="promptJson"
                       onChange={(e: any) => setPromptJson(e.target.value)}
+                      defaultValue={promptJson}
                       fullWidth
                       multiline
                       rows={25}
