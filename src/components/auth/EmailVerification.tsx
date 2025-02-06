@@ -198,8 +198,16 @@ export default function EmailVerification() {
   const navigate = useNavigate();
   const location = useLocation();
   const pathSegments = location.pathname.split("/"); // Split path by "/"
-  const token = pathSegments[pathSegments.length - 2].toString();
-  const getOtp = pathSegments[pathSegments.length - 1].toString();
+  let token = "";
+  let getOtp = "";
+
+  if (pathSegments.length > 3) {
+    token = pathSegments[pathSegments.length - 2].toString();
+    getOtp = pathSegments[pathSegments.length - 1].toString();
+  } else if (pathSegments.length > 2) {
+    token = pathSegments[pathSegments.length - 1].toString();
+  }
+
   const dispatch: AppDispatch = useDispatch();
   const [otp, setOtp] = React.useState<string>(getOtp);
   const [error, setError] = React.useState<string>("");
