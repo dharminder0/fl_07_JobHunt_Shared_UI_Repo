@@ -9,11 +9,15 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const role = JSON.parse(localStorage.getItem("role") || "[]");
 
   // Check if user is logged in and has at least one matching role
   const hasAccess =
-    isLoggedIn && role.some((r: string) => allowedRoles.includes(r));
+    userData &&
+    userData?.isVerified &&
+    isLoggedIn &&
+    role.some((r: string) => allowedRoles.includes(r));
 
   return hasAccess ? <Layout /> : <Navigate to="/login" replace />;
   // return hasAccess ? <DashboardLayoutBasic /> : <Navigate to="/login" replace />;

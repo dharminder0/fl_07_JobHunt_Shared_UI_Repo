@@ -26,6 +26,7 @@ import ScreenSearchDesktopOutlinedIcon from "@mui/icons-material/ScreenSearchDes
 import AssuredWorkloadOutlinedIcon from "@mui/icons-material/AssuredWorkloadOutlined";
 import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
+import { userLogout } from "../sharedService/apiService";
 interface SideMenuProps {}
 
 const SideMenu: React.FC<SideMenuProps> = () => {
@@ -35,12 +36,13 @@ const SideMenu: React.FC<SideMenuProps> = () => {
   const activeRole = localStorage.getItem("activeRole") || "";
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("activeRole");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userData");
-    localStorage.removeItem("companyName");
-    localStorage.removeItem("companyType");
+    // localStorage.removeItem("isLoggedIn");
+    // localStorage.removeItem("activeRole");
+    // localStorage.removeItem("role");
+    // localStorage.removeItem("userData");
+    // localStorage.removeItem("companyName");
+    // localStorage.removeItem("companyType");
+    userLogout();
     navigate("/login");
   };
 

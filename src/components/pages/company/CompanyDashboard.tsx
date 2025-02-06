@@ -8,8 +8,6 @@ import { getAllUsers } from "../../sharedService/apiService";
 interface CompanyDashboardProps {}
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
-  
-  console.log("amit dashboard 333");
   const navigate = useNavigate();
   const openViewList = (typeofList: string) => {
     let currentPath = window.location.pathname;

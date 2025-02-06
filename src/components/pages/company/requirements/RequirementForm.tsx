@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { AccountCircle, AccountCircleOutlined, Add } from "@mui/icons-material";
+import { AccountCircleOutlined, Add, ShareOutlined } from "@mui/icons-material";
 import {
-  CircularProgress,
+  Autocomplete,
   Drawer,
-  Grid,
+  FormControl,
   Step,
   StepLabel,
   Stepper,
@@ -18,6 +18,11 @@ import {
 } from "@mui/material";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
 import Loader from "../../../../components/shared/Loader";
+import { useForm, Controller } from "react-hook-form";
+import {
+  generateRequirement,
+  upsertRequirement,
+} from "../../../../components/sharedService/apiService";
 
 const steps = ["Paste Requirement", "Basic Information", "Vendors"];
 
@@ -58,11 +63,47 @@ const activeData = [
     candidate: 2,
     avgScore: 80,
   },
+  {
+    id: 4,
+    name: "DevStringX Technologies",
+    description:
+      "Take control of your money. Truebill develops a mobile app for you business...",
+    tags: ["Onsite", "10-50", "App Tech"],
+    place: "Delhi(NCR)",
+    contracts: "10",
+    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
+    candidate: 3,
+    avgScore: 60,
+  },
+  {
+    id: 5,
+    name: "Binemiles Technologies",
+    description:
+      "Square builds common business tools in unconventional ways and used best technologies...",
+    tags: ["Onsite", "500+", "Other Tech"],
+    place: "Gurgaon",
+    contracts: "12",
+    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
+    candidate: 2,
+    avgScore: 80,
+  },
+  {
+    id: 6,
+    name: "Fleek IT Solutions",
+    description:
+      "Stripe is a software platform for starting and running internet businesses.",
+    tags: ["Onsite", "50-100", "QA Testing"],
+    place: "Noida",
+    contracts: "20",
+    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+    candidate: 5,
+    avgScore: 70,
+  },
 ];
 
 const allVendors = [
   {
-    id: 4,
+    id: 7,
     name: "Cyient Limited",
     description:
       "Stripe is a software platform for starting and running internet businesses with this platform.",
@@ -73,7 +114,7 @@ const allVendors = [
     avgScore: 75,
   },
   {
-    id: 5,
+    id: 8,
     name: "3Pillar Global Noida",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
@@ -84,7 +125,7 @@ const allVendors = [
     avgScore: 60,
   },
   {
-    id: 6,
+    id: 9,
     name: "Exzeo Software Pvt Ltd",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
@@ -95,7 +136,7 @@ const allVendors = [
     avgScore: 70,
   },
   {
-    id: 7,
+    id: 10,
     name: "Nucleus Software Exports ",
     description:
       "Square builds common business tools in unconventional ways and used best technologies...",
@@ -106,7 +147,7 @@ const allVendors = [
     avgScore: 65,
   },
   {
-    id: 8,
+    id: 11,
     name: "Ucodice Technologies IT ",
     description:
       "Take control of your money. Truebill develops a mobile app for you business...",
@@ -118,13 +159,94 @@ const allVendors = [
   },
 ];
 
+// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+const top100Films = [
+  { title: "The Shawshank Redemption", year: 1994 },
+  { title: "The Godfather", year: 1972 },
+  { title: "The Godfather: Part II", year: 1974 },
+  { title: "The Dark Knight", year: 2008 },
+  { title: "12 Angry Men", year: 1957 },
+  { title: "Schindler's List", year: 1993 },
+  { title: "Pulp Fiction", year: 1994 },
+  { title: "City of God", year: 2002 },
+  { title: "Se7en", year: 1995 },
+  { title: "The Silence of the Lambs", year: 1991 },
+  { title: "It's a Wonderful Life", year: 1946 },
+  { title: "Life Is Beautiful", year: 1997 },
+  { title: "The Usual Suspects", year: 1995 },
+  { title: "Léon: The Professional", year: 1994 },
+  { title: "Spirited Away", year: 2001 },
+  { title: "Saving Private Ryan", year: 1998 },
+  { title: "Once Upon a Time in the West", year: 1968 },
+  { title: "American History X", year: 1998 },
+  { title: "Interstellar", year: 2014 },
+  { title: "Casablanca", year: 1942 },
+  { title: "City Lights", year: 1931 },
+  { title: "Psycho", year: 1960 },
+  { title: "The Green Mile", year: 1999 },
+  { title: "The Intouchables", year: 2011 },
+  { title: "Modern Times", year: 1936 },
+  { title: "Raiders of the Lost Ark", year: 1981 },
+  { title: "Rear Window", year: 1954 },
+  { title: "The Pianist", year: 2002 },
+  { title: "The Departed", year: 2006 },
+  { title: "Terminator 2: Judgment Day", year: 1991 },
+  { title: "Back to the Future", year: 1985 },
+  { title: "Whiplash", year: 2014 },
+  { title: "Gladiator", year: 2000 },
+  { title: "Memento", year: 2000 },
+  { title: "The Prestige", year: 2006 },
+  { title: "The Lion King", year: 1994 },
+  { title: "Apocalypse Now", year: 1979 },
+  { title: "Alien", year: 1979 },
+  { title: "The Great Dictator", year: 1940 },
+  { title: "Cinema Paradiso", year: 1988 },
+  { title: "The Lives of Others", year: 2006 },
+  { title: "Grave of the Fireflies", year: 1988 },
+  { title: "Paths of Glory", year: 1957 },
+  { title: "Django Unchained", year: 2012 },
+  { title: "The Shining", year: 1980 },
+  { title: "WALL·E", year: 2008 },
+  { title: "American Beauty", year: 1999 },
+  { title: "The Dark Knight Rises", year: 2012 },
+  { title: "Princess Mononoke", year: 1997 },
+  { title: "Aliens", year: 1986 },
+  { title: "Oldboy", year: 2003 },
+  { title: "Once Upon a Time in America", year: 1984 },
+  { title: "Witness for the Prosecution", year: 1957 },
+  { title: "Das Boot", year: 1981 },
+  { title: "Citizen Kane", year: 1941 },
+  { title: "North by Northwest", year: 1959 },
+  { title: "Vertigo", year: 1958 },
+  { title: "Amadeus", year: 1984 },
+  { title: "To Kill a Mockingbird", year: 1962 },
+  { title: "Toy Story 3", year: 2010 },
+  { title: "Logan", year: 2017 },
+  { title: "Full Metal Jacket", year: 1987 },
+  { title: "Dangal", year: 2016 },
+  { title: "The Sting", year: 1973 },
+  { title: "2001: A Space Odyssey", year: 1968 },
+  { title: "Singin' in the Rain", year: 1952 },
+  { title: "Toy Story", year: 1995 },
+  { title: "Bicycle Thieves", year: 1948 },
+  { title: "The Kid", year: 1921 },
+  { title: "Inglourious Basterds", year: 2009 },
+  { title: "Snatch", year: 2000 },
+  { title: "3 Idiots", year: 2009 },
+  { title: "Monty Python and the Holy Grail", year: 1975 },
+];
+
 const RequirementForm = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isLoader, setIsLoader] = useState(true);
-  const [tabValue, setTabValue] = React.useState("empaneled");
+  const [isLoader, setIsLoader] = useState(false);
+  const [tabValue, setTabValue] = React.useState("recommendation");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedCards, setSelectedCards] = useState([]);
+  const [shareWith, setShareWith] = useState<any>(1);
+  const [promptJson, setPromptJson] = useState<string>("");
+
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -141,22 +263,23 @@ const RequirementForm = () => {
   };
 
   const [activeStep, setActiveStep] = useState(0);
-  const [formData, setFormData] = useState({
-    postType: "single",
-    client: "Airtel",
-    title: "Sr. React js developer",
-    description:
-      "We are looking for a Senior React Frontend Developer who will be responsible for developing the user side of our agent management product and improving the user experience. They will need to collaborate with the design and development teams to create web applications. The candidate must be able to build testable, reusable, and scalable applications. \n\nThe backend is developed in RUST and is accessible via REST APIs.",
-    experience: "5 years",
-    budget: "1.5",
-    jobLocation: "onsite",
-    location: "Noida",
-    positions: "2",
-    contractPeriod: "6 months",
-    remarks: "",
-    // shareType: "specific",
-    file: null, // File upload for multiple post type
+
+  const { control, handleSubmit, watch, reset } = useForm({
+    defaultValues: {
+      client: "",
+      title: "",
+      description: "",
+      experience: "",
+      budget: "",
+      locationType: "",
+      location: "",
+      positions: "",
+      duration: "",
+      remarks: "",
+    },
   });
+
+  const locationType = watch("locationType");
 
   const handleCardClick = (company: any) => {
     setSelectedCards((prevSelected: any) => {
@@ -178,29 +301,75 @@ const RequirementForm = () => {
     selectedCards.some((item: any) => item.id === company.id);
 
   const handleNext = () => {
-    setIsLoader(true);
     setActiveStep((prevStep) => prevStep + 1);
-    setTimeout(() => {
-      setIsLoader(false);
-    }, 1500);
   };
 
   const handleBack = () => setActiveStep((prevStep) => prevStep - 1);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, files }: any = e.target;
-    setFormData({ ...formData, [name]: files ? files[0] : value });
+  const onSubmit = (data: any) => {
+    data.orgCode = userData?.orgCode;
+    setIsLoader(true);
+    upsertRequirement(data)
+      .then((result: any) => {
+        console.log(result);
+        if (result.success) {
+          console.log(result.content);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1500);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1500);
+      });
   };
 
-  const handleSubmit = () => {
-    console.log("Form Data Submitted:", formData);
+  const onPromtSubmit = () => {
+    const payload = {
+      promptCode: "REQRMNT",
+      loginUserId: userData?.userId,
+      promptJson: promptJson,
+    };
+    setIsLoader(true);
+    generateRequirement(payload)
+      .then((result: any) => {
+        if (result && !!result) {
+          console.log(result);
+          reset(result);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
   };
 
   const handleMatchingDialog = (score: number) => {
     setIsMatchOpen(true);
     setMatchingScore(score);
+  };
+
+  const handleShareWith = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setShareWith(e.target.value);
+  };
+
+  const handleStepSubmit = async (data: any) => {
+    if (activeStep === 0) {
+      await onPromtSubmit();
+    } else if (activeStep === 1) {
+      await onSubmit(data);
+    } else if (activeStep === 2) {
+      // await handleSubmitStep2();
+    }
+    handleNext(); // Move to the next step after API call
   };
 
   return (
@@ -226,17 +395,7 @@ const RequirementForm = () => {
                 {steps.map((label, index) => {
                   return (
                     <Step key={label}>
-                      <StepLabel
-                        sx={{
-                          "& .MuiStepLabel-label": { fontSize: "14px" },
-                          "& .MuiStepIcon-root": {
-                            height: "18px",
-                            width: "18px",
-                          },
-                        }}
-                      >
-                        {label}
-                      </StepLabel>
+                      <StepLabel>{label}</StepLabel>
                     </Step>
                   );
                 })}
@@ -255,9 +414,8 @@ const RequirementForm = () => {
                     </p>
                     <TextField
                       label="Paste Requirements"
-                      name="requirements"
-                      // value={formData.requirements}
-                      onChange={handleChange}
+                      name="promptJson"
+                      onChange={(e: any) => setPromptJson(e.target.value)}
                       fullWidth
                       multiline
                       rows={25}
@@ -270,131 +428,178 @@ const RequirementForm = () => {
               {/* Step 2 */}
               {activeStep === 1 &&
                 (!isLoader ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                  <div className="grid grid-cols-1 gap-4 mt-6">
                     {/* Conditional Rendering */}
-                    {formData.postType === "single" ? (
-                      <>
-                        <div className="col-span-2">
-                          <TextField
-                            label="Title"
+                    {/* {formData.postType === "single" ? ( */}
+                    <>
+                      <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-4"
+                      >
+                        <div className="">
+                          <Controller
                             name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                label="Title"
+                                fullWidth
+                                size="small"
+                              />
+                            )}
+                          />
+                        </div>
+                        <div className="">
+                          <Controller
+                            name="description"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                label="Job Description"
+                                fullWidth
+                                multiline
+                                rows={10}
+                                size="small"
+                              />
+                            )}
                           />
                         </div>
 
-                        <TextField
-                          label="Job Description"
-                          name="description"
-                          value={formData.description}
-                          onChange={handleChange}
-                          fullWidth
-                          multiline
-                          rows={10}
-                          className="col-span-2"
-                          size="small"
-                        />
-
-                        <TextField
-                          label="Experience"
-                          name="experience"
-                          value={formData.experience}
-                          onChange={handleChange}
-                          fullWidth
-                          size="small"
-                        />
-                        <TextField
-                          label="Budget"
-                          name="budget"
-                          value={formData.budget}
-                          onChange={handleChange}
-                          fullWidth
-                          size="small"
-                        />
-
-                        <TextField
-                          label="Number of Positions"
-                          name="positions"
-                          value={formData.positions}
-                          onChange={handleChange}
-                          fullWidth
-                          size="small"
-                        />
-                        <TextField
-                          label="Contract Period"
-                          name="contractPeriod"
-                          value={formData.contractPeriod}
-                          onChange={handleChange}
-                          fullWidth
-                          size="small"
-                        />
-                        <div className="flex items-center">
-                          <label className="text-base me-3">
-                            Job Location:
-                          </label>
-                          <RadioGroup
-                            row
-                            name="jobLocation"
-                            value={formData.jobLocation}
-                            onChange={handleChange}
-                          >
-                            <FormControlLabel
-                              value="onsite"
-                              control={<Radio size="small" />}
-                              label="Onsite"
-                            />
-                            <FormControlLabel
-                              value="hybrid"
-                              control={<Radio size="small" />}
-                              label="Hybrid"
-                            />
-                            <FormControlLabel
-                              value="remote"
-                              control={<Radio size="small" />}
-                              label="Remote"
-                            />
-                          </RadioGroup>
-                        </div>
-
-                        {formData.jobLocation === "onsite" && (
-                          <TextField
-                            label="Enter Location"
-                            name="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
+                        <div className="grid grid-cols-2 gap-4">
+                          <Controller
+                            name="experience"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                label="Experience"
+                                fullWidth
+                                size="small"
+                              />
+                            )}
                           />
-                        )}
 
-                        <div>
-                          <TextField
-                            label="Select Client"
-                            name="client"
-                            value={formData.client}
-                            onChange={handleChange}
-                            fullWidth
-                            size="small"
+                          <Controller
+                            name="budget"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                label="Budget"
+                                fullWidth
+                                size="small"
+                              />
+                            )}
                           />
-                          <label className="text-info">
-                            Client information will not be shared with Vendors
-                          </label>
+
+                          <Controller
+                            name="positions"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                label="Number of Positions"
+                                fullWidth
+                                size="small"
+                              />
+                            )}
+                          />
+
+                          <Controller
+                            name="duration"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                label="Contract Period"
+                                fullWidth
+                                size="small"
+                              />
+                            )}
+                          />
+                          <div className="flex items-center">
+                            <label className="text-base me-3">
+                              Job Location:
+                            </label>
+                            <Controller
+                              name="locationType"
+                              control={control}
+                              render={({ field }) => (
+                                <RadioGroup row {...field}>
+                                  <FormControlLabel
+                                    value="onsite"
+                                    control={<Radio size="small" />}
+                                    label="Onsite"
+                                  />
+                                  <FormControlLabel
+                                    value="hybrid"
+                                    control={<Radio size="small" />}
+                                    label="Hybrid"
+                                  />
+                                  <FormControlLabel
+                                    value="remote"
+                                    control={<Radio size="small" />}
+                                    label="Remote"
+                                  />
+                                </RadioGroup>
+                              )}
+                            />
+                          </div>
+
+                          {locationType === "onsite" && (
+                            <Controller
+                              name="location"
+                              control={control}
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  label="Enter Location"
+                                  fullWidth
+                                  size="small"
+                                />
+                              )}
+                            />
+                          )}
+
+                          <div>
+                            <Controller
+                              name="client"
+                              control={control}
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  label="Select Client"
+                                  fullWidth
+                                  size="small"
+                                />
+                              )}
+                            />
+                            <label className="text-info">
+                              Client information will not be shared with Vendors
+                            </label>
+                          </div>
+                          <div className="col-span-2">
+                            <Controller
+                              name="remarks"
+                              control={control}
+                              render={({ field }) => (
+                                <TextField
+                                  {...field}
+                                  label="Remark for Vendor"
+                                  fullWidth
+                                  multiline
+                                  rows={6}
+                                  size="small"
+                                />
+                              )}
+                            />
+                          </div>
                         </div>
-                        <TextField
-                          label="Remark for Vendor"
-                          name="remarks"
-                          value={formData.remarks}
-                          onChange={handleChange}
-                          fullWidth
-                          multiline
-                          rows={6}
-                          className="col-span-2"
-                          size="small"
-                        />
-                      </>
-                    ) : (
+                      </form>
+                    </>
+                    {/* ) : (
                       <div className="col-span-2">
                         <label className="block text-title mb-2">
                           Upload File
@@ -407,7 +612,7 @@ const RequirementForm = () => {
                           InputLabelProps={{ shrink: true }}
                         />
                       </div>
-                    )}
+                    )} */}
                   </div>
                 ) : (
                   <Loader
@@ -419,7 +624,7 @@ const RequirementForm = () => {
               {/* Step 3 */}
               {activeStep === 2 &&
                 (!isLoader ? (
-                  <div className="mt-2">
+                  <div className="mt-4">
                     <Tabs
                       value={tabValue}
                       onChange={handleTabChange}
@@ -427,201 +632,246 @@ const RequirementForm = () => {
                       indicatorColor="primary"
                       aria-label="secondary tabs example"
                     >
-                      <Tab value="empaneled" label="Empaneled" />
-                      <Tab value="allVendors" label="All Vendors" />
+                      <Tab
+                        icon={<ShareOutlined fontSize="inherit" />}
+                        value="recommendation"
+                        label="AI Recommendation"
+                        iconPosition="start"
+                      />
+                      <Tab
+                        value="share"
+                        label="Share"
+                        iconPosition="start"
+                        icon={<ShareOutlined fontSize="inherit" />}
+                      />
                     </Tabs>
 
-                    {tabValue === "empaneled" && (
+                    {tabValue === "recommendation" && (
                       <div className="mt-2">
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} md={12}>
-                            <Grid container spacing={1}>
-                              {activeData.map((company, idx) => (
-                                <Grid
-                                  item
-                                  xs={12}
-                                  sm={6}
-                                  md={4}
-                                  key={idx}
-                                  onClick={() => handleCardClick(company)}
-                                >
-                                  <div
-                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
-                                      isCardSelected(company)
-                                        ? "!bg-indigo-100 border-indigo-600"
-                                        : ""
-                                    }`}
-                                  >
-                                    <div className="flex items-center mb-4">
-                                      <img
-                                        src={
-                                          !company.logo
-                                            ? "/assets/images/Companylogo.png"
-                                            : company.logo
-                                        }
-                                        alt={company.name}
-                                        className="me-3"
-                                        style={{ width: 30, height: 30 }}
-                                      />
-                                      <div>
-                                        <Tooltip title={company.name} arrow>
-                                          <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
-                                            {company.name}
-                                          </span>
-                                        </Tooltip>
-                                        <p className="text-base">
-                                          {company.place}
-                                        </p>
-                                      </div>
-                                    </div>
+                        <p className="text-base my-3">Top matching vendors</p>
+                        <h5 className="text-heading mb-3">Empaneled</h5>
 
-                                    <div>
-                                      <span className="text-base me-4 flex items-center mb-1">
-                                        <AccountCircleOutlined
-                                          fontSize="inherit"
-                                          className="text-indigo-600 mr-1"
-                                        />
-                                        Matching Candidate: {company.candidate}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {activeData.map((company, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => handleCardClick(company)}
+                            >
+                              <div
+                                className={`h-100 border p-3 rounded-md cursor-pointer ${
+                                  isCardSelected(company)
+                                    ? "!bg-indigo-100 border-indigo-600"
+                                    : ""
+                                }`}
+                              >
+                                <div className="flex items-center mb-4">
+                                  <img
+                                    src={
+                                      !company.logo
+                                        ? "/assets/images/Companylogo.png"
+                                        : company.logo
+                                    }
+                                    alt={company.name}
+                                    className="me-3"
+                                    style={{ width: 30, height: 30 }}
+                                  />
+                                  <div>
+                                    <Tooltip title={company.name} arrow>
+                                      <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
+                                        {company.name}
                                       </span>
-
-                                      <div
-                                        className="text-base flex hover:text-indigo-700"
-                                        onClick={() =>
-                                          handleMatchingDialog(company.avgScore)
-                                        }
-                                      >
-                                        <svg
-                                          width="14px"
-                                          height="14px"
-                                          viewBox="0 0 512 512"
-                                          version="1.1"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <g
-                                            id="Page-1"
-                                            stroke="none"
-                                            stroke-width="1"
-                                            fill="none"
-                                            fill-rule="evenodd"
-                                          >
-                                            <g
-                                              id="icon"
-                                              fill="#4640DE"
-                                              transform="translate(64.000000, 64.000000)"
-                                            >
-                                              <path
-                                                d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                                id="Combined-Shape"
-                                              ></path>
-                                            </g>
-                                          </g>
-                                        </svg>
-                                        Avg Score: {company.avgScore}%
-                                      </div>
-                                    </div>
+                                    </Tooltip>
+                                    <p className="text-base">{company.place}</p>
                                   </div>
-                                </Grid>
-                              ))}
-                            </Grid>
-                          </Grid>
-                        </Grid>
+                                </div>
+
+                                <div>
+                                  <span className="text-base me-4 flex items-center mb-1">
+                                    <AccountCircleOutlined
+                                      fontSize="inherit"
+                                      className="text-indigo-600 mr-1"
+                                    />
+                                    Matching Candidate: {company.candidate}
+                                  </span>
+
+                                  <div
+                                    className="text-base flex hover:text-indigo-700"
+                                    onClick={() =>
+                                      handleMatchingDialog(company.avgScore)
+                                    }
+                                  >
+                                    <svg
+                                      width="14px"
+                                      height="14px"
+                                      viewBox="0 0 512 512"
+                                      version="1.1"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <g
+                                        id="Page-1"
+                                        stroke="none"
+                                        stroke-width="1"
+                                        fill="none"
+                                        fill-rule="evenodd"
+                                      >
+                                        <g
+                                          id="icon"
+                                          fill="#4640DE"
+                                          transform="translate(64.000000, 64.000000)"
+                                        >
+                                          <path
+                                            d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                            id="Combined-Shape"
+                                          ></path>
+                                        </g>
+                                      </g>
+                                    </svg>
+                                    Avg Score: {company.avgScore}%
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <h5 className="text-heading mb-3 mt-5">All Vendors</h5>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {allVendors.map((company, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => handleCardClick(company)}
+                            >
+                              <div
+                                className={`h-100 border p-3 rounded-md cursor-pointer ${
+                                  isCardSelected(company)
+                                    ? "!bg-indigo-100 border-indigo-600"
+                                    : ""
+                                }`}
+                              >
+                                <div className="flex items-center mb-4">
+                                  <img
+                                    src={
+                                      !company.logo
+                                        ? "/assets/images/Companylogo.png"
+                                        : company.logo
+                                    }
+                                    alt={company.name}
+                                    className="me-3"
+                                    style={{ width: 30, height: 30 }}
+                                  />
+                                  <div>
+                                    <Tooltip title={company.name} arrow>
+                                      <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
+                                        {company.name}
+                                      </span>
+                                    </Tooltip>
+                                    <p className="text-base">{company.place}</p>
+                                  </div>
+                                </div>
+
+                                <div className="">
+                                  <span className="text-base me-4 flex items-center mb-1">
+                                    <AccountCircleOutlined
+                                      fontSize="inherit"
+                                      className="text-indigo-600 mr-1"
+                                    />
+                                    Matching Candidate: {company.candidate}
+                                  </span>
+
+                                  <div
+                                    className="text-base flex hover:text-indigo-700"
+                                    onClick={() =>
+                                      handleMatchingDialog(company.avgScore)
+                                    }
+                                  >
+                                    <svg
+                                      width="14px"
+                                      height="14px"
+                                      viewBox="0 0 512 512"
+                                      version="1.1"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <g
+                                        id="Page-1"
+                                        stroke="none"
+                                        stroke-width="1"
+                                        fill="none"
+                                        fill-rule="evenodd"
+                                      >
+                                        <g
+                                          id="icon"
+                                          fill="#4640DE"
+                                          transform="translate(64.000000, 64.000000)"
+                                        >
+                                          <path
+                                            d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                            id="Combined-Shape"
+                                          ></path>
+                                        </g>
+                                      </g>
+                                    </svg>
+                                    Avg Score: {company.avgScore}%
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
 
-                    {tabValue === "allVendors" && (
+                    {tabValue === "share" && (
                       <div className="mt-2">
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} md={12}>
-                            <Grid container spacing={1}>
-                              {allVendors.map((company, idx) => (
-                                <Grid
-                                  item
-                                  xs={12}
-                                  sm={6}
-                                  md={4}
-                                  key={idx}
-                                  onClick={() => handleCardClick(company)}
-                                >
-                                  <div
-                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
-                                      isCardSelected(company)
-                                        ? "!bg-indigo-100 border-indigo-600"
-                                        : ""
-                                    }`}
-                                  >
-                                    <div className="flex items-center mb-4">
-                                      <img
-                                        src={
-                                          !company.logo
-                                            ? "/assets/images/Companylogo.png"
-                                            : company.logo
-                                        }
-                                        alt={company.name}
-                                        className="me-3"
-                                        style={{ width: 30, height: 30 }}
-                                      />
-                                      <div>
-                                        <Tooltip title={company.name} arrow>
-                                          <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
-                                            {company.name}
-                                          </span>
-                                        </Tooltip>
-                                        <p className="text-base">
-                                          {company.place}
-                                        </p>
-                                      </div>
-                                    </div>
-
-                                    <div className="">
-                                      <span className="text-base me-4 flex items-center mb-1">
-                                        <AccountCircleOutlined
-                                          fontSize="inherit"
-                                          className="text-indigo-600 mr-1"
-                                        />
-                                        Matching Candidate: {company.candidate}
-                                      </span>
-
-                                      <div
-                                        className="text-base flex hover:text-indigo-700"
-                                        onClick={() =>
-                                          handleMatchingDialog(company.avgScore)
-                                        }
-                                      >
-                                        <svg
-                                          width="14px"
-                                          height="14px"
-                                          viewBox="0 0 512 512"
-                                          version="1.1"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <g
-                                            id="Page-1"
-                                            stroke="none"
-                                            stroke-width="1"
-                                            fill="none"
-                                            fill-rule="evenodd"
-                                          >
-                                            <g
-                                              id="icon"
-                                              fill="#4640DE"
-                                              transform="translate(64.000000, 64.000000)"
-                                            >
-                                              <path
-                                                d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                                id="Combined-Shape"
-                                              ></path>
-                                            </g>
-                                          </g>
-                                        </svg>
-                                        Avg Score: {company.avgScore}%
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Grid>
-                              ))}
-                            </Grid>
-                          </Grid>
-                        </Grid>
+                        <FormControl>
+                          <p className="text-base my-2">
+                            Share your requirement with:
+                          </p>
+                          <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            onChange={handleShareWith}
+                          >
+                            <FormControlLabel
+                              value="1"
+                              control={<Radio size="small" />}
+                              checked={shareWith == 1}
+                              label="Specific Vendors"
+                            />
+                            <FormControlLabel
+                              value="2"
+                              control={<Radio size="small" />}
+                              label="Empaneled"
+                            />
+                            <FormControlLabel
+                              value="3"
+                              control={<Radio size="small" />}
+                              label="Public"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                        {shareWith == 1 && (
+                          <div className="mt-3">
+                            <Autocomplete
+                              multiple
+                              id="tags-readOnly"
+                              options={top100Films.map(
+                                (option) => option.title
+                              )}
+                              // defaultValue={[
+                              //   top100Films[12].title,
+                              //   top100Films[13].title,
+                              // ]}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label="Search vendor"
+                                  placeholder="Search"
+                                />
+                              )}
+                            />
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -659,7 +909,7 @@ const RequirementForm = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handleNext}
+                  onClick={handleSubmit(handleStepSubmit)}
                   sx={{ width: 125 }}
                 >
                   Next
@@ -669,7 +919,7 @@ const RequirementForm = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handleSubmit}
+                  // onClick={handleSubmit}
                   sx={{ width: 125 }}
                 >
                   Submit
