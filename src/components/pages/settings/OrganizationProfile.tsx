@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Link, IconButton } from "@mui/material";
 import {
   Edit,
@@ -10,13 +10,29 @@ import {
   Phone,
   X,
 } from "@mui/icons-material";
+import { getOrgProfileDetails } from "../../../components/sharedService/apiService";
 
 const OrganizationProfile = () => {
-  const [value, setValue] = React.useState("one");
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [orgData, setOrgData] = useState<any>();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+  useEffect(() => {
+    getOrgProfile();
+  }, []);
+
+  const getOrgProfile = () => {
+    getOrgProfileDetails(userData.orgCode)
+      .then((result: any) => {
+        if (result.success) {
+          setOrgData(result.content);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
+
+  console.log(orgData);
 
   return (
     <div className="p-4">
@@ -26,14 +42,16 @@ const OrganizationProfile = () => {
           <div>
             <img
               src={
-                "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png"
+                !orgData?.logo
+                  ? "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png"
+                  : orgData?.logo
               }
               style={{ width: 65, height: 65 }}
             />
           </div>
           <div>
             <h5 className="text-heading group/item flex items-center">
-              OpsTree Solutions
+              {orgData?.orgName}
               <div className="group/edit invisible group-hover/item:visible">
                 <span className="group-hover/edit:text-gray-700 ">
                   <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
@@ -55,16 +73,7 @@ const OrganizationProfile = () => {
         <Grid item xs={12} md={9}>
           <div className="mt-2">
             <p className="text-base text-gray-700 group/item flex  mb-2">
-              Opstree Solutions is a Digital Transformation and Platform
-              Engineer Partner. We empower technology leaders and teams to
-              deliver the desired tech outcomes. Empower your business with
-              tailored consulting solutions to optimize applications,
-              infrastructure, and processes. Our experts leverage automation,
-              AI, and cloud technologies to deliver smarter, more secure, and
-              cost-effective operations, driving improved agility and
-              sustainable growth. Specialized solutions designed to address
-              unique needs of your industry, providing strategic support
-              essential for business success.
+              {orgData?.description}
               <div className="group/edit invisible group-hover/item:visible">
                 <span className="group-hover/edit:text-gray-700 ">
                   <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
@@ -92,18 +101,19 @@ const OrganizationProfile = () => {
 
             <ul className="text-gray-700 text-base">
               <li>
-                <Link href="mailto:connect@opstree.com" underline="none">
-                  <MailOutline fontSize="small" /> connect@opstree.com
+                <Link href={`mailto:${orgData?.email}`} underline="none">
+                  <MailOutline fontSize="small" />
+                  {orgData?.email}
                 </Link>
               </li>
               <li>
-                <Link href="tel:+91(120) 413 7323" underline="none">
-                  <Phone fontSize="small" /> +91(120) 413 7323
+                <Link href={`tel:${orgData?.phone}`} underline="none">
+                  <Phone fontSize="small" /> {orgData?.phone}
                 </Link>
               </li>
               <li>
-                <Link href="https://opstree.com/" underline="none">
-                  <Language fontSize="small" /> https://opstree.com/
+                <Link href={orgData?.website} underline="none">
+                  <Language fontSize="small" /> {orgData?.website}
                 </Link>
               </li>
             </ul>
