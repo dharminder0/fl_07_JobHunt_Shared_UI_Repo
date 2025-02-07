@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Link, IconButton } from "@mui/material";
+import { Grid, Link, IconButton, Button } from "@mui/material";
 import {
   Edit,
+  Facebook,
   Instagram,
   Language,
   LinkedIn,
@@ -11,10 +12,14 @@ import {
   X,
 } from "@mui/icons-material";
 import { getOrgProfileDetails } from "../../../components/sharedService/apiService";
+import { AppDispatch, RootState } from "../../../components/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { openDrawer } from "../../../components/features/drawerSlice";
 
 const OrganizationProfile = () => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [orgData, setOrgData] = useState<any>();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     getOrgProfile();
@@ -32,13 +37,15 @@ const OrganizationProfile = () => {
       });
   };
 
-  console.log(orgData);
+  const handleOpenDrawer = (name: string) => {
+    dispatch(openDrawer(name));
+  };
 
   return (
     <div className="p-4">
       {/* Header Section */}
-      <div className="mb-6">
-        <div className="flex items-center gap-4 mb-4">
+      <div className="mb-6 flex justify-between">
+        <div className="flex items-center gap-4 mb-4 w-[calc(100%-160px)]">
           <div>
             <img
               src={
@@ -50,20 +57,22 @@ const OrganizationProfile = () => {
             />
           </div>
           <div>
-            <h5 className="text-heading group/item flex items-center">
+            <h5 className="text-heading flex items-center">
               {orgData?.orgName}
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700 ">
-                  <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
             </h5>
             <div className="mt-1 text-base">
               Registered address: A 27 D, Sector 16, Noida, Uttar Pradesh 201301
             </div>
           </div>
+        </div>
+        <div className="w-[150px]">
+          <Button
+            variant="outlined"
+            startIcon={<Edit fontSize="inherit" />}
+            onClick={() => handleOpenDrawer("OrgProfileUpdate")}
+          >
+            Edit Profile
+          </Button>
         </div>
       </div>
 
@@ -71,16 +80,9 @@ const OrganizationProfile = () => {
       <Grid container spacing={6}>
         {/* Company Profile */}
         <Grid item xs={12} md={9}>
-          <div className="mt-2">
-            <p className="text-base text-gray-700 group/item flex  mb-2">
+          <div>
+            <p className="text-base text-gray-700 mb-2">
               {orgData?.description}
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700 ">
-                  <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
             </p>
           </div>
         </Grid>
@@ -90,20 +92,12 @@ const OrganizationProfile = () => {
           <div>
             <h5 className="text-heading group/item flex items-center mb-2">
               Contact Information
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700 ">
-                  <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
             </h5>
 
             <ul className="text-gray-700 text-base">
               <li>
                 <Link href={`mailto:${orgData?.email}`} underline="none">
-                  <MailOutline fontSize="small" />
-                  {orgData?.email}
+                  <MailOutline fontSize="small" /> {orgData?.email}
                 </Link>
               </li>
               <li>
@@ -119,65 +113,35 @@ const OrganizationProfile = () => {
             </ul>
           </div>
           <div className="mt-4">
-            <h5 className="text-heading group/item flex items-center mb-2">
+            <h5 className="text-heading flex items-center mb-2">
               Office Location
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700 ">
-                  <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
             </h5>
             <ul className="text-gray-700 text-base">
-              <li>
-                <LocationOnOutlined fontSize="small" /> Noida
-              </li>
-              <li>
-                <LocationOnOutlined fontSize="small" /> Hyderabad
-              </li>
-              <li>
-                <LocationOnOutlined fontSize="small" /> Delaware(UK)
-              </li>
-              <li>
-                <LocationOnOutlined fontSize="small" /> Meydan Grandstand(UAE)
-              </li>
+              {orgData?.officeLocation &&
+                orgData?.officeLocation?.length > 0 &&
+                orgData?.officeLocation.map((item: any) => (
+                  <li>
+                    <LocationOnOutlined fontSize="small" color="primary" />{" "}
+                    {item.city}, {item.stateName}
+                  </li>
+                ))}
             </ul>
           </div>
 
           <div className="mt-4">
-            <h5 className="text-heading group/item flex items-center mb-2">
+            <h5 className="text-heading flex items-center mb-2">
               Social Links
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700 ">
-                  <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
             </h5>
             <ul className="text-gray-700 text-base">
-              <li>
-                <Link
-                  href="https://www.instagram.com/opstreesolutions/"
-                  underline="none"
-                >
-                  <Instagram fontSize="small" /> opstreesolutions
-                </Link>
-              </li>
-              <li>
-                <Link href="https://x.com/opstreedevops?mx=2" underline="none">
-                  <X fontSize="small" /> opstreedevops
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://www.linkedin.com/company/opstree-solutions/"
-                  underline="none"
-                >
-                  <LinkedIn fontSize="small" /> OpsTree Solutions
-                </Link>
-              </li>
+              {orgData?.socialLinks &&
+                orgData?.socialLinks?.length > 0 &&
+                orgData?.socialLinks.map((item: any) => (
+                  <li>
+                    <Link href={item?.url} underline="none">
+                      <Facebook fontSize="small" color="primary" /> {item?.name}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
         </Grid>

@@ -73,4 +73,16 @@ export const getOrgProfileDetails = async (orgCode: string) => {
   return response.data;
 };
 
+export const getStateList = async (useFor: string) => {
+  const response = await api.get(
+    `v1/ListValues/MasterListValue?name=${useFor}`
+  );
+  return response.data;
+};
+
+export const updateOrgProfileDetails = async (payload: any) => {
+  const response = await api.post("V1/Upsert/Organization/Profile", payload);
+  return response.data;
+};
+
 export default api;
