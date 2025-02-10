@@ -197,6 +197,7 @@ function OTP({
 export default function EmailVerification() {
   const navigate = useNavigate();
   const location = useLocation();
+  const userData = JSON.parse(localStorage.userData);
   const pathSegments = location.pathname.split("/"); // Split path by "/"
   let token = "";
   let getOtp = "";
@@ -228,6 +229,8 @@ export default function EmailVerification() {
         if (result.success) {
           setOpen(true);
           setTimeout(() => {
+            userData.isVerified = true;
+            localStorage.setItem("userData", JSON.stringify(userData));
             navigate("/onboard");
           }, 2000);
         } else {

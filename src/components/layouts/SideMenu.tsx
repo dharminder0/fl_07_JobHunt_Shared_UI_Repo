@@ -31,6 +31,7 @@ interface SideMenuProps {}
 
 const SideMenu: React.FC<SideMenuProps> = () => {
   const { organizationType } = useOrganizationType();
+  const userData = JSON.parse(localStorage.userData);
   const navigate = useNavigate();
   const location = useLocation();
   const activeRole = localStorage.getItem("activeRole") || "";
@@ -306,9 +307,11 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                         isActive ? "!text-primary" : "!text-secondary-text"
                       }`}
                     >
-                      <p className="text-base truncate text-ellipsis">Admin</p>
+                      <p className="text-base truncate text-ellipsis">
+                        {userData.userName}
+                      </p>
                       <p className="text-info truncate text-ellipsis">
-                        admin@fleek.com
+                        {userData.email}
                       </p>
                     </div>
                   </>
