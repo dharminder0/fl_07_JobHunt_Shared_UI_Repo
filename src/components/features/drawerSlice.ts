@@ -5,6 +5,7 @@ interface DrawerState {
   currentDrawer: string | null;
   isBackdropOpen: boolean;
   isEVerifyDialogOpen: boolean;
+  isLayoutLoader: boolean;
 }
 
 const initialState: DrawerState = {
@@ -12,6 +13,7 @@ const initialState: DrawerState = {
   currentDrawer: null,
   isBackdropOpen: false,
   isEVerifyDialogOpen: false,
+  isLayoutLoader: false,
 };
 
 const drawerSlice = createSlice({
@@ -50,6 +52,12 @@ const drawerSlice = createSlice({
     closeEVerifyDialog(state) {
       state.isEVerifyDialogOpen = false; // Close the eVerify dialog
     },
+    openLayoutLoader(state) {
+      state.isLayoutLoader = true; // Open the isLayoutLoader
+    },
+    closeLayoutLoader(state) {
+      state.isLayoutLoader = false; // Close the isLayoutLoader
+    },
   },
 });
 
@@ -62,6 +70,8 @@ export const {
   setBackdrop,
   openEVerifyDialog,
   closeEVerifyDialog,
+  openLayoutLoader,
+  closeLayoutLoader,
 } = drawerSlice.actions;
 
 export default drawerSlice.reducer;

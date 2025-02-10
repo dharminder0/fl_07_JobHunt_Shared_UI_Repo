@@ -4,7 +4,6 @@ import { closeDrawer } from "../features/drawerSlice";
 import Drawer from "@mui/material/Drawer"; // Material-UI Drawer
 import { RootState } from "../redux/store";
 import AddNewMemberForm from "./AddNewMemberForm";
-import { Button } from "@mui/material";
 import BenchPreview from "../pages/vendor/bench/BenchPreview";
 import OrganizationProfileUpdate from "../pages/settings/OrganizationProfileUpdate";
 

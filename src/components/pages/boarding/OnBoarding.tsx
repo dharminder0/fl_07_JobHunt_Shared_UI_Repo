@@ -35,8 +35,6 @@ export default function OnBoarding() {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const userData = JSON.parse(localStorage.userData);
-  const companyName = localStorage.companyName;
-  const childRef = useRef<{ submitForm: () => void }>(null);
   const dispatch: AppDispatch = useDispatch();
   const isBackdropOpen = useSelector(
     (state: RootState) => state.drawer.isBackdropOpen
@@ -45,12 +43,25 @@ export default function OnBoarding() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [companyType, setCompanyType] = React.useState("");
 
+  const defaultVal: any = {
+    registrationType: [], // Default empty or predefined value
+    orgName: userData.companyName,
+    portfolio: "",
+    contactMail: "",
+    phone: "",
+    website: "",
+    strength: null, // Default number
+  };
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm();
+  } = useForm({
+    defaultValues: defaultVal,
+    mode: "onChange",
+  });
 
   const onSubmit = (data: any) => {
     dispatch(openBackdrop());
@@ -151,7 +162,7 @@ export default function OnBoarding() {
           </div>
           <div className="cursor-pointer flex flex-row gap-2" id="basic-button">
             <div className="font-semibold text-title my-auto">
-              {companyName}
+              {userData.companyName}
             </div>
           </div>
         </div>
