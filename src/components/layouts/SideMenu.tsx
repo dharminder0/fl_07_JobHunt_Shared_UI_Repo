@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Collapse,
   Divider,
   List,
@@ -293,14 +294,13 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               >
                 {({ isActive }) => (
                   <>
-                    <img
-                      src={"/assets/images/Avatar.png"}
-                      alt=""
-                      className="rounded-full"
-                      style={{
-                        height: 32,
-                        width: 32,
-                      }}
+                    <Avatar
+                      src={
+                        !userData?.profileAvatar ? "" : userData?.profileAvatar
+                      }
+                      alt="Profile Photo"
+                      sizes="large"
+                      sx={{ width: 32, height: 32 }}
                     />
                     <div
                       className={`w-[110px] ${

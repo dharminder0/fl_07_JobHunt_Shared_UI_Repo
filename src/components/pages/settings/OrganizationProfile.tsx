@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import { getOrgProfileDetails } from "../../../components/sharedService/apiService";
 import { AppDispatch } from "../../../components/redux/store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openDrawer } from "../../../components/features/drawerSlice";
 import Loader from "../../../components/shared/Loader";
 
@@ -19,10 +19,13 @@ const OrganizationProfile = () => {
   const [orgData, setOrgData] = useState<any>();
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const dispatch: AppDispatch = useDispatch();
+  const drawerState = useSelector((state: any) => state.drawer);
 
   useEffect(() => {
-    getOrgProfile();
-  }, []);
+    if(!drawerState.isOpen){
+      getOrgProfile();
+    }
+  }, [drawerState]);
 
   const getOrgProfile = () => {
     setIsLoader(true);
@@ -68,8 +71,7 @@ const OrganizationProfile = () => {
                   {orgData?.orgName}
                 </h5>
                 <div className="mt-1 text-base">
-                  Registered address: A 27 D, Sector 16, Noida, Uttar Pradesh
-                  201301
+                  Registered address: {orgData?.regAddress}
                 </div>
               </div>
             </div>
