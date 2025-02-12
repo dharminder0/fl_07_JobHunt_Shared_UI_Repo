@@ -68,7 +68,7 @@ export const setEVerify = async (token: string, otp: string) => {
 
 export const getOrgProfileDetails = async (orgCode: string) => {
   const response = await api.get(
-    `V1/Get/Organization/Profile?orgCode=${orgCode}`
+    `V1/Organization/GetProfile?orgCode=${orgCode}`
   );
   return response.data;
 };
@@ -81,7 +81,22 @@ export const getStateList = async (useFor: string) => {
 };
 
 export const updateOrgProfileDetails = async (payload: any) => {
-  const response = await api.post("V1/Upsert/Organization/Profile", payload);
+  const response = await api.post("V1/Organization/UpsertProfile", payload);
+  return response.data;
+};
+
+export const getUserDetailsByEmail = async (email: any) => {
+  const response = await api.get(`V1/users/${email}`);
+  return response.data;
+};
+
+export const getOrgDetailsList = async (payload: any) => {
+  const response = await api.post("V1/OrgProfiles/Search", payload);
+  return response.data;
+};
+
+export const updateUserDetails = async (payload: any) => {
+  const response = await api.post("V1/users/UpdateProfile", payload);
   return response.data;
 };
 

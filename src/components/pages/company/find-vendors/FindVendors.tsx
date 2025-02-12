@@ -1,29 +1,19 @@
 // App.tsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Container,
-  Grid,
   TextField,
-  MenuItem,
-  Select,
-  Card,
-  CardContent,
-  Button,
-  Typography,
-  Pagination,
-  Checkbox,
-  FormControlLabel,
-  Divider,
   Chip,
-  Box,
   IconButton,
   InputAdornment,
   Tooltip,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import MenuDrpDwnV2 from "../../../../components/shared/MenuDrpDwnV2";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import { getOrgDetailsList } from "../../../../components/sharedService/apiService";
+import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import Loader from "../../../../components/shared/Loader";
 
 const companies = [
   {
@@ -112,12 +102,14 @@ const companies = [
 const MyClients = () => {
   const navigate = useNavigate();
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    technologies: [],
-    requirementType: [],
-    companyStrength: [],
-  });
+  const [searchText, setSearchText] = useState("");
+  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [technology, setTechnology] = useState<string[]>([]);
+  const [resource, setResource] = useState<any[]>([]);
+  const [strength, setStrength] = useState<string[]>([]);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const [filterList, setFilterList] = useState<any>({
     TechnologiesList: [
       "Mobile App Development",
@@ -142,43 +134,64 @@ const MyClients = () => {
       "Robotic Process Automation (RPA)",
       "5G & Edge Computing Solutions",
     ],
-    requirementType: ["Remote", "Hybrid", "Onsite"],
+    requirementType: [
+      {
+        id: 1,
+        name: "Onsite",
+        value: "Onsite",
+      },
+      {
+        id: 2,
+        name: "Hybrid",
+        value: "Hybrid",
+      },
+      {
+        id: 3,
+        name: "Remote",
+        value: "Remote",
+      },
+    ],
     companyStrength: ["0-10", "10-50", "50-100", "100-500", "500+"],
   });
-
-  useEffect(() => {
-    const filtered = companies.filter((item) => {
-      const searchMatch =
-        !searchFilter.searchValue ||
-        item.name
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-      const TechnologieMatch =
-        searchFilter.technologies.length === 0 ||
-        searchFilter.technologies.some((tech: any) => item.tags.includes(tech));
-      const requirementTypeMatch =
-        searchFilter.requirementType.length === 0 ||
-        searchFilter.requirementType.some((tech: any) =>
-          item.tags.includes(tech)
-        );
-      const CompanyStrengthMatch =
-        searchFilter.companyStrength.length === 0 ||
-        searchFilter.companyStrength.some((tech: any) =>
-          item.tags.includes(tech)
-        );
-      return (
-        searchMatch &&
-        TechnologieMatch &&
-        requirementTypeMatch &&
-        CompanyStrengthMatch
-      );
-    });
-    setcompaniesfilterData(filtered);
-  }, [searchFilter]);
 
   const handleDetails = (id: number) => {
     navigate(`${id}`);
   };
+
+  const getOrgDetailsListData = () => {
+    const payload = {
+      role: ["2"],
+      page: pageIndex,
+      pageSize: pageSize,
+      searchText,
+      technology,
+      resource,
+      strength,
+    };
+    setIsLoader(true);
+    getOrgDetailsList(payload)
+      .then((result: any) => {
+        if (result.count > 0) {
+          setcompaniesfilterData(result.list);
+        } else {
+          setcompaniesfilterData([]);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        console.error("Error fetching data:", error);
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
+  };
+
+  useEffect(() => {
+    getOrgDetailsListData();
+  }, [searchText, technology, resource, strength, pageIndex, pageSize]);
+
   return (
     <div className="px-4 pb-4">
       {/* Header */}
@@ -194,13 +207,8 @@ const MyClients = () => {
                   <TextField
                     size="small"
                     className="w-full"
-                    value={searchFilter.searchValue}
-                    onChange={(event) =>
-                      setSearchFilter({
-                        ...searchFilter,
-                        searchValue: event.target.value,
-                      })
-                    }
+                    value={searchText}
+                    onChange={(event) => setSearchText(event.target.value)}
                     placeholder="Search Vendors"
                     slotProps={{
                       input: {
@@ -219,23 +227,17 @@ const MyClients = () => {
                   menuList={filterList?.TechnologiesList}
                   placeholder="Technologies"
                   handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      technologies: selectedItems,
-                    });
+                    setTechnology(selectedItems);
                   }}
                 />
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
+                <MenuDrpDwnV2
                   menuList={filterList?.requirementType}
                   placeholder="Resources"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      requirementType: selectedItems,
-                    });
-                  }}
+                  handleSelectedItem={(selectedItems) =>
+                    setResource(selectedItems)
+                  }
                 />
               </div>
               <div className="max-w-full shrink-0">
@@ -243,10 +245,7 @@ const MyClients = () => {
                   menuList={filterList?.companyStrength}
                   placeholder="Strength"
                   handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      companyStrength: selectedItems,
-                    });
+                    setStrength(selectedItems);
                   }}
                 />
               </div>
@@ -256,143 +255,46 @@ const MyClients = () => {
             </IconButton>
           </div>
         </div>
-        {/* <Box className="flex items-center justify-end my-2">
-          <Box className="flex items-center space-x-4">
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Search Vendors"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              InputProps={{
-                startAdornment: <Search className="mr-2" fontSize="small" />,
-              }}
-            />
-            <Button variant="outlined" startIcon={<FilterList />}>
-              Filter
-            </Button>
-          </Box>
-        </Box> */}
       </div>
 
-      {/* <Typography variant="body2">
-        Popular: Twitter, Microsoft, Apple, Facebook
-      </Typography>
-      <div className="my-4">
-        <Divider />
-      </div> */}
-
       {/* Sidebar and Companies List */}
-      <div className="flex">
-        {/* Sidebar */}
-        {/* Sidebar */}
-        {/* <div className="w-[200px]">
-          <div className="grid">
-            <p className="text-title ">Technologies</p>
-            {[
-              "Mobile App Development",
-              "Front-End Development",
-              "Back-End Development",
-              "Full-Stack Development",
-              "Cloud Technologies",
-              "Artificial Intelligence (AI)",
-              "Machine Learning (ML)",
-              "Blockchain Development",
-              "Data Science & Analytics",
-              "Cybersecurity Solutions",
-              "Internet of Things (IoT)",
-              "DevOps",
-              "QA",
-              "QA Automation",
-              "Augmented Reality (AR)",
-              "Virtual Reality (VR)",
-              "Progressive Web Applications (PWA)",
-              "Microservices Architecture",
-              "Low-Code/No-Code Development",
-              "Robotic Process Automation (RPA)",
-              "5G & Edge Computing Solutions",
-            ].map((size, idx) => (
-              <FormControlLabel
-                key={idx}
-                control={<Checkbox />}
-                label={size}
-                sx={{
-                  "& .MuiTypography-root": {
-                    fontSize: "12px", // Set your desired font size
-                    maxWidth: "150px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  },
-                }}
-              />
-            ))}
-          </div>
-          <div className="grid">
-            <p className="text-title mt-2">Resources</p>
-            {["Onsite", "Offsite", "Hybrid"].map((industry, idx) => (
-              <FormControlLabel
-                key={idx}
-                control={<Checkbox />}
-                label={industry}
-                sx={{
-                  "& .MuiTypography-root": {
-                    fontSize: "12px", // Set your desired font size
-                  },
-                }}
-              />
-            ))}
-          </div>
-          <div className="grid mt-2">
-            <p className="text-title">Company Strength</p>
-            {[
-              "0-10 (15)",
-              "10-50 (26)",
-              "50-100 (45)",
-              "100-500 (20)",
-              "500+ (19)",
-            ].map((size, idx) => (
-              <FormControlLabel
-                key={idx}
-                control={<Checkbox />}
-                label={size}
-                sx={{
-                  "& .MuiTypography-root": {
-                    fontSize: "12px", // Set your desired font size
-                  },
-                }}
-              />
-            ))}
-          </div>
-        </div> */}
-
-        {/* Company Cards */}     
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
-            {companiesfilterData.map((company, idx) => (
-              <div onClick={() => handleDetails(company.id)}>
-                <div className="h-100 border p-4 rounded-md cursor-pointer">
-                  <div className="flex align-center mb-4">
-                    <img
-                      src={
-                        !company.logo
-                          ? "/assets/images/Companylogo.png"
-                          : company.logo
-                      }
-                      alt={company.name}
-                      className="me-3"
-                      style={{ width: 50, height: 50 }}
-                    />
-                    <div>
-                    <Tooltip title={company.name} arrow>                        
-                      <p className="text-title line-clamp-1 font-bold">{company.name}</p>
-                      </Tooltip>
-                      <p className="line-clamp-1 text-base">{company.place}</p>
+      {!isLoader ? (
+        <div className="flex">
+          {/* Company Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {companiesfilterData &&
+              companiesfilterData?.length > 0 &&
+              companiesfilterData.map((company, idx) => (
+                <div onClick={() => handleDetails(company.orgCode)}>
+                  <div className="h-100 border p-4 rounded-md cursor-pointer">
+                    <div className="flex align-center mb-4">
+                      <img
+                        src={
+                          !company.logo
+                            ? "/assets/images/Companylogo.png"
+                            : company.logo
+                        }
+                        alt={company.orgName}
+                        className="me-3"
+                        style={{ width: 50, height: 50 }}
+                      />
+                      <div>
+                        <Tooltip title={company.orgName} arrow>
+                          <p className="text-title line-clamp-1 font-bold">
+                            {company.orgName}
+                          </p>
+                        </Tooltip>
+                        <p className="line-clamp-1 text-base">
+                          {company.place}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <Tooltip title={company.description} arrow>
-                  <p className="text-base line-clamp-2">{company.description}</p>
-                  </Tooltip>
-                  <div className="flex flex-wrap h-16 mt-2">
+                    <Tooltip title={company.description} arrow>
+                      <p className="text-base line-clamp-2">
+                        {company.description}
+                      </p>
+                    </Tooltip>
+                    {/* <div className="flex flex-wrap h-16 mt-2">
                     {company.tags.map((tag: string, idx: any) => (
                       <Chip
                         key={idx}
@@ -403,12 +305,15 @@ const MyClients = () => {
                         className="my-1 me-1"
                       />
                     ))}
+                  </div> */}
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
-      </div>
+        </div>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };
