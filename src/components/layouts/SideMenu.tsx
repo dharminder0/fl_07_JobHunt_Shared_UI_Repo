@@ -308,7 +308,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                       }`}
                     >
                       <p className="text-base truncate text-ellipsis">
-                        {userData.userName}
+                        {userData.firstName} {userData.lastName}
                       </p>
                       <p className="text-info truncate text-ellipsis">
                         {userData.email}
