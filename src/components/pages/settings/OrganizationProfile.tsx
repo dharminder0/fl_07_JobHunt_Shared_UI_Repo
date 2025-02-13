@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Grid, Link, Button } from "@mui/material";
+import { Grid, Link, Button, Avatar } from "@mui/material";
 import {
+  CorporateFareOutlined,
   Edit,
   Facebook,
   Language,
@@ -13,6 +14,7 @@ import { AppDispatch } from "../../../components/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { openDrawer } from "../../../components/features/drawerSlice";
 import Loader from "../../../components/shared/Loader";
+import SocialIcon from "../../../components/sharedComponents/SocialIcon";
 
 const OrganizationProfile = () => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -22,7 +24,7 @@ const OrganizationProfile = () => {
   const drawerState = useSelector((state: any) => state.drawer);
 
   useEffect(() => {
-    if(!drawerState.isOpen){
+    if (!drawerState.isOpen) {
       getOrgProfile();
     }
   }, [drawerState]);
@@ -57,14 +59,15 @@ const OrganizationProfile = () => {
           <div className="mb-6 flex justify-between">
             <div className="flex items-center gap-4 mb-4 w-[calc(100%-160px)]">
               <div>
-                <img
-                  src={
-                    !orgData?.logo
-                      ? "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png"
-                      : orgData?.logo
-                  }
-                  style={{ width: 65, height: 65 }}
-                />
+                <Avatar
+                  alt="Org Icon"
+                  src={orgData?.logo || undefined}
+                  className="rounded-full !h-12 !w-12"
+                >
+                  {!orgData?.logo && (
+                    <CorporateFareOutlined fontSize="medium" />
+                  )}
+                </Avatar>
               </div>
               <div>
                 <h5 className="text-heading flex items-center">
@@ -89,7 +92,7 @@ const OrganizationProfile = () => {
             {/* Company Profile */}
             <Grid item xs={12} md={9}>
               <div>
-                <p className="text-base text-gray-700 mb-2">
+                <p className="text-base text-gray-700 mb-2 whitespace-pre-line">
                   {orgData?.description}
                 </p>
               </div>
@@ -146,8 +149,7 @@ const OrganizationProfile = () => {
                     orgData?.socialLinks.map((item: any) => (
                       <li>
                         <Link href={item?.url} underline="none">
-                          <Facebook fontSize="small" color="primary" />{" "}
-                          {item?.name}
+                          <SocialIcon platform={item.platform} /> {item?.name}
                         </Link>
                       </li>
                     ))}

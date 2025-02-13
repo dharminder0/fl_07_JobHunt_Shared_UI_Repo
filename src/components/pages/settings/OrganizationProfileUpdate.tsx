@@ -303,7 +303,7 @@ export default function OrganizationProfileUpdate() {
                   name={`socialLinks.${index}.name`}
                   control={control}
                   render={({ field }) => (
-                    <TextField label="Username" {...field} size="small" />
+                    <TextField label="Display name" {...field} size="small" />
                   )}
                 />
                 <div className="col-span-2">

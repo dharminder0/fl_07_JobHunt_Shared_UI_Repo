@@ -1,7 +1,18 @@
 import React, { useEffect } from "react";
-import {  Grid, Box, Tabs, Tab, Chip, Link, IconButton, Tooltip } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Tabs,
+  Tab,
+  Chip,
+  Link,
+  IconButton,
+  Tooltip,
+  Avatar,
+} from "@mui/material";
 import {
   AccessTimeOutlined,
+  CorporateFareOutlined,
   Language,
   LocationOn,
   LocationOnOutlined,
@@ -12,24 +23,28 @@ import {
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getOrgProfileDetails } from "../../../../components/sharedService/apiService";
 
 const VendorCompanyDetails = () => {
   const location = useLocation();
+  const pathSegments = location.pathname.split("/");
   const searchParams = new URLSearchParams(location.search);
-  const type = searchParams.get('type'); 
+  const type = searchParams.get("type");
   const [value, setValue] = React.useState("activeView");
+  const [orgData, setOrgData] = React.useState<any>([]);
+  const [isLoader, setIsLoader] = React.useState<boolean>(false);
   const [previousUrl, setpreviousUrl] = React.useState("");
   const navigate = useNavigate();
   const handleRowClick = (id: any) => {};
 
- useEffect(() => {
+  useEffect(() => {
     if (location.state && location.state.previousUrl) {
       setpreviousUrl(location.state.previousUrl);
     }
     if (type) {
       !type ? setValue("activeView") : setValue(type);
     }
-  }, [type,location.state]);
+  }, [type, location.state]);
 
   const activeContracts = [
     {
@@ -182,63 +197,70 @@ const VendorCompanyDetails = () => {
     },
   ];
 
+  useEffect(() => {
+    getOrgProfile();
+  }, [pathSegments[pathSegments.length - 1]]);
+
+  const getOrgProfile = () => {
+    setIsLoader(true);
+    getOrgProfileDetails(pathSegments[pathSegments.length - 1])
+      .then((result: any) => {
+        if (result.success) {
+          setOrgData(result.content);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
+  };
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    navigate(`?type=${newValue}`)
+    navigate(`?type=${newValue}`);
   };
-  
 
   return (
     <div className="min-h-screen p-6">
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">
-        <IconButton
+          <IconButton
             color="primary"
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
             onClick={() => {
               navigate(previousUrl);
             }}
+            size="small"
           >
-            <ArrowBackIcon />
+            <ArrowBackIcon fontSize="small" />
           </IconButton>
           <div>
-            <img
-              src={
-                "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png"
-              }
-              style={{ width: 65, height: 65 }}
-            />
+            <Avatar
+              alt="Org Icon"
+              src={orgData?.logo || undefined}
+              className="rounded-full !h-12 !w-12"
+            >
+              {!orgData?.logo && <CorporateFareOutlined fontSize="medium" />}
+            </Avatar>
           </div>
           <div>
-            <p className="text-heading">Airtel</p>
-            <div className="mt-1">
+            <p className="text-heading">{orgData?.orgName}</p>
+            {/* <div className="mt-1">
               <Chip
                 label="Web Development"
                 variant="outlined"
                 sx={{ fontSize: 12 }}
-                className="my-1 me-1"
+                className="my-1 me-1 !text-info"
+                size="small"
               />
-              <Chip
-                label="Mobile App Development"
-                variant="outlined"
-                sx={{ fontSize: 12 }}
-                className="my-1 me-1"
-              />
-              <Chip
-                label="DevOps"
-                variant="outlined"
-                sx={{ fontSize: 12 }}
-                className="my-1 me-1"
-              />
-              <Chip
-                label="QA"
-                variant="outlined"
-                sx={{ fontSize: 12 }}
-                className="my-1 me-1"
-              />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -248,20 +270,7 @@ const VendorCompanyDetails = () => {
         {/* Company Profile */}
         <Grid item xs={12} md={9}>
           <div className="mt-2">
-            <p className="text-gray-700 text-base">
-              Stripe is a software platform for starting and running internet
-              businesses. Millions of businesses rely on Stripe’s software tools
-              to accept payments, expand globally, and manage their businesses
-              online. Stripe has been at the forefront of expanding internet
-              commerce, powering new business models, and supporting the latest
-              platforms, from marketplaces to mobile commerce sites. We believe
-              that growing the GDP of the internet is a problem rooted in code
-              and design, not finance. Stripe is built for developers, makers,
-              and creators. We work on solving the hard technical problems
-              necessary to build global economic infrastructure—from designing
-              highly reliable systems to developing advanced machine learning
-              algorithms to prevent fraud.
-            </p>
+            <p className="text-gray-700 text-base">{orgData?.description}</p>
           </div>
           <div className="my-2">
             <Box sx={{ width: "100%" }}>
@@ -292,11 +301,10 @@ const VendorCompanyDetails = () => {
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           {/* <th className="add-right-shadow">{item.title}</th> */}
-                          <th className="add-right-shadow">                           
-                              {item.title}
+                          <th className="add-right-shadow">
+                            {item.title}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={item.logo}
                                   style={{ height: 12, width: 12 }}
@@ -343,11 +351,10 @@ const VendorCompanyDetails = () => {
                     <tbody>
                       {activeContracts.map((item, index) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
-                          <th className="add-right-shadow">                           
-                              {item.title}
+                          <th className="add-right-shadow">
+                            {item.title}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={item.logo}
                                   style={{ height: 12, width: 12 }}
@@ -398,14 +405,11 @@ const VendorCompanyDetails = () => {
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
                           {/* <th className="add-right-shadow">{job.role}</th> */}
                           <th className="add-right-shadow">
-                            <div className="cursor-pointer hover:text-indigo-700"
-                            >
+                            <div className="cursor-pointer hover:text-indigo-700">
                               {job.role}
                             </div>
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div
-                                className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"                             
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={job.logo}
                                   style={{ height: 12, width: 12 }}
@@ -483,15 +487,15 @@ const VendorCompanyDetails = () => {
                           <th className="add-right-shadow">
                             {item.resource}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px]"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px]">
                                 <div className="flex">
                                   <p>
                                     <WorkHistory fontSize="inherit" />{" "}
                                     {item.experience}
                                   </p>
                                   <p className="ms-1">
-                                    <LocationOn fontSize="inherit" /> {item.location}
+                                    <LocationOn fontSize="inherit" />{" "}
+                                    {item.location}
                                   </p>
                                 </div>
                               </div>
@@ -518,37 +522,37 @@ const VendorCompanyDetails = () => {
 
             <ul className="text-gray-700 text-base">
               <li>
-                <Link href="mailto:sales@airtel.com" underline="none">
-                  <MailOutline fontSize="small" /> sales@airtel.com
+                <Link href={`mailto:${orgData?.email}`} underline="none">
+                  <MailOutline fontSize="small" /> {orgData?.email}
                 </Link>
               </li>
               <li>
-                <Link href="tel:+91 8811818880" underline="none">
-                  <Phone fontSize="small" /> +91 8811818880
+                <Link href={`tel:${orgData?.phone}`} underline="none">
+                  <Phone fontSize="small" /> {orgData?.phone}
                 </Link>
               </li>
               <li>
-                <Link href="www.airtel.com" underline="none">
-                  <Language fontSize="small" /> www.airtel.com
+                <Link href={orgData?.website} underline="none">
+                  <Language fontSize="small" /> {orgData?.website}
                 </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="mt-4">
-            <h5 className="text-heading mb-2">Office Location</h5>
-            <ul className="text-gray-700 text-base">
-              <li>
-                <LocationOnOutlined fontSize="small" /> Noida
-              </li>
-              <li>
-                <LocationOnOutlined fontSize="small" /> Gurgaon
-              </li>
-              <li>
-                <LocationOnOutlined fontSize="small" /> Delhi(NCR)
               </li>
             </ul>
           </div>
 
+          {orgData?.officeLocation && orgData?.officeLocation?.length > 0 && (
+            <div className="mt-4">
+              <h5 className="text-heading mb-2">Office Location</h5>
+              <ul className="text-gray-700 text-base">
+                {orgData?.officeLocation?.map((item: any) => (
+                  <li key={item.city}>
+                    <LocationOnOutlined fontSize="small" /> {item.city},{" "}
+                    {item.stateName}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {/* 
           <div className="mt-4">
             <h5 className="text-heading mb-2">Resource Offering</h5>
 
@@ -572,11 +576,11 @@ const VendorCompanyDetails = () => {
               sx={{ fontSize: 12 }}
               className="my-1 me-1"
             />
-          </div>
-          <div className="mt-4">
+          </div> */}
+          {/* <div className="mt-4">
             <h5 className="text-heading mb-2">Company Deck</h5>
             <PictureAsPdf fontSize="large" />
-          </div>
+          </div> */}
         </Grid>
       </Grid>
     </div>
