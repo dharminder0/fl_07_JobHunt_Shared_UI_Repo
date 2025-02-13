@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useOrganizationType } from "../../contexts/OrganizationTypeContext";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import { CorporateFareOutlined } from "@mui/icons-material";
 
 interface HeaderProps {}
 
@@ -80,16 +81,13 @@ const Header: React.FC<HeaderProps> = () => {
     <div className="h-[52px] px-5 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className="flex gap-3">
         <div className="icon my-auto">
-          {/* <img
-            className="rounded-full h-8"
-            src={companyIcon}
-            alt="JobHunty Logo"
-          /> */}
           <Avatar
-            alt="You"
-            src={companyIcon}
+            alt="Org Icon"
+            src={companyIcon || undefined}
             className="rounded-full !h-8 !w-8"
-          />
+          >
+            {!companyIcon && <CorporateFareOutlined fontSize="small" />}
+          </Avatar>
         </div>
         <div
           className="cursor-pointer flex flex-row gap-2"

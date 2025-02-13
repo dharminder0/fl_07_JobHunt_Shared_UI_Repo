@@ -18,8 +18,10 @@ import {
   useMediaQuery,
   useTheme,
   IconButton,
+  Avatar,
 } from "@mui/material";
 import {
+  CorporateFareOutlined,
   Language,
   LocationOnOutlined,
   MailOutline,
@@ -134,18 +136,19 @@ const VendorDetails = () => {
                   <ArrowBackIcon fontSize="small" />
                 </IconButton>
                 <div>
-                  <img
-                    src={
-                      !orgData?.logo
-                        ? "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png"
-                        : orgData.logo
-                    }
-                    style={{ width: 55, height: 55 }}
-                  />
+                  <Avatar
+                    alt="Org Icon"
+                    src={orgData?.logo || undefined}
+                    className="rounded-full !h-12 !w-12"
+                  >
+                    {!orgData?.logo && (
+                      <CorporateFareOutlined fontSize="medium" />
+                    )}
+                  </Avatar>
                 </div>
                 <div>
                   <p className="text-heading">{orgData?.orgName}</p>
-                  <div className="mt-1">
+                  {/* <div className="mt-1">
                     <Chip
                       label="Web Development"
                       variant="outlined"
@@ -153,27 +156,8 @@ const VendorDetails = () => {
                       className="my-1 me-1 !text-info"
                       size="small"
                     />
-                    <Chip
-                      label="Mobile App Development"
-                      variant="outlined"
-                      sx={{ fontSize: 12 }}
-                      className="my-1 me-1 !text-info"
-                      size="small"
-                    />
-                    <Chip
-                      label="DevOps"
-                      variant="outlined"
-                      className="my-1 me-1 !text-info"
-                      size="small"
-                    />
-                    <Chip
-                      label="QA"
-                      variant="outlined"
-                      sx={{ fontSize: 12 }}
-                      className="my-1 me-1 !text-info"
-                      size="small"
-                    />
-                  </div>
+                    
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -186,7 +170,7 @@ const VendorDetails = () => {
                     {orgData?.description}
                   </p>
                 </div>
-                <div className="my-2">
+                {/* <div className="my-2">
                   <Box sx={{ width: "100%" }}>
                     <Tabs
                       value={value}
@@ -232,18 +216,12 @@ const VendorDetails = () => {
                       </div>
                     )}
                   </Box>
-                </div>
+                </div> */}
               </Grid>
 
               {/* Tech Stack and Office Location */}
               <Grid item xs={12} md={3}>
                 <div className="mb-2 space-y-4">
-                  {/* <p className="text-base">
-              Click the 'Invite' button to send a notification to vendors.
-              Interested vendors will follow the instructions to complete the
-              process. You can track their progress and manage empaneled vendors
-              from the 'Manage Vendors' section.
-            </p> */}
                   <Button
                     onClick={handleClickOpen}
                     variant="outlined"
@@ -297,69 +275,44 @@ const VendorDetails = () => {
                       <Button variant="contained">Invite</Button>
                     </DialogActions>
                   </Dialog>
-                  {/* <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <p className="text-base">Write a Personalized Message</p>
-                <form className="w-full max-w-md mt-2 space-y-4">
-                  <TextField
-                    label="Message"
-                    // value={companyName}
-                    // onChange={(e) => setCompanyName(e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                    multiline
-                    rows={3}
-                  />
-                  <Button onClick={handleOpen} variant="contained">
-                    Send Request
-                  </Button>
-                </form>
-              </Box>
-            </Modal> */}
                 </div>
                 <div className="mt-4">
                   <h5 className="text-heading mb-2">Contact Information</h5>
                   <ul className="text-gray-700 text-base">
                     <li>
-                      <Link
-                        href="mailto:sales@fleekitsolutions.com"
-                        underline="none"
-                      >
+                      <Link href={`mailto:${orgData?.email}`} underline="none">
                         <MailOutline fontSize="small" /> {orgData?.email}
                       </Link>
                     </li>
                     <li>
-                      <Link href="tel:+91 971181234" underline="none">
+                      <Link href={`tel:${orgData?.phone}`} underline="none">
                         <Phone fontSize="small" /> {orgData?.phone}
                       </Link>
                     </li>
                     <li>
-                      <Link href="www.fleekitsolutions.com" underline="none">
+                      <Link href={orgData?.website} underline="none">
                         <Language fontSize="small" /> {orgData?.website}
                       </Link>
                     </li>
                   </ul>
                 </div>
-                <div className="mt-4">
-                  <h5 className="text-heading mb-2">Office Location</h5>
-                  <ul className="text-gray-700 text-base">
-                    {orgData?.officeLocation &&
-                      orgData?.officeLocation?.length > 0 &&
-                      orgData?.officeLocation?.map((item: any) => (
-                        <li key={item.city}>
-                          <LocationOnOutlined fontSize="small" /> {item.city},{" "}
-                          {item.stateName}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
 
-                <div className="mt-4">
+                {orgData?.officeLocation &&
+                  orgData?.officeLocation?.length > 0 && (
+                    <div className="mt-4">
+                      <h5 className="text-heading mb-2">Office Location</h5>
+                      <ul className="text-gray-700 text-base">
+                        {orgData?.officeLocation?.map((item: any) => (
+                          <li key={item.city}>
+                            <LocationOnOutlined fontSize="small" /> {item.city},{" "}
+                            {item.stateName}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                {/* <div className="mt-4">
                   <h5 className="text-heading mb-2">Resource Offering</h5>
 
                   <Chip
@@ -382,11 +335,11 @@ const VendorDetails = () => {
                     sx={{ fontSize: 12 }}
                     className="my-1 me-1"
                   />
-                </div>
-                <div className="mt-4">
+                </div> */}
+                {/* <div className="mt-4">
                   <h5 className="text-heading mb-2">Company Deck</h5>
                   <PictureAsPdf fontSize="large" />
-                </div>
+                </div> */}
               </Grid>
             </Grid>
           </>

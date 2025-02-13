@@ -1,4 +1,3 @@
-// App.tsx
 import { useEffect, useState } from "react";
 import {
   TextField,
@@ -6,6 +5,7 @@ import {
   IconButton,
   InputAdornment,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,92 +14,10 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { getOrgDetailsList } from "../../../../components/sharedService/apiService";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import Loader from "../../../../components/shared/Loader";
+import { CorporateFareOutlined } from "@mui/icons-material";
+import { RoleType } from "../../../../components/sharedService/enums";
 
-const companies = [
-  {
-    id: 1,
-    name: "Cyient Limited",
-    description:
-      "Stripe is a software platform for starting and running internet businesses with this platform.",
-    tags: ["Onsite", "50-100", "Full-Stack Development"],
-    place: "Noida",
-    logo: "https://www.cyient.com/hubfs/enhancer.png",
-  },
-  {
-    id: 2,
-    name: "3Pillar Global Noida",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "Mobile App Development"],
-    place: "Delhi(NCR)",
-    logo: "https://www.3pillarglobal.com/favicon.png",
-  },
-  {
-    id: 3,
-    name: "Exzeo Software Pvt Ltd",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Remote", "500+", "Front-End Development"],
-    place: "Gurgaon",
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-  },
-  {
-    id: 4,
-    name: "Nucleus Software Exports ",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Hybrid", "0-10", "Full-Stack Development"],
-    place: "Mumbai",
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-  },
-  {
-    id: 5,
-    name: "Ucodice Technologies IT ",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Remote", "100-200", "Front-End Development"],
-    place: "Pune",
-    logo: "https://www.ucodice.com/images/new_logo_for_white_background.png",
-  },
-  {
-    id: 6,
-    name: "Shadow infosystem(P) ",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Hybrid", "50-100", "Cloud Technologies"],
-    place: "Pune",
-    logo: "https://www.shadowinfosystem.com/static/media/shadow-png-logo2-1.53ac2f8235b19116a576.png",
-  },
-  {
-    id: 7,
-    name: "Nexthoughts Software Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "100-200", "Mobile App Development"],
-    place: "Pune",
-    logo: "https://nexthoughts.com/wp-content/uploads/2019/12/cropped-Fevicon-logo-192x192.png",
-  },
-  {
-    id: 8,
-    name: "GrapeCity India Private ",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Hybrid", "10-50", "Mobile App Development"],
-    place: "Pune",
-    logo: "https://static.wixstatic.com/media/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png/v1/fill/w_192%2Ch_192%2Clg_1%2Cusm_0.66_1.00_0.01/81da1e_1ce1c15b17274da5bc0c8193c28f4780%7Emv2.png",
-  },
-  {
-    id: 7,
-    name: "Eastern Software Solutions",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Remote", "50-100", "Full-Stack Development"],
-    place: "Pune",
-    logo: "https://www.essindia.com/assets/img/favicon.png",
-  },
-];
-
-const MyClients = () => {
+const FindVendors = () => {
   const navigate = useNavigate();
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
@@ -160,7 +78,7 @@ const MyClients = () => {
 
   const getOrgDetailsListData = () => {
     const payload = {
-      role: ["2"],
+      role: [RoleType.Vendor],
       page: pageIndex,
       pageSize: pageSize,
       searchText,
@@ -268,16 +186,15 @@ const MyClients = () => {
                 <div onClick={() => handleDetails(company.orgCode)}>
                   <div className="h-100 border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
-                      <img
-                        src={
-                          !company.logo
-                            ? "/assets/images/Companylogo.png"
-                            : company.logo
-                        }
-                        alt={company.orgName}
-                        className="me-3"
-                        style={{ width: 50, height: 50 }}
-                      />
+                      <Avatar
+                        alt="Org Icon"
+                        src={company.logo || undefined}
+                        className="rounded-full !h-10 !w-10 me-3"
+                      >
+                        {!company.logo && (
+                          <CorporateFareOutlined fontSize="small" />
+                        )}
+                      </Avatar>
                       <div>
                         <Tooltip title={company.orgName} arrow>
                           <p className="text-title line-clamp-1 font-bold">
@@ -289,11 +206,9 @@ const MyClients = () => {
                         </p>
                       </div>
                     </div>
-                    <Tooltip title={company.description} arrow>
-                      <p className="text-base line-clamp-2">
-                        {company.description}
-                      </p>
-                    </Tooltip>
+                    <p className="text-base line-clamp-2">
+                      {company.description}
+                    </p>
                     {/* <div className="flex flex-wrap h-16 mt-2">
                     {company.tags.map((tag: string, idx: any) => (
                       <Chip
@@ -318,4 +233,4 @@ const MyClients = () => {
   );
 };
 
-export default MyClients;
+export default FindVendors;
