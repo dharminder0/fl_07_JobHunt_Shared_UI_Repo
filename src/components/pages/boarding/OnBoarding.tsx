@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/components/redux/store";
 import { RoleType } from "../../sharedService/enums";
 import {
+  Avatar,
   FormControl,
   FormControlLabel,
   Grid2,
@@ -20,7 +21,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { InfoOutlined } from "@mui/icons-material";
+import { CorporateFareOutlined, InfoOutlined } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { upsertCompanyInfo } from "../../../components/sharedService/apiService";
 import {
@@ -44,7 +45,7 @@ export default function OnBoarding() {
   const [companyType, setCompanyType] = React.useState("");
 
   const defaultVal: any = {
-    registrationType: [], // Default empty or predefined value
+    registrationType: ["1"], // Default empty or predefined value
     orgName: userData.companyName,
     portfolio: "",
     contactMail: "",
@@ -67,7 +68,7 @@ export default function OnBoarding() {
     dispatch(openBackdrop());
     data.userId = userData.userId;
     userData.role =
-      data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
+      data?.registrationType === "3" ? `"1", "2"` : data?.registrationType;
 
     upsertCompanyInfo(data)
       .then((result: any) => {
@@ -142,8 +143,7 @@ export default function OnBoarding() {
   };
   const open = Boolean(anchorEl);
 
-  const handleCompanyTypeChange = (event: any) => {
-    const value = event.target.value;
+  const handleCompanyTypeChange = (value: any) => {
     setCompanyType(value);
     setValue("registrationType", value === "3" ? ["1", "2"] : [value]);
   };
@@ -154,11 +154,13 @@ export default function OnBoarding() {
       <div className="h-[52px] px-5 py-2 flex justify-between">
         <div className="flex gap-3">
           <div className="icon my-auto">
-            <img
-              className="rounded-full h-8"
-              src="https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png"
-              alt="JobHunty Logo"
-            />
+            <Avatar
+              alt="Org Icon"
+              src={undefined}
+              className="rounded-full !h-8 !w-8"
+            >
+              <CorporateFareOutlined fontSize="small" />
+            </Avatar>
           </div>
           <div className="cursor-pointer flex flex-row gap-2" id="basic-button">
             <div className="font-semibold text-title my-auto">
@@ -207,38 +209,27 @@ export default function OnBoarding() {
                         </IconButton>
                       </p>
 
-                      <Controller
-                        name="registrationType"
-                        control={control}
-                        rules={{ required: "Registration Type is required" }}
-                        render={({ field }) => (
-                          <FormControl
-                            size="small"
-                            error={!!errors.registrationType}
-                            required
-                          >
-                            <RadioGroup
-                              {...field}
-                              row
-                              onChange={handleCompanyTypeChange}
-                            >
-                              {RoleData.map((item: any) => (
-                                <FormControlLabel
-                                  key={item?.id}
-                                  value={item.id}
-                                  control={<Radio size="small" required />}
-                                  label={item.name}
-                                />
-                              ))}
-                            </RadioGroup>
-                            {/* {errors.registrationType && (
-                              <p className="text-red-500 text-xs mt-1">
-                                {errors.registrationType.message}
-                              </p>
-                            )} */}
-                          </FormControl>
-                        )}
-                      />
+                      <FormControl
+                        size="small"
+                        error={!!errors.registrationType}
+                      >
+                        <RadioGroup
+                          row
+                          onChange={(e) => {
+                            handleCompanyTypeChange(e.target?.value); // Call external handler
+                          }}
+                          defaultValue={RoleType.Vendor}
+                        >
+                          {RoleData.map((item: any) => (
+                            <FormControlLabel
+                              key={item.id}
+                              value={item.id}
+                              control={<Radio size="small" />}
+                              label={item.name}
+                            />
+                          ))}
+                        </RadioGroup>
+                      </FormControl>
                     </div>
 
                     {/* Company Name */}
