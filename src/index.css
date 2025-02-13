@@ -1,39 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 :root {
-  --primary-color: #4640DE;
-  --primary-hover-color: #E9EBFD;
+  --primary-color: #4640de;
+  --primary-hover-color: #e9ebfd;
   --secondary-color: #a9a9a9;
-  --primary-text-color: #25324B;
-  --secondary-text-color: #7C8493;
+  --primary-text-color: #25324b;
+  --secondary-text-color: #7c8493;
   --Gray1: #333333;
-  --Gray2: #4F4F4F;
+  --Gray2: #4f4f4f;
   --Gray3: #828282;
-  --Gray4: #2A2D33;
-  --Gray5: #E0E0E0;
-  --bg-input: #EAF0F0;
+  --Gray4: #2a2d33;
+  --Gray5: #e0e0e0;
+  --bg-input: #eaf0f0;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Epilogue', 'sans';
+  font-family: -apple-system, BlinkMacSystemFont, "Epilogue", "sans";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-
 
 body {
   margin: 0;
   font-size: 14px;
   font-family: Poppins;
 }
-
+.ql-editor {
+  max-height: 200px !important;
+}
+.ql-editor.ql-blank {
+  height: 150px;
+  min-height: 150px;
+  max-height: 150px;
+}
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.6rem;
+}
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.6rem;
+}
 /* div, p, span, label, button, input, textarea, h1, h2, h3, h4, h5, h6, li, ul {
   font-family: Poppins;
 } */

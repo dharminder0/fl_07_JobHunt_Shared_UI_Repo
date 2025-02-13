@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { openDrawer } from "../../../components/features/drawerSlice";
 import Loader from "../../../components/shared/Loader";
 import SocialIcon from "../../../components/sharedComponents/SocialIcon";
+import HtmlRenderer from "../../../components/sharedComponents/HtmlRenderer";
 
 const OrganizationProfile = () => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -92,9 +93,9 @@ const OrganizationProfile = () => {
             {/* Company Profile */}
             <Grid item xs={12} md={9}>
               <div>
-                <p className="text-base text-gray-700 mb-2 whitespace-pre-line">
-                  {orgData?.description}
-                </p>
+                <div className="text-base text-gray-700 mb-2">
+                  <HtmlRenderer content={orgData?.description} />
+                </div>
               </div>
             </Grid>
 

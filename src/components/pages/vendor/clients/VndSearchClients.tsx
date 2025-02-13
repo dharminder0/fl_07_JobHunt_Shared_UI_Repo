@@ -16,6 +16,7 @@ import { getOrgDetailsList } from "../../../../components/sharedService/apiServi
 import Loader from "../../../../components/shared/Loader";
 import { CorporateFareOutlined } from "@mui/icons-material";
 import { RoleType } from "../../../../components/sharedService/enums";
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 
 const VndSearchClients = () => {
   const navigate = useNavigate();
@@ -212,7 +213,7 @@ const VndSearchClients = () => {
                       </div>
                     </div>
                     <p className="text-base line-clamp-2">
-                      {company.description}
+                      <HtmlRenderer content={company?.description} />
                     </p>
                     {/* <div className="flex flex-wrap h-16 mt-2">
                     {company.tags.map((tag: string, idx: any) => (

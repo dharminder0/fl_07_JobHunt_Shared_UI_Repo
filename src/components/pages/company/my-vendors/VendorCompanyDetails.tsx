@@ -24,6 +24,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getOrgProfileDetails } from "../../../../components/sharedService/apiService";
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 
 const VendorCompanyDetails = () => {
   const location = useLocation();
@@ -269,8 +270,8 @@ const VendorCompanyDetails = () => {
       <Grid container spacing={6}>
         {/* Company Profile */}
         <Grid item xs={12} md={9}>
-          <div className="mt-2">
-            <p className="text-gray-700 text-base">{orgData?.description}</p>
+          <div className="mt-2 text-gray-700 text-base">
+            <HtmlRenderer content={orgData?.description} />
           </div>
           <div className="my-2">
             <Box sx={{ width: "100%" }}>

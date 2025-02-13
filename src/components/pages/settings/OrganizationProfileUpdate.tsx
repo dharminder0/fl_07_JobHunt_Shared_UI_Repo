@@ -15,6 +15,8 @@ import {
   closeDrawer,
   openBackdrop,
 } from "../../../components/features/drawerSlice";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const platforms = ["linkedin", "facebook", "github", "twitter", "instagram"];
 
@@ -46,6 +48,7 @@ export default function OrganizationProfileUpdate() {
   const [orgData, setOrgData] = useState<any>();
   const [stateData, setStateData] = useState<any>();
   const dispatch: AppDispatch = useDispatch();
+  const [discription, setDiscription] = useState("");
 
   const {
     control,
@@ -68,6 +71,7 @@ export default function OrganizationProfileUpdate() {
         if (result.success) {
           setOrgData(result.content);
           reset(result.content);
+          setDiscription(result.content.description);
         }
       })
       .catch((error: any) => {
@@ -160,7 +164,7 @@ export default function OrganizationProfileUpdate() {
                 />
               )}
             />
-            <Controller
+            {/* <Controller
               name="description"
               control={control}
               render={({ field }) => (
@@ -172,6 +176,18 @@ export default function OrganizationProfileUpdate() {
                   rows={4}
                   {...field}
                   size="small"
+                />
+              )}
+            /> */}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  theme="snow"
+                  value={field.value || ""}
+                  onChange={field.onChange} // Important to update form state
                 />
               )}
             />

@@ -33,6 +33,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getOrgProfileDetails } from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/shared/Loader";
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 
 const VendorDetails = () => {
   const theme = useTheme();
@@ -165,10 +166,8 @@ const VendorDetails = () => {
             <Grid container spacing={6}>
               {/* Company Profile */}
               <Grid item xs={12} md={9}>
-                <div className="mt-2">
-                  <p className="text-gray-700 text-base">
-                    {orgData?.description}
-                  </p>
+                <div className="mt-2 text-base text-gray-700">
+                  <HtmlRenderer content={orgData?.description} />
                 </div>
                 {/* <div className="my-2">
                   <Box sx={{ width: "100%" }}>
