@@ -41,7 +41,7 @@ export default function SignUp() {
           localStorage.setItem("isLoggedIn", "true");
           res.content["companyName"] = data?.companyName;
           res.content["firstName"] = data?.firstName;
-          res.content["lastName"] = data?.firstName;
+          res.content["lastName"] = data?.lastName;
           localStorage.setItem("userData", JSON.stringify(res?.content));
         }
         setTimeout(() => {
