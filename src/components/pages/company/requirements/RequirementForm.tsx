@@ -21,8 +21,13 @@ import Loader from "../../../../components/shared/Loader";
 import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,
+  shareRequirement,
   upsertRequirement,
 } from "../../../../components/sharedService/apiService";
+import {
+  LocationType,
+  Visibility,
+} from "../../../../components/sharedService/enums";
 
 const steps = ["Paste Requirement", "Basic Information", "Vendors"];
 
@@ -245,6 +250,7 @@ const RequirementForm = () => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [shareWith, setShareWith] = useState<any>(1);
   const [promptJson, setPromptJson] = useState<string>("");
+  const [requirementId, setRequirementId] = useState<number>(0);
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
@@ -266,7 +272,7 @@ const RequirementForm = () => {
 
   const { control, handleSubmit, watch, reset } = useForm({
     defaultValues: {
-      client: "",
+      clientId: "",
       title: "",
       description: "",
       experience: "",
@@ -276,6 +282,7 @@ const RequirementForm = () => {
       positions: "",
       duration: "",
       remarks: "",
+      status: 1,
     },
   });
 
@@ -311,9 +318,9 @@ const RequirementForm = () => {
     setIsLoader(true);
     upsertRequirement(data)
       .then((result: any) => {
-        console.log(result);
         if (result.success) {
           console.log(result.content);
+          setRequirementId(result.content);
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -367,9 +374,22 @@ const RequirementForm = () => {
     } else if (activeStep === 1) {
       await onSubmit(data);
     } else if (activeStep === 2) {
-      // await handleSubmitStep2();
+      await handleSubmitStep2();
     }
     handleNext(); // Move to the next step after API call
+  };
+
+  const handleSubmitStep2 = () => {
+    const payload = {
+      requirementId: requirementId,
+      visibility: Visibility.Public,
+      orgCode: [],
+    };
+    shareRequirement(payload).then((res: any) => {
+      if (res) {
+        setDrawerOpen(false);
+      }
+    });
   };
 
   return (
@@ -530,17 +550,17 @@ const RequirementForm = () => {
                               render={({ field }) => (
                                 <RadioGroup row {...field}>
                                   <FormControlLabel
-                                    value="onsite"
+                                    value={LocationType.Onsite}
                                     control={<Radio size="small" />}
                                     label="Onsite"
                                   />
                                   <FormControlLabel
-                                    value="hybrid"
+                                    value={LocationType.Hybrid}
                                     control={<Radio size="small" />}
                                     label="Hybrid"
                                   />
                                   <FormControlLabel
-                                    value="remote"
+                                    value={LocationType.Remote}
                                     control={<Radio size="small" />}
                                     label="Remote"
                                   />
@@ -549,7 +569,7 @@ const RequirementForm = () => {
                             />
                           </div>
 
-                          {locationType === "onsite" && (
+                          {locationType == LocationType.Onsite && (
                             <Controller
                               name="location"
                               control={control}
@@ -566,7 +586,7 @@ const RequirementForm = () => {
 
                           <div>
                             <Controller
-                              name="client"
+                              name="clientId"
                               control={control}
                               render={({ field }) => (
                                 <TextField
@@ -920,7 +940,7 @@ const RequirementForm = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  // onClick={handleSubmit}
+                  onClick={handleSubmitStep2}
                   sx={{ width: 125 }}
                 >
                   Submit

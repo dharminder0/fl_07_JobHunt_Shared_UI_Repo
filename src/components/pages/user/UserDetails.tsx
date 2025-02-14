@@ -1,8 +1,17 @@
 import {
+  changePassword,
   getUserDetailsByEmail,
   updateUserDetails,
 } from "../../../components/sharedService/apiService";
-import { Avatar, Button, MenuItem, Tab, Tabs, TextField } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  IconButton,
+  MenuItem,
+  Tab,
+  Tabs,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import moment from "moment";
@@ -12,6 +21,8 @@ import {
   closeBackdrop,
   openBackdrop,
 } from "../../../components/features/drawerSlice";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import SuccessDialog from "../../../components/shared/SuccessDialog";
 
 export default function UserDetails() {
   const [tabValue, setTabValue] = React.useState("Profile");
@@ -19,9 +30,14 @@ export default function UserDetails() {
 
   const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState<any>();
+  const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   useEffect(() => {
     getUserDetails();
@@ -42,6 +58,26 @@ export default function UserDetails() {
       dob: "01-01-2000",
     },
   });
+  const {
+    control: control1,
+    handleSubmit: handleSubmit1,
+    formState: { errors: error1 },
+    reset: reset1,
+  } = useForm({
+    defaultValues: { oldEmail: userData?.email, newEmail: "" },
+    mode: "onChange",
+  });
+
+  const {
+    control: control2,
+    handleSubmit: handleSubmit2,
+    setError: setError1,
+    formState: { errors: error2 },
+    reset: reset2,
+  } = useForm({
+    defaultValues: { email: "", oldPassword: "", newPassword: "" },
+    mode: "onChange",
+  });
 
   const getUserDetails = () => {
     getUserDetailsByEmail(userData.email).then((result: any) => {
@@ -55,17 +91,18 @@ export default function UserDetails() {
           gender: result.content?.gender,
           dob: moment(result.content?.dob).format("YYYY-MM-DD"),
         });
+        reset1({ oldEmail: result.content?.userName });
+        reset2({ email: result.content?.userName });
       }
     });
   };
 
   const onSubmit = (data: any) => {
     console.log("Form Submitted", data);
-
     dispatch(openBackdrop());
     updateUserDetails(data)
       .then((result: any) => {
-        if (result.sucess) {
+        if (result.success) {
           getUserDetails();
         }
         setTimeout(() => {
@@ -74,6 +111,35 @@ export default function UserDetails() {
       })
       .catch((error: any) => {
         console.log(error);
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
+  };
+
+  const onSubmit1 = (data: any) => {
+    console.log("Form 1 Submitted:", data);
+  };
+  const onSubmit2 = (data: any) => {
+    dispatch(openBackdrop());
+    changePassword(data)
+      .then((result: any) => {
+        if (result.success) {
+          reset2();
+          setTimeout(() => {
+            setIsSuccessPopup(true);
+          }, 1000);
+        } else {
+          setError1("newPassword", {
+            type: "manual",
+            message: "Incorrect Password",
+          });
+        }
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      })
+      .catch((error: any) => {
         setTimeout(() => {
           dispatch(closeBackdrop());
         }, 1000);
@@ -218,82 +284,144 @@ export default function UserDetails() {
           <div className="space-y-2">
             <div className="p-4 space-y-2  border rounded-md">
               <p className="text-base">Update E-mail</p>
-              {/* Form Fields */}
-              {/* <TextField
-                label="Email"
-                name="email"
-                value={formData?.userName}
-                // onChange={handleInputChange}
-                fullWidth
-                size="small"
-                disabled
-              /> */}
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Email"
-                    fullWidth
-                    size="small"
-                    disabled
-                  />
-                )}
-              />
-              <TextField
-                label="Enter new Email"
-                name="email"
-                value={""}
-                // onChange={handleInputChange}
-                fullWidth
-                size="small"
-              />
-
-              {/* Submit Button */}
-              <div className="flex justify-end">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  // onClick={handleSubmit}
-                  sx={{ width: 125 }}
-                >
-                  Update email
-                </Button>
-              </div>
+              <form onSubmit={handleSubmit1(onSubmit1)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <Controller
+                      name="oldEmail"
+                      control={control1}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Email"
+                          fullWidth
+                          size="small"
+                          disabled
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Controller
+                      name="newEmail"
+                      control={control1}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="New Email"
+                          fullWidth
+                          size="small"
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="flex justify-end col-span-2">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      sx={{ width: 125 }}
+                    >
+                      Update email
+                    </Button>
+                  </div>
+                </div>
+              </form>
             </div>
             <div className="p-4 space-y-2  border rounded-md">
               <p className="text-base">Change Password</p>
-              <TextField
-                label="Old password"
-                name="oldPass"
-                value={""}
-                // onChange={handleInputChange}
-                fullWidth
-                size="small"
-              />
-              <TextField
-                label="New password"
-                name="newPass"
-                value={""}
-                // onChange={handleInputChange}
-                fullWidth
-                size="small"
-              />
-
-              {/* Submit Button */}
-              <div className="flex justify-end">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  // onClick={handleSubmit}
-                >
-                  Change password
-                </Button>
-              </div>
+              <form onSubmit={handleSubmit2(onSubmit2)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <Controller
+                      name="oldPassword"
+                      control={control2}
+                      rules={{ required: "required" }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Old Password"
+                          fullWidth
+                          size="small"
+                          type={showPassword ? "text" : "password"}
+                          error={!!error2.oldPassword}
+                          slotProps={{
+                            input: {
+                              endAdornment: (
+                                <IconButton
+                                  type="button"
+                                  aria-label="search"
+                                  size="small"
+                                  onClick={handleClickShowPassword}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
+                                </IconButton>
+                              ),
+                              sx: { pr: 0.5 },
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <Controller
+                      name="newPassword"
+                      control={control2}
+                      rules={{ required: "Required" }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="New Password"
+                          fullWidth
+                          type={showPassword ? "text" : "password"}
+                          size="small"
+                          error={!!error2.newPassword}
+                          helperText={error2.newPassword?.message}
+                          slotProps={{
+                            input: {
+                              endAdornment: (
+                                <IconButton
+                                  type="button"
+                                  aria-label="search"
+                                  size="small"
+                                  onClick={handleClickShowPassword}
+                                >
+                                  {showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
+                                </IconButton>
+                              ),
+                              sx: { pr: 0.5 },
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="flex justify-end col-span-2">
+                    <Button type="submit" variant="contained" color="primary">
+                      Change Password
+                    </Button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
+      )}
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="Password changed successfully"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
       )}
     </div>
   );

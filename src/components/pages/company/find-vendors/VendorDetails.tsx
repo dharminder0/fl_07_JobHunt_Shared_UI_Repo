@@ -31,9 +31,13 @@ import {
 } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getOrgProfileDetails } from "../../../../components/sharedService/apiService";
+import {
+  dispatchedInvitation,
+  getOrgProfileDetails,
+} from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/shared/Loader";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
+import { RoleType } from "../../../../components/sharedService/enums";
 
 const VendorDetails = () => {
   const theme = useTheme();
@@ -46,6 +50,7 @@ const VendorDetails = () => {
   const handleRowClick = (id: any) => {};
   const [open, setOpen] = React.useState(false);
   const [orgData, setOrgData] = React.useState<any>([]);
+  const [empMessage, setEmpMessage] = React.useState<any>("");
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClickOpen = () => {
@@ -118,6 +123,27 @@ const VendorDetails = () => {
     setValue(newValue);
   };
 
+  const userData = JSON.parse(localStorage.userData);
+  const handleInvitation = () => {
+    const payload: any = {
+      sender: {
+        email: userData.email,
+        orgCode: userData.orgCode,
+        roleType: RoleType.Vendor,
+      },
+      receiver: {
+        email: orgData?.email,
+        orgCode: orgData?.orgCode,
+      },
+      message: empMessage,
+    };
+
+    dispatchedInvitation(payload).then((result: any) => {
+      if (result) {
+        handleClose();
+      }
+    });
+  };
   return (
     <>
       <div className="min-h-screen p-6">
@@ -254,11 +280,12 @@ const VendorDetails = () => {
                       <form className="mt-2 space-y-4">
                         <TextField
                           label="Message"
-                          // value={companyName}
-                          // onChange={(e) => setCompanyName(e.target.value)}
+                          value={empMessage}
+                          onChange={(e) => setEmpMessage(e.target.value)}
                           fullWidth
                           variant="outlined"
                           multiline
+                          required
                           rows={3}
                         />
                       </form>
@@ -271,7 +298,13 @@ const VendorDetails = () => {
                       >
                         Close
                       </Button>
-                      <Button variant="contained">Invite</Button>
+                      <Button
+                        variant="contained"
+                        disabled={!empMessage}
+                        onClick={handleInvitation}
+                      >
+                        Invite
+                      </Button>
                     </DialogActions>
                   </Dialog>
                 </div>
