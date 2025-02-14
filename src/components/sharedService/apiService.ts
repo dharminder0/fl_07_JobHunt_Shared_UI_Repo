@@ -100,4 +100,30 @@ export const updateUserDetails = async (payload: any) => {
   return response.data;
 };
 
+export const changePassword = async (payload: any) => {
+  const response = await api.post("V1/users/ChangePassword", payload);
+  return response.data;
+};
+
+export const dispatchedInvitation = async (payload: any) => {
+  const response = await api.post(
+    "V1/Organization/DispatchedInvitation",
+    payload
+  );
+  return response.data;
+};
+
+export const shareRequirement = async (payload: any) => {
+  const response = await api.post(
+    "V1/RequirementVendors/ShareRequirement",
+    payload
+  );
+  return response.data;
+};
+
+export const getRequirementsList = async () => {
+  const response = await api.get("V1/Requirement/GetList");
+  return response.data;
+};
+
 export default api;

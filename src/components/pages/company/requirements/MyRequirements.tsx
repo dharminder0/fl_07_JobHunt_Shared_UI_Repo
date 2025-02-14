@@ -12,6 +12,8 @@ import { AccessTimeOutlined, LocationOnOutlined } from "@mui/icons-material";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import StatusDialog from "../../../../components/shared/StatusDialog";
+import { getRequirementsList } from "../../../../components/sharedService/apiService";
+import moment from "moment";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const MyRequirements = () => {
   const params = location.state || {};
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
+  const [requirementData, SetRequirementData] = React.useState<any[]>([]);
   const [filterList, setFilterList] = useState<any>({
     client: [
       "OpsTree Solutions",
@@ -412,6 +415,18 @@ const MyRequirements = () => {
     setSelectedStatus(status);
   };
 
+  const getRequirementsData = () => {
+    getRequirementsList().then((result: any) => {
+      if (result) {
+        SetRequirementData(result);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getRequirementsData();
+  }, []);
+
   return (
     <>
       <div className="px-2 py-3 h-full">
@@ -494,35 +509,39 @@ const MyRequirements = () => {
               </tr>
             </thead>
             <tbody>
-              {jobData.map((job, index) => (
+              {requirementData.map((requirement, index) => (
                 <tr key={index}>
                   <th className="add-right-shadow">
                     <div className="flex items-center justify-between">
                       <div
-                        onClick={() => handleRowClick(job.id, "requirement")}
+                        onClick={() =>
+                          handleRowClick(requirement.id, "requirement")
+                        }
                         className="cursor-pointer hover:text-indigo-700"
                       >
-                        {job.role}
+                        {requirement.title}
                       </div>
-                      {job?.type && (
+                      {requirement?.hot && (
                         <div className="text-info text-red-700 border px-2 rounded-full border-red-700">
-                          {job?.type}
+                          Hot
                         </div>
                       )}
                     </div>
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
                         className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                        onClick={() => handleRowClick(job.id, "client")}
+                        onClick={() => handleRowClick(requirement.id, "client")}
                       >
-                        <img
-                          src={job.logo}
-                          style={{ height: 12, width: 12 }}
-                          className="me-1"
-                        />
-                        <Tooltip title={job.client} arrow>
+                        {requirement?.logo && (
+                          <img
+                            src={requirement?.logo}
+                            style={{ height: 12, width: 12 }}
+                            className="me-1"
+                          />
+                        )}
+                        <Tooltip title={requirement?.client} arrow>
                           <span className="text-ellipsis overflow-hidden truncate">
-                            {job.client}
+                            {requirement?.client}
                           </span>
                         </Tooltip>
                       </div>
@@ -532,14 +551,14 @@ const MyRequirements = () => {
                             fontSize="inherit"
                             className="mr-1"
                           />
-                          <span>{job.requirementType}</span>
+                          <span>{requirement?.locationType}</span>
                         </div>
                         <div className="flex items-center ms-1">
                           <AccessTimeOutlined
                             fontSize="inherit"
                             className="mr-1"
                           />
-                          <span>{job.contractPeriod}</span>
+                          <span>{requirement?.duration}</span>
                         </div>
                       </div>
                     </div>
@@ -547,31 +566,29 @@ const MyRequirements = () => {
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base cursor-pointer rounded-full ${
-                        job.status === "Open"
+                        requirement?.status === "Open"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
                       }`}
-                      onClick={() => handleStatusDialog(job.status)}
+                      onClick={() => handleStatusDialog(requirement?.status)}
                     >
-                      {job.status}
+                      {requirement?.status}
                     </Typography>
                   </td>
-                  <td>{job.datePosted}</td>
-                  {/* <td>{job.requirementType}</td> */}
+                  <td>{moment(requirement?.createdOn).format("DD-MM-YYYY")}</td>
                   <td
                     className="cursor-pointer hover:text-indigo-700"
-                    onClick={() => handleRowClick(job.id, "myvendors")}
+                    onClick={() => handleRowClick(requirement?.id, "myvendors")}
                   >
-                    {job.noOfPositions} ({job.placed})
+                    {requirement?.positions} (0)
                   </td>
                   <td
                     className="cursor-pointer  hover:text-indigo-700"
-                    onClick={() => handleRowClick(job.id, "applicant")}
+                    onClick={() => handleRowClick(requirement.id, "applicant")}
                   >
-                    {job.applicants}
+                    {requirement?.applicants}
                   </td>
-                  {/* <td>{job.contractPeriod}</td> */}
-                  <td>{job.visibility}</td>
+                  <td>{requirement?.visibility}</td>
                 </tr>
               ))}
             </tbody>
