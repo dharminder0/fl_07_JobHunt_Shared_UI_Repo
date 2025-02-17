@@ -57,11 +57,16 @@ const ImportClientForm = () => {
         Import
       </Button>
 
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div className="h-full w-[calc(100vw-250px)]">
-          <div className="p-4  py-2  border-b">
-            <h2 className="text-heading">Import</h2>
-          </div>
+      <Drawer anchor="right" open={drawerOpen}>
+        <div className="h-full w-[calc(100vw-250px)]">         
+           <div className="d-flex content-header">
+            <svg className="absolute cursor-pointer left-[8px] top-[11px]"  onClick={(event) => toggleDrawer(false)(event)} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <div className="px-8 py-2 border-b">
+              <h2 className="text-heading">Import</h2>
+            </div>
+          </div>      
           <div className="p-4 w-[50%] overflow-auto h-[calc(100%-95px)] mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="p-4">
