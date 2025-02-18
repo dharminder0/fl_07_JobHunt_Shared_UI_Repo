@@ -515,7 +515,7 @@ const MyRequirements = () => {
                     <div className="flex items-center justify-between">
                       <div
                         onClick={() =>
-                          handleRowClick(requirement.id, "requirement")
+                          handleRowClick(requirement.uniqueId, "requirement")
                         }
                         className="cursor-pointer hover:text-indigo-700"
                       >
@@ -530,18 +530,18 @@ const MyRequirements = () => {
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
                         className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                        onClick={() => handleRowClick(requirement.id, "client")}
+                        onClick={() => handleRowClick(requirement.uniqueId, "client")}
                       >
-                        {requirement?.logo && (
+                        {requirement?.clientLogo && (
                           <img
-                            src={requirement?.logo}
+                            src={requirement?.clientLogo}
                             style={{ height: 12, width: 12 }}
                             className="me-1"
                           />
                         )}
-                        <Tooltip title={requirement?.client?.clientName} arrow>
+                        <Tooltip title={requirement?.clientName} arrow>
                           <span className="text-ellipsis overflow-hidden truncate">
-                            {requirement?.client?.clientName}
+                            {requirement?.clientName || '-'}
                           </span>
                         </Tooltip>
                       </div>
@@ -551,7 +551,7 @@ const MyRequirements = () => {
                             fontSize="inherit"
                             className="mr-1"
                           />
-                          <span>{requirement?.locationTypeName}</span>
+                          <span>{requirement?.locationTypeName || '-'}</span>
                         </div>
                         <div className="flex items-center ms-1">
                           <AccessTimeOutlined
@@ -572,23 +572,23 @@ const MyRequirements = () => {
                       }`}
                       onClick={() => handleStatusDialog(requirement?.status)}
                     >
-                      {requirement?.status}
+                      {requirement?.status || '-'}
                     </Typography>
                   </td>
                   <td>{moment(requirement?.createdOn).format("DD-MM-YYYY")}</td>
                   <td
                     className="cursor-pointer hover:text-indigo-700"
-                    onClick={() => handleRowClick(requirement?.id, "myvendors")}
+                    onClick={() => handleRowClick(requirement?.uniqueId, "myvendors")}
                   >
-                    {requirement?.positions} (0)
+                    {requirement?.positions || 0} (0)
                   </td>
                   <td
                     className="cursor-pointer  hover:text-indigo-700"
-                    onClick={() => handleRowClick(requirement.id, "applicant")}
+                    onClick={() => handleRowClick(requirement.uniqueId, "applicant")}
                   >
-                    {requirement?.applicants}
+                    {requirement?.applicants || '-'}
                   </td>
-                  <td>{requirement?.visibilityName}</td>
+                  <td>{requirement?.visibilityName || '-'}</td>
                 </tr>
               ))}
             </tbody>
