@@ -193,6 +193,10 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   };
 
   useEffect(() => {
+
+    const pathSegments = document.location.pathname.split('/');
+    const uniqueId = pathSegments.pop()
+    
     // Filtering logic
     const filtered = jobDataOrg.filter((item) => {
       // Check client filter

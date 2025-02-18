@@ -18,6 +18,7 @@ import StatusDialog from "../../../../components/shared/StatusDialog";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import { getRequirementsListById } from "../../../../components/sharedService/apiService";
 
 const applicantData = [
   {
@@ -178,6 +179,7 @@ const RequirementDetails = () => {
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
+  const [requirementData, setRequirementData] = useState<any>(null);
 
   const handleToggle = () => {
     setExpanded((prev) => !prev);
@@ -221,7 +223,21 @@ const RequirementDetails = () => {
     ],
   });
 
-  useEffect(() => {
+  useEffect(() => {  
+  const pathSegments = document.location.pathname.split('/');
+  const uniqueId = pathSegments.pop();
+  getRequirementsData(uniqueId);  
+  },[])
+
+   const getRequirementsData = (uniqueId:any) => {
+    getRequirementsListById(uniqueId).then((result: any) => {
+        if (result) {
+          setRequirementData(result);
+        }
+      });
+    };
+
+  useEffect(() => {   
     // Filtering logic
     const filtered = applicantData.filter((item) => {
       // Check status filter
@@ -242,105 +258,112 @@ const RequirementDetails = () => {
   return (
     <div className="flex flex-1">
       <div className="w-[70%] p-3 border-e min-h-screen">
-        {/* Header */}
-        <Box className="flex justify-between items-center">
-          <div className="flex flex-row gap-3">
-            <IconButton
-              color="primary"
-              aria-label="add to shopping cart"
-              className="!w-[50px] !h-[50px]"
-              onClick={() => {
-                navigate("/company/myrequirements");
-              }}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-            <Box>
-              <h5 className="text-heading group/item flex items-center">
-                Social Media Assistant
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700 ">
-                    <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
-              </h5>
-              <div className="flex items-center">
-                <img
-                  src="https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png"
-                  alt=""
-                  style={{ width: 16, height: 16 }}
-                />
-                <p className="text-title mx-2">Airtel</p>
+      {requirementData &&
+          <div>
+            {/* Header */}
+            <Box className="flex justify-between items-center">
+              <div className="flex flex-row gap-3">
+                <IconButton
+                  color="primary"
+                  aria-label="add to shopping cart"
+                  className="!w-[50px] !h-[50px]"
+                  onClick={() => {
+                    navigate("/company/myrequirements");
+                  }}
+                >
+                  <ArrowBackIcon />
+                </IconButton>
+                <Box>
+                  <h5 className="text-heading group/item flex items-center">
+                    {requirementData?.title}
+                    <div className="group/edit invisible group-hover/item:visible">
+                      <span className="group-hover/edit:text-gray-700 ">
+                        <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
+                          <Edit fontSize="small" />
+                        </IconButton>
+                      </span>
+                    </div>
+                  </h5>
+                  <div className="flex items-center">
+                    {requirementData?.clientLogo && <img
+                      src={requirementData?.clientLogo}  alt=""  style={{ width: 16, height: 16 }}   />}
+                    <p className="text-title mx-2"> {requirementData?.clientName}</p>
 
-                <div>
-                  <Chip
-                    label="Remote"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                  <Chip
-                    label="Positions: 3"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                  <Chip
-                    label="6 months"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                  <Chip
-                    label="Global"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                </div>
+                    <div>
+                      {requirementData?.locationTypeName &&
+                        <Chip
+                          label={requirementData?.locationTypeName}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />}
+                      {requirementData?.clientName &&
+                        <Chip
+                          label={`Positions: ${requirementData?.clientName}`}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />}
+                      {requirementData?.experience &&
+                        <Chip
+                          label={requirementData?.experience}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />
+                      }
+
+                      {requirementData?.visibilityName &&
+                        <Chip
+                          label={requirementData?.visibilityName}
+                          size="small"
+                          variant="outlined"
+                          sx={{ fontSize: 10 }}
+                          className="my-1 me-1"
+                        />
+                      }
+                    </div>
+                  </div>
+                </Box>
               </div>
             </Box>
-          </div>
-        </Box>
-        <div>
-          {/* Description */}
-          <div className="mb-4 mt-2">
-            <p className="text-gray-600 text-base">
-              Stripe is looking for a Social Media Marketing expert to help
-              manage our online networks. You will be responsible for monitoring
-              our social media channels, creating content, finding effective
-              ways to engage the community and incentivize others to engage on
-              our channels.
-            </p>
-          </div>
+            <div>
+              {/* Description */}
+              <div className="mb-4 mt-2">
+                <p className="text-gray-600 text-base">
+                 {requirementData?.description}
+                </p>
+              </div>
 
-          {/* Responsibilities */}
-          <Box className="mb-4">
-            <p className="text-title mb-2">Responsibilities</p>
-            <ul className="list-none">
-              {[
-                "Community engagement to ensure that is supported and actively represented online",
-                "Focus on social media content development and publication",
-                "Marketing and strategy support",
-                "Stay on top of trends on social media platforms, and suggest content ideas to the team",
-                "Engage with online communities",
-              ].map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center text-gray-600 text-base"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </Box>
-        </div>
+              {/* Responsibilities */}
+              <Box className="mb-4">
+                <p className="text-title mb-2">Responsibilities</p>
+                {/* <ul className="list-none">
+                  {[
+                    "Community engagement to ensure that is supported and actively represented online",
+                    "Focus on social media content development and publication",
+                    "Marketing and strategy support",
+                    "Stay on top of trends on social media platforms, and suggest content ideas to the team",
+                    "Engage with online communities",
+                  ].map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex items-center text-gray-600 text-base"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul> */}
+                <p className="text-gray-600 text-base">
+                 {requirementData?.remarks}
+                </p>
+              </Box>
+            </div>
+          </div>
+       }       
 
         {/* Tabs */}
         <div className="flex mb-3 items-center justify-between">

@@ -572,7 +572,7 @@ const MyRequirements = () => {
                       }`}
                       onClick={() => handleStatusDialog(requirement?.status)}
                     >
-                      {requirement?.status || '-'}
+                      {requirement?.statusName || '-'}
                     </Typography>
                   </td>
                   <td>{moment(requirement?.createdOn).format("DD-MM-YYYY")}</td>
