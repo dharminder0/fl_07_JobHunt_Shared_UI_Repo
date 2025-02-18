@@ -4,9 +4,10 @@ import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { AccountCircleOutlined, Add, ShareOutlined } from "@mui/icons-material";
+import { AccountCircleOutlined, Add, CorporateFareOutlined, ShareOutlined } from "@mui/icons-material";
 import {
   Autocomplete,
+  Avatar,
   Drawer,
   FormControl,
   Step,
@@ -21,11 +22,13 @@ import Loader from "../../../../components/shared/Loader";
 import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,
+  getOrgDetailsList,
   shareRequirement,
   upsertRequirement,
 } from "../../../../components/sharedService/apiService";
 import {
   LocationType,
+  RoleType,
   Visibility,
 } from "../../../../components/sharedService/enums";
 
@@ -250,7 +253,9 @@ const RequirementForm = () => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [shareWith, setShareWith] = useState<any>(1);
   const [promptJson, setPromptJson] = useState<string>("");
-  const [requirementId, setRequirementId] = useState<number>(0);
+  const [requirementId, setRequirementId] = useState<number>(0);  
+  const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
+  const [selectedVendors, setSelectedVendors] = useState<any>([]);  
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
@@ -316,11 +321,12 @@ const RequirementForm = () => {
   const onSubmit = (data: any) => {
     data.orgCode = userData?.orgCode;
     setIsLoader(true);
+    getOrgDetailsListData();
     upsertRequirement(data)
       .then((result: any) => {
         if (result.success) {
           console.log(result.content);
-          setRequirementId(result.content);
+          setRequirementId(result.content);    
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -380,17 +386,57 @@ const RequirementForm = () => {
   };
 
   const handleSubmitStep2 = () => {
+    setIsLoader(true);
     const payload = {
       requirementId: requirementId,
       visibility: Visibility.Public,
-      orgCode: [],
+      orgCode: shareWith == 1 ? selectedVendors : [],
     };
     shareRequirement(payload).then((res: any) => {
       if (res) {
+        console.log(res);
         setDrawerOpen(false);
       }
-    });
+      setTimeout(() => {
+        setIsLoader(false);
+      }, 1500);
+    })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
   };
+
+  const getOrgDetailsListData = () => {
+    const payload = {
+      role: [RoleType.Vendor],
+      page: 1,
+      pageSize: 10,
+      searchText: '',
+      technology: [],
+      resource: [],
+      strength: [],
+    };
+    setIsLoader(true);
+    getOrgDetailsList(payload)
+      .then((result: any) => {
+        if (result.count > 0) {
+          setcompaniesfilterData(result.list);
+        } else {
+          setcompaniesfilterData([]);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        console.error("Error fetching data:", error);
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
+  };  
 
   return (
     <div>
@@ -402,11 +448,16 @@ const RequirementForm = () => {
         Post a requirement
       </Button>
 
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div className="h-full w-[calc(100vw-250px)]">
-          <div className="px-4 py-2 border-b">
-            <h2 className="text-heading">Post Requirements</h2>
-          </div>
+      <Drawer anchor="right" open={drawerOpen}>    
+        <div className="h-full w-[calc(100vw-250px)]">    
+          <div className="d-flex content-header">
+            <svg className="absolute cursor-pointer left-[8px] top-[11px]"  onClick={(event) => toggleDrawer(false)(event)} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <div className="px-8 py-2 border-b">
+              <h2 className="text-heading">Post Requirements</h2>
+            </div>
+          </div>             
 
           <div className="w-full overflow-auto h-[calc(100%-90px)]">
             <div className="p-4 md:w-[95%] lg:w-[95%] xl:w-[70%] mx-auto ">
@@ -871,27 +922,36 @@ const RequirementForm = () => {
                             />
                           </RadioGroup>
                         </FormControl>
-                        {shareWith == 1 && (
-                          <div className="mt-3">
-                            <Autocomplete
-                              multiple
-                              id="tags-readOnly"
-                              options={top100Films.map(
-                                (option) => option.title
-                              )}
-                              // defaultValue={[
-                              //   top100Films[12].title,
-                              //   top100Films[13].title,
-                              // ]}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Search vendor"
-                                  placeholder="Search"
-                                />
-                              )}
-                            />
-                          </div>
+                        {shareWith == 1 && (                          
+                        <div className="mt-3">
+                          <Autocomplete
+                            multiple
+                            id="tags-readOnly"
+                            options={companiesfilterData}
+                            getOptionLabel={(option) => option.orgName} 
+                            isOptionEqualToValue={(option, value) => option.orgName === value.orgName}                         
+                            onChange={(event, newValue) => {
+                              const selectedOrgCodes = newValue.map((item) => item.orgCode); 
+                              setSelectedVendors(selectedOrgCodes);
+                              console.log("Updated Selection:", selectedOrgCodes);
+                            }}
+                            renderOption={(props, option) => (
+                              <li {...props} className="flex items-center">
+                                <Avatar
+                                  alt="Org Icon"
+                                  src={option.logo || undefined}
+                                  className="rounded-full !h-7 !w-7 mx-2 my-1"
+                                >
+                                  {!option.logo && <CorporateFareOutlined fontSize="small" />}
+                                </Avatar>
+                                {option.orgName}
+                              </li>
+                            )}
+                            renderInput={(params) => (
+                              <TextField {...params} label="Search vendor"placeholder="Search" />
+                            )}
+                          />
+                        </div>                          
                         )}
                       </div>
                     )}

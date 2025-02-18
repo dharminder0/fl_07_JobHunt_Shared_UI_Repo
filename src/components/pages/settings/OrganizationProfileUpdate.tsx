@@ -129,7 +129,14 @@ export default function OrganizationProfileUpdate() {
 
   return (
     <div className="!overflow-hidden">
-      <h2 className="text-heading border-b p-4">Update Company Details</h2>
+      <div className="d-flex content-header">
+        <svg className="absolute cursor-pointer left-[8px] top-[19px]" onClick={() => handleOpenDrawer()} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
+          <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <div className="px-8 py-4 border-b">
+          <h2 className="text-heading">Update Company Details</h2>
+        </div>
+      </div>
       <div className="h-[calc(100vh-120px)] !overflow-y-auto">
         <div className="md:w-[95%] lg:w-[95%] xl:w-[70%] p-4 mx-auto">
           <form onSubmit={handleSubmit(onSubmit)}>
