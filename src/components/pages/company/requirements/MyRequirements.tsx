@@ -539,9 +539,9 @@ const MyRequirements = () => {
                             className="me-1"
                           />
                         )}
-                        <Tooltip title={requirement?.client} arrow>
+                        <Tooltip title={requirement?.client?.clientName} arrow>
                           <span className="text-ellipsis overflow-hidden truncate">
-                            {requirement?.client}
+                            {requirement?.client?.clientName}
                           </span>
                         </Tooltip>
                       </div>
@@ -551,14 +551,14 @@ const MyRequirements = () => {
                             fontSize="inherit"
                             className="mr-1"
                           />
-                          <span>{requirement?.locationType}</span>
+                          <span>{requirement?.locationTypeName}</span>
                         </div>
                         <div className="flex items-center ms-1">
                           <AccessTimeOutlined
                             fontSize="inherit"
                             className="mr-1"
                           />
-                          <span>{requirement?.duration}</span>
+                          <span>{requirement?.duration || '-'}</span>
                         </div>
                       </div>
                     </div>
@@ -588,7 +588,7 @@ const MyRequirements = () => {
                   >
                     {requirement?.applicants}
                   </td>
-                  <td>{requirement?.visibility}</td>
+                  <td>{requirement?.visibilityName}</td>
                 </tr>
               ))}
             </tbody>
