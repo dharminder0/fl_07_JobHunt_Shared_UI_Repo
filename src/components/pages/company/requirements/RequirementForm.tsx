@@ -10,6 +10,9 @@ import {
   Avatar,
   Drawer,
   FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Step,
   StepLabel,
   Stepper,
@@ -31,6 +34,7 @@ import {
   RoleType,
   Visibility,
 } from "../../../../components/sharedService/enums";
+import { getClientLists } from "../../../../components/sharedService/apiService";
 
 const steps = ["Paste Requirement", "Basic Information", "Vendors"];
 
@@ -256,6 +260,7 @@ const RequirementForm = () => {
   const [requirementId, setRequirementId] = useState<number>(0);  
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [selectedVendors, setSelectedVendors] = useState<any>([]);  
+  const [clientListData, setClientListData] = useState<any>([]);  
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
@@ -272,7 +277,7 @@ const RequirementForm = () => {
     }
     setDrawerOpen(open);
   };
-
+  
   const [activeStep, setActiveStep] = useState(0);
 
   const { control, handleSubmit, watch, reset } = useForm({
@@ -340,6 +345,7 @@ const RequirementForm = () => {
   };
 
   const onPromtSubmit = () => {
+    getClientListData('4ejCqgvm');
     const payload = {
       promptCode: "REQRMNT",
       loginUserId: userData?.userId,
@@ -437,6 +443,14 @@ const RequirementForm = () => {
         }, 1000);
       });
   };  
+
+     const getClientListData = (orgCode:any) => {
+      getClientLists(orgCode).then((result: any) => {
+          if (result) {
+            setClientListData(result);
+          }
+        });
+      }
 
   return (
     <div>
@@ -634,8 +648,34 @@ const RequirementForm = () => {
                               )}
                             />
                           )}
+                        <div className="mt-3">
+                        <FormControl fullWidth>
+                        <InputLabel>{"Select Client"}</InputLabel>
 
-                          <div>
+                          <Controller
+                            name="clientId"
+                            control={control}
+                            rules={{ required: "Resources Available For is required" }}
+                            render={({ field }) => (
+                              <Select
+                                {...field}
+                                label="Select Client"
+                                  fullWidth
+                                  size="small"
+                              >
+                                {clientListData.map((option:any) => (
+                                  <MenuItem key={option} value={option.clientCode}>
+                                    {option.clientName}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            )}
+                          />
+                        </FormControl>
+                          
+                        </div> 
+
+                          {/* <div>
                             <Controller
                               name="clientId"
                               control={control}
@@ -651,7 +691,7 @@ const RequirementForm = () => {
                             <label className="text-info">
                               Client information will not be shared with Vendors
                             </label>
-                          </div>
+                          </div> */}
                           <div className="col-span-2">
                             <Controller
                               name="remarks"
