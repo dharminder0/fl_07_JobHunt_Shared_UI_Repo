@@ -1,4 +1,9 @@
-import { IconButton, InputAdornment, TextField } from "@mui/material";
+import {
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateClientForm from "./CreateClientForm";
@@ -6,6 +11,9 @@ import ImportClientForm from "./ImportClientForm";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import { getClientsList } from "../../../../components/sharedService/apiService";
+import Loader from "../../../../components/shared/Loader";
+import { useSelector } from "react-redux";
 
 const clientDataObj = [
   {
@@ -59,6 +67,13 @@ export default function Clients() {
   const navigate = useNavigate();
   const location = useLocation();
   const [clientData, setclientData] = useState<any[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [pageIndex, setPageIndex] = useState<any>(1);
+  const [status, setStatus] = useState<any>(1);
+  const [pageSize, setPageSize] = useState<any>(10);
+  const [clientList, setClientList] = useState<any[]>([]);
+  const drawerState = useSelector((state: any) => state.drawer);
+
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
     status: [],
@@ -66,6 +81,7 @@ export default function Clients() {
   const [filterList, setFilterList] = useState<any>({
     status: ["Active", "Inactive"],
   });
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   useEffect(() => {
     // Filtering logic
@@ -90,6 +106,37 @@ export default function Clients() {
     });
   };
 
+  useEffect(() => {
+    if (!drawerState.isOpen) {
+      getClientsListData();
+    }
+  }, [drawerState]);
+
+  useEffect(() => {
+    if (searchValue?.length > 3 || searchValue?.length <= 0) {
+      getClientsListData();
+    }
+  }, [searchValue]);
+
+  const getClientsListData = () => {
+    const payload = {
+      searchText: searchValue,
+      orgCode: userData?.orgCode,
+      status: status,
+      page: pageIndex,
+      pageSize: pageSize,
+    };
+    getClientsList(payload)
+      .then((result: any) => {
+        if (result?.count > 0) {
+          setClientList(result.list);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
@@ -100,13 +147,8 @@ export default function Clients() {
                 <TextField
                   size="small"
                   className="w-full"
-                  value={searchFilter.searchValue}
-                  onChange={(event) =>
-                    setSearchFilter({
-                      ...searchFilter,
-                      searchValue: event.target.value,
-                    })
-                  }
+                  value={searchValue}
+                  onChange={(event) => setSearchValue(event.target.value)}
                   placeholder="Search Client"
                   slotProps={{
                     input: {
@@ -137,6 +179,11 @@ export default function Clients() {
         <ImportClientForm />
         <CreateClientForm />
       </div>
+      {/* {clientList && clientList?.length <= 0 && (
+        <div className="flex justify-center align-center">
+          <CircularProgress size={24} />
+        </div>
+      )} */}
       <div className="table-body">
         <table>
           <thead>
@@ -149,40 +196,42 @@ export default function Clients() {
             </tr>
           </thead>
           <tbody>
-            {clientData.map((item, index) => (
+            {clientList.map((item, index) => (
               <tr key={index}>
                 <th
                   className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
                   onClick={() => handleRowClick(item.id, "activeView")}
                 >
                   <div className="flex">
-                    <img
-                      src={item.logo}
-                      style={{ height: 16, width: 16 }}
-                      className="me-1"
-                    />
-                    {item.name}
+                    {item?.logoURL && (
+                      <img
+                        src={item.logoURL}
+                        style={{ height: 16, width: 16 }}
+                        className="me-1"
+                      />
+                    )}
+                    {item.clientName}
                   </div>
                 </th>
                 <td
                   className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
                   onClick={() => handleRowClick(item.id, "openView")}
                 >
-                  {item.requirement}
+                  {item?.requirement || "-"}
                 </td>
                 <td
                   className="cursor-pointer hover:text-indigo-700"
                   onClick={() => handleRowClick(item.id, "activeView")}
                 >
-                  {item.activeContracts}
+                  {item?.activeContracts || "-"}
                 </td>
                 <td
                   className="cursor-pointer hover:text-indigo-700"
                   onClick={() => handleRowClick(item.id, "pastView")}
                 >
-                  {item.pastContracts}
+                  {item?.pastContracts || "-"}
                 </td>
-                <td>{item.status}</td>
+                <td>{item?.status === 1 ? "Active" : "Inactive"}</td>
               </tr>
             ))}
           </tbody>

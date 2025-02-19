@@ -4,7 +4,12 @@ import TextField from "@mui/material/TextField";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { AccountCircleOutlined, Add, CorporateFareOutlined, ShareOutlined } from "@mui/icons-material";
+import {
+  AccountCircleOutlined,
+  Add,
+  CorporateFareOutlined,
+  ShareOutlined,
+} from "@mui/icons-material";
 import {
   Autocomplete,
   Avatar,
@@ -171,83 +176,6 @@ const allVendors = [
   },
 ];
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const top100Films = [
-  { title: "The Shawshank Redemption", year: 1994 },
-  { title: "The Godfather", year: 1972 },
-  { title: "The Godfather: Part II", year: 1974 },
-  { title: "The Dark Knight", year: 2008 },
-  { title: "12 Angry Men", year: 1957 },
-  { title: "Schindler's List", year: 1993 },
-  { title: "Pulp Fiction", year: 1994 },
-  { title: "City of God", year: 2002 },
-  { title: "Se7en", year: 1995 },
-  { title: "The Silence of the Lambs", year: 1991 },
-  { title: "It's a Wonderful Life", year: 1946 },
-  { title: "Life Is Beautiful", year: 1997 },
-  { title: "The Usual Suspects", year: 1995 },
-  { title: "Léon: The Professional", year: 1994 },
-  { title: "Spirited Away", year: 2001 },
-  { title: "Saving Private Ryan", year: 1998 },
-  { title: "Once Upon a Time in the West", year: 1968 },
-  { title: "American History X", year: 1998 },
-  { title: "Interstellar", year: 2014 },
-  { title: "Casablanca", year: 1942 },
-  { title: "City Lights", year: 1931 },
-  { title: "Psycho", year: 1960 },
-  { title: "The Green Mile", year: 1999 },
-  { title: "The Intouchables", year: 2011 },
-  { title: "Modern Times", year: 1936 },
-  { title: "Raiders of the Lost Ark", year: 1981 },
-  { title: "Rear Window", year: 1954 },
-  { title: "The Pianist", year: 2002 },
-  { title: "The Departed", year: 2006 },
-  { title: "Terminator 2: Judgment Day", year: 1991 },
-  { title: "Back to the Future", year: 1985 },
-  { title: "Whiplash", year: 2014 },
-  { title: "Gladiator", year: 2000 },
-  { title: "Memento", year: 2000 },
-  { title: "The Prestige", year: 2006 },
-  { title: "The Lion King", year: 1994 },
-  { title: "Apocalypse Now", year: 1979 },
-  { title: "Alien", year: 1979 },
-  { title: "The Great Dictator", year: 1940 },
-  { title: "Cinema Paradiso", year: 1988 },
-  { title: "The Lives of Others", year: 2006 },
-  { title: "Grave of the Fireflies", year: 1988 },
-  { title: "Paths of Glory", year: 1957 },
-  { title: "Django Unchained", year: 2012 },
-  { title: "The Shining", year: 1980 },
-  { title: "WALL·E", year: 2008 },
-  { title: "American Beauty", year: 1999 },
-  { title: "The Dark Knight Rises", year: 2012 },
-  { title: "Princess Mononoke", year: 1997 },
-  { title: "Aliens", year: 1986 },
-  { title: "Oldboy", year: 2003 },
-  { title: "Once Upon a Time in America", year: 1984 },
-  { title: "Witness for the Prosecution", year: 1957 },
-  { title: "Das Boot", year: 1981 },
-  { title: "Citizen Kane", year: 1941 },
-  { title: "North by Northwest", year: 1959 },
-  { title: "Vertigo", year: 1958 },
-  { title: "Amadeus", year: 1984 },
-  { title: "To Kill a Mockingbird", year: 1962 },
-  { title: "Toy Story 3", year: 2010 },
-  { title: "Logan", year: 2017 },
-  { title: "Full Metal Jacket", year: 1987 },
-  { title: "Dangal", year: 2016 },
-  { title: "The Sting", year: 1973 },
-  { title: "2001: A Space Odyssey", year: 1968 },
-  { title: "Singin' in the Rain", year: 1952 },
-  { title: "Toy Story", year: 1995 },
-  { title: "Bicycle Thieves", year: 1948 },
-  { title: "The Kid", year: 1921 },
-  { title: "Inglourious Basterds", year: 2009 },
-  { title: "Snatch", year: 2000 },
-  { title: "3 Idiots", year: 2009 },
-  { title: "Monty Python and the Holy Grail", year: 1975 },
-];
-
 const RequirementForm = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
@@ -257,10 +185,10 @@ const RequirementForm = () => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [shareWith, setShareWith] = useState<any>(1);
   const [promptJson, setPromptJson] = useState<string>("");
-  const [requirementId, setRequirementId] = useState<number>(0);  
+  const [requirementId, setRequirementId] = useState<number>(0);
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
-  const [selectedVendors, setSelectedVendors] = useState<any>([]);  
-  const [clientListData, setClientListData] = useState<any>([]);  
+  const [selectedVendors, setSelectedVendors] = useState<any>([]);
+  const [clientListData, setClientListData] = useState<any>([]);
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
@@ -277,7 +205,7 @@ const RequirementForm = () => {
     }
     setDrawerOpen(open);
   };
-  
+
   const [activeStep, setActiveStep] = useState(0);
 
   const { control, handleSubmit, watch, reset } = useForm({
@@ -331,7 +259,7 @@ const RequirementForm = () => {
       .then((result: any) => {
         if (result.success) {
           console.log(result.content);
-          setRequirementId(result.content);    
+          setRequirementId(result.content);
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -345,7 +273,7 @@ const RequirementForm = () => {
   };
 
   const onPromtSubmit = () => {
-    getClientListData('4ejCqgvm');
+    getClientListData();
     const payload = {
       promptCode: "REQRMNT",
       loginUserId: userData?.userId,
@@ -398,15 +326,16 @@ const RequirementForm = () => {
       visibility: Visibility.Public,
       orgCode: shareWith == 1 ? selectedVendors : [],
     };
-    shareRequirement(payload).then((res: any) => {
-      if (res) {
-        console.log(res);
-        setDrawerOpen(false);
-      }
-      setTimeout(() => {
-        setIsLoader(false);
-      }, 1500);
-    })
+    shareRequirement(payload)
+      .then((res: any) => {
+        if (res) {
+          console.log(res);
+          setDrawerOpen(false);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1500);
+      })
       .catch((error: any) => {
         setTimeout(() => {
           setIsLoader(false);
@@ -419,7 +348,7 @@ const RequirementForm = () => {
       role: [RoleType.Vendor],
       page: 1,
       pageSize: 10,
-      searchText: '',
+      searchText: "",
       technology: [],
       resource: [],
       strength: [],
@@ -442,15 +371,15 @@ const RequirementForm = () => {
           setIsLoader(false);
         }, 1000);
       });
-  };  
+  };
 
-     const getClientListData = (orgCode:any) => {
-      getClientLists(orgCode).then((result: any) => {
-          if (result) {
-            setClientListData(result);
-          }
-        });
+  const getClientListData = () => {
+    getClientLists(userData?.orgCode).then((result: any) => {
+      if (result) {
+        setClientListData(result);
       }
+    });
+  };
 
   return (
     <div>
@@ -462,16 +391,29 @@ const RequirementForm = () => {
         Post a requirement
       </Button>
 
-      <Drawer anchor="right" open={drawerOpen}>    
-        <div className="h-full w-[calc(100vw-250px)]">    
+      <Drawer anchor="right" open={drawerOpen}>
+        <div className="h-full w-[calc(100vw-250px)]">
           <div className="d-flex content-header">
-            <svg className="absolute cursor-pointer left-[8px] top-[11px]"  onClick={(event) => toggleDrawer(false)(event)} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
-              <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+            <svg
+              className="absolute cursor-pointer left-[8px] top-[11px]"
+              onClick={(event) => toggleDrawer(false)(event)}
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M20 20L4 4.00003M20 4L4.00002 20"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             <div className="px-8 py-2 border-b">
               <h2 className="text-heading">Post Requirements</h2>
             </div>
-          </div>             
+          </div>
 
           <div className="w-full overflow-auto h-[calc(100%-90px)]">
             <div className="p-4 md:w-[95%] lg:w-[95%] xl:w-[70%] mx-auto ">
@@ -648,32 +590,36 @@ const RequirementForm = () => {
                               )}
                             />
                           )}
-                        <div className="mt-3">
-                        <FormControl fullWidth>
-                        <InputLabel>{"Select Client"}</InputLabel>
-
-                          <Controller
-                            name="clientId"
-                            control={control}
-                            rules={{ required: "Resources Available For is required" }}
-                            render={({ field }) => (
-                              <Select
-                                {...field}
-                                label="Select Client"
-                                  fullWidth
-                                  size="small"
-                              >
-                                {clientListData.map((option:any) => (
-                                  <MenuItem key={option} value={option.clientCode}>
-                                    {option.clientName}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            )}
-                          />
-                        </FormControl>
-                          
-                        </div> 
+                          <div className="mt-3">
+                            <Controller
+                              name="clientId"
+                              control={control}
+                              rules={{
+                                required: "Resources Available For is required",
+                              }}
+                              render={({ field }) => (
+                                <FormControl fullWidth size="small">
+                                  <InputLabel>Select Client</InputLabel>
+                                  <Select
+                                    {...field}
+                                    label="Select Client"
+                                    onChange={(event) =>
+                                      field.onChange(event.target.value)
+                                    } // Ensure correct value handling
+                                  >
+                                    {clientListData?.map((option: any) => (
+                                      <MenuItem
+                                        key={option.id}
+                                        value={option.id}
+                                      >
+                                        {option.clientName}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                              )}
+                            />
+                          </div>
 
                           {/* <div>
                             <Controller
@@ -962,36 +908,49 @@ const RequirementForm = () => {
                             />
                           </RadioGroup>
                         </FormControl>
-                        {shareWith == 1 && (                          
-                        <div className="mt-3">
-                          <Autocomplete
-                            multiple
-                            id="tags-readOnly"
-                            options={companiesfilterData}
-                            getOptionLabel={(option) => option.orgName} 
-                            isOptionEqualToValue={(option, value) => option.orgName === value.orgName}                         
-                            onChange={(event, newValue) => {
-                              const selectedOrgCodes = newValue.map((item) => item.orgCode); 
-                              setSelectedVendors(selectedOrgCodes);
-                              console.log("Updated Selection:", selectedOrgCodes);
-                            }}
-                            renderOption={(props, option) => (
-                              <li {...props} className="flex items-center">
-                                <Avatar
-                                  alt="Org Icon"
-                                  src={option.logo || undefined}
-                                  className="rounded-full !h-7 !w-7 mx-2 my-1"
-                                >
-                                  {!option.logo && <CorporateFareOutlined fontSize="small" />}
-                                </Avatar>
-                                {option.orgName}
-                              </li>
-                            )}
-                            renderInput={(params) => (
-                              <TextField {...params} label="Search vendor"placeholder="Search" />
-                            )}
-                          />
-                        </div>                          
+                        {shareWith == 1 && (
+                          <div className="mt-3">
+                            <Autocomplete
+                              multiple
+                              id="tags-readOnly"
+                              options={companiesfilterData}
+                              getOptionLabel={(option) => option.orgName}
+                              isOptionEqualToValue={(option, value) =>
+                                option.orgName === value.orgName
+                              }
+                              onChange={(event, newValue) => {
+                                const selectedOrgCodes = newValue.map(
+                                  (item) => item.orgCode
+                                );
+                                setSelectedVendors(selectedOrgCodes);
+                                console.log(
+                                  "Updated Selection:",
+                                  selectedOrgCodes
+                                );
+                              }}
+                              renderOption={(props, option) => (
+                                <li {...props} className="flex items-center">
+                                  <Avatar
+                                    alt="Org Icon"
+                                    src={option.logo || undefined}
+                                    className="rounded-full !h-7 !w-7 mx-2 my-1"
+                                  >
+                                    {!option.logo && (
+                                      <CorporateFareOutlined fontSize="small" />
+                                    )}
+                                  </Avatar>
+                                  {option.orgName}
+                                </li>
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label="Search vendor"
+                                  placeholder="Search"
+                                />
+                              )}
+                            />
+                          </div>
                         )}
                       </div>
                     )}
