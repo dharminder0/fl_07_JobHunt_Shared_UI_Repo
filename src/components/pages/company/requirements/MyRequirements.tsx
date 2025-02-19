@@ -566,11 +566,11 @@ const MyRequirements = () => {
                   <td>
                     <Typography
                       className={`inline-block px-3 py-1 !text-base cursor-pointer rounded-full ${
-                        requirement?.status === "Open"
+                        requirement?.statusName === "Open"
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
                       }`}
-                      onClick={() => handleStatusDialog(requirement?.status)}
+                      onClick={() => handleStatusDialog(requirement?.statusName)}
                     >
                       {requirement?.statusName || '-'}
                     </Typography>

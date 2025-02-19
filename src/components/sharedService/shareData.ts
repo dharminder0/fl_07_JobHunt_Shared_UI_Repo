@@ -18,3 +18,16 @@ export const RoleData: any = [
     isActive: false,
   },
 ];
+
+export const ClientStatus: any = [
+  {
+    id: 1,
+    name: "Active",
+    value: "Active",
+  },
+  {
+    id: 2,
+    name: "Inactive",
+    value: "Inactive",
+  },
+];

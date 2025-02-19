@@ -38,6 +38,8 @@ import {
 import Loader from "../../../../components/shared/Loader";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import { RoleType } from "../../../../components/sharedService/enums";
+import { error } from "console";
+import SuccessDialog from "../../../../components/shared/SuccessDialog";
 
 const VendorDetails = () => {
   const theme = useTheme();
@@ -46,6 +48,8 @@ const VendorDetails = () => {
   const pathSegments = location.pathname.split("/");
 
   const [isLoader, setIsLoader] = React.useState<boolean>(false);
+  const [isInviteLoader, setIsInviteLoader] = React.useState<boolean>(false);
+  const [isSuccessPopup, setIsSuccessPopup] = React.useState<boolean>(false);
   const [value, setValue] = React.useState("bench");
   const handleRowClick = (id: any) => {};
   const [open, setOpen] = React.useState(false);
@@ -119,10 +123,6 @@ const VendorDetails = () => {
     },
   ];
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-
   const userData = JSON.parse(localStorage.userData);
   const handleInvitation = () => {
     const payload: any = {
@@ -137,12 +137,22 @@ const VendorDetails = () => {
       },
       message: empMessage,
     };
-
-    dispatchedInvitation(payload).then((result: any) => {
-      if (result) {
-        handleClose();
-      }
-    });
+    setIsInviteLoader(true);
+    dispatchedInvitation(payload)
+      .then((result: any) => {
+        if (result) {
+          setIsSuccessPopup(true);
+          setTimeout(() => {
+            setIsInviteLoader(false);
+            handleClose();
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setIsInviteLoader(false);
+        }, 1000);
+      });
   };
   return (
     <>
@@ -302,6 +312,7 @@ const VendorDetails = () => {
                         variant="contained"
                         disabled={!empMessage}
                         onClick={handleInvitation}
+                        loading={isInviteLoader}
                       >
                         Invite
                       </Button>
@@ -379,6 +390,13 @@ const VendorDetails = () => {
           <Loader />
         )}
       </div>
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="Invited successfully for Empanelment"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
+      )}
     </>
   );
 };

@@ -8,17 +8,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import styled from "@mui/system/styled";
 import FileUploadBox from "../../../common/FileUploadBox";
-
-const steps = [
-  { label: "Select Post Type", description: "" },
-  { label: "Fill Post Details", description: "" },
-  { label: "Share Preferences", description: "" },
-];
+import { Controller, useForm } from "react-hook-form";
+import { upsertClient } from "../../../../components/sharedService/apiService";
+import SuccessDialog from "../../../../components/shared/SuccessDialog";
+import ReactQuill from "react-quill";
 
 const CreateClientForm = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
 
   const toggleDrawer = (open: any) => (event: any) => {
     if (
@@ -30,59 +29,43 @@ const CreateClientForm = () => {
     setDrawerOpen(open);
   };
 
-  const FileInput = styled("input")({
-    display: "none",
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues: {
+      userId: userData?.userId,
+      orgCode: userData?.orgCode,
+      status: 1,
+      clientName: "",
+      description: "",
+      contactPhone: "",
+      contactEmail: "",
+      address: "",
+      website: "",
+      logoURL: null,
+      faviconURL: null,
+    },
   });
 
-  const [formData, setFormData] = useState({
-    name: "",
-    about: "",
-    mobile: "",
-    email: "",
-    website: "",
-    address: "",
-    logo: null as File | null,
-    logoPreview: "",
-  });
-
-  const [errors, setErrors] = useState({
-    name: false,
-    mobile: false,
-    email: false,
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFormData({
-        ...formData,
-        logo: file,
-        logoPreview: URL.createObjectURL(file),
+  const onSubmit = (data: any) => {
+    upsertClient(data)
+      .then((result: any) => {
+        if (result.success) {
+          setIsSuccessPopup(true);
+          setTimeout(() => {
+            setDrawerOpen(false);
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsSuccessPopup(true);
+        }, 1000);
       });
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newErrors = {
-      name: formData.name === "",
-      mobile: formData.mobile === "",
-      email: formData.email === "",
-    };
-    setErrors(newErrors);
-
-    if (!Object.values(newErrors).includes(true)) {
-      console.log("Form Submitted Successfully", formData);
-    } else {
-      console.log("Please fill all required fields.");
-    }
   };
 
   return (
@@ -96,107 +79,183 @@ const CreateClientForm = () => {
       </Button>
 
       <Drawer anchor="right" open={drawerOpen}>
-        <div className="h-full w-[calc(100vw-250px)]">        
-           <div className="d-flex content-header">
-            <svg className="absolute cursor-pointer left-[8px] top-[11px]"  onClick={(event) => toggleDrawer(false)(event)} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
-              <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+        <div className="h-full w-[calc(100vw-250px)]">
+          <div className="d-flex content-header">
+            <svg
+              className="absolute cursor-pointer left-[8px] top-[11px]"
+              onClick={(event) => toggleDrawer(false)(event)}
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M20 20L4 4.00003M20 4L4.00002 20"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             <div className="px-8 py-2 border-b">
               <h2 className="text-heading">Add new client</h2>
             </div>
-          </div>      
+          </div>
           <div className="p-4 w-[50%] overflow-auto h-[calc(100%-95px)] mx-auto">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form className="space-y-6">
               <div className="p-4">
                 <div className="space-y-4">
-                  <TextField
-                    label="Name"
-                    variant="outlined"
-                    fullWidth
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    error={errors.name}
-                    helperText={errors.name && "Name is required"}
-                    required
-                    size="small"
+                  {/* Name */}
+                  <Controller
+                    name="clientName"
+                    control={control}
+                    rules={{ required: "Name is required" }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="Name"
+                        variant="outlined"
+                        fullWidth
+                        size="small"
+                        error={!!errors.clientName}
+                        helperText={errors.clientName?.message}
+                      />
+                    )}
                   />
 
                   {/* About Client */}
+                  {/* <Controller
+                    name="description"
+                    control={control}
+                    rules={{ required: "About Client is required" }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        label="About Client"
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        minRows={4}
+                        placeholder="About Client"
+                        size="small"
+                        error={!!errors.description}
+                        helperText={errors.description?.message}
+                      />
+                    )}
+                  /> */}
 
-                  <TextField
-                    label="About Client"
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    name="about"
-                    placeholder="About Client"
-                    value={formData.about}
-                    onChange={handleChange}
-                    error={errors.name}
-                    helperText={errors.name && "Name is required"}
-                    required
-                    size="small"
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <ReactQuill
+                        {...field}
+                        theme="snow"
+                        value={field.value || ""}
+                        onChange={field.onChange} // Important to update form state
+                      />
+                    )}
                   />
 
+                  {/* Contact Details */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                     {/* Mobile */}
-                    <TextField
-                      label="Contact Mobile"
-                      variant="outlined"
-                      fullWidth
-                      name="mobile"
-                      size="small"
-                      value={formData.mobile}
-                      onChange={handleChange}
-                      error={errors.mobile}
-                      helperText={errors.mobile && "Mobile number is required"}
-                      required
+                    <Controller
+                      name="contactPhone"
+                      control={control}
+                      rules={{ required: "Mobile number is required" }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Contact Mobile"
+                          variant="outlined"
+                          fullWidth
+                          size="small"
+                          error={!!errors.contactPhone}
+                          helperText={errors.contactPhone?.message}
+                        />
+                      )}
                     />
 
                     {/* Email */}
-                    <TextField
-                      label="Contact Email"
-                      variant="outlined"
-                      fullWidth
-                      type="email"
-                      name="email"
-                      size="small"
-                      value={formData.email}
-                      onChange={handleChange}
-                      error={errors.email}
-                      helperText={errors.email && "Email is required"}
-                      required
+                    <Controller
+                      name="contactEmail"
+                      control={control}
+                      rules={{
+                        required: "Email is required",
+                        pattern: {
+                          value:
+                            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                          message: "Invalid email format",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Contact Email"
+                          variant="outlined"
+                          fullWidth
+                          type="email"
+                          size="small"
+                          error={!!errors.contactEmail}
+                          helperText={errors.contactEmail?.message}
+                        />
+                      )}
                     />
-                  </div>
-                  <TextField
-                    minRows={2}
-                    placeholder="Address"
-                    name="address"
-                    size="small"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                    {/* Website */}
-                    <TextField
-                      label="Website URL"
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      name="website"
-                      value={formData.website}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  {/* Logo Upload */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-                    <FileUploadBox title="upload logo" fileSize="500 x 500" iconType="image" />
-                    <FileUploadBox title="upload favicon" fileSize="200 x 200" iconType="image" />
                   </div>
 
+                  {/* Address */}
+                  <Controller
+                    name="address"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        minRows={2}
+                        placeholder="Address"
+                        size="small"
+                        className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    )}
+                  />
+
+                  {/* Website */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                    <Controller
+                      name="website"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          label="Website URL"
+                          variant="outlined"
+                          fullWidth
+                          size="small"
+                        />
+                      )}
+                    />
+                  </div>
+
+                  {/* Logo & Favicon Upload */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                    {/* Logo Upload */}
+                    <FileUploadBox
+                      title="Upload Logo"
+                      fileSize="500 x 500"
+                      iconType="image"
+                      onUpload={(file: any) => setValue("logoURL", file)}
+                      file={watch("logoURL")}
+                    />
+
+                    {/* Favicon Upload */}
+                    <FileUploadBox
+                      title="Upload Favicon"
+                      fileSize="200 x 200"
+                      iconType="image"
+                      onUpload={(file: any) => setValue("faviconURL", file)}
+                      file={watch("faviconURL")}
+                    />
+                  </div>
                 </div>
               </div>
             </form>
@@ -204,13 +263,25 @@ const CreateClientForm = () => {
           {/* Submit Button */}
           <div className="px-4 py-2 border-t">
             <div className="flex justify-end">
-              <Button variant="contained" color="primary" sx={{ width: 125 }} >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit(onSubmit)}
+                sx={{ width: 125 }}
+              >
                 Submit
               </Button>
             </div>
           </div>
         </div>
       </Drawer>
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="Client Added successfully"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
+      )}
     </div>
   );
 };
