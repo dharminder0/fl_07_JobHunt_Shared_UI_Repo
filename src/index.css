@@ -47,6 +47,16 @@ body {
   list-style-type: decimal;
   padding-left: 1.6rem;
 }
+
+.requirement-quill .ql-editor {
+  max-height: 400px !important;
+}
+
+.requirement-quill .ql-editor.ql-blank {
+  height: 400px;
+  min-height: 400px;
+  max-height: 500px;
+}
 /* div, p, span, label, button, input, textarea, h1, h2, h3, h4, h5, h6, li, ul {
   font-family: Poppins;
 } */

@@ -14,6 +14,8 @@ import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
 import { getClientsList } from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/shared/Loader";
 import { useSelector } from "react-redux";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import React from "react";
 
 const clientDataObj = [
   {
@@ -72,6 +74,7 @@ export default function Clients() {
   const [status, setStatus] = useState<any>(1);
   const [pageSize, setPageSize] = useState<any>(10);
   const [clientList, setClientList] = useState<any[]>([]);
+  const [isTableLoader, setIsTableLoader] = React.useState(true);
   const drawerState = useSelector((state: any) => state.drawer);
 
   const [searchFilter, setSearchFilter] = useState<any>({
@@ -100,8 +103,8 @@ export default function Clients() {
     setclientData(filtered);
   }, [searchFilter]);
 
-  const handleRowClick = (id: number, tab: string) => {
-    navigate(`${id}?type=${tab}`, {
+  const handleRowClick = (clientCode: number, tab: string) => {
+    navigate(`${clientCode}?type=${tab}`, {
       state: { previousUrl: location.pathname },
     });
   };
@@ -126,14 +129,20 @@ export default function Clients() {
       page: pageIndex,
       pageSize: pageSize,
     };
+    setIsTableLoader(true);
     getClientsList(payload)
       .then((result: any) => {
         if (result?.count > 0) {
-          setClientList(result.list);
+          setTimeout(() => {
+            setClientList(result.list);
+            setIsTableLoader(false);
+          }, 1000);
         }
       })
       .catch((error: any) => {
-        console.log(error);
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 1000);
       });
   };
 
@@ -195,17 +204,20 @@ export default function Clients() {
               <th>Status</th>
             </tr>
           </thead>
+
+          <TablePreLoader isTableLoader={isTableLoader} data={clientList} />
+
           <tbody>
             {clientList.map((item, index) => (
               <tr key={index}>
                 <th
                   className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
-                  onClick={() => handleRowClick(item.id, "activeView")}
+                  onClick={() => handleRowClick(item.clientCode, "activeView")}
                 >
                   <div className="flex">
                     {item?.logoURL && (
                       <img
-                        src={item.logoURL}
+                        src={item.faviconURL}
                         style={{ height: 16, width: 16 }}
                         className="me-1"
                       />
@@ -215,19 +227,19 @@ export default function Clients() {
                 </th>
                 <td
                   className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
-                  onClick={() => handleRowClick(item.id, "openView")}
+                  onClick={() => handleRowClick(item.clientCode, "openView")}
                 >
                   {item?.requirement || "-"}
                 </td>
                 <td
                   className="cursor-pointer hover:text-indigo-700"
-                  onClick={() => handleRowClick(item.id, "activeView")}
+                  onClick={() => handleRowClick(item.clientCode, "activeView")}
                 >
                   {item?.activeContracts || "-"}
                 </td>
                 <td
                   className="cursor-pointer hover:text-indigo-700"
-                  onClick={() => handleRowClick(item.id, "pastView")}
+                  onClick={() => handleRowClick(item.clientCode, "pastView")}
                 >
                   {item?.pastContracts || "-"}
                 </td>

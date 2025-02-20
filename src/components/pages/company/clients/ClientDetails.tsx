@@ -1,17 +1,38 @@
 import React, { useEffect } from "react";
-import { Box, Tabs, Tab, Link, Grid2, IconButton, Tooltip } from "@mui/material";
-import { AccessTimeOutlined, Download, Language, LocationOnOutlined, MailOutline, Phone } from "@mui/icons-material";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Link,
+  Grid2,
+  IconButton,
+  Tooltip,
+  Avatar,
+} from "@mui/material";
+import {
+  AccessTimeOutlined,
+  CorporateFareOutlined,
+  Download,
+  Language,
+  LocationOnOutlined,
+  MailOutline,
+  Phone,
+} from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
+import { getClientDataByClientCode } from "../../../../components/sharedService/apiService";
 
 const ClientDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
-  const type = searchParams.get('type');
+  const pathSegments = location.pathname.split("/");
+  const clientCode = pathSegments[pathSegments.length - 1];
+  const type = searchParams.get("type");
   const [value, setValue] = React.useState("activeView");
   const [previousUrl, setpreviousUrl] = React.useState("");
+  const [clientData, setClientData] = React.useState<any>({});
 
   useEffect(() => {
     if (location.state && location.state.previousUrl) {
@@ -178,6 +199,21 @@ const ClientDetails = () => {
     },
   ];
 
+  useEffect(() => {
+    getClientData();
+  }, [clientCode]);
+
+  const getClientData = () => {
+    getClientDataByClientCode(clientCode)
+      .then((result: any) => {
+        if (result && Object.keys(result).length > 0) {
+          setClientData(result);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
 
   const handleRowClick = (id: number, tab: string) => {
     navigate(`/company/myvendors/${id}?type=${tab}`, {
@@ -187,7 +223,7 @@ const ClientDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    navigate(`?type=${newValue}`)
+    navigate(`?type=${newValue}`);
   };
 
   return (
@@ -199,31 +235,39 @@ const ClientDetails = () => {
             color="primary"
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
+            size="small"
             onClick={() => {
-              previousUrl ? navigate(previousUrl) : navigate('/company');
+              previousUrl ? navigate(previousUrl) : navigate("/company");
             }}
           >
-            <ArrowBackIcon />
+            <ArrowBackIcon fontSize="small" />
           </IconButton>
           <div>
-            <img
-              src={
-                "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png"
-              }
-              style={{ width: 65, height: 65 }}
-            />
+            <Avatar
+              alt="Org Icon"
+              src={clientData?.faviconURL || undefined}
+              className="rounded-full !h-12 !w-12 me-3"
+            >
+              {!clientData?.faviconURL && (
+                <CorporateFareOutlined fontSize="small" />
+              )}
+            </Avatar>
           </div>
           <div>
-            <p className="text-heading">Airtel</p>
+            <p className="text-heading">{clientData?.clientName}</p>
             <div className="mt-1 text-base flex-col flex">
-              <Link href="mailto:sales@fleekitsolutions.com" underline="none">
-                <MailOutline fontSize="inherit" /> sales@airtel.com
+              <Link
+                href={`mailto:${clientData?.contactEmail}`}
+                underline="none"
+              >
+                <MailOutline fontSize="inherit" /> {clientData?.contactEmail}
               </Link>
-              <Link href="tel:+91 971181234" underline="none">
-                <Phone fontSize="inherit" /> +91 8811818880
+              <Link href={`tel:${clientData?.contactPhone}`} underline="none">
+                <Phone fontSize="inherit" /> {clientData?.contactPhone}
               </Link>
               <Link href="www.fleekitsolutions.com" underline="none">
-                <Language fontSize="inherit" /> www.airtel.com
+                <Language fontSize="inherit" />
+                {clientData?.website}
               </Link>
             </div>
           </div>
@@ -263,15 +307,15 @@ const ClientDetails = () => {
                         <tr key={index}>
                           {/* <th className="add-right-shadow">{item.title}</th> */}
                           <th className="add-right-shadow">
-                            <div
-                              className="cursor-pointer hover:text-indigo-700"
-                            >
+                            <div className="cursor-pointer hover:text-indigo-700">
                               {item.title}
                             </div>
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div
                                 className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                                onClick={() => handleRowClick(item.id, 'activeView')}
+                                onClick={() =>
+                                  handleRowClick(item.id, "activeView")
+                                }
                               >
                                 <img
                                   src={item.vendorLogo}
@@ -327,15 +371,15 @@ const ClientDetails = () => {
                         <tr key={index}>
                           {/* <th className="add-right-shadow">{item.title}</th> */}
                           <th className="add-right-shadow">
-                            <div
-                              className="cursor-pointer hover:text-indigo-700"
-                            >
+                            <div className="cursor-pointer hover:text-indigo-700">
                               {item.title}
                             </div>
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div
                                 className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                                onClick={() => handleRowClick(item.id, 'pastView')}
+                                onClick={() =>
+                                  handleRowClick(item.id, "pastView")
+                                }
                               >
                                 <img
                                   src={item.vendorLogo}
@@ -412,11 +456,13 @@ const ClientDetails = () => {
                                   <span>{job.contractPeriod}</span>
                                 </div>
                               </div>
-                              <div
-                                className="flex items-center cursor-pointer hover:text-indigo-700">
+                              <div className="flex items-center cursor-pointer hover:text-indigo-700">
                                 <div className="flex items-center text-indigo-500 hover:text-indigo-700 ms-1">
-                                  <Download fontSize="inherit" className="mr-1" />
-                                  <span >CV</span>
+                                  <Download
+                                    fontSize="inherit"
+                                    className="mr-1"
+                                  />
+                                  <span>CV</span>
                                 </div>
                               </div>
                             </div>
@@ -436,8 +482,7 @@ const ClientDetails = () => {
           </div>
         </Grid2>
       </Grid2>
-      <div>
-      </div>
+      <div></div>
     </div>
   );
 };

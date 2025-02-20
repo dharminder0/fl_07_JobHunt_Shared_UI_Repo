@@ -40,6 +40,7 @@ import {
   Visibility,
 } from "../../../../components/sharedService/enums";
 import { getClientLists } from "../../../../components/sharedService/apiService";
+import ReactQuill from "react-quill";
 
 const steps = ["Paste Requirement", "Basic Information", "Vendors"];
 
@@ -184,7 +185,7 @@ const RequirementForm = () => {
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedCards, setSelectedCards] = useState([]);
   const [shareWith, setShareWith] = useState<any>(1);
-  const [promptJson, setPromptJson] = useState<string>("");
+  const [promptJson, setPromptJson] = useState<any>();
   const [requirementId, setRequirementId] = useState<number>(0);
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [selectedVendors, setSelectedVendors] = useState<any>([]);
@@ -208,9 +209,9 @@ const RequirementForm = () => {
 
   const [activeStep, setActiveStep] = useState(0);
 
-  const { control, handleSubmit, watch, reset } = useForm({
+  const { control, handleSubmit, watch, reset, setValue } = useForm({
     defaultValues: {
-      clientId: "",
+      clientCode: "",
       title: "",
       description: "",
       experience: "",
@@ -258,8 +259,8 @@ const RequirementForm = () => {
     upsertRequirement(data)
       .then((result: any) => {
         if (result.success) {
-          console.log(result.content);
           setRequirementId(result.content);
+          handleNext();
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -285,6 +286,8 @@ const RequirementForm = () => {
         if (result && !!result) {
           console.log(result);
           reset(result);
+          setValue("status", 1);
+          handleNext();
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -316,7 +319,7 @@ const RequirementForm = () => {
     } else if (activeStep === 2) {
       await handleSubmitStep2();
     }
-    handleNext(); // Move to the next step after API call
+    // handleNext(); // Move to the next step after API call
   };
 
   const handleSubmitStep2 = () => {
@@ -329,7 +332,6 @@ const RequirementForm = () => {
     shareRequirement(payload)
       .then((res: any) => {
         if (res) {
-          console.log(res);
           setDrawerOpen(false);
         }
         setTimeout(() => {
@@ -433,13 +435,13 @@ const RequirementForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                   {/* Conditional Rendering */}
 
-                  <div className="col-span-2">
+                  <div className="col-span-2 requirement-quill">
                     <p className="text-info mb-4">
                       Paste the raw requirement text in the box below. Our AI
                       will format and structure it to match the required format,
                       making it easier to manage and process.
                     </p>
-                    <TextField
+                    {/* <TextField
                       label="Paste Requirements"
                       name="promptJson"
                       onChange={(e: any) => setPromptJson(e.target.value)}
@@ -448,6 +450,14 @@ const RequirementForm = () => {
                       multiline
                       rows={25}
                       size="small"
+                    /> */}
+
+                    <ReactQuill
+                      theme="snow"
+                      value={promptJson}
+                      defaultValue={promptJson}
+                      onChange={setPromptJson}
+                      placeholder="Paste Requirements"
                     />
                   </div>
                 </div>
@@ -592,7 +602,7 @@ const RequirementForm = () => {
                           )}
                           <div className="mt-3">
                             <Controller
-                              name="clientId"
+                              name="clientCode"
                               control={control}
                               rules={{
                                 required: "Resources Available For is required",
@@ -609,8 +619,8 @@ const RequirementForm = () => {
                                   >
                                     {clientListData?.map((option: any) => (
                                       <MenuItem
-                                        key={option.id}
-                                        value={option.id}
+                                        key={option.clientCode}
+                                        value={option.clientCode}
                                       >
                                         {option.clientName}
                                       </MenuItem>
@@ -991,6 +1001,7 @@ const RequirementForm = () => {
                   color="primary"
                   onClick={handleSubmit(handleStepSubmit)}
                   sx={{ width: 125 }}
+                  disabled={!promptJson}
                 >
                   Next
                 </Button>

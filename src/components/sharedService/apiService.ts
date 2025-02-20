@@ -121,8 +121,8 @@ export const shareRequirement = async (payload: any) => {
   return response.data;
 };
 
-export const getRequirementsList = async () => {
-  const response = await api.get("V1/Requirement/GetList");
+export const getRequirementsList = async (payload: any) => {
+  const response = await api.post("V1/Requirement/Search", payload);
   return response.data;
 };
 
@@ -143,6 +143,13 @@ export const getClientsList = async (payload: any) => {
 
 export const upsertClient = async (payload: any) => {
   const response = await api.post("V1/Clients/Upsert", payload);
+  return response.data;
+};
+
+export const getClientDataByClientCode = async (clientCode: any) => {
+  const response = await api.get(
+    `/V1/Clients/ClientCode?clientCode=${clientCode}`
+  );
   return response.data;
 };
 
