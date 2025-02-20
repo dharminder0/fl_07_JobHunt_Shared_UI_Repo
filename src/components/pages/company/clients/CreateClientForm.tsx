@@ -46,12 +46,23 @@ const CreateClientForm = () => {
       contactEmail: "",
       address: "",
       website: "",
-      logoURL: null,
-      faviconURL: null,
+      logoURL: [
+        {
+          fileName: "",
+          fileData: "",
+        },
+      ],
+      faviconURL: [
+        {
+          fileName: "",
+          fileData: "",
+        },
+      ],
     },
   });
 
   const onSubmit = (data: any) => {
+    debugger
     upsertClient(data)
       .then((result: any) => {
         if (result.success) {
@@ -241,7 +252,7 @@ const CreateClientForm = () => {
                     {/* Logo Upload */}
                     <FileUploadBox
                       title="Upload Logo"
-                      fileSize="500 x 500"
+                      fileSize="128 x 128"
                       iconType="image"
                       onUpload={(file: any) => setValue("logoURL", file)}
                       file={watch("logoURL")}
@@ -250,7 +261,7 @@ const CreateClientForm = () => {
                     {/* Favicon Upload */}
                     <FileUploadBox
                       title="Upload Favicon"
-                      fileSize="200 x 200"
+                      fileSize="32 x 32"
                       iconType="image"
                       onUpload={(file: any) => setValue("faviconURL", file)}
                       file={watch("faviconURL")}

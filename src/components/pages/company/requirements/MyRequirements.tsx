@@ -15,14 +15,24 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import StatusDialog from "../../../../components/shared/StatusDialog";
 import { getRequirementsList } from "../../../../components/sharedService/apiService";
 import moment from "moment";
+import MenuDrpDwnV2 from "../../../../components/shared/MenuDrpDwnV2";
+import {
+  LocationTypeStatus,
+  RequirementStatus,
+} from "../../../../components/sharedService/shareData";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
+  const [searchText, setSearchText] = React.useState("");
+  const [status, setStatus] = useState<any[]>([]);
+  const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any[]>([]);
   const [filterList, setFilterList] = useState<any>({
     client: [
@@ -31,7 +41,23 @@ const MyRequirements = () => {
       "Data Insights Group",
     ],
     status: ["Open", "On hold", "Closed"],
-    requirementType: ["Remote", "Hybrid", "Onsite"],
+    requirementType: [
+      {
+        id: 1,
+        name: "Onsite",
+        value: "Onsite",
+      },
+      {
+        id: 2,
+        name: "Hybrid",
+        value: "Hybrid",
+      },
+      {
+        id: 3,
+        name: "Remote",
+        value: "Remote",
+      },
+    ],
   });
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
@@ -41,7 +67,7 @@ const MyRequirements = () => {
     isApplicant: !!params?.status,
   });
 
-  const handleRowClick = (id: number, type: string) => {
+  const handleRowClick = (clientCode: number, type: string) => {
     switch (type) {
       case "applicant":
         navigate(`/company/candidates`, {
@@ -49,17 +75,17 @@ const MyRequirements = () => {
         });
         break;
       case "client":
-        navigate(`/company/clients/${id}?type=activeView`, {
+        navigate(`/company/clients/${clientCode}?type=activeView`, {
           state: { previousUrl: location.pathname },
         });
         break;
       case "myvendors":
-        navigate(`/company/myvendors/${id}?type=openView`, {
+        navigate(`/company/myvendors/${clientCode}?type=openView`, {
           state: { previousUrl: location.pathname },
         });
         break;
       default:
-        navigate(`${id}`);
+        navigate(`${clientCode}`);
         break;
     }
   };
@@ -71,10 +97,20 @@ const MyRequirements = () => {
 
   const getRequirementsData = () => {
     setIsTableLoader(true);
-    getRequirementsList()
+    const payload = {
+      orgCode: userData.orgCode,
+      searchText: searchText,
+      page: 1,
+      pageSize: 15,
+      locationType: resource,
+      status: status,
+      clientCode: [],
+    };
+
+    getRequirementsList(payload)
       .then((result: any) => {
-        if (result && result?.length > 0) {
-          SetRequirementData(result);
+        if (result && result?.totalPages > 0) {
+          SetRequirementData(result.list);
         }
         setTimeout(() => {
           setIsTableLoader(false);
@@ -88,8 +124,10 @@ const MyRequirements = () => {
   };
 
   useEffect(() => {
-    getRequirementsData();
-  }, []);
+    if (searchText?.length > 3 || searchText?.length == 0) {
+      getRequirementsData();
+    }
+  }, [searchText, resource, status]);
 
   return (
     <>
@@ -102,13 +140,8 @@ const MyRequirements = () => {
                   <TextField
                     size="small"
                     className="w-full"
-                    value={searchFilter.searchValue}
-                    onChange={(event) =>
-                      setSearchFilter({
-                        ...searchFilter,
-                        searchValue: event.target.value,
-                      })
-                    }
+                    value={searchText}
+                    onChange={(event) => setSearchText(event.target.value)}
                     placeholder="Search"
                     slotProps={{
                       input: {
@@ -132,24 +165,21 @@ const MyRequirements = () => {
                 />
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.status}
+                <MenuDrpDwnV2
+                  menuList={RequirementStatus}
                   placeholder="Status"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, status: selectedItems });
-                  }}
+                  handleSelectedItem={(selectedItems) =>
+                    setStatus(selectedItems)
+                  }
                 />
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.requirementType}
-                  placeholder="Requirements"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      requirementType: selectedItems,
-                    });
-                  }}
+                <MenuDrpDwnV2
+                  menuList={LocationTypeStatus}
+                  placeholder="Resources"
+                  handleSelectedItem={(selectedItems) =>
+                    setResource(selectedItems)
+                  }
                 />
               </div>
             </div>
@@ -172,17 +202,12 @@ const MyRequirements = () => {
                 <th>Visibility</th>
               </tr>
             </thead>
-            {!isTableLoader && requirementData?.length === 0 ? (
-              <div className="absolute left-[42%] pt-3">
-                <p className="text-base">No data available</p>
-              </div>
-            ) : (
-              isTableLoader && (
-                <div className="absolute left-[46%] pt-3">
-                  <CircularProgress size={24} />
-                </div>
-              )
-            )}
+
+            <TablePreLoader
+              isTableLoader={isTableLoader}
+              data={requirementData}
+            />
+
             <tbody>
               {!isTableLoader &&
                 requirementData?.length > 0 &&
@@ -208,7 +233,7 @@ const MyRequirements = () => {
                         <div
                           className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                           onClick={() =>
-                            handleRowClick(requirement.uniqueId, "client")
+                            handleRowClick(requirement.clientCode, "client")
                           }
                         >
                           {requirement?.clientLogo && (

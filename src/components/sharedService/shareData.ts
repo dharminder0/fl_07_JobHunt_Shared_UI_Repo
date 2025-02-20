@@ -31,3 +31,41 @@ export const ClientStatus: any = [
     value: "Inactive",
   },
 ];
+
+export const LocationTypeStatus: any = [
+  {
+    id: 1,
+    name: "Onsite",
+    value: "Onsite",
+  },
+  {
+    id: 2,
+    name: "Hybrid",
+    value: "Hybrid",
+  },
+  {
+    id: 3,
+    name: "Remote",
+    value: "Remote",
+  },
+];
+
+export const RequirementStatus: any = [
+  {
+    id: 1,
+    name: "Open",
+    value: "Open",
+  },
+  {
+    id: 2,
+    name: "On Hold",
+    value: "On Hold",
+  },
+  {
+    id: 3,
+    name: "Closed",
+    value: "Closed",
+  },
+];
+
+export const OrgStrength: any = ["0-10", "10-50", "50-100", "100-500", "500+"];
