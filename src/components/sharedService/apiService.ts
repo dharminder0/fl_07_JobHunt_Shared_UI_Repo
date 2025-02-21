@@ -153,4 +153,9 @@ export const getClientDataByClientCode = async (clientCode: any) => {
   return response.data;
 };
 
+export const getOnboardInvitedList = async (payload: any) => {
+  const response = await api.post("V1/Organization/List/Invitation", payload);
+  return response.data;
+};
+
 export default api;

@@ -129,7 +129,7 @@ const VendorDetails = () => {
       sender: {
         email: userData.email,
         orgCode: userData.orgCode,
-        roleType: RoleType.Vendor,
+        roleType: RoleType.Client,
       },
       receiver: {
         email: orgData?.email,
