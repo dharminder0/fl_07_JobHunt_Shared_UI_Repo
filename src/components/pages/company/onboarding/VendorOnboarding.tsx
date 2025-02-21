@@ -83,8 +83,8 @@ export default function VendorOnboarding() {
 
   const getOrgDetailsListData = () => {
     const payload = {
-      // orgCode: userData?.orgCode,
-      relatedOrgCode: userData?.orgCode,
+      orgCode: userData?.orgCode,
+      // relatedOrgCode: userData?.orgCode,
       relationshipType: [RoleType.Client],
       status: 1,
       page: pageIndex,
