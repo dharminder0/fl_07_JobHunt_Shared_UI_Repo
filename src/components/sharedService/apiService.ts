@@ -158,4 +158,11 @@ export const getOnboardInvitedList = async (payload: any) => {
   return response.data;
 };
 
+export const inviteStatusChange = async (id: number, status: number) => {
+  const response = await api.post(
+    `V1/Organization/manageInvitation?id=${id}&status=${status}`
+  );
+  return response.data;
+};
+
 export default api;

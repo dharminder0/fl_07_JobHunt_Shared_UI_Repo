@@ -26,3 +26,10 @@ export const LocationType: any = {
   Hybrid: 2,
   Remote: 3,
 };
+
+export const InvitedType: any = {
+  Pending: 1,
+  Accepted: 2,
+  Declined: 3,
+  Archived: 4,
+};

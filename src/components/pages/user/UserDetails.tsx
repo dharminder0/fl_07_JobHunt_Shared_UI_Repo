@@ -23,6 +23,7 @@ import {
 } from "../../../components/features/drawerSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SuccessDialog from "../../../components/shared/SuccessDialog";
+import FileUploadBox from "../../../components/common/FileUploadBox";
 
 export default function UserDetails() {
   const [tabValue, setTabValue] = React.useState("Profile");
@@ -48,6 +49,8 @@ export default function UserDetails() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    watch,
   } = useForm({
     defaultValues: {
       firstName: "",
@@ -56,6 +59,12 @@ export default function UserDetails() {
       phone: "",
       gender: "",
       dob: "01-01-2000",
+      profileAvatar: [
+        {
+          fileName: "",
+          fileData: "",
+        },
+      ],
     },
   });
   const {
@@ -181,6 +190,13 @@ export default function UserDetails() {
                   // onChange={handleInputChange}
                   className="absolute bottom-0 left-0 cursor-pointer opacity-0 w-full h-full"
                 />
+                {/* <FileUploadBox
+                  title="Upload Logo"
+                  fileSize="128 x 128"
+                  iconType="image"
+                  onUpload={(file: any) => setValue("profileAvatar", file)}
+                  file={watch("profileAvatar")}
+                /> */}
               </div>
             </div>
 
