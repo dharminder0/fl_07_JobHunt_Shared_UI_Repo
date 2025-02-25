@@ -15,13 +15,13 @@ import {
   LocationOnOutlined,
   WorkHistory,
 } from "@mui/icons-material";
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
-import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
-import SuccessDialog from "../../../../components/shared/SuccessDialog";
+import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
+import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
+import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import VndBench from "../bench/VndBench";
-import StatusDialog from "../../../../components/shared/StatusDialog";
+import StatusDialog from "../../../sharedComponents/StatusDialog";
 import React from "react";
 
 const VndRequirements = ({ benchDrawerData = {} }: any) => {

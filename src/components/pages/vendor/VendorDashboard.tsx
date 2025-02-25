@@ -10,7 +10,7 @@ import {
   Button,
   Chip,
 } from "@mui/material";
-import JobStatistics from "../../common/JobStatistics";
+import JobStatistics from "../../sharedComponents/JobStatistics";
 import { Share } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 

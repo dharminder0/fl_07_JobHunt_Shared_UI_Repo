@@ -1,7 +1,7 @@
 export const RoleType: any = {
   Vendor: "1",
   Client: "2",
-  Both: "3",
+  Admin: "3",
 };
 
 export const BillingType: any = {

@@ -33,8 +33,8 @@ import {
   inviteStatusChange,
 } from "../../../../components/sharedService/apiService";
 import PageLoader from "../../../../components/sharedComponents/PageLoader";
-import Loader from "../../../../components/shared/Loader";
-import NoDataAvailable from "../../../../components/shared/NoDataAvailable";
+import Loader from "../../../sharedComponents/Loader";
+import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
 
 export default function VendorOnboarding() {
   const [value, setValue] = React.useState("Invited");

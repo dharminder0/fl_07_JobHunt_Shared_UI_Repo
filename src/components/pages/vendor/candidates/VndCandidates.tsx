@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
-import StatusDialog from "../../../../components/shared/StatusDialog";
-import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
+import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
+import StatusDialog from "../../../sharedComponents/StatusDialog";
+import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";

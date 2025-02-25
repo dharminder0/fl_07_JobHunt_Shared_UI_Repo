@@ -33,13 +33,14 @@ import ClientOnboarding from "./components/pages/vendor/onboarding/ClientOnboard
 import VndClientDetails from "./components/pages/vendor/clients/VndClientDetails";
 import Clients from "./components/pages/company/clients/Clients";
 import ClientDetails from "./components/pages/company/clients/ClientDetails";
-import ProtectedRoute from "./components/shared/ProtectedRoute";
+import ProtectedRoute from "./components/sharedComponents/ProtectedRoute";
 import OrganizationProfile from "./components/pages/settings/OrganizationProfile";
 import Subscriptions from "./components/pages/settings/Subscriptions";
 import Members from "./components/pages/settings/Members";
 import BenchPreview from "./components/pages/vendor/bench/BenchPreview";
 import DashboardLayoutBasic from "./components/layouts/DashboardLayoutBasic";
 import EmailVerification from "./components/auth/EmailVerification";
+import SetPassword from "./components/auth/SetPassword";
 
 export default function AppRoutes() {
   return (
@@ -52,6 +53,7 @@ export default function AppRoutes() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/onboard" element={<OnBoarding />} />
         <Route path="/everify/:token/:otp?" element={<EmailVerification />} />
+        <Route path="/setpassword/:token" element={<SetPassword />} />
 
         {/* Company Layout */}
         <Route

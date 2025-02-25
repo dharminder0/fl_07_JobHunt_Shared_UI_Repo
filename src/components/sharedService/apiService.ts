@@ -165,4 +165,14 @@ export const inviteStatusChange = async (id: number, status: number) => {
   return response.data;
 };
 
+export const addNewMember = async (payload: any) => {
+  const response = await api.post("V1/user/AddMember", payload);
+  return response.data;
+};
+
+export const setMemberPassword = async (payload: any) => {
+  const response = await api.post("V1/users/SetPassword", payload);
+  return response.data;
+};
+
 export default api;

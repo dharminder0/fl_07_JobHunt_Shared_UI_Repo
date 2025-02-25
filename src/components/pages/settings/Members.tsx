@@ -6,7 +6,7 @@ import {
   Search,
 } from "@mui/icons-material";
 import { Box, Button, IconButton, TextField } from "@mui/material";
-import AddNewMemberForm from "../../../components/common/AddNewMemberForm";
+import AddNewMemberForm from "../../sharedComponents/AddNewMemberForm";
 import { openDrawer } from "../../../components/features/drawerSlice";
 import { AppDispatch } from "../../../components/redux/store";
 import { useDispatch } from "react-redux";

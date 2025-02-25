@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import styled from "@mui/system/styled";
-import FileUploadBox from "../../../common/FileUploadBox";
+import FileUploadBox from "../../../sharedComponents/FileUploadBox";
 
 const steps = [
   { label: "Select Post Type", description: "" },

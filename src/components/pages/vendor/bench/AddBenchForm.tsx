@@ -9,7 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { TextField, Button, MenuItem } from "@mui/material";
-import FileUploadBox from "../../../common/FileUploadBox";
+import FileUploadBox from "../../../sharedComponents/FileUploadBox";
 
 const AddBenchForm = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);

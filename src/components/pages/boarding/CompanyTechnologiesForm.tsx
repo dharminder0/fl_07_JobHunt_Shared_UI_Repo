@@ -13,7 +13,7 @@ import {
   ListItemText,
   OutlinedInput,
 } from "@mui/material";
-import MenuDrpDwn from "../../../components/shared/MenuDrpDwn";
+import MenuDrpDwn from "../../sharedComponents/MenuDrpDwn";
 
 const technologies = {
   web: [

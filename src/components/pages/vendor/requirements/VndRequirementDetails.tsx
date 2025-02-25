@@ -11,8 +11,8 @@ import {
 import { Edit, Download } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
-import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
-import StatusDialog from "../../../../components/shared/StatusDialog";
+import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
+import StatusDialog from "../../../sharedComponents/StatusDialog";
 
 const jobDataOrg = [
   {

@@ -13,7 +13,7 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import FileUploadBox from "../../common/FileUploadBox";
+import FileUploadBox from "../../sharedComponents/FileUploadBox";
 
 const CompanyService = () => {
   const {
