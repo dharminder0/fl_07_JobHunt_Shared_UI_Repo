@@ -8,10 +8,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import FileUploadBox from "../../../common/FileUploadBox";
+import FileUploadBox from "../../../sharedComponents/FileUploadBox";
 import { Controller, useForm } from "react-hook-form";
 import { upsertClient } from "../../../../components/sharedService/apiService";
-import SuccessDialog from "../../../../components/shared/SuccessDialog";
+import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import ReactQuill from "react-quill";
 
 const CreateClientForm = () => {
@@ -62,7 +62,6 @@ const CreateClientForm = () => {
   });
 
   const onSubmit = (data: any) => {
-    debugger
     upsertClient(data)
       .then((result: any) => {
         if (result.success) {

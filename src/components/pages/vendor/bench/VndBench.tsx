@@ -14,14 +14,14 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddBenchForm from "./AddBenchForm";
-import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
+import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import AddAIBench from "./AddAIBench";
 import BenchPreview from "./BenchPreview";
 import VndRequirements from "../requirements/VndRequirements";
-import SuccessDialog from "../../../../components/shared/SuccessDialog";
+import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import { positions } from "@mui/system";
 
 const benchData = [

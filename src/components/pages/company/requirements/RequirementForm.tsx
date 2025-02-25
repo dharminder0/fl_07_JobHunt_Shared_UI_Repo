@@ -25,8 +25,8 @@ import {
   Tabs,
   Tooltip,
 } from "@mui/material";
-import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
-import Loader from "../../../../components/shared/Loader";
+import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
+import Loader from "../../../sharedComponents/Loader";
 import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,

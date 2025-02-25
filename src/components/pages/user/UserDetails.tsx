@@ -22,8 +22,8 @@ import {
   openBackdrop,
 } from "../../../components/features/drawerSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import SuccessDialog from "../../../components/shared/SuccessDialog";
-import FileUploadBox from "../../../components/common/FileUploadBox";
+import SuccessDialog from "../../sharedComponents/SuccessDialog";
+import FileUploadBox from "../../sharedComponents/FileUploadBox";
 
 export default function UserDetails() {
   const [tabValue, setTabValue] = React.useState("Profile");

@@ -35,11 +35,11 @@ import {
   dispatchedInvitation,
   getOrgProfileDetails,
 } from "../../../../components/sharedService/apiService";
-import Loader from "../../../../components/shared/Loader";
+import Loader from "../../../sharedComponents/Loader";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import { RoleType } from "../../../../components/sharedService/enums";
 import { error } from "console";
-import SuccessDialog from "../../../../components/shared/SuccessDialog";
+import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 
 const VendorDetails = () => {
   const theme = useTheme();

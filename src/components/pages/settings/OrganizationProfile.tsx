@@ -13,7 +13,7 @@ import { getOrgProfileDetails } from "../../../components/sharedService/apiServi
 import { AppDispatch } from "../../../components/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { openDrawer } from "../../../components/features/drawerSlice";
-import Loader from "../../../components/shared/Loader";
+import Loader from "../../sharedComponents/Loader";
 import SocialIcon from "../../../components/sharedComponents/SocialIcon";
 import HtmlRenderer from "../../../components/sharedComponents/HtmlRenderer";
 

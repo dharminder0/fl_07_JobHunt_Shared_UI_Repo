@@ -21,8 +21,8 @@ import {
 import { getOnboardInvitedList } from "../../../../components/sharedService/apiService";
 import { CorporateFareOutlined } from "@mui/icons-material";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
-import NoDataAvailable from "../../../../components/shared/NoDataAvailable";
-import Loader from "../../../../components/shared/Loader";
+import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
+import Loader from "../../../sharedComponents/Loader";
 
 const MyVendors = () => {
   const navigate = useNavigate();

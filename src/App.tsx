@@ -5,10 +5,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./assets/themes/theme";
 import { OrganizationTypeProvider } from "./contexts/OrganizationTypeContext";
-import CommonDrawer from "./components/common/CommonDrawer";
+import CommonDrawer from "./components/sharedComponents/CommonDrawer";
 import { useSelector } from "react-redux";
 import { RootState } from "./components/redux/store";
-import BackDropLoader from "./components/shared/BackDropLoader";
+import BackDropLoader from "./components/sharedComponents/BackDropLoader";
 
 function App() {
   const { currentDrawer } = useSelector((state: RootState) => state.drawer);

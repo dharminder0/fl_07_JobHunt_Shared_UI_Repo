@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Box, Button, Chip, Grid2 } from "@mui/material";
-import JobStatistics from "../../common/JobStatistics";
+import JobStatistics from "../../sharedComponents/JobStatistics";
 import { Share } from "@mui/icons-material";
 import { getAllUsers } from "../../sharedService/apiService";
 

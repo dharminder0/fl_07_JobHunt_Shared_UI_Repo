@@ -10,12 +10,12 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { AccessTimeOutlined, LocationOnOutlined } from "@mui/icons-material";
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
+import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import StatusDialog from "../../../../components/shared/StatusDialog";
+import StatusDialog from "../../../sharedComponents/StatusDialog";
 import { getRequirementsList } from "../../../../components/sharedService/apiService";
 import moment from "moment";
-import MenuDrpDwnV2 from "../../../../components/shared/MenuDrpDwnV2";
+import MenuDrpDwnV2 from "../../../sharedComponents/MenuDrpDwnV2";
 import {
   LocationTypeStatus,
   RequirementStatus,

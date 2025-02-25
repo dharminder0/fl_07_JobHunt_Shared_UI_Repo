@@ -1,6 +1,6 @@
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
-import StatusDialog from "../../../../components/shared/StatusDialog";
-import MatchingSkillsDialog from "../../../../components/shared/MatchingSkillsDialog";
+import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
+import StatusDialog from "../../../sharedComponents/StatusDialog";
+import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import { Download } from "@mui/icons-material";
 import {
   IconButton,

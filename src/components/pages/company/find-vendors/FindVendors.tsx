@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import MenuDrpDwnV2 from "../../../../components/shared/MenuDrpDwnV2";
+import MenuDrpDwnV2 from "../../../sharedComponents/MenuDrpDwnV2";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import { getOrgDetailsList } from "../../../../components/sharedService/apiService";
-import MenuDrpDwn from "../../../../components/shared/MenuDrpDwn";
-import Loader from "../../../../components/shared/Loader";
+import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
+import Loader from "../../../sharedComponents/Loader";
 import { CorporateFareOutlined } from "@mui/icons-material";
 import { RoleType } from "../../../../components/sharedService/enums";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
