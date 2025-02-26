@@ -36,6 +36,8 @@ const OrganizationProfile = () => {
       .then((result: any) => {
         if (result.success) {
           setOrgData(result.content);
+          userData.companyIcon = result.content.logo;
+          localStorage.setItem("userData", JSON.stringify(userData));
         }
         setTimeout(() => {
           setIsLoader(false);

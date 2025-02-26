@@ -168,9 +168,21 @@ const AddNewMemberForm = ({ isEditable = false }) => {
                     onChange={(event) => field.onChange([event.target.value])} // Ensure value is stored as an array
                     value={field.value[0] || ""} // Extract first value for proper binding
                   >
-                    <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>
-                    <MenuItem value={RoleType.Client}>Client</MenuItem>
-                    <MenuItem value={RoleType.Both}>Both</MenuItem>
+                    {userData?.role?.length == 1 &&
+                      userData?.role[0] == RoleType.Vendor && (
+                        <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>
+                      )}
+                    {userData?.role?.length == 1 &&
+                      userData?.role[0] == RoleType.Client && (
+                        <MenuItem value={RoleType.Client}>Client</MenuItem>
+                      )}
+                    {userData?.role?.length > 1 && (
+                      <>
+                        <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>
+                        <MenuItem value={RoleType.Client}>Client</MenuItem>
+                        <MenuItem value={RoleType.Both}>Both</MenuItem>
+                      </>
+                    )}
                   </TextField>
                 )}
               />

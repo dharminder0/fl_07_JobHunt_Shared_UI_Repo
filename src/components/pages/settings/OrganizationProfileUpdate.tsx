@@ -17,11 +17,17 @@ import {
 } from "../../../components/features/drawerSlice";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import UploadLogo from "../../../components/sharedComponents/UploadLogo";
 
 const platforms = ["linkedin", "facebook", "github", "twitter", "instagram"];
 
 const defaultValues = {
-  logo: "",
+  logo: [
+    {
+      fileName: "",
+      fileData: "",
+    },
+  ],
   orgName: "",
   regAddress: "",
   description: "",
@@ -55,6 +61,8 @@ export default function OrganizationProfileUpdate() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    watch,
   } = useForm({
     defaultValues,
     mode: "onChange",
@@ -71,6 +79,7 @@ export default function OrganizationProfileUpdate() {
         if (result.success) {
           setOrgData(result.content);
           reset(result.content);
+          setValue("logo", [{ fileName: "", fileData: result.content.logo }]);
           setDiscription(result.content.description);
         }
       })
@@ -130,8 +139,21 @@ export default function OrganizationProfileUpdate() {
   return (
     <div className="!overflow-hidden">
       <div className="d-flex content-header">
-        <svg className="absolute cursor-pointer left-[8px] top-[19px]" onClick={() => handleOpenDrawer()} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
-          <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+        <svg
+          className="absolute cursor-pointer left-[8px] top-[19px]"
+          onClick={() => handleOpenDrawer()}
+          xmlns="http://www.w3.org/2000/svg"
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M20 20L4 4.00003M20 4L4.00002 20"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
         <div className="px-8 py-4 border-b">
           <h2 className="text-heading">Update Company Details</h2>
@@ -140,6 +162,16 @@ export default function OrganizationProfileUpdate() {
       <div className="h-[calc(100vh-120px)] !overflow-y-auto">
         <div className="md:w-[95%] lg:w-[95%] xl:w-[70%] p-4 mx-auto">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="my-2 flex justify-center items-center">
+              <UploadLogo
+                title="Upload Logo"
+                fileSize="128 x 128"
+                iconType="image"
+                onUpload={(file: any) => setValue("logo", file)}
+                file={watch("logo")}
+              />
+            </div>
+
             <p className="text-title">Company Information</p>
             <Controller
               name="orgName"
@@ -171,6 +203,7 @@ export default function OrganizationProfileUpdate() {
                 />
               )}
             />
+
             {/* <Controller
               name="description"
               control={control}

@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const companyIcon = localStorage.companyIcon;
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   const [routesData, setRoutesData] = useState([
     {
@@ -83,10 +83,10 @@ const Header: React.FC<HeaderProps> = () => {
         <div className="icon my-auto">
           <Avatar
             alt="Org Icon"
-            src={companyIcon || undefined}
+            src={userData.companyIcon || undefined}
             className="rounded-full !h-8 !w-8"
           >
-            {!companyIcon && <CorporateFareOutlined fontSize="small" />}
+            {!userData.companyIcon && <CorporateFareOutlined fontSize="small" />}
           </Avatar>
         </div>
         <div

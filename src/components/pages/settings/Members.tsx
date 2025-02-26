@@ -131,7 +131,7 @@ export default function Members() {
                     ))}
                 </td>
                 <td>{member.status || "-"}</td>
-                <td>{moment(member.createdOn).format("DD-MM-YYYY")}</td>
+                <td>{member.createdOn}</td>
               </tr>
             ))}
           </tbody>
