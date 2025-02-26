@@ -10,7 +10,7 @@ interface FileUploadBoxProps {
   onUpload?: (file: { fileName: string; fileData: string }[]) => void;
 }
 
-const FileUploadBox: React.FC<FileUploadBoxProps> = ({
+const UploadLogo: React.FC<FileUploadBoxProps> = ({
   title = "",
   fileSize = "",
   iconType = "file",
@@ -19,7 +19,6 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
   onUpload,
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
-
   // Converts image to specified format
   const convertImageFormat = (file: File, format: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -98,27 +97,33 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
       >
         <label
           htmlFor={`file-upload-${title}`}
-          className="w-full p-3 text-center border border-dashed border-gray-500 rounded-lg cursor-pointer hover:bg-blue-50"
+          className="w-[100px] h-[100px] p-3 text-center border border-dashed border-gray-500 rounded-full cursor-pointer hover:bg-blue-50"
         >
           <div className="flex flex-col items-center justify-center">
             {/* Icon */}
             <div className="mb-3">
-              {iconType === "image" ? (
+              {iconType === "image" && !preview && (
                 <ImageIcon color="primary" fontSize="small" />
-              ) : (
-                <UploadFile color="primary" fontSize="small" />
               )}
+              {/* Image Preview */}
+              {preview && (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="mt-3 h-[50px] object-cover text-center"
+                />
+              )}
+
+              {/* File Name Preview */}
+              {/* {file?.length > 0 && (
+                <p className="mt-3 text-info text-gray-700 text-center">
+                  {file[0]?.fileName}
+                </p>
+              )} */}
             </div>
 
             {/* Upload Text */}
-            <p className="text-blue-500 text-base">Click to {title}</p>
-            {fileSize && (
-              <p className="mt-1 text-gray-400 text-base">
-                {iconType === "image"
-                  ? `SVG, PNG, JPG or GIF (max. ${fileSize})`
-                  : `Any document file (max. ${fileSize})`}
-              </p>
-            )}
+            {!preview && <p className="text-blue-500 text-base">{title}</p>}
           </div>
           <input
             id={`file-upload-${title}`}
@@ -129,24 +134,8 @@ const FileUploadBox: React.FC<FileUploadBoxProps> = ({
           />
         </label>
       </div>
-
-      {/* Image Preview */}
-      {preview && (
-        <img
-          src={preview}
-          alt="Preview"
-          className="mt-3 h-[40px] object-cover rounded-md mx-auto"
-        />
-      )}
-
-      {/* File Name Preview */}
-      {file?.length > 0 && (
-        <p className="mt-3 text-base text-gray-700 text-center">
-          Selected File: {file[0]?.fileName}
-        </p>
-      )}
     </div>
   );
 };
 
-export default FileUploadBox;
+export default UploadLogo;

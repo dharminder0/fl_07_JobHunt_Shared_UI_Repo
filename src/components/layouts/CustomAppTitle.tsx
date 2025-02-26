@@ -5,7 +5,7 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import { useOrganizationType } from "../../contexts/OrganizationTypeContext";
 
 const CustomAppTitle = memo(({ activeType }: any) => {
-  const companyIcon = localStorage.companyIcon;
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const navigate = useNavigate();
   const location = useLocation();
   const role = useMemo(
@@ -86,7 +86,7 @@ const CustomAppTitle = memo(({ activeType }: any) => {
 
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
-      <Avatar alt="You" src={companyIcon} className="rounded-full !h-8 !w-8" />
+      <Avatar alt="You" src={userData.companyIcon} className="rounded-full !h-8 !w-8" />
       <div className="flex gap-3">
         <div
           className="cursor-pointer flex flex-row gap-2"
