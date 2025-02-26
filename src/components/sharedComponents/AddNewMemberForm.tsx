@@ -170,7 +170,7 @@ const AddNewMemberForm = ({ isEditable = false }) => {
                   >
                     <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>
                     <MenuItem value={RoleType.Client}>Client</MenuItem>
-                    <MenuItem value={RoleType.Admin}>Admin</MenuItem>
+                    <MenuItem value={RoleType.Both}>Both</MenuItem>
                   </TextField>
                 )}
               />

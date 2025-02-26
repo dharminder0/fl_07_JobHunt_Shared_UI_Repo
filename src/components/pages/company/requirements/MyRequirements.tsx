@@ -111,6 +111,8 @@ const MyRequirements = () => {
       .then((result: any) => {
         if (result && result?.totalPages > 0) {
           SetRequirementData(result.list);
+        } else {
+          SetRequirementData([]);
         }
         setTimeout(() => {
           setIsTableLoader(false);

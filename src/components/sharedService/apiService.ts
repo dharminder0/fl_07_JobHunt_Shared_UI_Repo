@@ -175,4 +175,9 @@ export const setMemberPassword = async (payload: any) => {
   return response.data;
 };
 
+export const getMembersList = async (payload: any) => {
+  const response = await api.post("V1/users/member/Search", payload);
+  return response.data;
+};
+
 export default api;
