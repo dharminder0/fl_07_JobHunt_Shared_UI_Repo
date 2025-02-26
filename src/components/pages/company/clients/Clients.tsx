@@ -136,7 +136,12 @@ export default function Clients() {
           setTimeout(() => {
             setClientList(result.list);
             setIsTableLoader(false);
-          }, 1000);
+          }, 500);
+        } else {
+          setTimeout(() => {
+            setClientList([]);
+            setIsTableLoader(false);
+          }, 500);
         }
       })
       .catch((error: any) => {
