@@ -21,12 +21,14 @@ import {
   RequirementStatus,
 } from "../../../../components/sharedService/shareData";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import { RoleType } from "../../../../components/sharedService/enums";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const activeRole = localStorage.getItem("activeRole") || "";
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
@@ -105,6 +107,8 @@ const MyRequirements = () => {
       locationType: resource,
       status: status,
       clientCode: [],
+      userId: userData.userId,
+      roleType: [activeRole === "company" && RoleType.Client],
     };
 
     getRequirementsList(payload)
