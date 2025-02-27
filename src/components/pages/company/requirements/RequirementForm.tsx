@@ -222,6 +222,7 @@ const RequirementForm = () => {
       duration: "",
       remarks: "",
       status: 1,
+      userId: "",
     },
   });
 
@@ -254,6 +255,7 @@ const RequirementForm = () => {
 
   const onSubmit = (data: any) => {
     data.orgCode = userData?.orgCode;
+    data.userId = userData?.userId;
     setIsLoader(true);
     getOrgDetailsListData();
     upsertRequirement(data)

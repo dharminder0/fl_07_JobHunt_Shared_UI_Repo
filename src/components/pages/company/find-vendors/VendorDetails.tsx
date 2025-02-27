@@ -46,6 +46,7 @@ const VendorDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
+  const activeRole = localStorage.getItem("activeRole") || "";
 
   const [isLoader, setIsLoader] = React.useState<boolean>(false);
   const [isInviteLoader, setIsInviteLoader] = React.useState<boolean>(false);
@@ -129,7 +130,7 @@ const VendorDetails = () => {
       sender: {
         email: userData.email,
         orgCode: userData.orgCode,
-        roleType: RoleType.Client,
+        roleType: activeRole === "vendor" ? RoleType.Vendor : RoleType.Client,
       },
       receiver: {
         email: orgData?.email,

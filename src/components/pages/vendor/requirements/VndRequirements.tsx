@@ -15,7 +15,6 @@ import {
   LocationOnOutlined,
   WorkHistory,
 } from "@mui/icons-material";
-import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
@@ -23,6 +22,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import VndBench from "../bench/VndBench";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
 import React from "react";
+import { getRequirementsList } from "../../../../components/sharedService/apiService";
+import {
+  LocationTypeStatus,
+  RequirementStatus,
+} from "../../../../components/sharedService/shareData";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import { RoleType } from "../../../../components/sharedService/enums";
+import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
+import MenuDrpDwn from "../../../../components/sharedComponents/MenuDrpDwn";
 
 const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const navigate = useNavigate();
@@ -31,12 +39,19 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const paramStatus = !params?.status
     ? benchDrawerData?.status
     : params?.status;
+
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const activeRole = localStorage.getItem("activeRole") || "";
   const [drawerObj, setDrawerObj] = useState({ data: {}, isOpen: false });
   const [matchingObj, setMatchingObj] = useState({ isOpen: false, score: 0 });
-  const [jobData, setJobData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
+  const [isTableLoader, setIsTableLoader] = React.useState(true);
+  const [searchText, setSearchText] = React.useState("");
+  const [status, setStatus] = useState<any[]>([]);
+  const [resource, setResource] = useState<any[]>([]);
+  const [requirementData, SetRequirementData] = React.useState<any[]>([]);
 
   const [filterList, setFilterList] = useState<any>({
     client: [
@@ -46,108 +61,14 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       "Fidelity Information Services",
       "Coforge",
     ],
-    status: ["Open", "On hold", "Closed"],
-    requirementType: ["Remote", "Hybrid", "Onsite"],
   });
+
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
     client: "",
     status: !paramStatus ? "" : paramStatus,
     requirementType: "",
   });
-
-  const jobDataOrg = [
-    {
-      id: 1,
-      role: "Social Media Assistant",
-      status: "Open",
-      datePosted: "20-11-2024",
-      applicants: "5",
-      client: "Teleperformance",
-      requirementType: "Remote",
-      noOfPositions: 3,
-      placed: 1,
-      contractPeriod: "6 months",
-      logo: "https://www.teleperformance.com/css/assets/favicon.ico",
-      aiScore: 60,
-      matchingCandidate: 3,
-    },
-    {
-      id: 2,
-      role: "Senior Designer",
-      status: "On hold",
-      datePosted: "23-09-2024",
-      applicants: "2",
-      client: "KPIT Technologies",
-      requirementType: "Hybrid",
-      noOfPositions: 5,
-      placed: 0,
-      contractPeriod: "12 months",
-      logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
-      aiScore: 70,
-      matchingCandidate: 2,
-    },
-    {
-      id: 3,
-      role: "Visual Designer",
-      status: "Open",
-      datePosted: "13-07-2024",
-      applicants: "1",
-      client: "Mphasis",
-      requirementType: "Onsite",
-      noOfPositions: 2,
-      placed: 0,
-      contractPeriod: "3 months",
-      logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
-      aiScore: 80,
-      matchingCandidate: 1,
-    },
-    {
-      id: 4,
-      role: "Data Science",
-      status: "Closed",
-      datePosted: "06-06-2024",
-      applicants: "1",
-      client: "Fidelity Information Services",
-      requirementType: "Remote",
-      noOfPositions: 4,
-      placed: 0,
-      contractPeriod: "9 months",
-      logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
-      aiScore: 66,
-      matchingCandidate: 4,
-    },
-    {
-      id: 5,
-      role: "Kotlin Developer",
-      status: "Closed",
-      datePosted: "01-05-2024",
-      applicants: "3",
-      client: "Coforge",
-      requirementType: "Hybrid",
-      noOfPositions: 8,
-      placed: 1,
-      contractPeriod: "18 months",
-      logo: "https://careers.coforge.com/coforge/favicon.ico",
-      aiScore: 75,
-      matchingCandidate: 1,
-    },
-    {
-      id: 5,
-      role: "Flutter Developer",
-      status: "Open",
-      datePosted: "01-05-2024",
-      applicants: "2",
-      client: "KPIT Technologies",
-      requirementType: "Hybrid",
-      noOfPositions: 6,
-      placed: 1,
-      contractPeriod: "18 months",
-      logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
-      aiScore: 80,
-      matchingCandidate: 2,
-    },
-  ];
 
   const handleRowClick = (id: number) => {
     if (!benchDrawerData.isOpen) {
@@ -192,73 +113,53 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     setMatchingObj((prev) => ({ ...prev, isOpen: true, score: score }));
   };
 
-  useEffect(() => {
-
-    const pathSegments = document.location.pathname.split('/');
-    const uniqueId = pathSegments.pop()
-    
-    // Filtering logic
-    const filtered = jobDataOrg.filter((item) => {
-      // Check client filter
-      const clientMatch =
-        searchFilter.client.length === 0 ||
-        searchFilter.client.includes(item.client);
-      // Check status filter
-      const statusMatch =
-        searchFilter.status?.length === 0 ||
-        searchFilter.status.includes(item.status);
-      // Check requirement type filter
-      const requirementTypeMatch =
-        searchFilter.requirementType.length === 0 ||
-        searchFilter.requirementType.includes(item.requirementType);
-      // Check search input
-      const searchMatch =
-        searchFilter.searchValue === "" ||
-        item.role
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-
-      return clientMatch && statusMatch && requirementTypeMatch && searchMatch;
-    });
-    setJobData(filtered);
-  }, [searchFilter]);
-
   const handleStatusDialog = (status: string) => {
     setIsDialogOpen(true);
     setSelectedStatus(status);
   };
 
+  const getRequirementsData = () => {
+    setIsTableLoader(true);
+    const payload = {
+      orgCode: userData.orgCode,
+      searchText: searchText,
+      page: 1,
+      pageSize: 15,
+      locationType: resource,
+      status: status,
+      clientCode: [],
+      userId: userData.userId,
+      roleType: [activeRole === "vendor" && RoleType.Vendor],
+    };
+
+    getRequirementsList(payload)
+      .then((result: any) => {
+        if (result && result?.totalPages > 0) {
+          SetRequirementData(result.list);
+        } else {
+          SetRequirementData([]);
+        }
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 1000);
+      });
+  };
+
+  useEffect(() => {
+    if (searchText?.length > 3 || searchText?.length == 0) {
+      getRequirementsData();
+    }
+  }, [searchText, resource, status]);
+
   return (
     <>
       <div className="px-2 py-3 h-full">
-        <div className="flex flex-row gap-1 justify-between items-center mb-1">
-          <div>
-            {benchDrawerData?.isOpen && (
-              <div className="flex items-center">
-                <div className="me-2">
-                  <AccountCircleOutlined
-                    fontSize="large"
-                    className="text-secondary-text"
-                  />
-                </div>
-                <div>
-                  <p className="text-title">
-                    {benchDrawerData?.data?.resource}
-                  </p>
-                  <div className="flex text-info text-secondary-text">
-                    <p>
-                      <WorkHistory fontSize="inherit" />{" "}
-                      {benchDrawerData?.data?.experience}
-                    </p>
-                    <p className="ms-1">
-                      <LocationOn fontSize="inherit" />{" "}
-                      {benchDrawerData?.data?.location}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+        <div className="flex flex-row gap-1 justify-end mb-1">
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
               <div className="flex grow w-[220px] mr-2">
@@ -266,13 +167,8 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                   <TextField
                     size="small"
                     className="w-full"
-                    value={searchFilter.searchValue}
-                    onChange={(event) =>
-                      setSearchFilter({
-                        ...searchFilter,
-                        searchValue: event.target.value,
-                      })
-                    }
+                    value={searchText}
+                    onChange={(event) => setSearchText(event.target.value)}
                     placeholder="Search"
                     slotProps={{
                       input: {
@@ -296,24 +192,21 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                 />
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.status}
+                <MenuDrpDwnV2
+                  menuList={RequirementStatus}
                   placeholder="Status"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, status: selectedItems });
-                  }}
+                  handleSelectedItem={(selectedItems) =>
+                    setStatus(selectedItems)
+                  }
                 />
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.requirementType}
-                  placeholder="Requirements"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      requirementType: selectedItems,
-                    });
-                  }}
+                <MenuDrpDwnV2
+                  menuList={LocationTypeStatus}
+                  placeholder="Resources"
+                  handleSelectedItem={(selectedItems) =>
+                    setResource(selectedItems)
+                  }
                 />
               </div>
             </div>
@@ -333,131 +226,143 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                 <th>Applicants</th>
               </tr>
             </thead>
+
+            <TablePreLoader
+              isTableLoader={isTableLoader}
+              data={requirementData}
+            />
+
             <tbody>
-              {jobData.map((job, index) => (
-                <tr key={index}>
-                  <th className="add-right-shadow">
-                    <div className="flex items-center justify-between">
-                      <div
-                        onClick={() => handleRowClick(job.id)}
-                        className="cursor-pointer hover:text-indigo-700"
-                      >
-                        {job.role}
-                      </div>
-                      <div className="flex text-secondary-text text-info">
-                        <div className="mx-2">
-                          {benchDrawerData?.isOpen && (
-                            <div
-                              className="flex justify-end cursor-pointer hover:text-indigo-700"
-                              onClick={() => handleMatchingDialog(job.aiScore)}
-                            >
-                              <svg
-                                width="14px"
-                                height="14px"
-                                viewBox="0 0 512 512"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
+              {!isTableLoader &&
+                requirementData?.length > 0 &&
+                requirementData.map((requirement, index) => (
+                  <tr key={index}>
+                    <th className="add-right-shadow">
+                      <div className="flex items-center justify-between">
+                        <div
+                          onClick={() => handleRowClick(requirement.id)}
+                          className="cursor-pointer hover:text-indigo-700"
+                        >
+                          {requirement.title}
+                        </div>
+                        <div className="flex text-secondary-text text-info">
+                          <div className="mx-2">
+                            {benchDrawerData?.isOpen && (
+                              <div
+                                className="flex justify-end cursor-pointer hover:text-indigo-700"
+                                onClick={() => handleMatchingDialog(64)}
                               >
-                                <g
-                                  id="Page-1"
-                                  stroke="none"
-                                  stroke-width="1"
-                                  fill="none"
-                                  fill-rule="evenodd"
+                                <svg
+                                  width="14px"
+                                  height="14px"
+                                  viewBox="0 0 512 512"
+                                  version="1.1"
+                                  xmlns="http://www.w3.org/2000/svg"
                                 >
                                   <g
-                                    id="icon"
-                                    fill="#4640DE"
-                                    transform="translate(64.000000, 64.000000)"
+                                    id="Page-1"
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd"
                                   >
-                                    <path
-                                      d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                      id="Combined-Shape"
-                                    ></path>
+                                    <g
+                                      id="icon"
+                                      fill="#4640DE"
+                                      transform="translate(64.000000, 64.000000)"
+                                    >
+                                      <path
+                                        d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                        id="Combined-Shape"
+                                      ></path>
+                                    </g>
                                   </g>
-                                </g>
-                              </svg>
-                              <span> {job.aiScore}%</span>
-                            </div>
-                          )}
+                                </svg>
+                                <span> {requirement?.aiScore || 64}%</span>
+                              </div>
+                            )}
+                          </div>
+                          <div
+                            className="cursor-pointer hover:text-indigo-700"
+                            onClick={() =>
+                              handleDrawer(
+                                {
+                                  role: requirement.title,
+                                  client: requirement.clientName,
+                                  clientLogo: requirement.clientLogo,
+                                },
+                                true
+                              )
+                            }
+                          >
+                            {benchDrawerData.isOpen
+                              ? "Apply"
+                              : `${requirement?.matchingCandidate || 3} Matching Candidates`}
+                          </div>
                         </div>
+                      </div>
+                      <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                         <div
-                          className="cursor-pointer hover:text-indigo-700"
+                          className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                           onClick={() =>
-                            handleDrawer(
-                              {
-                                role: job.role,
-                                client: job.client,
-                                clientLogo: job.logo,
-                              },
-                              true
-                            )
+                            handleClickToClient(requirement.id, "activeView")
                           }
                         >
-                          {benchDrawerData.isOpen
-                            ? "Apply"
-                            : `${job.matchingCandidate} Matching Candidates`}
+                          <img
+                            src={requirement.clientLogo}
+                            style={{ height: 12, width: 12 }}
+                            className="me-1"
+                          />
+                          <Tooltip title={requirement.clientName} arrow>
+                            <span className="text-ellipsis overflow-hidden truncate">
+                              {requirement.clientName}
+                            </span>
+                          </Tooltip>
+                        </div>
+                        <div className="flex w-[128px]">
+                          <div className="flex items-center ms-1">
+                            <LocationOnOutlined
+                              fontSize="inherit"
+                              className="mr-1"
+                            />
+                            <span>{requirement.locationTypeName}</span>
+                          </div>
+                          <div className="flex items-center ms-1">
+                            <AccessTimeOutlined
+                              fontSize="inherit"
+                              className="mr-1"
+                            />
+                            <span>{requirement.duration || "-"}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                      <div
-                        className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                    </th>
+                    <td>
+                      <Typography
+                        className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${
+                          requirement.statusName === "Open"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
                         onClick={() =>
-                          handleClickToClient(job.id, "activeView")
+                          handleStatusDialog(requirement.statusName)
                         }
                       >
-                        <img
-                          src={job.logo}
-                          style={{ height: 12, width: 12 }}
-                          className="me-1"
-                        />
-                        <Tooltip title={job.client} arrow>
-                          <span className="text-ellipsis overflow-hidden truncate">
-                            {job.client}
-                          </span>
-                        </Tooltip>
-                      </div>
-                      <div className="flex w-[128px]">
-                        <div className="flex items-center ms-1">
-                          <LocationOnOutlined
-                            fontSize="inherit"
-                            className="mr-1"
-                          />
-                          <span>{job.requirementType}</span>
-                        </div>
-                        <div className="flex items-center ms-1">
-                          <AccessTimeOutlined
-                            fontSize="inherit"
-                            className="mr-1"
-                          />
-                          <span>{job.contractPeriod}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </th>
-                  <td>
-                    <Typography
-                      className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${
-                        job.status === "Open"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                      onClick={() => handleStatusDialog(job.status)}
+                        {requirement.statusName || "-"}
+                      </Typography>
+                    </td>
+                    <td>{requirement.createdOn}</td>
+                    <td
+                      className="cursor-pointer hover:text-indigo-700"
+                      onClick={() =>
+                        handleClickToClient(requirement.id, "openView")
+                      }
                     >
-                      {job.status}
-                    </Typography>
-                  </td>
-                  <td>{job.datePosted}</td>
-                  <td
-                    className="cursor-pointer hover:text-indigo-700"
-                    onClick={() => handleClickToClient(job.id, "openView")}
-                  >
-                    {job.noOfPositions} ({job.placed})
-                  </td>
-                  <td>{job.applicants}</td>
-                </tr>
-              ))}
+                      {requirement.positions} ({requirement?.placed || 0})
+                    </td>
+                    <td>{requirement?.applicants || "-"}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
