@@ -3,20 +3,58 @@ import {
   Stepper,
   Drawer,
   Step,
-  StepLabel,
   Button,
   TextField,
-  Typography,
-  Box,
 } from "@mui/material";
-import { fontSize } from "@mui/system";
-import BenchPreview from "./BenchPreview";
+import { Controller, useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { UpsertBenchDetail } from "../../../../components/sharedService/apiService"
+import Loader from "../../../../components/sharedComponents/Loader";
 
-const AddAIBench = () => {
+interface AddAIBenchProps {
+  handleGetBenchDetail: () => void;
+}
+
+const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [cvText, setCvText] = useState("");
   const [cvFile, setCvFile] = useState<File | null>(null);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      title: '',
+      email: '',
+      phone: '',
+      linkedin: '',
+      cv: '',
+      availability: 0,
+      orgCode: userData.orgCode,
+      userId: userData.userId,
+    }
+  });
+
+  const onSubmit = (data: any) => {
+    setIsLoader(true);
+    UpsertBenchDetail(data).then((result: any) => {
+      if (result.success) {
+        setTimeout(() => {
+          reset()
+          setIsLoader(false);
+          setDrawerOpen(false);
+          handleGetBenchDetail();
+        }, 1000);
+      } else {
+        console.log('error', result.message)
+      }
+    })
+  };
+
 
   const steps = ["Paste CV", "Preview"];
 
@@ -44,9 +82,9 @@ const AddAIBench = () => {
     setCvFile(null);
   };
 
-  const handleSubmit = () => {
-    alert(`CV Submitted:\n\n cv`);
-  };
+  // const handleSubmit = () => {
+  //   alert(`CV Submitted:\n\n cv`);
+  // };
 
   return (
     <div className="flex flex-col my-auto">
@@ -82,19 +120,19 @@ const AddAIBench = () => {
       </Button>
 
       <Drawer anchor="right" open={drawerOpen}>
-        <div className="w-[calc(100vw-250px)] h-full">         
-           <div className="d-flex content-header">
+        <div className="w-[calc(100vw-250px)] h-full">
+          <div className="d-flex content-header">
             <svg className="absolute cursor-pointer left-[8px] top-[11px]"  onClick={(event) => toggleDrawer(false)(event)} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
               <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
             </svg>
             <div className="px-8 py-2 border-b">
               <h2 className="text-heading">Add Bench</h2>
             </div>
-          </div>      
+          </div>
 
-          <div className="p-4 w-full mx-auto h-[calc(100%-108px)] overflow-auto">
+          {/* <div className="p-4 w-full mx-auto h-[calc(100%-108px)] overflow-auto">
             <Box className="w-full h-full">
-              {/* Stepper */}
+             
               <Stepper activeStep={activeStep}>
                 {steps.map((label, index) => {
                   return (
@@ -115,7 +153,7 @@ const AddAIBench = () => {
                 })}
               </Stepper>
 
-              {/* Step Content */}
+            
               <div className="mt-4">
                 {activeStep === 0 && (
                   <div className="flex flex-col space-y-4">
@@ -135,7 +173,7 @@ const AddAIBench = () => {
                 {activeStep === 1 && <BenchPreview />}
               </div>
             </Box>
-          </div>
+          </div> 
           <div
             className={`flex space-x-2 border-t px-4 py-2 ${
               activeStep === 0 ? "justify-end" : "justify-between"
@@ -169,6 +207,194 @@ const AddAIBench = () => {
                 Preview
               </Button>
             )}
+          </div>*/}
+
+
+          <div className="!overflow-hidden">
+            {!isLoader ? (
+
+              <div className="h-[calc(100vh-120px)] !overflow-y-auto">
+                <div className="md:w-[95%] lg:w-[95%] xl:w-[70%] p-4 mx-auto">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+
+                    {/* Title */}
+                    <Controller
+                      name="title"
+                      control={control}
+                      rules={{ required: "Title is required" }}
+                      render={({ field }) => (
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          label="Title"
+                          {...field}
+                          error={!!errors.title}
+                          helperText={errors.title?.message}
+                          size="small"
+                        />
+                      )}
+                    />
+
+                    {/* First Name */}
+                    <Controller
+                      name="firstName"
+                      control={control}
+                      rules={{ required: "First name is required" }}
+                      render={({ field }) => (
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          label="First Name"
+                          {...field}
+                          error={!!errors.firstName}
+                          helperText={errors.firstName?.message}
+                          size="small"
+                        />
+                      )}
+                    />
+
+                    {/* Last Name */}
+                    <Controller
+                      name="lastName"
+                      control={control}
+                      rules={{ required: "Last name is required" }}
+                      render={({ field }) => (
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          label="Last Name"
+                          {...field}
+                          error={!!errors.lastName}
+                          helperText={errors.lastName?.message}
+                          size="small"
+                        />
+                      )}
+                    />
+
+                    {/* CV */}
+                    <Controller
+                      name="cv"
+                      control={control}
+                      rules={{ required: "CV is required" }}
+                      render={({ field }) => (
+                        <div>
+                          <ReactQuill
+                            {...field}
+                            theme="snow"
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                          />
+                          {errors.cv && <p className="text-red-500 text-xs">{errors.cv.message}</p>}
+                        </div>
+                      )}
+                    />
+
+                    <div className="grid grid-cols-2 gap-x-3">
+                      {/* Email */}
+                      <Controller
+                        name="email"
+                        control={control}
+                        rules={{
+                          required: "Email is required",
+                          pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Invalid email address"
+                          }
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Email"
+                            {...field}
+                            error={!!errors.email}
+                            helperText={errors.email?.message}
+                            size="small"
+                          />
+                        )}
+                      />
+
+                      {/* Phone */}
+                      <Controller
+                        name="phone"
+                        control={control}
+                        rules={{
+                          required: "Phone number is required",
+                          pattern: {
+                            value: /^[0-9]{10,15}$/,
+                            message: "Invalid phone number (must be 10-15 digits)"
+                          }
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Phone"
+                            {...field}
+                            error={!!errors.phone}
+                            helperText={errors.phone?.message}
+                            size="small"
+                          />
+                        )}
+                      />
+
+                      {/* LinkedIn */}
+                      <Controller
+                        name="linkedin"
+                        control={control}
+                        rules={{
+                          required: "LinkedIn is required",                         
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            label="LinkedIn Profile"
+                            {...field}
+                            error={!!errors.linkedin}
+                            helperText={errors.linkedin?.message}
+                            size="small"
+                          />
+                        )}
+                      />
+                    </div>
+
+                    {/* Availability */}
+                    <Controller
+                      name="availability"
+                      control={control}
+                      // rules={{
+                      //   required: "Availability is required",
+                      //   min: { value: 1, message: "Availability must be at least 1 hour" }
+                      // }}
+                      render={({ field }) => (
+                        <TextField
+                          type="number"
+                          fullWidth
+                          margin="normal"
+                          label="Availability (hours per week)"
+                          {...field}
+                          error={!!errors.availability}
+                          helperText={errors.availability?.message}
+                          size="small"
+                        />
+                      )}
+                    />
+
+                  </form>
+                </div>
+              </div>)
+
+              : (<Loader />)}
+
+            <div className="p-4 border-t flex justify-between">
+              <Button variant="outlined" className="!mr-4 !w-[110px]" onClick={() => setDrawerOpen(false)}>
+                Close
+              </Button>
+              <Button variant="contained" className="!w-[110px]" onClick={handleSubmit(onSubmit)}>
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
       </Drawer>

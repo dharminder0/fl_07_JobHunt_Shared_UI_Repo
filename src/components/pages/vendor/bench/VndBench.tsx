@@ -11,8 +11,9 @@ import {
   Button,
   Tabs,
   Tab,
+  debounce,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import AddBenchForm from "./AddBenchForm";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SearchIcon from "@mui/icons-material/Search";
@@ -23,6 +24,7 @@ import BenchPreview from "./BenchPreview";
 import VndRequirements from "../requirements/VndRequirements";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import { positions } from "@mui/system";
+import { getBenchDetails, getSearchBenchDetail } from "../../../../components/sharedService/apiService"
 
 const benchData = [
   {
@@ -90,12 +92,14 @@ const teckStackData = [
 ];
 
 export default function VndBench({ drawerData = {} }: any) {
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("benchTab");
+  const [benchDatadetails, setbenchDatadetails] = useState<any[]>([]);
   const [drawerObj, setDrawerObj] = useState({
     type: "bench",
     isOpen: false,
@@ -120,6 +124,50 @@ export default function VndBench({ drawerData = {} }: any) {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue);
   };
+
+  useEffect(() => {
+    fetchBenchDetails();
+  }, [])
+
+  const fetchBenchDetails = () => {
+    getBenchDetails(userData.orgCode)
+      .then((result: any) => {
+        if (result && result.length > 0) {
+          setbenchDatadetails(result);
+        } else {
+          setbenchDatadetails([]);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching bench details:", error);
+        setbenchDatadetails([]);
+      });
+  };
+
+  const searchFilterApiData = useCallback(
+    debounce((text: string) => {
+      const payload = {
+        searchText: text,
+        orgCode: userData.orgCode,
+        page: 1,
+        pageSize: 20,
+      };  
+      getSearchBenchDetail(payload)
+        .then((result: any) => {
+          if (result?.list && result?.list.length > 0) {
+            setbenchDatadetails(result.list);
+          } else {
+            setbenchDatadetails([]);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching bench details:", error);
+          setbenchDatadetails([]);
+        });
+    }, 2000),
+    [userData.orgCode]
+  );
+
 
   useEffect(() => {
     // Filtering logic
@@ -273,21 +321,23 @@ export default function VndBench({ drawerData = {} }: any) {
                     size="small"
                     className="w-full"
                     value={searchFilter.searchValue}
-                    onChange={(event) =>
+                    onChange={(event) => {
+                      const value = event.target.value;
                       setSearchFilter({
                         ...searchFilter,
                         searchValue: event.target.value,
-                      })
-                    }
+                      });
+                      searchFilterApiData(value);
+                    }}
                     placeholder="Search Resources"
                     slotProps={{
                       input: {
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon fontSize="inherit" />
-                          </InputAdornment>
-                        ),
-                      },
+                          startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon fontSize="inherit" />
+                        </InputAdornment>
+                      ),
+                    },
                     }}
                   />
                 </div>
@@ -321,7 +371,7 @@ export default function VndBench({ drawerData = {} }: any) {
               <FilterListOutlinedIcon />
             </IconButton>
             {!drawerData?.isOpen && <AddBenchForm />}
-            {!drawerData?.isOpen && <AddAIBench />}
+            {!drawerData?.isOpen && <AddAIBench handleGetBenchDetail={fetchBenchDetails} />}
           </div>
           {/* </div> */}
         </div>
@@ -349,7 +399,7 @@ export default function VndBench({ drawerData = {} }: any) {
                   </tr>
                 </thead>
                 <tbody>
-                  {benchFliterData.map((item, index) => (
+                  {benchDatadetails?.length > 0 &&  benchDatadetails.map((item, index) => (
                     <tr
                       key={item?.id}
                       className={`${
@@ -380,7 +430,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                 }
                                 className="cursor-pointer hover:text-indigo-700"
                               >
-                                {item.resource}
+                                {item?.firstName} {item?.lastName}
                               </div>
                             </div>
                             <div className="flex items-center justify-between text-secondary-text text-info">
@@ -449,9 +499,9 @@ export default function VndBench({ drawerData = {} }: any) {
                           </div>
                         </div>
                       </th>
-                      <td>{item.role}</td>
-                      <td>{item.skills}</td>
-                      <td>{item.availability}</td>
+                      <td>{item.role || '-'}</td>
+                      <td>{item.skills || '-'}</td>
+                      <td>{item?.availabilityName || '-'}</td>
                     </tr>
                   ))}
                 </tbody>
