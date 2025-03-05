@@ -129,16 +129,35 @@ export default function VndBench({ drawerData = {} }: any) {
     fetchBenchDetails();
   }, [])
 
-  const fetchBenchDetails = () => {
-    getBenchDetails(userData.orgCode)
+  // getBenchDetails(userData.orgCode)
+  //   .then((result: any) => {
+  //     if (result && result.length > 0) {
+  //       setbenchDatadetails(result);
+  //     } else {
+  //       setbenchDatadetails([]);
+  //     }
+  //   })
+  //   .catch((error: any) => {
+  //     console.error("Error fetching bench details:", error);
+  //     setbenchDatadetails([]);
+  //   });
+
+  const fetchBenchDetails = (text?: string) => {
+    const payload = {
+      searchText: text,
+      orgCode: userData.orgCode,
+      page: 1,
+      pageSize: 20,
+    };
+    getSearchBenchDetail(payload)
       .then((result: any) => {
-        if (result && result.length > 0) {
-          setbenchDatadetails(result);
+        if (result?.list && result?.list.length > 0) {
+          setbenchDatadetails(result.list);
         } else {
           setbenchDatadetails([]);
         }
       })
-      .catch((error: any) => {
+      .catch((error) => {
         console.error("Error fetching bench details:", error);
         setbenchDatadetails([]);
       });
@@ -146,24 +165,7 @@ export default function VndBench({ drawerData = {} }: any) {
 
   const searchFilterApiData = useCallback(
     debounce((text: string) => {
-      const payload = {
-        searchText: text,
-        orgCode: userData.orgCode,
-        page: 1,
-        pageSize: 20,
-      };  
-      getSearchBenchDetail(payload)
-        .then((result: any) => {
-          if (result?.list && result?.list.length > 0) {
-            setbenchDatadetails(result.list);
-          } else {
-            setbenchDatadetails([]);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching bench details:", error);
-          setbenchDatadetails([]);
-        });
+      fetchBenchDetails(text)
     }, 2000),
     [userData.orgCode]
   );
