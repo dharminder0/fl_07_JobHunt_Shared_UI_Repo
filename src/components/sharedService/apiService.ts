@@ -1,4 +1,3 @@
-// src/apiService.ts
 import axios, { AxiosResponse } from "axios";
 
 const api = axios.create({
@@ -179,5 +178,21 @@ export const getMembersList = async (payload: any) => {
   const response = await api.post("V1/users/member/Search", payload);
   return response.data;
 };
+
+export const UpsertBenchDetail = async (payload: any) => {
+  const response = await api.post("V1/Bench/Upsert", payload);
+  return response.data;
+};
+
+export const getBenchDetails = async (orgcode: any) => {
+  const response = await api.get(`V1/Bench/${orgcode}`);
+  return response.data;
+};
+
+export const getSearchBenchDetail = async (payload: any) => {
+  const response = await api.post("V1/Bench/Search",payload);
+  return response.data;
+};
+
 
 export default api;
