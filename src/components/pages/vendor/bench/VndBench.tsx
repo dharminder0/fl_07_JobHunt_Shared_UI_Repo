@@ -401,7 +401,7 @@ export default function VndBench({ drawerData = {} }: any) {
                   </tr>
                 </thead>
                 <tbody>
-                  {benchDatadetails?.length > 0 &&  benchDatadetails.map((item, index) => (
+                  {benchDatadetails?.length > 0 ?  (benchDatadetails.map((item, index) => (
                     <tr
                       key={item?.id}
                       className={`${
@@ -505,7 +505,13 @@ export default function VndBench({ drawerData = {} }: any) {
                       <td>{item.skills || '-'}</td>
                       <td>{item?.availabilityName || '-'}</td>
                     </tr>
-                  ))}
+                  
+                   )
+                  ))
+                  : (<tr>
+                      <th colSpan={4} className="text-center">No records available </th>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
