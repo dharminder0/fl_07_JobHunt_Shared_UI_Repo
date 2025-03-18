@@ -1,5 +1,8 @@
 import {
   AccountCircleOutlined,
+  Cancel,
+  CancelOutlined,
+  CloseOutlined,
   LocationOn,
   WorkHistory,
 } from "@mui/icons-material";
@@ -18,60 +21,17 @@ import AddBenchForm from "./AddBenchForm";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import AddAIBench from "./AddAIBench";
 import BenchPreview from "./BenchPreview";
 import VndRequirements from "../requirements/VndRequirements";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
-import { positions } from "@mui/system";
-import { getBenchDetails, getSearchBenchDetail } from "../../../../components/sharedService/apiService"
-
-const benchData = [
-  {
-    id: 1,
-    resource: "Raj Pathar",
-    role: "Software Associate",
-    skills: "Angular, React, DevOps",
-    experience: "8 years",
-    location: "Noida",
-    availability: "Immediate",
-    aiScore: 78,
-    matchingJobs: 2,
-  },
-  {
-    id: 2,
-    resource: "Harshit Tandon ",
-    role: "Front End Lead",
-    skills: "Angular, DevOps, .net, C#",
-    experience: "8 years",
-    location: "Hyderabad",
-    availability: "Immediate",
-    aiScore: 80,
-    matchingJobs: 3,
-  },
-  {
-    id: 3,
-    resource: "Sajid Sarkar ",
-    role: "Software Developer",
-    skills: "Angular, React, Azure",
-    experience: "4 years",
-    location: "Noida",
-    availability: "Immediate",
-    aiScore: 75,
-    matchingJobs: 1,
-  },
-  {
-    id: 4,
-    resource: "Vaibav Rastogi",
-    role: "Front End Developer",
-    skills: "Angular, React",
-    experience: "3 years",
-    location: "Hyderabad",
-    availability: "Immediate",
-    aiScore: 60,
-    matchingJobs: 0,
-  },
-];
+import {
+  getBenchDetails,
+  getBenchList,
+  upsertApplications,
+} from "../../../../components/sharedService/apiService";
+import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
+import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 
 const teckStackData = [
   {
@@ -98,8 +58,10 @@ export default function VndBench({ drawerData = {} }: any) {
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [searchText, SetSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("benchTab");
   const [benchDatadetails, setbenchDatadetails] = useState<any[]>([]);
+  const [availability, setAvailability] = useState<any[]>([]);
   const [drawerObj, setDrawerObj] = useState({
     type: "bench",
     isOpen: false,
@@ -124,11 +86,6 @@ export default function VndBench({ drawerData = {} }: any) {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue);
   };
-
-  useEffect(() => {
-    fetchBenchDetails();
-  }, [])
-
   // getBenchDetails(userData.orgCode)
   //   .then((result: any) => {
   //     if (result && result.length > 0) {
@@ -142,14 +99,21 @@ export default function VndBench({ drawerData = {} }: any) {
   //     setbenchDatadetails([]);
   //   });
 
-  const fetchBenchDetails = (text?: string) => {
+  useEffect(() => {
+    if (searchText?.length > 2 || searchText?.length == 0) {
+      fetchBenchList();
+    }
+  }, [searchText, availability]);
+
+  const fetchBenchList = () => {
     const payload = {
-      searchText: text,
+      searchText: searchText,
       orgCode: userData.orgCode,
       page: 1,
+      availability: availability,
       pageSize: 20,
     };
-    getSearchBenchDetail(payload)
+    getBenchList(payload)
       .then((result: any) => {
         if (result?.list && result?.list.length > 0) {
           setbenchDatadetails(result.list);
@@ -162,34 +126,6 @@ export default function VndBench({ drawerData = {} }: any) {
         setbenchDatadetails([]);
       });
   };
-
-  const searchFilterApiData = useCallback(
-    debounce((text: string) => {
-      fetchBenchDetails(text)
-    }, 2000),
-    [userData.orgCode]
-  );
-
-
-  useEffect(() => {
-    // Filtering logic
-    const filtered = benchData.filter((item) => {
-      // Check search input
-      const availabilityMatch =
-        searchFilter.availability.length === 0 ||
-        searchFilter.availability.includes(item.availability);
-      const roleMatch =
-        searchFilter.roles.length === 0 ||
-        searchFilter.roles.includes(item.role);
-      const searchMatch =
-        searchFilter.searchValue === "" ||
-        item.role
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-      return searchMatch && roleMatch && availabilityMatch;
-    });
-    setbenchFliterData(filtered);
-  }, [searchFilter]);
 
   const handleMatchingDialog = (score: number) => {
     setIsMatchOpen(true);
@@ -221,37 +157,45 @@ export default function VndBench({ drawerData = {} }: any) {
     }
     setDrawerObj((prev) => ({ ...prev, isOpen: open }));
   };
-
   const toggleRowSelection = (row: any) => {
     setSelectedRows((prevSelectedRows) => {
-      const exists = prevSelectedRows.some(
-        (selectedRow) => selectedRow.id === row.id
-      );
+      const exists = prevSelectedRows.includes(row.id);
       if (exists) {
-        // Remove the row if it's already selected
-        return prevSelectedRows.filter(
-          (selectedRow) => selectedRow.id !== row.id
-        );
+        // Remove the row id if it's already selected
+        return prevSelectedRows.filter((id) => id !== row.id);
       }
-      // Add the row if it's not selected
-      return [...prevSelectedRows, row];
+      // Add the row id if it's not selected
+      return [...prevSelectedRows, row.id];
     });
   };
 
   const toggleSelectAll = () => {
-    if (selectedRows.length === benchData.length) {
+    if (selectedRows.length === benchDatadetails.length) {
       setSelectedRows([]); // Deselect all
     } else {
-      setSelectedRows(benchData); // Select all
+      setSelectedRows(benchDatadetails.map((row) => row.id)); // Store only IDs
     }
   };
 
-  const isSelected = (id: number) => selectedRows.some((row) => row.id === id);
-  const isAllSelected = selectedRows.length === benchData.length;
+  const isSelected = (id: number) => selectedRows.includes(id);
+  const isAllSelected = selectedRows.length === benchDatadetails.length;
 
   const handleApply = () => {
-    setIsSuccessPopup(true);
-    setSelectedRows([]);
+    const payload = {
+      resourceId: selectedRows,
+      requirementUniqueId: drawerData.data.uniqueId,
+      status: 1,
+      userId: userData.userId,
+    };
+    upsertApplications(payload).then((result: any) => {
+      if (result.success) {
+        setTimeout(() => {
+          setIsSuccessPopup(true);
+          setSelectedRows([]);
+          setDrawerObj((prev: any) => ({ ...prev, isOpen: false }));
+        }, 500);
+      }
+    });
   };
 
   return (
@@ -322,29 +266,30 @@ export default function VndBench({ drawerData = {} }: any) {
                   <TextField
                     size="small"
                     className="w-full"
-                    value={searchFilter.searchValue}
-                    onChange={(event) => {
-                      const value = event.target.value;
-                      setSearchFilter({
-                        ...searchFilter,
-                        searchValue: event.target.value,
-                      });
-                      searchFilterApiData(value);
-                    }}
+                    value={searchText}
+                    onChange={(event) => SetSearchText(event.target.value)}
                     placeholder="Search Resources"
                     slotProps={{
                       input: {
-                          startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon fontSize="inherit" />
-                        </InputAdornment>
-                      ),
-                    },
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon fontSize="inherit" />
+                          </InputAdornment>
+                        ),
+                        // endAdornment: (
+                        //   <InputAdornment
+                        //     position="end"
+                        //     className="cursor-pointer"
+                        //   >
+                        //     <CloseOutlined fontSize="inherit" />
+                        //   </InputAdornment>
+                        // ),
+                      },
                     }}
                   />
                 </div>
               </div>
-              <div className="max-w-full shrink-0">
+              {/* <div className="max-w-full shrink-0">
                 <MenuDrpDwn
                   menuList={filterList?.roles}
                   placeholder="Roles"
@@ -355,17 +300,14 @@ export default function VndBench({ drawerData = {} }: any) {
                     });
                   }}
                 />
-              </div>
+              </div> */}
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.availability}
+                <MenuDrpDwnV2
+                  menuList={AvailabilityStatus}
                   placeholder="Availability"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      availability: selectedItems,
-                    });
-                  }}
+                  handleSelectedItem={(selectedItems) =>
+                    setAvailability(selectedItems)
+                  }
                 />
               </div>
             </div>
@@ -373,7 +315,9 @@ export default function VndBench({ drawerData = {} }: any) {
               <FilterListOutlinedIcon />
             </IconButton>
             {!drawerData?.isOpen && <AddBenchForm />}
-            {!drawerData?.isOpen && <AddAIBench handleGetBenchDetail={fetchBenchDetails} />}
+            {!drawerData?.isOpen && (
+              <AddAIBench handleGetBenchDetail={fetchBenchList} />
+            )}
           </div>
           {/* </div> */}
         </div>
@@ -401,115 +345,125 @@ export default function VndBench({ drawerData = {} }: any) {
                   </tr>
                 </thead>
                 <tbody>
-                  {benchDatadetails?.length > 0 ?  (benchDatadetails.map((item, index) => (
-                    <tr
-                      key={item?.id}
-                      className={`${
-                        isSelected(item.id) ? "bg-blue-100" : "bg-white"
-                      }`}
-                    >
-                      {drawerData?.isOpen && (
-                        <th className="multi-select">
-                          <input
-                            type="checkbox"
-                            checked={isSelected(item.id)}
-                            onChange={() => toggleRowSelection(item)}
-                            className="cursor-pointer"
-                          />
-                        </th>
-                      )}
-                      <th className="add-right-shadow">
-                        <div className="flex items-center">
-                          <AccountCircleOutlined
-                            fontSize="medium"
-                            className="text-secondary-text"
-                          />
-                          <div className="ms-2 w-[100%]">
-                            <div className="flex items-center justify-between text-base">
-                              <div
-                                onClick={() =>
-                                  handleDrawer("bench", true, { id: item?.id })
-                                }
-                                className="cursor-pointer hover:text-indigo-700"
-                              >
-                                {item?.firstName} {item?.lastName}
-                              </div>
-                            </div>
-                            <div className="flex items-center justify-between text-secondary-text text-info">
-                              <div className="flex">
-                                <p>
-                                  <WorkHistory fontSize="inherit" />{" "}
-                                  {item.experience}
-                                </p>
-                                <p className="ms-1">
-                                  <LocationOn fontSize="inherit" />{" "}
-                                  {item.location}
-                                </p>
-                              </div>
-                              {!drawerData?.isOpen && (
+                  {benchDatadetails?.length > 0 ? (
+                    benchDatadetails.map((item, index) => (
+                      <tr
+                        key={item?.id}
+                        className={`${
+                          isSelected(item.id) ? "bg-blue-100" : "bg-white"
+                        }`}
+                      >
+                        {drawerData?.isOpen && (
+                          <th className="multi-select">
+                            <input
+                              type="checkbox"
+                              checked={isSelected(item.id)}
+                              onChange={() => toggleRowSelection(item)}
+                              className="cursor-pointer"
+                            />
+                          </th>
+                        )}
+                        <th className="add-right-shadow">
+                          <div className="flex items-center">
+                            <AccountCircleOutlined
+                              fontSize="medium"
+                              className="text-secondary-text"
+                            />
+                            <div className="ms-2 w-[100%]">
+                              <div className="flex items-center justify-between text-base">
                                 <div
-                                  className="flex justify-end cursor-pointer hover:text-indigo-700"
                                   onClick={() =>
-                                    handleDrawer("requirement", true, {
+                                    handleDrawer("bench", true, {
                                       id: item?.id,
-                                      resource: item.resource,
-                                      experience: item.experience,
-                                      location: item.location,
                                     })
                                   }
+                                  className="cursor-pointer hover:text-indigo-700"
                                 >
-                                  {item.matchingJobs} Matching positions
+                                  {item?.firstName} {item?.lastName}
                                 </div>
-                              )}
-                              {drawerData?.isOpen && (
-                                <div
-                                  className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                  onClick={() =>
-                                    handleMatchingDialog(item.aiScore)
-                                  }
-                                >
-                                  <svg
-                                    width="14px"
-                                    height="14px"
-                                    viewBox="0 0 512 512"
-                                    version="1.1"
-                                    xmlns="http://www.w3.org/2000/svg"
+
+                                {!drawerData?.isOpen && (
+                                  <div
+                                    className="flex justify-end cursor-pointer hover:text-indigo-700"
+                                    onClick={() =>
+                                      handleDrawer("requirement", true, {
+                                        id: item?.id,
+                                        resource:
+                                          item?.firstName + item?.lastName,
+                                        experience: item?.experience,
+                                        location: item?.location,
+                                      })
+                                    }
                                   >
-                                    <g
-                                      id="Page-1"
-                                      stroke="none"
-                                      stroke-width="1"
-                                      fill="none"
-                                      fill-rule="evenodd"
+                                    {item.matchingJobs} Matching positions
+                                  </div>
+                                )}
+                                {drawerData?.isOpen && (
+                                  <div
+                                    className="flex justify-end cursor-pointer hover:text-indigo-700"
+                                    onClick={() =>
+                                      handleMatchingDialog(item?.aiScore || 60)
+                                    }
+                                  >
+                                    <svg
+                                      width="14px"
+                                      height="14px"
+                                      viewBox="0 0 512 512"
+                                      version="1.1"
+                                      xmlns="http://www.w3.org/2000/svg"
                                     >
                                       <g
-                                        id="icon"
-                                        fill="#4640DE"
-                                        transform="translate(64.000000, 64.000000)"
+                                        id="Page-1"
+                                        stroke="none"
+                                        stroke-width="1"
+                                        fill="none"
+                                        fill-rule="evenodd"
                                       >
-                                        <path
-                                          d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                          id="Combined-Shape"
-                                        ></path>
+                                        <g
+                                          id="icon"
+                                          fill="#4640DE"
+                                          transform="translate(64.000000, 64.000000)"
+                                        >
+                                          <path
+                                            d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                            id="Combined-Shape"
+                                          ></path>
+                                        </g>
                                       </g>
-                                    </g>
-                                  </svg>
-                                  <span> {item.aiScore}%</span>
+                                    </svg>
+                                    <span> {item?.aiScore || 60}%</span>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex items-center justify-between text-secondary-text text-info">
+                                <div className="flex">
+                                  {item?.experience && (
+                                    <p>
+                                      <WorkHistory fontSize="inherit" />{" "}
+                                      {item.experience}
+                                    </p>
+                                  )}
+                                  {item?.location && (
+                                    <p className="ms-1">
+                                      <LocationOn fontSize="inherit" />{" "}
+                                      {item.location}
+                                    </p>
+                                  )}
                                 </div>
-                              )}
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </th>
+                        <td>{item.title || "-"}</td>
+                        <td>{item.skills || "-"}</td>
+                        <td>{item?.availabilityName || "-"}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <th colSpan={4} className="text-center">
+                        No records available{" "}
                       </th>
-                      <td>{item.role || '-'}</td>
-                      <td>{item.skills || '-'}</td>
-                      <td>{item?.availabilityName || '-'}</td>
-                    </tr>
-                  
-                   )
-                  ))
-                  : (<tr>
-                      <th colSpan={4} className="text-center">No records available </th>
                     </tr>
                   )}
                 </tbody>

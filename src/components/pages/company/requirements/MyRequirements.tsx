@@ -296,7 +296,7 @@ const MyRequirements = () => {
                         handleRowClick(requirement?.uniqueId, "myvendors")
                       }
                     >
-                      {requirement?.positions || 0} (0)
+                      {requirement?.positions || 0} ({requirement?.placed || 0})
                     </td>
                     <td
                       className="cursor-pointer  hover:text-indigo-700"

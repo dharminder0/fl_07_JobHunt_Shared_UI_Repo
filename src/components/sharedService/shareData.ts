@@ -68,4 +68,80 @@ export const RequirementStatus: any = [
   },
 ];
 
+export const ApplicantsStatus: any = [
+  {
+    id: 1,
+    name: "New",
+    value: "New",
+  },
+  {
+    id: 2,
+    name: "In Review",
+    value: "In Review",
+  },
+  {
+    id: 3,
+    name: "Shortlisted",
+    value: "Shortlisted",
+  },
+  {
+    id: 4,
+    name: "Technical Assessment",
+    value: "Technical Assessment",
+  },
+  {
+    id: 5,
+    name: "Interview Round I",
+    value: "Interview Round I",
+  },
+  {
+    id: 6,
+    name: "Interview Round II",
+    value: "Interview Round II",
+  },
+  {
+    id: 7,
+    name: "Rejected",
+    value: "Rejected",
+  },
+  {
+    id: 8,
+    name: "Placed",
+    value: "Placed",
+  },
+];
+
+export const AvailabilityStatus: any = [
+  {
+    id: 1,
+    name: "Immediate",
+    value: "Immediate",
+  },
+  {
+    id: 2,
+    name: "15 Days Notice",
+    value: "15 Days Notice",
+  },
+  {
+    id: 3,
+    name: "30 Days Notice",
+    value: "30 Days Notice",
+  },
+  {
+    id: 4,
+    name: "60 Days Notice",
+    value: "60 Days Notice",
+  },
+  {
+    id: 5,
+    name: "90 Days Notice",
+    value: "90 Days Notice",
+  },
+  {
+    id: 6,
+    name: "Negotiable",
+    value: "Negotiable",
+  },
+];
+
 export const OrgStrength: any = ["0-10", "10-50", "50-100", "100-500", "500+"];

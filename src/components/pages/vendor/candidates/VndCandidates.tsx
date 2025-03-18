@@ -16,99 +16,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import { openDrawer } from "../../../../components/features/drawerSlice";
-
-const applicantData = [
-  {
-    id: 1,
-    name: "Harshit Tandon",
-    requirement: "React js Developer",
-    client: "Sterlite Technologies",
-    status: "In Review",
-    date: "13-07-2024",
-    ai: 50,
-    logo: "https://static.ambitionbox.com/assets/v2/images/rs:fit:200:200:false:false/bG9jYWw6Ly8vbG9nb3Mvb3JpZ2luYWxzL3N0ZXJsaXRlLXRlY2hub2xvZ2llcy5qcGc.webp",
-  },
-  {
-    id: 2,
-    name: "Raj Pathar",
-    requirement: "Sr. Angular developer",
-    client: "upGrad",
-    status: "Shortlisted",
-    date: "12-06-2024",
-    ai: 60,
-    logo: "https://prod-mphs.upgrad.com/hubfs/45938370-0-Gloop-01%20(1).webp",
-  },
-  {
-    id: 3,
-    name: "Sajid Sarkar",
-    requirement: "React Native mobile developer",
-    client: "Xoriant",
-    status: "New",
-    date: "18-05-2024",
-    ai: 65,
-    logo: "https://www.xoriant.com/cdn/ff/2zqY0wtIPH_7bO8GKthC5LM_btmFMJbTa_6fDC9hg-M/1693224947/public/favicon.png",
-  },
-  {
-    id: 4,
-    name: "Amit Kumar",
-    requirement: "Frontend developer",
-    client: "Iris Software",
-    status: "Placed",
-    date: "11-04-2024",
-    ai: 63,
-    logo: "https://www.irissoftware.com/wp-content/uploads/2020/11/favicon.png",
-  },
-  {
-    id: 5,
-    name: "Harshit Tandon",
-    requirement: ".Net developer",
-    client: "Infinite Computer Solutions",
-    status: "Placed",
-    date: "13-07-2024",
-    ai: 70,
-    logo: "https://www.infinite.com/wp-content/uploads/2023/03/favicon.png",
-  },
-  {
-    id: 6,
-    name: "Raj Pathar",
-    requirement: ".Net MVC Support",
-    client: "QualityKiosk Technologies",
-    status: "Interview Round I",
-    date: "12-06-2024",
-    ai: 80,
-    logo: "https://qualitykiosk.com/wp-content/uploads/2021/08/Logo_QK_Brand-Mark_Black-300x300.png",
-  },
-  {
-    id: 7,
-    name: "Sajid Sarkar",
-    requirement: "Azure Devops Engineer",
-    client: "Zoho",
-    status: "Rejected",
-    date: "18-05-2024",
-    ai: 75,
-    logo: "https://www.zohowebstatic.com/sites/zweb/images/favicon.ico",
-  },
-  {
-    id: 8,
-    name: "Amit Kumar",
-    requirement: "Devops AWS Certified engineer",
-    client: "Onward Technologies",
-    status: "Hired",
-    date: "11-04-2024",
-    ai: 68,
-    logo: "https://www.onwardgroup.com/images/favicon.svg",
-  },
-];
+import { getApplicantsList } from "../../../../components/sharedService/apiService";
+import moment from "moment";
+import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
+import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 
 export default function VndCandidates() {
   const location = useLocation();
   const params = location.state || {};
   const dispatch: AppDispatch = useDispatch();
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
-  const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
+  const [applicantData, setApplicantData] = useState<any[]>([]);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
+  const [searchValue, setSearchValue] = React.useState("");
+  const [status, setStatus] = React.useState<any[]>([]);
+  const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [filterList, setFilterList] = useState<any>({
     client: ["upGrad", "Iris Software", "Sterlite Technologies"],
@@ -130,37 +55,40 @@ export default function VndCandidates() {
     status: !params?.status ? [] : [params?.status],
   });
 
-  useEffect(() => {
-    // Filtering logic
-    const filtered = applicantData.filter((item) => {
-      // Check client filter
-      const statusMatch =
-        searchFilter.status.length === 0 ||
-        searchFilter.status.includes(item.status);
-      // Check client filter
-      const clientMatch =
-        searchFilter.client.length === 0 ||
-        searchFilter.client.includes(item.client);
-      // Check search input
-      const searchMatch =
-        searchFilter.searchValue === "" ||
-        item.name
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase()) ||
-        item.requirement
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-
-      return clientMatch && statusMatch && searchMatch;
-    });
-    setFilteredApplicants(filtered);
-  }, [searchFilter, setFilteredApplicants]);
-
   const navigate = useNavigate();
-  const handleRowClick = (id: number) => {
-    navigate(`/vendor/clients/${id}?type=activeView`, {
+  const handleRowClick = (clientCode: number) => {
+    navigate(`/vendor/clients/${clientCode}?type=activeView`, {
       state: { previousUrl: location.pathname },
     });
+  };
+
+  useEffect(() => {
+    if (searchValue?.length > 2 || searchValue?.length == 0) {
+      getApplicantsListData();
+    }
+  }, [searchValue, status, pageIndex]);
+
+  const getApplicantsListData = () => {
+    const payload = {
+      searchText: searchValue,
+      clientOrgName: "",
+      status: status,
+      userId: userData.userId,
+      page: pageIndex,
+      pageSize: 10,
+    };
+    getApplicantsList(payload)
+      .then((result: any) => {
+        if (result?.list && result?.list.length > 0) {
+          setApplicantData(result.list);
+        } else {
+          setApplicantData([]);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching bench details:", error);
+        setApplicantData([]);
+      });
   };
 
   const handleStatusDialog = (status: string) => {
@@ -187,13 +115,8 @@ export default function VndCandidates() {
                 <TextField
                   size="small"
                   className="w-full"
-                  value={searchFilter.searchValue}
-                  onChange={(event) =>
-                    setSearchFilter({
-                      ...searchFilter,
-                      searchValue: event.target.value,
-                    })
-                  }
+                  value={searchValue}
+                  onChange={(event) => setSearchValue(event.target.value)}
                   placeholder="Search"
                   slotProps={{
                     input: {
@@ -217,12 +140,10 @@ export default function VndCandidates() {
               />
             </div>
             <div className="max-w-full shrink-0">
-              <MenuDrpDwn
-                menuList={filterList?.status}
+              <MenuDrpDwnV2
+                menuList={ApplicantsStatus}
                 placeholder="Status"
-                handleSelectedItem={(selectedItems) => {
-                  setSearchFilter({ ...searchFilter, status: selectedItems });
-                }}
+                handleSelectedItem={(selectedItems) => setStatus(selectedItems)}
               />
             </div>
           </div>
@@ -242,25 +163,28 @@ export default function VndCandidates() {
             </tr>
           </thead>
           <tbody>
-            {filteredApplicants.map((applicant, index) => (
+            {applicantData.map((applicant, index) => (
               <tr key={index}>
                 <th className="add-right-shadow">
-                  <div className="cursor-pointer hover:text-indigo-700" onClick={()=> handleOpenDrawer('benchPreview')}>
-                    {applicant.name}
+                  <div
+                    className="cursor-pointer hover:text-indigo-700"
+                    onClick={() => handleOpenDrawer("benchPreview")}
+                  >
+                    {applicant.firstName} {applicant.lastName}
                   </div>
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                      onClick={() => handleRowClick(applicant.id)}
+                      onClick={() => handleRowClick(applicant.clientCode)}
                     >
                       <img
-                        src={applicant.logo}
+                        src={applicant.clientOrgLogo}
                         style={{ height: 12, width: 12 }}
                         className="me-1"
                       />
-                      <Tooltip title={applicant.vendor} arrow>
+                      <Tooltip title={applicant.clientOrgName} arrow>
                         <span className="text-ellipsis overflow-hidden truncate">
-                          {applicant.client}
+                          {applicant.clientOrgName}
                         </span>
                       </Tooltip>
                     </div>
@@ -296,7 +220,7 @@ export default function VndCandidates() {
                             </g>
                           </g>
                         </svg>
-                        <span> {applicant.ai}%</span>
+                        <span> {applicant.ai || 75}%</span>
                       </div>
                       <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
                         <Download fontSize="inherit" />
@@ -309,20 +233,22 @@ export default function VndCandidates() {
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                      applicant.status === "Placed"
+                      applicant.statusName === "Placed"
                         ? "bg-green-100 text-green-700"
-                        : applicant.status === "Rejected"
-                        ? "bg-red-100 text-red-700"
-                        : applicant.status === "New"
-                        ? "bg-orange-100 text-orange-700"
-                        : "bg-indigo-100 text-indigo-700"
+                        : applicant.statusName === "Rejected"
+                          ? "bg-red-100 text-red-700"
+                          : applicant.statusName === "New"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-indigo-100 text-indigo-700"
                     }`}
-                    onClick={() => handleStatusDialog(applicant.status)}
+                    onClick={() => handleStatusDialog(applicant.statusName)}
                   >
-                    {applicant.status}
+                    {applicant.statusName}
                   </Typography>
                 </td>
-                <td>{applicant.date}</td>
+                <td>
+                  {moment(applicant.applicationDate).format("DD-MM-YYYY")}
+                </td>
               </tr>
             ))}
           </tbody>

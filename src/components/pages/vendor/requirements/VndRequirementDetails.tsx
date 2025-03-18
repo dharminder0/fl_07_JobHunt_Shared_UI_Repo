@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,6 +13,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
+import { getRequirementsListById } from "../../../../components/sharedService/apiService";
 
 const jobDataOrg = [
   {
@@ -109,6 +110,7 @@ const VndRequirementDetails = () => {
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
+  const [requirementData, setRequirementData] = useState<any>(null);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -163,6 +165,20 @@ const VndRequirementDetails = () => {
     navigate(`/vendor/requirements/${id}`);
   };
 
+  useEffect(() => {
+    const pathSegments = document.location.pathname.split("/");
+    const uniqueId = pathSegments.pop();
+    getRequirementsData(uniqueId);
+  }, []);
+
+  const getRequirementsData = (uniqueId: any) => {
+    getRequirementsListById(uniqueId).then((result: any) => {
+      if (result) {
+        setRequirementData(result);
+      }
+    });
+  };
+
   return (
     <div className="flex">
       {/* Header */}
@@ -182,7 +198,7 @@ const VndRequirementDetails = () => {
             </IconButton>
             <Box>
               <h5 className="text-heading group/item flex items-center">
-                Social Media Assistant
+                {requirementData?.title}
                 <div className="group/edit invisible group-hover/item:visible">
                   <span className="group-hover/edit:text-gray-700 ">
                     <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
@@ -192,42 +208,56 @@ const VndRequirementDetails = () => {
                 </div>
               </h5>
               <div className="flex items-center">
-                <img
-                  src="https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png"
-                  alt=""
-                  style={{ width: 16, height: 16 }}
-                />
-                <p className="text-title mx-2">Airtel</p>
+                {requirementData?.clientLogo && (
+                  <img
+                    src={requirementData?.clientLogo}
+                    alt=""
+                    style={{ width: 16, height: 16 }}
+                  />
+                )}
+                <p className="text-title mx-2">
+                  {" "}
+                  {requirementData?.clientName}
+                </p>
 
                 <div>
-                  <Chip
-                    label="Remote"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                  <Chip
-                    label="Positions: 3"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                  <Chip
-                    label="6 months"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
-                  <Chip
-                    label="Global"
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontSize: 10 }}
-                    className="my-1 me-1"
-                  />
+                  {requirementData?.locationTypeName && (
+                    <Chip
+                      label={requirementData?.locationTypeName}
+                      size="small"
+                      variant="outlined"
+                      sx={{ fontSize: 10 }}
+                      className="my-1 me-1"
+                    />
+                  )}
+                  {requirementData?.clientName && (
+                    <Chip
+                      label={`Positions: ${requirementData?.positions}`}
+                      size="small"
+                      variant="outlined"
+                      sx={{ fontSize: 10 }}
+                      className="my-1 me-1"
+                    />
+                  )}
+                  {requirementData?.experience && (
+                    <Chip
+                      label={requirementData?.experience}
+                      size="small"
+                      variant="outlined"
+                      sx={{ fontSize: 10 }}
+                      className="my-1 me-1"
+                    />
+                  )}
+
+                  {requirementData?.visibilityName && (
+                    <Chip
+                      label={requirementData?.visibilityName}
+                      size="small"
+                      variant="outlined"
+                      sx={{ fontSize: 10 }}
+                      className="my-1 me-1"
+                    />
+                  )}
                 </div>
               </div>
             </Box>
@@ -237,33 +267,16 @@ const VndRequirementDetails = () => {
           {/* Description */}
           <div className="mb-4 mt-2">
             <p className="text-gray-600 text-base">
-              Stripe is looking for a Social Media Marketing expert to help
-              manage our online networks. You will be responsible for monitoring
-              our social media channels, creating content, finding effective
-              ways to engage the community and incentivize others to engage on
-              our channels.
+              {requirementData?.description}
             </p>
           </div>
 
           {/* Responsibilities */}
           <Box>
             <p className="text-title mb-2">Responsibilities</p>
-            <ul className="list-none">
-              {[
-                "Community engagement to ensure that is supported and actively represented online",
-                "Focus on social media content development and publication",
-                "Marketing and strategy support",
-                "Stay on top of trends on social media platforms, and suggest content ideas to the team",
-                "Engage with online communities",
-              ].map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center text-gray-600 text-base"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <p className="text-gray-600 text-base">
+              {requirementData?.remarks}
+            </p>
           </Box>
         </div>
 
@@ -344,10 +357,10 @@ const VndRequirementDetails = () => {
                             applicant.stage === "Placed"
                               ? "bg-green-100 text-green-700"
                               : applicant.stage === "Rejected"
-                              ? "bg-red-100 text-red-700"
-                              : applicant.stage === "New"
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-indigo-100 text-indigo-700"
+                                ? "bg-red-100 text-red-700"
+                                : applicant.stage === "New"
+                                  ? "bg-orange-100 text-orange-700"
+                                  : "bg-indigo-100 text-indigo-700"
                           }`}
                           onClick={() => handleStatusDialog(applicant.stage)}
                         >

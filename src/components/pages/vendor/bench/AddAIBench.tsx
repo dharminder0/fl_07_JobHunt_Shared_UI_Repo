@@ -5,12 +5,18 @@ import {
   Step,
   Button,
   TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { UpsertBenchDetail } from "../../../../components/sharedService/apiService"
+import { UpsertBenchDetail } from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/sharedComponents/Loader";
+import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 
 interface AddAIBenchProps {
   handleGetBenchDetail: () => void;
@@ -24,37 +30,50 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isLoader, setIsLoader] = useState<boolean>(false);
 
-  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      title: '',
-      email: '',
-      phone: '',
-      linkedin: '',
-      cv: '',
-      availability: 0,
+      firstName: "",
+      lastName: "",
+      title: "",
+      email: "",
+      phone: "",
+      linkedin: "",
+      cv: "",
+      availability: 1,
       orgCode: userData.orgCode,
       userId: userData.userId,
-    }
+    },
   });
 
   const onSubmit = (data: any) => {
     setIsLoader(true);
-    UpsertBenchDetail(data).then((result: any) => {
-      if (result.success) {
+    UpsertBenchDetail(data)
+      .then((result: any) => {
+        if (result.success) {
+          setTimeout(() => {
+            reset();
+            setIsLoader(false);
+            setDrawerOpen(false);
+            handleGetBenchDetail();
+          }, 1000);
+        } else {
+          console.log("error", result.message);
+          setTimeout(() => {
+            setIsLoader(false);
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
         setTimeout(() => {
-          reset()
           setIsLoader(false);
-          setDrawerOpen(false);
-          handleGetBenchDetail();
         }, 1000);
-      } else {
-        console.log('error', result.message)
-      }
-    })
+      });
   };
-
 
   const steps = ["Paste CV", "Preview"];
 
@@ -122,8 +141,21 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
       <Drawer anchor="right" open={drawerOpen}>
         <div className="w-[calc(100vw-250px)] h-full">
           <div className="d-flex content-header">
-            <svg className="absolute cursor-pointer left-[8px] top-[11px]"  onClick={(event) => toggleDrawer(false)(event)} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
-              <path d="M20 20L4 4.00003M20 4L4.00002 20" stroke="black" stroke-width="2" stroke-linecap="round" />
+            <svg
+              className="absolute cursor-pointer left-[8px] top-[11px]"
+              onClick={(event) => toggleDrawer(false)(event)}
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M20 20L4 4.00003M20 4L4.00002 20"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             <div className="px-8 py-2 border-b">
               <h2 className="text-heading">Add Bench</h2>
@@ -209,67 +241,68 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
             )}
           </div>*/}
 
-
           <div className="!overflow-hidden">
             {!isLoader ? (
-
-              <div className="h-[calc(100vh-120px)] !overflow-y-auto">
+              <div className="h-[calc(100vh-90px)] !overflow-y-auto">
                 <div className="md:w-[95%] lg:w-[95%] xl:w-[70%] p-4 mx-auto">
                   <form onSubmit={handleSubmit(onSubmit)}>
-
-                    {/* Title */}
-                    <Controller
-                      name="title"
-                      control={control}
-                      rules={{ required: "Title is required" }}
-                      render={({ field }) => (
-                        <TextField
-                          fullWidth
-                          margin="normal"
-                          label="Title"
-                          {...field}
-                          error={!!errors.title}
-                          helperText={errors.title?.message}
-                          size="small"
+                    <div className="grid grid-cols-2 gap-x-3">
+                      <div className="col-span-2">
+                        {/* Title */}
+                        <Controller
+                          name="title"
+                          control={control}
+                          rules={{ required: "Title is required" }}
+                          render={({ field }) => (
+                            <TextField
+                              fullWidth
+                              margin="normal"
+                              label="Title"
+                              {...field}
+                              error={!!errors.title}
+                              helperText={errors.title?.message}
+                              size="small"
+                            />
+                          )}
                         />
-                      )}
-                    />
+                      </div>
 
-                    {/* First Name */}
-                    <Controller
-                      name="firstName"
-                      control={control}
-                      rules={{ required: "First name is required" }}
-                      render={({ field }) => (
-                        <TextField
-                          fullWidth
-                          margin="normal"
-                          label="First Name"
-                          {...field}
-                          error={!!errors.firstName}
-                          helperText={errors.firstName?.message}
-                          size="small"
-                        />
-                      )}
-                    />
+                      {/* First Name */}
+                      <Controller
+                        name="firstName"
+                        control={control}
+                        rules={{ required: "First name is required" }}
+                        render={({ field }) => (
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            label="First Name"
+                            {...field}
+                            error={!!errors.firstName}
+                            helperText={errors.firstName?.message}
+                            size="small"
+                          />
+                        )}
+                      />
 
-                    {/* Last Name */}
-                    <Controller
-                      name="lastName"
-                      control={control}
-                      rules={{ required: "Last name is required" }}
-                      render={({ field }) => (
-                        <TextField
-                          fullWidth
-                          margin="normal"
-                          label="Last Name"
-                          {...field}
-                          error={!!errors.lastName}
-                          helperText={errors.lastName?.message}
-                          size="small"
-                        />
-                      )}
-                    />
+                      {/* Last Name */}
+                      <Controller
+                        name="lastName"
+                        control={control}
+                        rules={{ required: "Last name is required" }}
+                        render={({ field }) => (
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Last Name"
+                            {...field}
+                            error={!!errors.lastName}
+                            helperText={errors.lastName?.message}
+                            size="small"
+                          />
+                        )}
+                      />
+                    </div>
 
                     {/* CV */}
                     <Controller
@@ -277,14 +310,19 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                       control={control}
                       rules={{ required: "CV is required" }}
                       render={({ field }) => (
-                        <div>
+                        <div className="requirement-quill mt-3">
                           <ReactQuill
                             {...field}
                             theme="snow"
                             value={field.value || ""}
                             onChange={field.onChange}
+                            placeholder="Paste CV Data"
                           />
-                          {errors.cv && <p className="text-red-500 text-xs">{errors.cv.message}</p>}
+                          {errors.cv && (
+                            <p className="text-red-500 text-xs">
+                              {errors.cv.message}
+                            </p>
+                          )}
                         </div>
                       )}
                     />
@@ -298,8 +336,8 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           required: "Email is required",
                           pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Invalid email address"
-                          }
+                            message: "Invalid email address",
+                          },
                         }}
                         render={({ field }) => (
                           <TextField
@@ -313,17 +351,18 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           />
                         )}
                       />
-
                       {/* Phone */}
                       <Controller
                         name="phone"
                         control={control}
                         rules={{
                           required: "Phone number is required",
+                          maxLength: 13,
                           pattern: {
                             value: /^[0-9]{10,15}$/,
-                            message: "Invalid phone number (must be 10-15 digits)"
-                          }
+                            message:
+                              "Invalid phone number (must be 10-15 digits)",
+                          },
                         }}
                         render={({ field }) => (
                           <TextField
@@ -337,13 +376,12 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           />
                         )}
                       />
-
                       {/* LinkedIn */}
                       <Controller
                         name="linkedin"
                         control={control}
                         rules={{
-                          required: "LinkedIn is required",                         
+                          required: "LinkedIn is required",
                         }}
                         render={({ field }) => (
                           <TextField
@@ -357,41 +395,57 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           />
                         )}
                       />
+                      {/* Availability */}
+                      <Controller
+                        name="availability"
+                        control={control}
+                        rules={{ required: "Availability is required" }}
+                        render={({ field }) => (
+                          <FormControl
+                            fullWidth
+                            margin="normal"
+                            size="small"
+                            error={!!errors.availability}
+                          >
+                            <InputLabel>Availability</InputLabel>
+                            <Select {...field} label="Availability">
+                              {AvailabilityStatus.map((option: any) => (
+                                <MenuItem key={option.id} value={option.id}>
+                                  {option.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            {errors.availability && (
+                              <FormHelperText>
+                                {errors.availability.message}
+                              </FormHelperText>
+                            )}
+                          </FormControl>
+                        )}
+                      />
                     </div>
-
-                    {/* Availability */}
-                    <Controller
-                      name="availability"
-                      control={control}
-                      // rules={{
-                      //   required: "Availability is required",
-                      //   min: { value: 1, message: "Availability must be at least 1 hour" }
-                      // }}
-                      render={({ field }) => (
-                        <TextField
-                          type="number"
-                          fullWidth
-                          margin="normal"
-                          label="Availability (hours per week)"
-                          {...field}
-                          error={!!errors.availability}
-                          helperText={errors.availability?.message}
-                          size="small"
-                        />
-                      )}
-                    />
-
                   </form>
                 </div>
-              </div>)
+              </div>
+            ) : (
+              <div className="h-[calc(100vh-90px)] !overflow-y-auto">
+                <Loader />
+              </div>
+            )}
 
-              : (<Loader />)}
-
-            <div className="p-4 border-t flex justify-between">
-              <Button variant="outlined" className="!mr-4 !w-[110px]" onClick={() => setDrawerOpen(false)}>
+            <div className="px-4 border-t flex justify-between items-center h-[50px]">
+              <Button
+                variant="outlined"
+                className="!mr-4 !w-[110px]"
+                onClick={() => setDrawerOpen(false)}
+              >
                 Close
               </Button>
-              <Button variant="contained" className="!w-[110px]" onClick={handleSubmit(onSubmit)}>
+              <Button
+                variant="contained"
+                className="!w-[110px]"
+                onClick={handleSubmit(onSubmit)}
+              >
                 Submit
               </Button>
             </div>
