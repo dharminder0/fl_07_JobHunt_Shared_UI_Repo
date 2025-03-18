@@ -189,10 +189,19 @@ export const getBenchDetails = async (orgcode: any) => {
   return response.data;
 };
 
-export const getSearchBenchDetail = async (payload: any) => {
-  const response = await api.post("V1/Bench/Search",payload);
+export const getBenchList = async (payload: any) => {
+  const response = await api.post("V1/Bench/Search", payload);
   return response.data;
 };
 
+export const upsertApplications = async (payload: any) => {
+  const response = await api.post("V1/Applications/Upsert", payload);
+  return response.data;
+};
+
+export const getApplicantsList = async (payload: any) => {
+  const response = await api.post("V1/Applications/Search", payload);
+  return response.data;
+};
 
 export default api;

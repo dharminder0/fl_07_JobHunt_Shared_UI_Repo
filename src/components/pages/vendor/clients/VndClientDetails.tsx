@@ -1,7 +1,19 @@
 import React, { useEffect } from "react";
-import { Typography, Grid, Box, Tabs, Tab, Chip, Link, IconButton, Tooltip } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Box,
+  Tabs,
+  Tab,
+  Chip,
+  Link,
+  IconButton,
+  Tooltip,
+  Avatar,
+} from "@mui/material";
 import {
   AccessTimeOutlined,
+  CorporateFareOutlined,
   Language,
   LocationOn,
   LocationOnOutlined,
@@ -12,16 +24,19 @@ import {
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getClientDataByClientCode } from "../../../../components/sharedService/apiService";
 
 const VndClientDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const type = searchParams.get('type');
+  const pathSegments = location.pathname.split("/");
+  const clientCode = pathSegments[pathSegments.length - 1];
+  const type = searchParams.get("type");
   const [value, setValue] = React.useState("activeView");
   const [previousUrl, setpreviousUrl] = React.useState("");
-  const handleRowClick = (id: any) => { };
-
+  const [clientData, setClientData] = React.useState<any>({});
+  const handleRowClick = (id: any) => {};
 
   useEffect(() => {
     if (location.state && location.state.previousUrl) {
@@ -185,7 +200,23 @@ const VndClientDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-    navigate(`?type=${newValue}`)
+    navigate(`?type=${newValue}`);
+  };
+
+  useEffect(() => {
+    getClientData();
+  }, [clientCode]);
+
+  const getClientData = () => {
+    getClientDataByClientCode(clientCode)
+      .then((result: any) => {
+        if (result && Object.keys(result).length > 0) {
+          setClientData(result);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -204,15 +235,19 @@ const VndClientDetails = () => {
             <ArrowBackIcon />
           </IconButton>
           <div>
-            <img
-              src={
-                "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png"
-              }
-              style={{ width: 65, height: 65 }}
-            />
+            <Avatar
+              alt="Org Icon"
+              src={clientData?.faviconURL || undefined}
+              className="rounded-full !h-12 w-100 me-3"
+            >
+              {!clientData?.faviconURL && (
+                <CorporateFareOutlined fontSize="small" />
+              )}
+            </Avatar>
           </div>
           <div>
-            <p className="text-heading">Airtel</p>
+            <p className="text-heading">{clientData?.clientName}</p>
+
             <div className="mt-1">
               <Chip
                 label="Web Development"
@@ -248,20 +283,7 @@ const VndClientDetails = () => {
         {/* Company Profile */}
         <Grid item xs={12} md={9}>
           <div className="mt-2">
-            <p className="text-gray-700 text-base">
-              Stripe is a software platform for starting and running internet
-              businesses. Millions of businesses rely on Stripe’s software tools
-              to accept payments, expand globally, and manage their businesses
-              online. Stripe has been at the forefront of expanding internet
-              commerce, powering new business models, and supporting the latest
-              platforms, from marketplaces to mobile commerce sites. We believe
-              that growing the GDP of the internet is a problem rooted in code
-              and design, not finance. Stripe is built for developers, makers,
-              and creators. We work on solving the hard technical problems
-              necessary to build global economic infrastructure—from designing
-              highly reliable systems to developing advanced machine learning
-              algorithms to prevent fraud.
-            </p>
+            <p className="text-gray-700 text-base">{clientData.description}</p>
           </div>
           <div className="my-2">
             <Box sx={{ width: "100%" }}>
@@ -294,8 +316,7 @@ const VndClientDetails = () => {
                           <th className="add-right-shadow">
                             {item.title}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={item.logo}
                                   style={{ height: 12, width: 12 }}
@@ -335,8 +356,7 @@ const VndClientDetails = () => {
                           <th className="add-right-shadow">
                             {item.title}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={item.logo}
                                   style={{ height: 12, width: 12 }}
@@ -387,14 +407,11 @@ const VndClientDetails = () => {
                         <tr key={index} onClick={() => handleRowClick(job.id)}>
                           {/* <th className="add-right-shadow">{job.role}</th> */}
                           <th className="add-right-shadow">
-                            <div className="cursor-pointer hover:text-indigo-700"
-                            >
+                            <div className="cursor-pointer hover:text-indigo-700">
                               {job.role}
                             </div>
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div
-                                className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={job.logo}
                                   style={{ height: 12, width: 12 }}
@@ -471,15 +488,15 @@ const VndClientDetails = () => {
                           <th className="add-right-shadow">
                             {item.resource}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px]"
-                              >
+                              <div className="flex items-center min-w-[135px] max-w-[150px]">
                                 <div className="flex">
                                   <p>
                                     <WorkHistory fontSize="inherit" />{" "}
                                     {item.experience}
                                   </p>
                                   <p className="ms-1">
-                                    <LocationOn fontSize="inherit" /> {item.location}
+                                    <LocationOn fontSize="inherit" />{" "}
+                                    {item.location}
                                   </p>
                                 </div>
                               </div>
@@ -503,24 +520,21 @@ const VndClientDetails = () => {
         <Grid item xs={12} md={3}>
           <div>
             <h5 className="text-heading mb-2">Contact Information</h5>
-
-            <ul className="text-gray-700 text-base">
-              <li>
-                <Link href="mailto: sales@airtel.com" underline="none">
-                  <MailOutline fontSize="small" /> sales@airtel.com
-                </Link>
-              </li>
-              <li>
-                <Link href="tel:+91 8811818880" underline="none">
-                  <Phone fontSize="small" /> +91 8811818880
-                </Link>
-              </li>
-              <li>
-                <Link href="www.airtel.com" underline="none">
-                  <Language fontSize="small" /> www.airtel.com
-                </Link>
-              </li>
-            </ul>
+            <div className="mt-1 text-base flex-col flex">
+              <Link
+                href={`mailto:${clientData?.contactEmail}`}
+                underline="none"
+              >
+                <MailOutline fontSize="inherit" /> {clientData?.contactEmail}
+              </Link>
+              <Link href={`tel:${clientData?.contactPhone}`} underline="none">
+                <Phone fontSize="inherit" /> {clientData?.contactPhone}
+              </Link>
+              <Link href="www.fleekitsolutions.com" underline="none">
+                <Language fontSize="inherit" />
+                {clientData?.website}
+              </Link>
+            </div>
           </div>
           <div className="mt-4">
             <h5 className="text-heading mb-2">Office Location</h5>

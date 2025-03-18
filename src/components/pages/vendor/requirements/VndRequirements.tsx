@@ -31,6 +31,7 @@ import TablePreLoader from "../../../../components/sharedComponents/TablePreLoad
 import { RoleType } from "../../../../components/sharedService/enums";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import MenuDrpDwn from "../../../../components/sharedComponents/MenuDrpDwn";
+import moment from "moment";
 
 const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   };
 
   const handleClickToClient = (id: number, tab: string) => {
+    
     if (!benchDrawerData.isOpen) {
       if (tab) {
         navigate(`/vendor/clients/${id}?type=${tab}`, {
@@ -240,7 +242,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     <th className="add-right-shadow">
                       <div className="flex items-center justify-between">
                         <div
-                          onClick={() => handleRowClick(requirement.id)}
+                          onClick={() => handleRowClick(requirement.uniqueId)}
                           className="cursor-pointer hover:text-indigo-700"
                         >
                           {requirement.title}
@@ -290,6 +292,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                                   role: requirement.title,
                                   client: requirement.clientName,
                                   clientLogo: requirement.clientLogo,
+                                  uniqueId: requirement.uniqueId,
                                 },
                                 true
                               )
@@ -308,32 +311,40 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             handleClickToClient(requirement.id, "activeView")
                           }
                         >
-                          <img
-                            src={requirement.clientLogo}
-                            style={{ height: 12, width: 12 }}
-                            className="me-1"
-                          />
-                          <Tooltip title={requirement.clientName} arrow>
-                            <span className="text-ellipsis overflow-hidden truncate">
-                              {requirement.clientName}
-                            </span>
-                          </Tooltip>
+                          {requirement?.clientLogo && (
+                            <img
+                              src={requirement.clientLogo}
+                              style={{ height: 12, width: 12 }}
+                              className="me-1"
+                            />
+                          )}
+                          {requirement?.clientName && (
+                            <Tooltip title={requirement.clientName} arrow>
+                              <span className="text-ellipsis overflow-hidden truncate">
+                                {requirement.clientName}
+                              </span>
+                            </Tooltip>
+                          )}
                         </div>
                         <div className="flex w-[128px]">
-                          <div className="flex items-center ms-1">
-                            <LocationOnOutlined
-                              fontSize="inherit"
-                              className="mr-1"
-                            />
-                            <span>{requirement.locationTypeName}</span>
-                          </div>
-                          <div className="flex items-center ms-1">
-                            <AccessTimeOutlined
-                              fontSize="inherit"
-                              className="mr-1"
-                            />
-                            <span>{requirement.duration || "-"}</span>
-                          </div>
+                          {requirement?.locationTypeName && (
+                            <div className="flex items-center ms-1">
+                              <LocationOnOutlined
+                                fontSize="inherit"
+                                className="mr-1"
+                              />
+                              <span>{requirement.locationTypeName}</span>
+                            </div>
+                          )}
+                          {requirement?.duration && (
+                            <div className="flex items-center ms-1">
+                              <AccessTimeOutlined
+                                fontSize="inherit"
+                                className="mr-1"
+                              />
+                              <span>{requirement.duration}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </th>
@@ -351,7 +362,9 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                         {requirement.statusName || "-"}
                       </Typography>
                     </td>
-                    <td>{requirement.createdOn}</td>
+                    <td>
+                      {moment(requirement.createdOn).format("DD-MM-YYYY")}
+                    </td>
                     <td
                       className="cursor-pointer hover:text-indigo-700"
                       onClick={() =>

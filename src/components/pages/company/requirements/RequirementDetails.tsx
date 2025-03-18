@@ -300,7 +300,7 @@ const RequirementDetails = () => {
                         />}
                       {requirementData?.clientName &&
                         <Chip
-                          label={`Positions: ${requirementData?.clientName}`}
+                          label={`Positions: ${requirementData?.positions}`}
                           size="small"
                           variant="outlined"
                           sx={{ fontSize: 10 }}
