@@ -197,4 +197,12 @@ export const getRequirementApplicants = async (uniqueId: any) => {
   return response.data;
 };
 
+export const getClientApplicantsList = async (payload: any) => {
+  const response = await api.post(
+    "V1/Applicants/Company/GetListByOrgCode",
+    payload
+  );
+  return response.data;
+};
+
 export default api;
