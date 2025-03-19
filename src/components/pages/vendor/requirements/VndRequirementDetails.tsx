@@ -13,7 +13,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
-import { getRequirementsListById } from "../../../../components/sharedService/apiService";
+import {
+  getRequirementsListById,
+  getRequirementApplicants,
+} from "../../../../components/sharedService/apiService";
+import moment from "moment";
 
 const jobDataOrg = [
   {
@@ -111,45 +115,22 @@ const VndRequirementDetails = () => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [requirementData, setRequirementData] = useState<any>(null);
+  const [applicantData, setApplicantData] = useState<any[]>([]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
-  const applicantData = [
-    {
-      vendor: "Fleek IT Solutions",
-      name: "Harshit Tandon",
-      stage: "In Review",
-      date: "13-07-2024",
-      ai: 60,
-      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    },
-    {
-      vendor: "DevStringX Technologies",
-      name: "Raj Pathar",
-      stage: "Shortlisted",
-      date: "12-06-2024",
-      ai: 70,
-      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    },
-    {
-      vendor: "Binemiles Technologies",
-      name: "Sajid Sarkar",
-      stage: "Rejected",
-      date: "18-05-2024",
-      ai: 80,
-      logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-    },
-    {
-      vendor: "SDET Tech Pvt. Ltd",
-      name: "Amit Kumar",
-      stage: "Placed",
-      date: "11-04-2024",
-      ai: 90,
-      logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    },
-  ];
+  // const applicantData = [
+  //   {
+  //     vendor: "Fleek IT Solutions",
+  //     name: "Harshit Tandon",
+  //     stage: "In Review",
+  //     date: "13-07-2024",
+  //     ai: 60,
+  //     logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
+  //   },
+  // ];
 
   const handleStatusDialog = (status: string) => {
     setIsDialogOpen(true);
@@ -169,12 +150,20 @@ const VndRequirementDetails = () => {
     const pathSegments = document.location.pathname.split("/");
     const uniqueId = pathSegments.pop();
     getRequirementsData(uniqueId);
+    getRequirementApplicant(uniqueId);
   }, []);
 
   const getRequirementsData = (uniqueId: any) => {
     getRequirementsListById(uniqueId).then((result: any) => {
       if (result) {
         setRequirementData(result);
+      }
+    });
+  };
+  const getRequirementApplicant = (uniqueId: any) => {
+    getRequirementApplicants(uniqueId).then((result: any) => {
+      if (result) {
+        setApplicantData(result);
       }
     });
   };
@@ -305,16 +294,20 @@ const VndRequirementDetails = () => {
                 <tbody>
                   {applicantData.map((applicant, index) => (
                     <tr
-                      key={applicant.name}
+                      key={index}
                       // onClick={() => handleRowClick(applicant.id)}
                     >
                       <th className="add-right-shadow">
                         <div className="flex items-center justify-between text-info mt-1">
-                          <div className="text-base">{applicant.name}</div>
+                          <div className="text-base">
+                            {applicant?.firstName + " " + applicant?.lastName}
+                          </div>
                           <div className="flex text-info items-center text-secondary-text">
                             <div
                               className="flex cursor-pointer"
-                              onClick={() => handleMatchingDialog(applicant.ai)}
+                              onClick={() =>
+                                handleMatchingDialog(applicant?.ai || 74)
+                              }
                             >
                               <svg
                                 width="14px"
@@ -342,7 +335,7 @@ const VndRequirementDetails = () => {
                                   </g>
                                 </g>
                               </svg>
-                              <span> {applicant.ai}%</span>
+                              <span> {applicant?.ai || 74}%</span>
                             </div>
                             <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
                               <Download fontSize="inherit" />
@@ -354,20 +347,24 @@ const VndRequirementDetails = () => {
                       <td>
                         <Typography
                           className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                            applicant.stage === "Placed"
+                            applicant.statusName === "Placed"
                               ? "bg-green-100 text-green-700"
-                              : applicant.stage === "Rejected"
+                              : applicant.statusName === "Rejected"
                                 ? "bg-red-100 text-red-700"
-                                : applicant.stage === "New"
+                                : applicant.statusName === "New"
                                   ? "bg-orange-100 text-orange-700"
                                   : "bg-indigo-100 text-indigo-700"
                           }`}
-                          onClick={() => handleStatusDialog(applicant.stage)}
+                          onClick={() =>
+                            handleStatusDialog(applicant.statusName)
+                          }
                         >
-                          {applicant.stage}
+                          {applicant.statusName}
                         </Typography>
                       </td>
-                      <td>{applicant.date}</td>
+                      <td>
+                        {moment(applicant.applicationDate).format("DD-MM-YYYY")}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

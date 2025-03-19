@@ -27,6 +27,7 @@ import {
 } from "@mui/material";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import Loader from "../../../sharedComponents/Loader";
+import configData from "../../../sharedService/config.json";
 import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,
@@ -278,7 +279,7 @@ const RequirementForm = () => {
   const onPromtSubmit = () => {
     getClientListData();
     const payload = {
-      promptCode: "REQRMNT",
+      promptCode: configData.RequirementPromtCode,
       loginUserId: userData?.userId,
       promptJson: promptJson,
     };
