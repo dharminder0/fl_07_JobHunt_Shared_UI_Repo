@@ -14,10 +14,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
+import { getClientApplicantsList } from "../../../../components/sharedService/apiService";
+import moment from "moment";
 
 const applicantData = [
   {
-    id:1,
+    id: 1,
     vendor: "Fleek IT Solutions",
     name: "Harshit Tandon",
     requirement: "React js Developer",
@@ -31,7 +33,7 @@ const applicantData = [
       "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
   },
   {
-    id:2,
+    id: 2,
     vendor: "DevStringX Technologies",
     name: "Raj Pathar",
     requirement: "Sr. Angular developer",
@@ -44,104 +46,6 @@ const applicantData = [
     clientLogo:
       "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
   },
-  {
-    id:3,
-    vendor: "Binemiles Technologies",
-    name: "Sajid Sarkar",
-    requirement: "React Native mobile developer",
-    client: "Capgemini",
-    status: "Rejected",
-    date: "18-05-2024",
-    ai: 50,
-    vendorLogo:
-      "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-    clientLogo:
-      "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-  },
-  {
-    id:4,
-    vendor: "SDET Tech Pvt. Ltd",
-    name: "Amit Kumar",
-    requirement: "Frontend developer",
-    client: "NTT DATA",
-    status: "Placed",
-    date: "11-04-2024",
-    ai: 80,
-    vendorLogo:
-      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo:
-      "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
-  },
-  {
-    id:5,
-    vendor: "Fleek IT Solutions",
-    name: "Harshit Tandon",
-    requirement: ".Net developer",
-    client: "Airtel",
-    status: "Placed",
-    date: "13-07-2024",
-    ai: 65,
-    vendorLogo:
-      "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    clientLogo:
-      "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-  },
-  {
-    id:6,
-    vendor: "SDET Tech Pvt. Ltd",
-    name: "Vaibhav Rastogi",
-    requirement: "Devops AWS Certified engineer",
-    client: "NTT DATA",
-    status: "Interview Round I",
-    date: "11-04-2024",
-    ai: 76,
-    vendorLogo:
-      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo:
-      "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
-  },
-  {
-    id:7,
-    vendor: "DevStringX Technologies",
-    name: "Raj Pathar",
-    requirement: ".Net MVC Support",
-    client: "IBM Consulting",
-    status: "Shortlisted",
-    date: "12-06-2024",
-    ai: 56,
-    vendorLogo:
-      "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    clientLogo:
-      "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-  },
-  {
-    id:8,
-    vendor: "Binemiles Technologies",
-    name: "Sajid Sarkar",
-    requirement: "Azure Devops Engineer",
-    client: "Capgemini",
-    status: "Rejected",
-    date: "18-05-2024",
-    ai: 82,
-    vendorLogo:
-      "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-    clientLogo:
-      "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-  },
-  {
-    id:9,
-    vendor: "SDET Tech Pvt. Ltd",
-    name: "Amit Kumar",
-    requirement: "Devops AWS Certified engineer",
-    client: "NTT DATA",
-    status: "Interview Round I",
-    date: "11-04-2024",
-    ai: 55,
-    vendorLogo:
-      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo:
-      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-  },
 ];
 
 export default function MyCandidates() {
@@ -152,7 +56,13 @@ export default function MyCandidates() {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
+  const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [status, setStatus] = React.useState<any[]>([]);
+  const [pageIndex, setPageIndex] = React.useState<any>(1);
+  const [applicantData, setApplicantData] = useState<any[]>([]);
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   const [filterList, setFilterList] = useState<any>({
     client: ["Airtel", "IBM Consulting", "Capgemini", "NTT DATA"],
@@ -176,10 +86,14 @@ export default function MyCandidates() {
   const handleRowClick = (id: number, type: string) => {
     switch (type) {
       case "vendor":
-        navigate(`/company/myvendors/${id}?type=activeView`,{ state: { previousUrl: location.pathname },})
+        navigate(`/company/myvendors/${id}?type=activeView`, {
+          state: { previousUrl: location.pathname },
+        });
         break;
       case "client":
-        navigate(`/company/clients/${id}?type=activeView`, { state: { previousUrl: location.pathname },})
+        navigate(`/company/clients/${id}?type=activeView`, {
+          state: { previousUrl: location.pathname },
+        });
         break;
     }
   };
@@ -214,6 +128,39 @@ export default function MyCandidates() {
   const handleMatchingDialog = (score: number) => {
     setIsMatchOpen(true);
     setMatchingScore(score);
+  };
+
+  useEffect(() => {
+    if (searchValue?.length > 2 || searchValue?.length == 0) {
+      getApplicantsListData();
+    }
+  }, [searchValue, status, pageIndex]);
+
+  const getApplicantsListData = () => {
+    const payload = {
+      client: [],
+      status: [],
+      resources: [],
+      orgCode: userData.orgCode,
+      page: 1,
+      pageSize: 10,
+    };
+    setIsTableLoader(true);
+    getClientApplicantsList(payload)
+      .then((result: any) => {
+        if (result?.list && result?.list.length > 0) {
+          setApplicantData(result.list);
+          setIsTableLoader(false);
+        } else {
+          setApplicantData([]);
+          setIsTableLoader(false);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching bench details:", error);
+        setApplicantData([]);
+        setIsTableLoader(false);
+      });
   };
 
   return (
@@ -284,30 +231,30 @@ export default function MyCandidates() {
             </tr>
           </thead>
           <tbody>
-            {filteredApplicants.map((applicant, index) => (
+            {applicantData.map((applicant, index) => (
               <tr key={index}>
                 <th className="add-right-shadow">
-                  <div>{applicant.name}</div>
+                  <div>{applicant.firstName + " " + applicant.lastName}</div>
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                       onClick={() => handleRowClick(applicant.id, "vendor")}
                     >
                       <img
-                        src={applicant.vendorLogo}
+                        src={applicant?.orgLogo}
                         style={{ height: 12, width: 12 }}
                         className="me-1"
                       />
-                      <Tooltip title={applicant.vendor} arrow>
+                      <Tooltip title={applicant.orgName} arrow>
                         <span className="text-ellipsis overflow-hidden truncate">
-                          {applicant.vendor}
+                          {applicant.orgName}
                         </span>
                       </Tooltip>
                     </div>
                     <div className="flex text-info items-center">
                       <div
                         className="flex cursor-pointer hover:text-indigo-700"
-                        onClick={() => handleMatchingDialog(applicant.ai)}
+                        onClick={() => handleMatchingDialog(applicant.ai || 75)}
                       >
                         <svg
                           width="14px"
@@ -336,7 +283,7 @@ export default function MyCandidates() {
                             </g>
                           </g>
                         </svg>
-                        <span> {applicant.ai}%</span>
+                        <span> {applicant.ai || 75}%</span>
                       </div>
                       <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700">
                         <Download fontSize="inherit" />
@@ -355,37 +302,39 @@ export default function MyCandidates() {
                     {applicant.vendor}
                   </div>
                 </td> */}
-                <td>{applicant.requirement}</td>
+                <td>{applicant.role}</td>
                 <td
                   className="wide-200 cursor-pointer hover:text-indigo-700"
-                  onClick={() => handleRowClick(applicant.id, "client")}
+                  onClick={() => handleRowClick(applicant.clientCode, "client")}
                 >
                   <div className="flex">
                     <img
-                      src={applicant.clientLogo}
+                      src={applicant?.clientLogo}
                       style={{ height: 16, width: 16 }}
                       className="me-1"
                     />
-                    {applicant.client}
+                    {applicant.clientName}
                   </div>
                 </td>
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                      applicant.status === "Placed"
+                      applicant.statusName === "Placed"
                         ? "bg-green-100 text-green-700"
-                        : applicant.status === "Rejected"
-                        ? "bg-red-100 text-red-700"
-                        : applicant.status === "New"
-                        ? "bg-orange-100 text-orange-700"
-                        : "bg-indigo-100 text-indigo-700"
+                        : applicant.statusName === "Rejected"
+                          ? "bg-red-100 text-red-700"
+                          : applicant.statusName === "New"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-indigo-100 text-indigo-700"
                     }`}
-                    onClick={() => handleStatusDialog(applicant.status)}
+                    onClick={() => handleStatusDialog(applicant.statusName)}
                   >
-                    {applicant.status}
+                    {applicant.statusName}
                   </Typography>
                 </td>
-                <td>{applicant.date}</td>
+                <td>
+                  {moment(applicant.applicationDate).format("DD-MM-YYYY")}
+                </td>
                 {/* <td>
                   <Button
                     variant="outlined"
