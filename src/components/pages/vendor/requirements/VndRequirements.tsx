@@ -308,7 +308,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                         <div
                           className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                           onClick={() =>
-                            handleClickToClient(requirement.id, "activeView")
+                            handleClickToClient(requirement.clientCode, "activeView")
                           }
                         >
                           {requirement?.clientLogo && (
