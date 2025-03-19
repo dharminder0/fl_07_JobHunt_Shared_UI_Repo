@@ -20,6 +20,7 @@ import { getApplicantsList } from "../../../../components/sharedService/apiServi
 import moment from "moment";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 
 export default function VndCandidates() {
   const location = useLocation();
@@ -30,6 +31,7 @@ export default function VndCandidates() {
   const [applicantData, setApplicantData] = useState<any[]>([]);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
+  const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [searchValue, setSearchValue] = React.useState("");
   const [status, setStatus] = React.useState<any[]>([]);
@@ -77,17 +79,21 @@ export default function VndCandidates() {
       page: pageIndex,
       pageSize: 10,
     };
+    setIsTableLoader(true);
     getApplicantsList(payload)
       .then((result: any) => {
         if (result?.list && result?.list.length > 0) {
           setApplicantData(result.list);
+          setIsTableLoader(false);
         } else {
           setApplicantData([]);
+          setIsTableLoader(false);
         }
       })
       .catch((error: any) => {
         console.error("Error fetching bench details:", error);
         setApplicantData([]);
+        setIsTableLoader(false);
       });
   };
 
@@ -162,6 +168,9 @@ export default function VndCandidates() {
               <th>Application Date</th>
             </tr>
           </thead>
+
+          <TablePreLoader isTableLoader={isTableLoader} data={applicantData} />
+
           <tbody>
             {applicantData.map((applicant, index) => (
               <tr key={index}>

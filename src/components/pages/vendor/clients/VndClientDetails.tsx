@@ -25,6 +25,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getClientDataByClientCode } from "../../../../components/sharedService/apiService";
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 
 const VndClientDetails = () => {
   const navigate = useNavigate();
@@ -283,7 +284,9 @@ const VndClientDetails = () => {
         {/* Company Profile */}
         <Grid item xs={12} md={9}>
           <div className="mt-2">
-            <p className="text-gray-700 text-base">{clientData.description}</p>
+            <p className="text-gray-700 text-base">
+              <HtmlRenderer content={clientData.description} />
+            </p>
           </div>
           <div className="my-2">
             <Box sx={{ width: "100%" }}>

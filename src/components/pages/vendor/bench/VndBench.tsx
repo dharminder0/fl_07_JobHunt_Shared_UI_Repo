@@ -32,6 +32,7 @@ import {
 } from "../../../../components/sharedService/apiService";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 
 const teckStackData = [
   {
@@ -56,6 +57,7 @@ export default function VndBench({ drawerData = {} }: any) {
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [searchText, SetSearchText] = useState("");
@@ -113,17 +115,21 @@ export default function VndBench({ drawerData = {} }: any) {
       availability: availability,
       pageSize: 20,
     };
+    setIsTableLoader(true);
     getBenchList(payload)
       .then((result: any) => {
         if (result?.list && result?.list.length > 0) {
           setbenchDatadetails(result.list);
+          setIsTableLoader(false);
         } else {
           setbenchDatadetails([]);
+          setIsTableLoader(false);
         }
       })
       .catch((error) => {
         console.error("Error fetching bench details:", error);
         setbenchDatadetails([]);
+        setIsTableLoader(false);
       });
   };
 
@@ -344,8 +350,14 @@ export default function VndBench({ drawerData = {} }: any) {
                     <th>Availability</th>
                   </tr>
                 </thead>
+
+                <TablePreLoader
+                  isTableLoader={isTableLoader}
+                  data={benchDatadetails}
+                />
+
                 <tbody>
-                  {benchDatadetails?.length > 0 ? (
+                  {benchDatadetails?.length > 0 &&
                     benchDatadetails.map((item, index) => (
                       <tr
                         key={item?.id}
@@ -458,14 +470,7 @@ export default function VndBench({ drawerData = {} }: any) {
                         <td>{item.skills || "-"}</td>
                         <td>{item?.availabilityName || "-"}</td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <th colSpan={4} className="text-center">
-                        No records available{" "}
-                      </th>
-                    </tr>
-                  )}
+                    ))}
                 </tbody>
               </table>
             </div>
