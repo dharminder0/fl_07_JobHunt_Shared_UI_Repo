@@ -14,39 +14,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
-import { getClientApplicantsList } from "../../../../components/sharedService/apiService";
+import {
+  getClientApplicantsList,
+  getClientLists,
+} from "../../../../components/sharedService/apiService";
 import moment from "moment";
-
-const applicantData = [
-  {
-    id: 1,
-    vendor: "Fleek IT Solutions",
-    name: "Harshit Tandon",
-    requirement: "React js Developer",
-    client: "Airtel",
-    status: "In Review",
-    date: "13-07-2024",
-    ai: 60,
-    vendorLogo:
-      "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    clientLogo:
-      "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-  },
-  {
-    id: 2,
-    vendor: "DevStringX Technologies",
-    name: "Raj Pathar",
-    requirement: "Sr. Angular developer",
-    client: "IBM Consulting",
-    status: "New",
-    date: "12-06-2024",
-    ai: 70,
-    vendorLogo:
-      "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    clientLogo:
-      "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-  },
-];
+import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
+import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 
 export default function MyCandidates() {
   const navigate = useNavigate();
@@ -56,32 +32,15 @@ export default function MyCandidates() {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
+  const [selectedClients, setSelectedClients] = React.useState<any[]>([]);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
   const [status, setStatus] = React.useState<any[]>([]);
+  const [clientList, setClientList] = useState<any[]>([]);
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [applicantData, setApplicantData] = useState<any[]>([]);
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-
-  const [filterList, setFilterList] = useState<any>({
-    client: ["Airtel", "IBM Consulting", "Capgemini", "NTT DATA"],
-    status: [
-      "New",
-      "In Review",
-      "Shortlisted",
-      "Technical Assessment",
-      "Interview Round I",
-      "Interview Round II",
-      "Rejected",
-      "Placed",
-    ],
-  });
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    client: [],
-    status: !params?.status ? [] : [params?.status],
-  });
 
   const handleRowClick = (id: number, type: string) => {
     switch (type) {
@@ -98,28 +57,6 @@ export default function MyCandidates() {
     }
   };
 
-  useEffect(() => {
-    // Filtering logic
-    const filtered = applicantData.filter((item) => {
-      // Check status filter
-      const statusMatch =
-        searchFilter.status.length === 0 ||
-        searchFilter.status.includes(item.status);
-      // Check client filter
-      const clientMatch =
-        searchFilter.client.length === 0 ||
-        searchFilter.client.includes(item.client);
-      // Check search input
-      const searchMatch =
-        searchFilter.searchValue === "" ||
-        item.name
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-      return statusMatch && searchMatch && clientMatch;
-    });
-    setFilteredApplicants(filtered);
-  }, [searchFilter, setFilteredApplicants]);
-
   const handleStatusDialog = (status: string) => {
     setIsDialogOpen(true);
     setSelectedStatus(status);
@@ -131,15 +68,20 @@ export default function MyCandidates() {
   };
 
   useEffect(() => {
+    getClientListData();
+  }, []);
+
+  useEffect(() => {
     if (searchValue?.length > 2 || searchValue?.length == 0) {
       getApplicantsListData();
     }
-  }, [searchValue, status, pageIndex]);
+  }, [searchValue, status, pageIndex, selectedClients]);
 
   const getApplicantsListData = () => {
     const payload = {
-      client: [],
-      status: [],
+      searchText: searchValue,
+      client: selectedClients,
+      status: status,
       resources: [],
       orgCode: userData.orgCode,
       page: 1,
@@ -163,6 +105,14 @@ export default function MyCandidates() {
       });
   };
 
+  const getClientListData = () => {
+    getClientLists(userData?.orgCode).then((result: any) => {
+      if (result) {
+        setClientList(result);
+      }
+    });
+  };
+
   return (
     <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
@@ -173,13 +123,8 @@ export default function MyCandidates() {
                 <TextField
                   size="small"
                   className="w-full"
-                  value={searchFilter.searchValue}
-                  onChange={(event) =>
-                    setSearchFilter({
-                      ...searchFilter,
-                      searchValue: event.target.value,
-                    })
-                  }
+                  value={searchValue}
+                  onChange={(event) => setSearchValue(event.target.value)}
                   placeholder="Search"
                   slotProps={{
                     input: {
@@ -194,20 +139,20 @@ export default function MyCandidates() {
               </div>
             </div>
             <div className="max-w-full shrink-0">
-              <MenuDrpDwn
-                menuList={filterList?.client}
+              <MenuDrpDwnByValue
+                menuList={clientList}
                 placeholder="Client"
                 handleSelectedItem={(selectedItems) => {
-                  setSearchFilter({ ...searchFilter, client: selectedItems });
+                  setSelectedClients(selectedItems);
                 }}
               />
             </div>
             <div className="max-w-full shrink-0">
-              <MenuDrpDwn
-                menuList={filterList?.status}
+              <MenuDrpDwnV2
+                menuList={ApplicantsStatus}
                 placeholder="Status"
                 handleSelectedItem={(selectedItems) => {
-                  setSearchFilter({ ...searchFilter, status: selectedItems });
+                  setStatus(selectedItems);
                 }}
               />
             </div>
@@ -230,6 +175,9 @@ export default function MyCandidates() {
               {/* <th>CV</th> */}
             </tr>
           </thead>
+
+          <TablePreLoader isTableLoader={isTableLoader} data={applicantData} />
+
           <tbody>
             {applicantData.map((applicant, index) => (
               <tr key={index}>
@@ -238,7 +186,9 @@ export default function MyCandidates() {
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                      onClick={() => handleRowClick(applicant.vendorOrgCode, "vendor")}
+                      onClick={() =>
+                        handleRowClick(applicant.vendorOrgCode, "vendor")
+                      }
                     >
                       <img
                         src={applicant?.vendorLogo}
@@ -352,7 +302,7 @@ export default function MyCandidates() {
 
       <StatusDialog
         title="Applicant Status"
-        statusData={filterList.status}
+        statusData={ApplicantsStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}

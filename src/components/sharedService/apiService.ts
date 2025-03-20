@@ -117,7 +117,7 @@ export const getRequirementsListById = async (uniqueId: any) => {
 };
 
 export const getClientLists = async (orgCode: any) => {
-  const response = await api.get(`V1/Clients/List/OrgCode?orgCode=${orgCode}`);
+  const response = await api.get(`V1/Clients/ListByOrgCode?orgCode=${orgCode}`);
   return response.data;
 };
 
