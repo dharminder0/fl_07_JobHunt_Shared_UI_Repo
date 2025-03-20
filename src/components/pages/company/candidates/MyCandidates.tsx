@@ -238,16 +238,16 @@ export default function MyCandidates() {
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                      onClick={() => handleRowClick(applicant.id, "vendor")}
+                      onClick={() => handleRowClick(applicant.vendorOrgCode, "vendor")}
                     >
                       <img
-                        src={applicant?.orgLogo}
+                        src={applicant?.vendorLogo}
                         style={{ height: 12, width: 12 }}
                         className="me-1"
                       />
-                      <Tooltip title={applicant.orgName} arrow>
+                      <Tooltip title={applicant.vendorOrgName} arrow>
                         <span className="text-ellipsis overflow-hidden truncate">
-                          {applicant.orgName}
+                          {applicant.vendorOrgName}
                         </span>
                       </Tooltip>
                     </div>

@@ -8,6 +8,7 @@ import BenchPreview from "../pages/vendor/bench/BenchPreview";
 import OrganizationProfileUpdate from "../pages/settings/OrganizationProfileUpdate";
 import { IconButton, Tooltip } from "@mui/material";
 import { CloseOutlined } from "@mui/icons-material";
+import VndBench from "../pages/vendor/bench/VndBench";
 
 interface CommonDrawerProps {
   name: string; // Unique name for the drawer
@@ -47,6 +48,7 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
           />
         )}
         {currentDrawer === "benchPreview" && <BenchPreview />}
+        {currentDrawer === "benchList" && <VndBench />}
         {currentDrawer === "OrgProfileUpdate" && <OrganizationProfileUpdate />}
       </div>
     </Drawer>
