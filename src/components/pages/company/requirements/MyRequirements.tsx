@@ -22,6 +22,8 @@ import {
 } from "../../../../components/sharedService/shareData";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import { RoleType } from "../../../../components/sharedService/enums";
+import { useClientList } from "../../../../components/hooks/useClientList";
+import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
@@ -34,40 +36,9 @@ const MyRequirements = () => {
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
   const [searchText, setSearchText] = React.useState("");
   const [status, setStatus] = useState<any[]>([]);
+  const [client, setClient] = useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any[]>([]);
-  const [filterList, setFilterList] = useState<any>({
-    client: [
-      "OpsTree Solutions",
-      "Creative Solutions Ltd.",
-      "Data Insights Group",
-    ],
-    status: ["Open", "On hold", "Closed"],
-    requirementType: [
-      {
-        id: 1,
-        name: "Onsite",
-        value: "Onsite",
-      },
-      {
-        id: 2,
-        name: "Hybrid",
-        value: "Hybrid",
-      },
-      {
-        id: 3,
-        name: "Remote",
-        value: "Remote",
-      },
-    ],
-  });
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    client: [],
-    status: !params?.status ? [] : [params?.status],
-    requirementType: [],
-    isApplicant: !!params?.status,
-  });
 
   const handleRowClick = (clientCode: number, type: string) => {
     switch (type) {
@@ -106,7 +77,7 @@ const MyRequirements = () => {
       pageSize: 15,
       locationType: resource,
       status: status,
-      clientCode: [],
+      clientCode: client,
       userId: userData.userId,
       roleType: [activeRole === "company" && RoleType.Client],
     };
@@ -129,11 +100,13 @@ const MyRequirements = () => {
       });
   };
 
+  const clientList = useClientList(userData?.orgCode);
+
   useEffect(() => {
     if (searchText?.length > 3 || searchText?.length == 0) {
       getRequirementsData();
     }
-  }, [searchText, resource, status]);
+  }, [searchText, resource, status, client]);
 
   return (
     <>
@@ -162,12 +135,12 @@ const MyRequirements = () => {
                 </div>
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.client}
+                <MenuDrpDwnByValue
+                  menuList={clientList}
                   placeholder="Client"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, client: selectedItems });
-                  }}
+                  handleSelectedItem={(selectedItems) =>
+                    setClient(selectedItems)
+                  }
                 />
               </div>
               <div className="max-w-full shrink-0">
@@ -316,7 +289,7 @@ const MyRequirements = () => {
 
       <StatusDialog
         title="Applicant Status"
-        statusData={filterList.status}
+        statusData={RequirementStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}

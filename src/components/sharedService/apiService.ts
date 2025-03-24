@@ -205,4 +205,16 @@ export const getClientApplicantsList = async (payload: any) => {
   return response.data;
 };
 
+export const getDashboardReqCounts = async (orgCode: any) => {
+  const response = await api.get(`V1/Requirement/Company-dashboard/${orgCode}`);
+  return response.data;
+};
+
+export const getVndDashboardReqCounts = async (userId: any, orgCode: any) => {
+  const response = await api.get(
+    `V1/Requirement/Vendor-dashboard/${userId}/${orgCode}`
+  );
+  return response.data;
+};
+
 export default api;

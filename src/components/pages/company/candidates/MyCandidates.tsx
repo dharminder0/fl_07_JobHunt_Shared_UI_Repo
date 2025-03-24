@@ -14,15 +14,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
-import {
-  getClientApplicantsList,
-  getClientLists,
-} from "../../../../components/sharedService/apiService";
+import { getClientApplicantsList } from "../../../../components/sharedService/apiService";
 import moment from "moment";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
+import { useClientList } from "../../../../components/hooks/useClientList";
 
 export default function MyCandidates() {
   const navigate = useNavigate();
@@ -37,7 +35,6 @@ export default function MyCandidates() {
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
   const [status, setStatus] = React.useState<any[]>([]);
-  const [clientList, setClientList] = useState<any[]>([]);
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [applicantData, setApplicantData] = useState<any[]>([]);
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -66,10 +63,6 @@ export default function MyCandidates() {
     setIsMatchOpen(true);
     setMatchingScore(score);
   };
-
-  useEffect(() => {
-    getClientListData();
-  }, []);
 
   useEffect(() => {
     if (searchValue?.length > 2 || searchValue?.length == 0) {
@@ -105,13 +98,7 @@ export default function MyCandidates() {
       });
   };
 
-  const getClientListData = () => {
-    getClientLists(userData?.orgCode).then((result: any) => {
-      if (result) {
-        setClientList(result);
-      }
-    });
-  };
+  const clientList = useClientList(userData?.orgCode);
 
   return (
     <div className="px-4 py-1 h-full">

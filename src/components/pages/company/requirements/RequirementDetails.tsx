@@ -19,6 +19,7 @@ import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import { getRequirementsListById } from "../../../../components/sharedService/apiService";
+import { ApplicantsStatus, RequirementStatus } from "../../../../components/sharedService/shareData";
 
 const applicantData = [
   {
@@ -680,7 +681,7 @@ const RequirementDetails = () => {
 
       <StatusDialog
         title="Applicant Status"
-        statusData={filterList.status}
+        statusData={ApplicantsStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}

@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Box, Button, Chip, Grid2 } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
 import { Share } from "@mui/icons-material";
-import { getAllUsers } from "../../sharedService/apiService";
+import {
+  getAllUsers,
+  getDashboardReqCounts,
+} from "../../sharedService/apiService";
 
 interface CompanyDashboardProps {}
 
 const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [requirementCounts, setRequirementCounts] = useState<any>({});
   const openViewList = (typeofList: string) => {
     let currentPath = window.location.pathname;
     const newPath = currentPath.replace("dashboard", typeofList);
@@ -138,15 +143,21 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   getAllUsers().then((res: any) => {
-  //     console.log(res);
-  //   });
-  // }, []);
-
   const handleCardClick = (page: string, status: any) => {
     navigate(`/company/${page}`, {
       state: { status: status }, // Passing state data
+    });
+  };
+
+  useEffect(() => {
+    getReqDetailCounts();
+  }, []);
+
+  const getReqDetailCounts = () => {
+    getDashboardReqCounts(userData?.orgCode).then((result: any) => {
+      if (Object.keys(result).length >= 0) {
+        setRequirementCounts(result);
+      }
     });
   };
 
@@ -158,7 +169,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           onClick={() => handleCardClick("myrequirements", "Open")}
         >
           <Typography variant="h5" className="!text-indigo-950">
-            76
+            {requirementCounts?.openPositions}
           </Typography>
           {/* <p className="text-white text-heading mb-2">76</p> */}
           <p className="text-base">Open Positions</p>
@@ -169,7 +180,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           onClick={() => handleCardClick("myrequirements", "Open")}
         >
           <Typography variant="h5" className="!text-indigo-800">
-            13
+            {requirementCounts?.hotRequirements}
           </Typography>
           <p className="text-base">Hot Requirements</p>
         </div>
@@ -179,7 +190,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           onClick={() => handleCardClick("candidates", "Interview Round I")}
         >
           <Typography variant="h5" className="!text-indigo-600">
-            26
+            {requirementCounts?.interviewScheduled}
           </Typography>
           <p className="text-base">Interview Scheduled</p>
         </div>
@@ -189,7 +200,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           onClick={() => handleCardClick("candidates", "In Review")}
         >
           <Typography variant="h5" className="!text-indigo-400">
-            34
+            {requirementCounts?.candidatesToReview}
           </Typography>
           <p className="text-base">Candidates to review</p>
         </div>
@@ -199,7 +210,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           onClick={() => handleCardClick("myrequirements", true)}
         >
           <Typography variant="h5" className="!text-red-600">
-            12
+            {requirementCounts?.totalApplicants}
           </Typography>
           <p className="text-base">No Applicants</p>
         </div>

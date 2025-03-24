@@ -21,6 +21,8 @@ import moment from "moment";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import { useClientList } from "../../../../components/hooks/useClientList";
+import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 
 export default function VndCandidates() {
   const location = useLocation();
@@ -35,27 +37,9 @@ export default function VndCandidates() {
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [searchValue, setSearchValue] = React.useState("");
   const [status, setStatus] = React.useState<any[]>([]);
+  const [client, setClient] = React.useState<any[]>([]);
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [matchingScore, setMatchingScore] = React.useState(0);
-  const [filterList, setFilterList] = useState<any>({
-    client: ["upGrad", "Iris Software", "Sterlite Technologies"],
-    status: [
-      "New",
-      "In Review",
-      "Shortlisted",
-      "Technical Assessment",
-      "Interview Round I",
-      "Interview Round II",
-      "Rejected",
-      "Placed",
-    ],
-  });
-
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    client: [],
-    status: !params?.status ? [] : [params?.status],
-  });
 
   const navigate = useNavigate();
   const handleRowClick = (clientCode: number) => {
@@ -64,16 +48,18 @@ export default function VndCandidates() {
     });
   };
 
+  const clientList = useClientList(userData?.orgCode);
+
   useEffect(() => {
     if (searchValue?.length > 2 || searchValue?.length == 0) {
       getApplicantsListData();
     }
-  }, [searchValue, status, pageIndex]);
+  }, [searchValue, status, pageIndex, client]);
 
   const getApplicantsListData = () => {
     const payload = {
       searchText: searchValue,
-      clientOrgName: "",
+      clientOrgName: client,
       status: status,
       userId: userData.userId,
       page: pageIndex,
@@ -137,12 +123,10 @@ export default function VndCandidates() {
               </div>
             </div>
             <div className="max-w-full shrink-0">
-              <MenuDrpDwn
-                menuList={filterList?.client}
+              <MenuDrpDwnByValue
+                menuList={clientList}
                 placeholder="Client"
-                handleSelectedItem={(selectedItems) => {
-                  setSearchFilter({ ...searchFilter, client: selectedItems });
-                }}
+                handleSelectedItem={(selectedItems) => setClient(selectedItems)}
               />
             </div>
             <div className="max-w-full shrink-0">
@@ -266,7 +250,7 @@ export default function VndCandidates() {
 
       <StatusDialog
         title="Applicant Status"
-        statusData={filterList.status}
+        statusData={ApplicantsStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}

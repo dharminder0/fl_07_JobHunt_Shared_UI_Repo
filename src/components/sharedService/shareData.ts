@@ -58,7 +58,7 @@ export const RequirementStatus: any = [
   },
   {
     id: 2,
-    name: "On Hold",
+    name: "OnHold",
     value: "On Hold",
   },
   {
