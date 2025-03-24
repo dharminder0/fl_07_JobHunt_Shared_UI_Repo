@@ -18,6 +18,7 @@ import {
   getRequirementApplicants,
 } from "../../../../components/sharedService/apiService";
 import moment from "moment";
+import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 
 const jobDataOrg = [
   {
@@ -414,7 +415,7 @@ const VndRequirementDetails = () => {
 
       <StatusDialog
         title="Applicant Status"
-        statusData={status}
+        statusData={ApplicantsStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}

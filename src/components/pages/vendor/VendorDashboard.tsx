@@ -1,53 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
-  Card,
-  CardContent,
-  Grid,
   Box,
-  Avatar,
-  LinearProgress,
-  Button,
-  Chip,
 } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
-import { Share } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { getVndDashboardReqCounts } from "../../../components/sharedService/apiService";
 
 interface VendorDashboard {}
-
-const applicantData = [
-  {
-    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    label: "Fleek IT Solutions",
-    value: 25,
-    color: "bg-purple-500",
-  },
-  {
-    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    label: "DevStringX Technologies",
-    value: 14,
-    color: "bg-green-500",
-  },
-  {
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-    label: "Binemiles Technologies",
-    value: 12,
-    color: "bg-blue-500",
-  },
-  {
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    label: "SDET Tech Pvt. Ltd",
-    value: 8,
-    color: "bg-yellow-500",
-  },
-  {
-    logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-    label: "JigNect Technologies",
-    value: 10,
-    color: "bg-red-500",
-  },
-];
 
 const applicantItems = [
   {
@@ -112,11 +72,27 @@ const hotTech = [
 
 const VendorDashboard: React.FC<VendorDashboard> = () => {
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [requirementCounts, setRequirementCounts] = useState<any>({});
 
   const handleCardClick = (page: string, status: any) => {
     navigate(`/vendor/${page}`, {
       state: { status: status }, // Passing state data
     });
+  };
+
+  useEffect(() => {
+    getReqDetailCounts();
+  }, []);
+
+  const getReqDetailCounts = () => {
+    getVndDashboardReqCounts(userData?.userId, userData?.orgCode).then(
+      (result: any) => {
+        if (Object.keys(result).length >= 0) {
+          setRequirementCounts(result);
+        }
+      }
+    );
   };
 
   return (
@@ -130,7 +106,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             onClick={() => handleCardClick("requirements", "Open")}
           >
             <Typography variant="h5" className="!text-indigo-950">
-              5
+              {requirementCounts?.openPositions}
             </Typography>
             <p className="text-base">Open Positions</p>
           </div>
@@ -140,7 +116,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             onClick={() => handleCardClick("requirements", "Open")}
           >
             <Typography variant="h5" className="!text-indigo-800">
-              3
+              {requirementCounts?.hotRequirements}
             </Typography>
             <p className="text-base">Hot Requirements</p>
           </div>
@@ -150,7 +126,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             onClick={() => handleCardClick("candidate", "Interview Round I")}
           >
             <Typography variant="h5" className="!text-indigo-600">
-              7
+              {requirementCounts?.interviewScheduled}
             </Typography>
             <p className="text-base">Interview Scheduled</p>
           </div>
@@ -160,16 +136,14 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             onClick={() => handleCardClick("candidate", "")}
           >
             <Typography variant="h5" className="!text-indigo-400">
-              4
+              {requirementCounts?.totalApplicants}
             </Typography>
             <p className="text-base">Total job applied</p>
           </div>
         </div>
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
-          <JobStatistics           
-            pieTitle="Requirements"
-          />
+          <JobStatistics pieTitle="Requirements" />
         </div>
         <div className="flex space-x-3">
           <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">

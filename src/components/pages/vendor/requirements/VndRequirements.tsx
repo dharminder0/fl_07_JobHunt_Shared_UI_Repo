@@ -32,6 +32,8 @@ import { RoleType } from "../../../../components/sharedService/enums";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import MenuDrpDwn from "../../../../components/sharedComponents/MenuDrpDwn";
 import moment from "moment";
+import { useClientList } from "../../../../components/hooks/useClientList";
+import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 
 const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const navigate = useNavigate();
@@ -51,25 +53,9 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [searchText, setSearchText] = React.useState("");
   const [status, setStatus] = useState<any[]>([]);
+  const [client, setClient] = React.useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any[]>([]);
-
-  const [filterList, setFilterList] = useState<any>({
-    client: [
-      "Teleperformance",
-      "KPIT Technologies",
-      "Mphasis",
-      "Fidelity Information Services",
-      "Coforge",
-    ],
-  });
-
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    client: "",
-    status: !paramStatus ? "" : paramStatus,
-    requirementType: "",
-  });
 
   const handleRowClick = (id: number) => {
     if (!benchDrawerData.isOpen) {
@@ -83,7 +69,6 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   };
 
   const handleClickToClient = (id: number, tab: string) => {
-    
     if (!benchDrawerData.isOpen) {
       if (tab) {
         navigate(`/vendor/clients/${id}?type=${tab}`, {
@@ -120,6 +105,8 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     setSelectedStatus(status);
   };
 
+  const clientList = useClientList(userData?.orgCode);
+
   const getRequirementsData = () => {
     setIsTableLoader(true);
     const payload = {
@@ -129,7 +116,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       pageSize: 15,
       locationType: resource,
       status: status,
-      clientCode: [],
+      clientCode: client,
       userId: userData.userId,
       roleType: [activeRole === "vendor" && RoleType.Vendor],
     };
@@ -156,7 +143,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     if (searchText?.length > 3 || searchText?.length == 0) {
       getRequirementsData();
     }
-  }, [searchText, resource, status]);
+  }, [searchText, resource, status, client]);
 
   return (
     <>
@@ -185,12 +172,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                 </div>
               </div>
               <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.client}
+                <MenuDrpDwnByValue
+                  menuList={clientList}
                   placeholder="Client"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({ ...searchFilter, client: selectedItems });
-                  }}
+                  handleSelectedItem={(selectedItems) =>
+                    setClient(selectedItems)
+                  }
                 />
               </div>
               <div className="max-w-full shrink-0">
@@ -308,7 +295,10 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                         <div
                           className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                           onClick={() =>
-                            handleClickToClient(requirement.clientCode, "activeView")
+                            handleClickToClient(
+                              requirement.clientCode,
+                              "activeView"
+                            )
                           }
                         >
                           {requirement?.clientLogo && (
@@ -411,7 +401,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
       <StatusDialog
         title="Requirement Status"
-        statusData={filterList.status}
+        statusData={RequirementStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}
