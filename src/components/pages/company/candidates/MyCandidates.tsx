@@ -30,6 +30,7 @@ export default function MyCandidates() {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
+  const [selectedApplicant, setSelectedApplicant] = React.useState({});
   const [selectedClients, setSelectedClients] = React.useState<any[]>([]);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
@@ -54,9 +55,15 @@ export default function MyCandidates() {
     }
   };
 
-  const handleStatusDialog = (status: string) => {
+  const handleStatusDialog = (applicant: any) => {
     setIsDialogOpen(true);
-    setSelectedStatus(status);
+    setSelectedApplicant({
+      resourceId: [applicant.resourceId],
+      requirementUniqueId: applicant.requirementUniqueId,
+      userId: userData.userId,
+      comment: !applicant.comment ? "" : applicant.comment,
+    });
+    setSelectedStatus(applicant.statusName);
   };
 
   const handleMatchingDialog = (score: number) => {
@@ -264,7 +271,7 @@ export default function MyCandidates() {
                             ? "bg-orange-100 text-orange-700"
                             : "bg-indigo-100 text-indigo-700"
                     }`}
-                    onClick={() => handleStatusDialog(applicant.statusName)}
+                    onClick={() => handleStatusDialog(applicant)}
                   >
                     {applicant.statusName}
                   </Typography>
@@ -293,6 +300,8 @@ export default function MyCandidates() {
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}
+        selectedRow={selectedApplicant}
+        onFinish={getApplicantsListData}
       />
       <MatchingSkillsDialog
         title="Matching Score Analysis"

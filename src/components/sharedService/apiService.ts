@@ -217,4 +217,14 @@ export const getVndDashboardReqCounts = async (userId: any, orgCode: any) => {
   return response.data;
 };
 
+export const updateRequirementStatus = async (
+  requirementId: any,
+  status: any
+) => {
+  const response = await api.post(
+    `V1/Requirement/UpdateStatus?requirementId=${requirementId}&status=${status}`
+  );
+  return response.data;
+};
+
 export default api;

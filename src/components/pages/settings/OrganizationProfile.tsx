@@ -52,7 +52,7 @@ const OrganizationProfile = () => {
   };
 
   const handleOpenDrawer = (name: string) => {
-    dispatch(openDrawer(name));
+    dispatch(openDrawer({ drawerName: name}));
   };
 
   return (
