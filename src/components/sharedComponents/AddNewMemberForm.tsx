@@ -19,7 +19,7 @@ import React from "react";
 import SuccessDialog from "./SuccessDialog";
 import { CloseOutlined } from "@mui/icons-material";
 
-const AddNewMemberForm = ({ isEditable = false }) => {
+const AddNewMemberForm = ({ isEditable = false, data = {} }: any) => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const dispatch: AppDispatch = useDispatch();
   const [isSuccessPopup, setIsSuccessPopup] = React.useState<boolean>(false);
@@ -33,11 +33,11 @@ const AddNewMemberForm = ({ isEditable = false }) => {
   } = useForm({
     defaultValues: {
       orgCode: userData?.orgCode,
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      access: [],
+      firstName: data?.firstName ? data?.firstName : "",
+      lastName: data?.lastName ? data?.lastName : "",
+      email: data?.userName ? data?.userName : "",
+      phone: data?.phone ? data?.phone : "",
+      access: data?.role ? data?.role : [],
     },
   });
 
@@ -88,7 +88,7 @@ const AddNewMemberForm = ({ isEditable = false }) => {
                     fullWidth
                     size="small"
                     error={!!errors.firstName}
-                    helperText={errors.firstName?.message}
+                    // helperText={errors.firstName?.message}
                   />
                 )}
               />
@@ -124,7 +124,7 @@ const AddNewMemberForm = ({ isEditable = false }) => {
                     fullWidth
                     size="small"
                     error={!!errors.email}
-                    helperText={errors.email?.message}
+                    // helperText={errors.email?.message}
                   />
                 )}
               />
@@ -147,7 +147,7 @@ const AddNewMemberForm = ({ isEditable = false }) => {
                     fullWidth
                     size="small"
                     error={!!errors.phone}
-                    helperText={errors.phone?.message}
+                    // helperText={errors.phone?.message}
                   />
                 )}
               />
@@ -164,7 +164,7 @@ const AddNewMemberForm = ({ isEditable = false }) => {
                     fullWidth
                     size="small"
                     error={!!errors.access}
-                    helperText={errors.access?.message}
+                    // helperText={errors.access?.message}
                     onChange={(event) => field.onChange([event.target.value])} // Ensure value is stored as an array
                     value={field.value[0] || ""} // Extract first value for proper binding
                   >

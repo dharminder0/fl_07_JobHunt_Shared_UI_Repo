@@ -6,6 +6,7 @@ interface DrawerState {
   isBackdropOpen: boolean;
   isEVerifyDialogOpen: boolean;
   isLayoutLoader: boolean;
+  drawerData: any | null;
 }
 
 const initialState: DrawerState = {
@@ -14,19 +15,25 @@ const initialState: DrawerState = {
   isBackdropOpen: false,
   isEVerifyDialogOpen: false,
   isLayoutLoader: false,
+  drawerData: null,
 };
 
 const drawerSlice = createSlice({
   name: "drawer",
   initialState,
   reducers: {
-    openDrawer: (state, action: PayloadAction<string>) => {
+    openDrawer: (
+      state,
+      action: PayloadAction<{ drawerName: string; data?: any }>
+    ) => {
       state.isOpen = true;
-      state.currentDrawer = action.payload; // Set the name of the opened drawer
+      state.currentDrawer = action.payload.drawerName;
+      state.drawerData = action.payload.data || null;
     },
     closeDrawer: (state) => {
       state.isOpen = false;
       state.currentDrawer = null; // Reset when the drawer is closed
+      state.drawerData = null;
     },
     toggleDrawer: (state, action: PayloadAction<string>) => {
       if (state.isOpen && state.currentDrawer === action.payload) {

@@ -34,6 +34,7 @@ const MyRequirements = () => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
+  const [selectedRequirement, setSelectedRequirement] = React.useState({});
   const [searchText, setSearchText] = React.useState("");
   const [status, setStatus] = useState<any[]>([]);
   const [client, setClient] = useState<any[]>([]);
@@ -63,9 +64,13 @@ const MyRequirements = () => {
     }
   };
 
-  const handleStatusDialog = (status: string) => {
+  const handleStatusDialog = (requirement: any) => {
     setIsDialogOpen(true);
-    setSelectedStatus(status);
+    setSelectedRequirement({
+      requirementId: requirement.id,
+      status: requirement.statusName,
+    });
+    setSelectedStatus(requirement.statusName);
   };
 
   const getRequirementsData = () => {
@@ -253,9 +258,7 @@ const MyRequirements = () => {
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
                         }`}
-                        onClick={() =>
-                          handleStatusDialog(requirement?.statusName)
-                        }
+                        onClick={() => handleStatusDialog(requirement)}
                       >
                         {requirement?.statusName || "-"}
                       </Typography>
@@ -288,11 +291,13 @@ const MyRequirements = () => {
       </div>
 
       <StatusDialog
-        title="Applicant Status"
+        title="Requirement Status"
         statusData={RequirementStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}
+        selectedRow={selectedRequirement}
+        onFinish={getRequirementsData}
       />
     </>
   );

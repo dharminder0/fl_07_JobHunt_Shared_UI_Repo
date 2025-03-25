@@ -23,8 +23,8 @@ export default function Members() {
   const [pageSize, setPageSize] = useState(10);
   const [membersList, setMembersList] = useState<any[]>([]);
 
-  const handleOpenDrawer = (name: string) => {
-    dispatch(openDrawer(name));
+  const handleOpenDrawer = (name: string, data?: any) => {
+    dispatch(openDrawer({ drawerName: name, data: data }));
   };
 
   useEffect(() => {
@@ -107,7 +107,7 @@ export default function Members() {
                 <th className="add-right-shadow group/item">
                   <div className="flex justify-between">
                     <div
-                      onClick={() => handleOpenDrawer("UpdateDetails")}
+                      onClick={() => handleOpenDrawer("UpdateDetails", member)}
                       className="cursor-pointer hover:text-indigo-700"
                     >
                       {member.firstName} {member.lastName}

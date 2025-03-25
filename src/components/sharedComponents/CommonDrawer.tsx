@@ -17,7 +17,7 @@ interface CommonDrawerProps {
 
 const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
   const dispatch = useDispatch();
-  const { isOpen, currentDrawer } = useSelector(
+  const { isOpen, currentDrawer, drawerData } = useSelector(
     (state: RootState) => state.drawer
   );
 
@@ -45,6 +45,7 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
           currentDrawer === "InviteNewMember") && (
           <AddNewMemberForm
             isEditable={currentDrawer === "UpdateDetails" ? true : false}
+            data={drawerData}
           />
         )}
         {currentDrawer === "benchPreview" && <BenchPreview />}
