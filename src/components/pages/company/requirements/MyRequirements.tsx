@@ -29,6 +29,7 @@ const MyRequirements = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
+  const paramStatus = params?.status;
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const activeRole = localStorage.getItem("activeRole") || "";
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -36,7 +37,9 @@ const MyRequirements = () => {
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
   const [selectedRequirement, setSelectedRequirement] = React.useState({});
   const [searchText, setSearchText] = React.useState("");
-  const [status, setStatus] = useState<any[]>([]);
+  const [status, setStatus] = useState<any[]>(
+    !paramStatus ? [] : [paramStatus]
+  );
   const [client, setClient] = useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any[]>([]);
