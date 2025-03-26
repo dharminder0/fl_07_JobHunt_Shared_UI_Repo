@@ -7,6 +7,7 @@ import {
   getAllUsers,
   getDashboardReqCounts,
 } from "../../sharedService/apiService";
+import { RequirementsStatus } from "../../../components/sharedService/enums";
 
 interface CompanyDashboardProps {}
 
@@ -166,7 +167,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
         <div
           className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover"
-          onClick={() => handleCardClick("myrequirements", "Open")}
+          onClick={() => handleCardClick("myrequirements",  RequirementsStatus.Open)}
         >
           <Typography variant="h5" className="!text-indigo-950">
             {requirementCounts?.openPositions}
@@ -177,7 +178,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
         <div
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-          onClick={() => handleCardClick("myrequirements", "Open")}
+          onClick={() => handleCardClick("myrequirements",  RequirementsStatus.Open)}
         >
           <Typography variant="h5" className="!text-indigo-800">
             {requirementCounts?.hotRequirements}

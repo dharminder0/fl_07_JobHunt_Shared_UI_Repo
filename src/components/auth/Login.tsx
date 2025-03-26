@@ -5,6 +5,8 @@ import {
   Checkbox,
   FormControlLabel,
   Typography,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Slider from "./slider";
@@ -21,6 +23,7 @@ import { RoleType } from "../sharedService/enums";
 import { RoleData } from "../sharedService/shareData";
 import EverifyDialog from "../sharedComponents/EverifyDialog";
 import { openEVerifyDialog } from "../features/drawerSlice";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type FormData = {
   email: string;
@@ -31,6 +34,7 @@ type FormData = {
 export default function Login() {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const isOpen = useSelector(
     (state: RootState) => state.drawer.isEVerifyDialogOpen
@@ -215,13 +219,29 @@ export default function Login() {
                   <TextField
                     {...field}
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     fullWidth
                     variant="outlined"
                     size="small"
                     error={!!errors.password}
                     helperText={errors.password?.message}
                     onKeyDown={handleKeyPress}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <VisibilityOff fontSize="small" />
+                            ) : (
+                              <Visibility fontSize="small" />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 )}
               />

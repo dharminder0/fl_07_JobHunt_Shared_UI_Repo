@@ -8,7 +8,7 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import { Edit, Download } from "@mui/icons-material";
+import { Edit, Download, CorporateFareOutlined } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
@@ -16,122 +16,30 @@ import StatusDialog from "../../../sharedComponents/StatusDialog";
 import {
   getRequirementsListById,
   getRequirementApplicants,
+  getRequirementsList,
 } from "../../../../components/sharedService/apiService";
 import moment from "moment";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
+import { RoleType } from "../../../../components/sharedService/enums";
 
-const jobDataOrg = [
-  {
-    id: 2,
-    role: "Senior Designer",
-    status: "On hold",
-    datePosted: "23-09-2024",
-    applicants: "2",
-    client: "KPIT Technologies",
-    requirementType: "Hybrid",
-    noOfPositions: 5,
-    placed: 0,
-    contractPeriod: "12 months",
-    logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
-    aiScore: 70,
-    matchingCandidate: 2,
-  },
-  {
-    id: 3,
-    role: "Visual Designer",
-    status: "Open",
-    datePosted: "13-07-2024",
-    applicants: "1",
-    client: "Mphasis",
-    requirementType: "Onsite",
-    noOfPositions: 2,
-    placed: 0,
-    contractPeriod: "3 months",
-    logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
-    aiScore: 80,
-    matchingCandidate: 1,
-  },
-  {
-    id: 4,
-    role: "Data Science",
-    status: "Closed",
-    datePosted: "06-06-2024",
-    applicants: "1",
-    client: "Fidelity Information Services",
-    requirementType: "Remote",
-    noOfPositions: 4,
-    placed: 0,
-    contractPeriod: "9 months",
-    logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
-    aiScore: 66,
-    matchingCandidate: 4,
-  },
-  {
-    id: 5,
-    role: "Kotlin Developer",
-    status: "Closed",
-    datePosted: "01-05-2024",
-    applicants: "3",
-    client: "Coforge",
-    requirementType: "Hybrid",
-    noOfPositions: 8,
-    placed: 1,
-    contractPeriod: "18 months",
-    logo: "https://careers.coforge.com/coforge/favicon.ico",
-    aiScore: 75,
-    matchingCandidate: 1,
-  },
-  {
-    id: 5,
-    role: "Flutter Developer",
-    status: "Hot",
-    datePosted: "01-05-2024",
-    applicants: "2",
-    client: "KPIT Technologies",
-    requirementType: "Hybrid",
-    noOfPositions: 6,
-    placed: 1,
-    contractPeriod: "18 months",
-    logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
-    aiScore: 80,
-    matchingCandidate: 2,
-  },
-];
-const status = [
-  "New",
-  "In Review",
-  "Shortlisted",
-  "Technical Assessment",
-  "Interview Round I",
-  "Interview Round II",
-  "Rejected",
-  "Placed",
-];
 const VndRequirementDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const activeRole = localStorage.getItem("activeRole") || "";
   const [activeTab, setActiveTab] = useState(0);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
+  const [searchText, setSearchText] = React.useState("");
   const [requirementData, setRequirementData] = useState<any>(null);
+  const [similiarData, SetSimiliarData] = useState<any>(null);
   const [applicantData, setApplicantData] = useState<any[]>([]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-
-  // const applicantData = [
-  //   {
-  //     vendor: "Fleek IT Solutions",
-  //     name: "Harshit Tandon",
-  //     stage: "In Review",
-  //     date: "13-07-2024",
-  //     ai: 60,
-  //     logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-  //   },
-  // ];
 
   const handleStatusDialog = (status: string) => {
     setIsDialogOpen(true);
@@ -147,12 +55,13 @@ const VndRequirementDetails = () => {
     navigate(`/vendor/requirements/${id}`);
   };
 
+  const pathSegments = document.location.pathname.split("/");
+  const uniqueId = pathSegments.pop();
   useEffect(() => {
-    const pathSegments = document.location.pathname.split("/");
-    const uniqueId = pathSegments.pop();
     getRequirementsData(uniqueId);
     getRequirementApplicant(uniqueId);
-  }, []);
+    getRequirementsSimiliarData();
+  }, [uniqueId]);
 
   const getRequirementsData = (uniqueId: any) => {
     getRequirementsListById(uniqueId).then((result: any) => {
@@ -165,6 +74,26 @@ const VndRequirementDetails = () => {
     getRequirementApplicants(uniqueId).then((result: any) => {
       if (result) {
         setApplicantData(result);
+      }
+    });
+  };
+
+  const getRequirementsSimiliarData = () => {
+    const payload = {
+      orgCode: userData.orgCode,
+      searchText: searchText,
+      page: 1,
+      pageSize: 5,
+      status: [1],
+      userId: userData.userId,
+      roleType: [activeRole === "vendor" && RoleType.Vendor],
+    };
+
+    getRequirementsList(payload).then((result: any) => {
+      if (result && result?.totalPages > 0) {
+        SetSimiliarData(result.list);
+      } else {
+        SetSimiliarData([]);
       }
     });
   };
@@ -377,33 +306,45 @@ const VndRequirementDetails = () => {
 
       <div className="w-[30%] border-s p-3">
         <div className="text-title mb-3 mt-1">Similar Requirements</div>
-        {jobDataOrg.map((item) => (
-          <div
-            className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
-            onClick={() => getRequirementDetails(item.id)}
-          >
-            <div className="flex items-center justify-between">
-              <div className="text-base">{item.role}</div>
-              <div className="flex text-secondary-text text-info">
-                <div>{item.matchingCandidate} Matching Candidates</div>
+        {similiarData?.length > 0 ? (
+          similiarData.map((item: any) => (
+            <div
+              className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
+              onClick={() => getRequirementDetails(item?.uniqueId)}
+            >
+              <div className="flex items-center justify-between">
+                <div className="text-base text-ellipsis overflow-hidden truncate">
+                  {item.title}
+                </div>
+                <div className="flex text-secondary-text text-info">
+                  <div>{item?.matchingCandidate || 2} Matching Candidates</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between flex-wrap text-secondary-text text-info mt-1">
+                <div className="flex items-center w-full">
+                  {!item.clientLogo ? (
+                    <CorporateFareOutlined fontSize="medium" />
+                  ) : (
+                    <img
+                      src={item.clientLogo}
+                      style={{ height: 12, width: 12 }}
+                      className="me-1"
+                    />
+                  )}
+                  <Tooltip title={item.clientName} arrow>
+                    <span className="text-ellipsis overflow-hidden truncate">
+                      {item.clientName}
+                    </span>
+                  </Tooltip>
+                </div>
               </div>
             </div>
-            <div className="flex items-center justify-between flex-wrap text-secondary-text text-info mt-1">
-              <div className="flex items-center w-full">
-                <img
-                  src={item.logo}
-                  style={{ height: 12, width: 12 }}
-                  className="me-1"
-                />
-                <Tooltip title={item.client} arrow>
-                  <span className="text-ellipsis overflow-hidden truncate">
-                    {item.client}
-                  </span>
-                </Tooltip>
-              </div>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <>
+            <p className="text-base text-center">No Data Available</p>
+          </>
+        )}
       </div>
 
       <MatchingSkillsDialog

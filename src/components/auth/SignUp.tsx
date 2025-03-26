@@ -4,6 +4,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  IconButton,
+  InputAdornment,
   TextField,
 } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -20,11 +22,13 @@ import { AppDispatch, RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { RoleType } from "../sharedService/enums";
 import EverifyDialog from "../sharedComponents/EverifyDialog";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function SignUp() {
   const navigate = useNavigate();
 
   const dispatch: AppDispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -128,7 +132,7 @@ export default function SignUp() {
             />
             <TextField
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               fullWidth
               variant="outlined"
               size="small"
@@ -140,6 +144,22 @@ export default function SignUp() {
                 },
               })}
               error={!!errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityOff fontSize="small" />
+                      ) : (
+                        <Visibility fontSize="small" />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
 
             {/* Error message */}

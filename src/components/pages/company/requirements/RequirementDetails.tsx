@@ -9,8 +9,14 @@ import {
   Chip,
   Tooltip,
   InputAdornment,
+  Avatar,
 } from "@mui/material";
-import { Edit, Download, AccountCircleOutlined } from "@mui/icons-material";
+import {
+  Edit,
+  Download,
+  AccountCircleOutlined,
+  CorporateFareOutlined,
+} from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
 import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
@@ -18,8 +24,19 @@ import StatusDialog from "../../../sharedComponents/StatusDialog";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import { getRequirementsListById } from "../../../../components/sharedService/apiService";
-import { ApplicantsStatus, RequirementStatus } from "../../../../components/sharedService/shareData";
+import {
+  getOnboardInvitedList,
+  getOrgDetailsList,
+  getRequirementsListById,
+} from "../../../../components/sharedService/apiService";
+import {
+  ApplicantsStatus,
+  RequirementStatus,
+} from "../../../../components/sharedService/shareData";
+import {
+  InvitedType,
+  RoleType,
+} from "../../../../components/sharedService/enums";
 
 const applicantData = [
   {
@@ -173,6 +190,7 @@ const RequirementDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = location.state || {};
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [activeTab, setActiveTab] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -180,6 +198,8 @@ const RequirementDetails = () => {
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
+  const [activeDataList, setActiveDataList] = useState<any[]>([]);
+  const [companiesfilterData, setCompaniesfilterData] = useState<any[]>([]);
   const [requirementData, setRequirementData] = useState<any>(null);
 
   const handleToggle = () => {
@@ -224,21 +244,23 @@ const RequirementDetails = () => {
     ],
   });
 
-  useEffect(() => {  
-  const pathSegments = document.location.pathname.split('/');
-  const uniqueId = pathSegments.pop();
-  getRequirementsData(uniqueId);  
-  },[])
+  useEffect(() => {
+    const pathSegments = document.location.pathname.split("/");
+    const uniqueId = pathSegments.pop();
+    getRequirementsData(uniqueId);
+    getOrgRequestList();
+    getOrgDetailsListData();
+  }, []);
 
-   const getRequirementsData = (uniqueId:any) => {
+  const getRequirementsData = (uniqueId: any) => {
     getRequirementsListById(uniqueId).then((result: any) => {
-        if (result) {
-          setRequirementData(result);
-        }
-      });
-    };
+      if (result) {
+        setRequirementData(result);
+      }
+    });
+  };
 
-  useEffect(() => {   
+  useEffect(() => {
     // Filtering logic
     const filtered = applicantData.filter((item) => {
       // Check status filter
@@ -256,10 +278,50 @@ const RequirementDetails = () => {
     setFilteredApplicants(filtered);
   }, [searchFilter, setFilteredApplicants]);
 
+  const getOrgRequestList = () => {
+    const payload = {
+      orgCode: userData?.orgCode,
+      relationshipType: [RoleType.Client],
+      status: InvitedType.Accepted,
+      page: 1,
+      pageSize: 3,
+    };
+    getOnboardInvitedList(payload)
+      .then((result: any) => {
+        if (result.count > 0) {
+          setActiveDataList(result.list);
+        } else {
+          setActiveDataList([]);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  const getOrgDetailsListData = () => {
+    const payload = {
+      role: [RoleType.Vendor],
+      page: 1,
+      pageSize: 3,
+    };
+    getOrgDetailsList(payload)
+      .then((result: any) => {
+        if (result.count > 0) {
+          setCompaniesfilterData(result.list);
+        } else {
+          setCompaniesfilterData([]);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   return (
     <div className="flex flex-1">
       <div className="w-[70%] p-3 border-e min-h-screen">
-      {requirementData &&
+        {requirementData && (
           <div>
             {/* Header */}
             <Box className="flex justify-between items-center">
@@ -286,28 +348,38 @@ const RequirementDetails = () => {
                     </div>
                   </h5>
                   <div className="flex items-center">
-                    {requirementData?.clientLogo && <img
-                      src={requirementData?.clientLogo}  alt=""  style={{ width: 16, height: 16 }}   />}
-                    <p className="text-title mx-2"> {requirementData?.clientName}</p>
+                    {requirementData?.clientLogo && (
+                      <img
+                        src={requirementData?.clientLogo}
+                        alt=""
+                        style={{ width: 16, height: 16 }}
+                      />
+                    )}
+                    <p className="text-title mx-2">
+                      {" "}
+                      {requirementData?.clientName}
+                    </p>
 
                     <div>
-                      {requirementData?.locationTypeName &&
+                      {requirementData?.locationTypeName && (
                         <Chip
                           label={requirementData?.locationTypeName}
                           size="small"
                           variant="outlined"
                           sx={{ fontSize: 10 }}
                           className="my-1 me-1"
-                        />}
-                      {requirementData?.clientName &&
+                        />
+                      )}
+                      {requirementData?.clientName && (
                         <Chip
                           label={`Positions: ${requirementData?.positions}`}
                           size="small"
                           variant="outlined"
                           sx={{ fontSize: 10 }}
                           className="my-1 me-1"
-                        />}
-                      {requirementData?.experience &&
+                        />
+                      )}
+                      {requirementData?.experience && (
                         <Chip
                           label={requirementData?.experience}
                           size="small"
@@ -315,9 +387,9 @@ const RequirementDetails = () => {
                           sx={{ fontSize: 10 }}
                           className="my-1 me-1"
                         />
-                      }
+                      )}
 
-                      {requirementData?.visibilityName &&
+                      {requirementData?.visibilityName && (
                         <Chip
                           label={requirementData?.visibilityName}
                           size="small"
@@ -325,7 +397,7 @@ const RequirementDetails = () => {
                           sx={{ fontSize: 10 }}
                           className="my-1 me-1"
                         />
-                      }
+                      )}
                     </div>
                   </div>
                 </Box>
@@ -335,7 +407,7 @@ const RequirementDetails = () => {
               {/* Description */}
               <div className="mb-4 mt-2">
                 <p className="text-gray-600 text-base">
-                 {requirementData?.description}
+                  {requirementData?.description}
                 </p>
               </div>
 
@@ -359,12 +431,12 @@ const RequirementDetails = () => {
                   ))}
                 </ul> */}
                 <p className="text-gray-600 text-base">
-                 {requirementData?.remarks}
+                  {requirementData?.remarks}
                 </p>
               </Box>
             </div>
           </div>
-       }       
+        )}
 
         {/* Tabs */}
         <div className="flex mb-3 items-center justify-between">
@@ -513,10 +585,10 @@ const RequirementDetails = () => {
                             applicant.status === "Placed"
                               ? "bg-green-100 text-green-700"
                               : applicant.status === "Rejected"
-                              ? "bg-red-100 text-red-700"
-                              : applicant.status === "New"
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-indigo-100 text-indigo-700"
+                                ? "bg-red-100 text-red-700"
+                                : applicant.status === "New"
+                                  ? "bg-orange-100 text-orange-700"
+                                  : "bg-indigo-100 text-indigo-700"
                           }`}
                           onClick={() => handleStatusDialog(applicant.status)}
                         >
@@ -533,150 +605,154 @@ const RequirementDetails = () => {
         )}
       </div>
       <div className="w-[30%] p-3">
-        {/* <div className="text-title mb-3 mt-1">Similar Requirements</div> */}
-        <div className="text-title mb-3 mt-1">Empaneled</div>
-        {activeData.map((company) => (
-          <div
-            className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
-            onClick={() => getVendorDetails(company.id)}
-          >
-            <div className="flex items-center mb-1">
-              <img
-                src={
-                  !company.logo
-                    ? "/assets/images/Companylogo.png"
-                    : company.logo
-                }
-                alt={company.name}
-                className="me-3"
-                style={{ width: 30, height: 30 }}
-              />
-              <div>
-                <Tooltip title={company.name} arrow>
-                  <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
-                    {company.name}
-                  </span>
-                </Tooltip>
-                <p className="text-base">{company.place}</p>
-              </div>
-            </div>
-
-            <div>
-              <span className="text-base me-4 flex items-center mb-1">
-                <AccountCircleOutlined
-                  fontSize="inherit"
-                  className="text-indigo-600 mr-1"
-                />
-                Matching Candidate: {company.candidate}
-              </span>
-
+        {activeDataList?.length > 0 && (
+          <>
+            <div className="text-title mb-3 mt-1">Empaneled</div>
+            {activeDataList.map((vendor) => (
               <div
-                className="text-base flex"
-                // onClick={() => handleMatchingDialog(company.avgScore)}
+                className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
+                onClick={() => getVendorDetails(vendor.orgCode)}
               >
-                <svg
-                  width="14px"
-                  height="14px"
-                  viewBox="0 0 512 512"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    id="Page-1"
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
+                <div className="flex items-center mb-1">
+                  <Avatar
+                    alt={vendor.orgName}
+                    src={vendor?.logo || undefined}
+                    className="rounded-full !h-8 !w-8 mr-1"
                   >
-                    <g
-                      id="icon"
-                      fill="#4640DE"
-                      transform="translate(64.000000, 64.000000)"
-                    >
-                      <path
-                        d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                        id="Combined-Shape"
-                      ></path>
-                    </g>
-                  </g>
-                </svg>
-                Avg Score: {company.avgScore}%
-              </div>
-            </div>
-          </div>
-        ))}
+                    {!vendor?.logo && (
+                      <CorporateFareOutlined fontSize="medium" />
+                    )}
+                  </Avatar>
+                  <div>
+                    <Tooltip title={vendor.orgName} arrow>
+                      <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
+                        {vendor.orgName}
+                      </span>
+                    </Tooltip>
+                    <p className="text-base">{vendor?.location[0]}</p>
+                  </div>
+                </div>
 
-        <div className="text-title mb-3 mt-4">All Vendors</div>
-        {allVendors.map((company) => (
-          <div
-            className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
-            onClick={() => getVendorDetails(company.id)}
-          >
-            <div className="flex items-center mb-1">
-              <img
-                src={
-                  !company.logo
-                    ? "/assets/images/Companylogo.png"
-                    : company.logo
-                }
-                alt={company.name}
-                className="me-3"
-                style={{ width: 30, height: 30 }}
-              />
-              <div>
-                <Tooltip title={company.name} arrow>
-                  <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
-                    {company.name}
+                <div>
+                  <span className="text-base me-4 flex items-center mb-1">
+                    <AccountCircleOutlined
+                      fontSize="inherit"
+                      className="text-indigo-600 mr-1"
+                    />
+                    Matching Candidate: {vendor?.candidate || 2}
                   </span>
-                </Tooltip>
-                <p className="text-base">{company.place}</p>
-              </div>
-            </div>
 
-            <div>
-              <span className="text-base me-4 flex items-center mb-1">
-                <AccountCircleOutlined
-                  fontSize="inherit"
-                  className="text-indigo-600 mr-1"
-                />
-                Matching Candidate: {company.candidate}
-              </span>
-
-              <div
-                className="text-base flex"
-                // onClick={() => handleMatchingDialog(company.avgScore)}
-              >
-                <svg
-                  width="14px"
-                  height="14px"
-                  viewBox="0 0 512 512"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    id="Page-1"
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
+                  <div
+                    className="text-base flex"
+                    // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
-                    <g
-                      id="icon"
-                      fill="#4640DE"
-                      transform="translate(64.000000, 64.000000)"
+                    <svg
+                      width="14px"
+                      height="14px"
+                      viewBox="0 0 512 512"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path
-                        d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                        id="Combined-Shape"
-                      ></path>
-                    </g>
-                  </g>
-                </svg>
-                Avg Score: {company.avgScore}%
+                      <g
+                        id="Page-1"
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <g
+                          id="icon"
+                          fill="#4640DE"
+                          transform="translate(64.000000, 64.000000)"
+                        >
+                          <path
+                            d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                            id="Combined-Shape"
+                          ></path>
+                        </g>
+                      </g>
+                    </svg>
+                    Avg Score: {vendor?.avgScore || 75}%
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ))}
+          </>
+        )}
+        {companiesfilterData?.length > 0 && (
+          <>
+            <div className="text-title mb-3 mt-4">All Vendors</div>
+            {companiesfilterData.map((company) => (
+              <div
+                className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
+                onClick={() => getVendorDetails(company.orgCode)}
+              >
+                <div className="flex items-center mb-1">
+                  <Avatar
+                    alt={company.orgName}
+                    src={company?.logo || undefined}
+                    className="rounded-full !h-8 !w-8 mr-1"
+                  >
+                    {!company?.logo && (
+                      <CorporateFareOutlined fontSize="medium" />
+                    )}
+                  </Avatar>
+                  <div>
+                    <Tooltip title={company.orgName} arrow>
+                      <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
+                        {company.orgName}
+                      </span>
+                    </Tooltip>
+                    <p className="text-base">{company.place}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-base me-4 flex items-center mb-1">
+                    <AccountCircleOutlined
+                      fontSize="inherit"
+                      className="text-indigo-600 mr-1"
+                    />
+                    Matching Candidate: {company?.candidate || 3}
+                  </span>
+
+                  <div
+                    className="text-base flex"
+                    // onClick={() => handleMatchingDialog(company.avgScore)}
+                  >
+                    <svg
+                      width="14px"
+                      height="14px"
+                      viewBox="0 0 512 512"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        id="Page-1"
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <g
+                          id="icon"
+                          fill="#4640DE"
+                          transform="translate(64.000000, 64.000000)"
+                        >
+                          <path
+                            d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                            id="Combined-Shape"
+                          ></path>
+                        </g>
+                      </g>
+                    </svg>
+                    Avg Score: {company?.avgScore || 65}%
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       <StatusDialog

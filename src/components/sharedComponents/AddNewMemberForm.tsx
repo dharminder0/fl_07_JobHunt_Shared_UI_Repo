@@ -37,7 +37,11 @@ const AddNewMemberForm = ({ isEditable = false, data = {} }: any) => {
       lastName: data?.lastName ? data?.lastName : "",
       email: data?.userName ? data?.userName : "",
       phone: data?.phone ? data?.phone : "",
-      access: data?.role ? data?.role : [],
+      access: data?.role
+        ? data?.role?.length > 1
+          ? [RoleType.Both]
+          : [data?.role == "Vendor" ? RoleType.Vendor : RoleType.Client]
+        : [],
     },
   });
 
@@ -176,13 +180,11 @@ const AddNewMemberForm = ({ isEditable = false, data = {} }: any) => {
                       userData?.role[0] == RoleType.Client && (
                         <MenuItem value={RoleType.Client}>Client</MenuItem>
                       )}
-                    {userData?.role?.length > 1 && (
-                      <>
-                        <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>
-                        <MenuItem value={RoleType.Client}>Client</MenuItem>
-                        <MenuItem value={RoleType.Both}>Both</MenuItem>
-                      </>
-                    )}
+                    {userData?.role?.length > 1 && [
+                      <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>,
+                      <MenuItem value={RoleType.Client}>Client</MenuItem>,
+                      <MenuItem value={RoleType.Both}>Both</MenuItem>,
+                    ]}
                   </TextField>
                 )}
               />

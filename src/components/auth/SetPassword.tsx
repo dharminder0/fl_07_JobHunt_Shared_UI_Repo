@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import Slider from "./slider";
 import { Controller, useForm } from "react-hook-form";
@@ -11,6 +11,7 @@ import SuccessDialog from "../sharedComponents/SuccessDialog";
 import { closeBackdrop, openBackdrop } from "../features/drawerSlice";
 import { RoleType } from "../sharedService/enums";
 import { RoleData } from "../sharedService/shareData";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function SetPassword() {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ export default function SetPassword() {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [isSuccessPopup, setIsSuccessPopup] = React.useState<boolean>(false);
   const pathSegments = location.pathname.split("/"); // Split path by "/"
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
 
   const {
     control,
@@ -123,12 +127,27 @@ export default function SetPassword() {
                   <TextField
                     {...field}
                     label="Password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     fullWidth
                     variant="outlined"
                     size="small"
                     error={!!errors.newPassword}
                     helperText={errors.newPassword?.message}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <IconButton
+                            type="button"
+                            aria-label="search"
+                            size="small"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        ),
+                        sx: { pr: 0.5 },
+                      },
+                    }}
                   />
                 )}
               />
@@ -148,12 +167,27 @@ export default function SetPassword() {
                   <TextField
                     {...field}
                     label="Confirm Password"
-                    type="password"
+                    type={showPassword1 ? "text" : "password"}
                     fullWidth
                     variant="outlined"
                     size="small"
                     error={!!errors.confirmPassword}
                     helperText={errors.confirmPassword?.message}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <IconButton
+                            type="button"
+                            aria-label="search"
+                            size="small"
+                            onClick={() => setShowPassword1((prev) => !prev)}
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        ),
+                        sx: { pr: 0.5 },
+                      },
+                    }}
                   />
                 )}
               />

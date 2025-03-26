@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  Box,
-} from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
 import { useNavigate } from "react-router-dom";
 import { getVndDashboardReqCounts } from "../../../components/sharedService/apiService";
+import { RequirementsStatus } from "../../../components/sharedService/enums";
 
 interface VendorDashboard {}
 
@@ -103,7 +101,9 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div
             className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover"
-            onClick={() => handleCardClick("requirements", "Open")}
+            onClick={() =>
+              handleCardClick("requirements", RequirementsStatus.Open)
+            }
           >
             <Typography variant="h5" className="!text-indigo-950">
               {requirementCounts?.openPositions}
@@ -113,7 +113,9 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
 
           <div
             className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-            onClick={() => handleCardClick("requirements", "Open")}
+            onClick={() =>
+              handleCardClick("requirements", RequirementsStatus.Open)
+            }
           >
             <Typography variant="h5" className="!text-indigo-800">
               {requirementCounts?.hotRequirements}

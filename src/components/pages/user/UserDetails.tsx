@@ -33,6 +33,7 @@ export default function UserDetails() {
   const [formData, setFormData] = useState<any>();
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword1, setShowPassword1] = React.useState(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -368,7 +369,9 @@ export default function UserDetails() {
                                   type="button"
                                   aria-label="search"
                                   size="small"
-                                  onClick={handleClickShowPassword}
+                                  onClick={() =>
+                                    setShowPassword((prev) => !prev)
+                                  }
                                 >
                                   {showPassword ? (
                                     <VisibilityOff />
@@ -394,7 +397,7 @@ export default function UserDetails() {
                           {...field}
                           label="New Password"
                           fullWidth
-                          type={showPassword ? "text" : "password"}
+                          type={showPassword1 ? "text" : "password"}
                           size="small"
                           error={!!error2.newPassword}
                           helperText={error2.newPassword?.message}
@@ -405,9 +408,11 @@ export default function UserDetails() {
                                   type="button"
                                   aria-label="search"
                                   size="small"
-                                  onClick={handleClickShowPassword}
+                                  onClick={() =>
+                                    setShowPassword1((prev) => !prev)
+                                  }
                                 >
-                                  {showPassword ? (
+                                  {showPassword1 ? (
                                     <VisibilityOff />
                                   ) : (
                                     <Visibility />
