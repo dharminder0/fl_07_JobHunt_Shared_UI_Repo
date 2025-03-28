@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Typography, Box, Button, Chip, Grid2 } from "@mui/material";
+import { Typography, Box, Button, Chip, Grid2, Avatar } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
-import { Share } from "@mui/icons-material";
+import { CorporateFareOutlined, Share } from "@mui/icons-material";
 import {
   getAllUsers,
   getDashboardReqCounts,
+  getTopClients,
+  getTopVendors,
 } from "../../sharedService/apiService";
 import { RequirementsStatus } from "../../../components/sharedService/enums";
 
@@ -15,6 +17,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [requirementCounts, setRequirementCounts] = useState<any>({});
+  const [topCLients, setTopCLients] = useState<any[]>([]);
+  const [topVendor, setTopVendors] = useState<any[]>([]);
   const openViewList = (typeofList: string) => {
     let currentPath = window.location.pathname;
     const newPath = currentPath.replace("dashboard", typeofList);
@@ -152,6 +156,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
   useEffect(() => {
     getReqDetailCounts();
+    getTopClientsList();
+    getTopVendorsList();
   }, []);
 
   const getReqDetailCounts = () => {
@@ -162,12 +168,38 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     });
   };
 
+  const getTopClientsList = () => {
+    getTopClients({
+      orgCode: userData?.orgCode,
+      pageNumber: 1,
+      pageSize: 5,
+    }).then((result: any) => {
+      if (result.totalPages >= 0) {
+        setTopCLients(result.list);
+      }
+    });
+  };
+
+  const getTopVendorsList = () => {
+    getTopVendors({
+      orgCode: userData?.orgCode,
+      pageNumber: 1,
+      pageSize: 5,
+    }).then((result: any) => {
+      if (result.totalPages >= 0) {
+        setTopVendors(result.list);
+      }
+    });
+  };
+
   return (
     <div className="">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
         <div
           className="bg-primary-light p-3 rounded-md flex flex-col items-center shadow cursor-pointer hover:bg-primary-hover"
-          onClick={() => handleCardClick("myrequirements",  RequirementsStatus.Open)}
+          onClick={() =>
+            handleCardClick("myrequirements", RequirementsStatus.Open)
+          }
         >
           <Typography variant="h5" className="!text-indigo-950">
             {requirementCounts?.openPositions}
@@ -178,7 +210,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
         <div
           className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-          onClick={() => handleCardClick("myrequirements",  RequirementsStatus.Open)}
+          onClick={() =>
+            handleCardClick("myrequirements", RequirementsStatus.Open)
+          }
         >
           <Typography variant="h5" className="!text-indigo-800">
             {requirementCounts?.hotRequirements}
@@ -231,22 +265,22 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
-                {applicantData.map((item, index) => (
+                {topVendor.map((item, index) => (
                   <Box key={index} className="mb-3">
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
-                        <img
-                          src={
-                            !item.logo
-                              ? "/assets/images/Companylogo1.png"
-                              : item.logo
-                          }
-                          className="rounded-full"
-                          style={{ width: 25, height: 25 }}
-                        />
-                        <p className="text-base ms-2">{item.label}</p>
+                        <Avatar
+                          alt="Org Icon"
+                          src={item?.Logo || undefined}
+                          className="rounded-full !h-6 !w-6"
+                        >
+                          {!item?.Logo && (
+                            <CorporateFareOutlined fontSize="small" />
+                          )}
+                        </Avatar>
+                        <p className="text-base ms-2">{item.OrgName}</p>
                       </div>
-                      <p className="text-title ms-2">{item.value}</p>
+                      <p className="text-title ms-2">{item.Total_Placements}</p>
                     </Box>
                   </Box>
                 ))}
@@ -270,22 +304,22 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
-                {applicantItems.map((item, index) => (
+                {topCLients.map((item, index) => (
                   <Box key={index} className="mb-3">
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
-                        <img
-                          src={
-                            !item.logo
-                              ? "/assets/images/Companylogo1.png"
-                              : item.logo
-                          }
-                          className="rounded-full"
-                          style={{ width: 25, height: 25 }}
-                        />
-                        <p className="text-base ms-2">{item.label}</p>
+                        <Avatar
+                          alt="Org Icon"
+                          src={item.clientLogo || undefined}
+                          className="rounded-full !h-6 !w-6"
+                        >
+                          {!item.clientLogo && (
+                            <CorporateFareOutlined fontSize="small" />
+                          )}
+                        </Avatar>
+                        <p className="text-base ms-2">{item.clientName}</p>
                       </div>
-                      <p className="text-title ms-2">{item.value}</p>
+                      <p className="text-title ms-2">{item.totalPositions}</p>
                     </Box>
                   </Box>
                 ))}
