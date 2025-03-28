@@ -1,24 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { BarChart, LineChart, PieChart } from "@mui/x-charts";
-import { fontSize, style } from "@mui/system";
+import {
+  getRequirementStatusGraph,
+  getRequirementWeekGraph,
+  getVndRequirementWeekGraph,
+} from "../sharedService/apiService";
 
 const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
-  const [tabValue, setTabValue] = useState(0);
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
-
-  const data = [
-    { day: "Mon", views: 12, applied: 5 },
-    { day: "Tue", views: 10, applied: 8 },
-    { day: "Wed", views: 8, applied: 4 },
-    { day: "Thu", views: 11, applied: 2 },
-    { day: "Fri", views: 14, applied: 3 },
-    { day: "Sat", views: 2, applied: 0 },
-    { day: "Sun", views: 0, applied: 0 },
-  ];
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const [weekGraphData, setWeekGraphData] = useState<any[]>([]);
+  const [statusGraphData, setStatusGraphData] = useState<any[]>([]);
+  const today = new Date();
+  const activeRole = localStorage.getItem("activeRole") || "";
 
   const requirementData = [
     { owner: "Soniya", count: 12, placement: 5 },
@@ -27,14 +21,106 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
     { owner: "Mariam", count: 8, placement: 3 },
   ];
 
+  useEffect(() => {
+    if (activeRole === "company") {
+      getRequirementWeekGraphData();
+      getRequirementStatusGraphData();
+    }
+    if (activeRole === "vendor") {
+      getVndRequirementWeekGraphData();
+      getVndRequirementStatusGraphData();
+    }
+  }, [activeRole]);
+
+  const getRequirementWeekGraphData = () => {
+    const oneWeekBack = new Date();
+    oneWeekBack.setDate(today.getDate() - 30);
+
+    const payload = {
+      orgCode: userData.orgCode,
+      startDate: oneWeekBack.toISOString().split("T")[0],
+      endDate: today.toISOString().split("T")[0],
+    };
+    getRequirementWeekGraph(payload).then((result: any) => {
+      if (result && result?.length >= 0) {
+        setWeekGraphData(result);
+      }
+    });
+  };
+
+  const getVndRequirementWeekGraphData = () => {
+    const oneWeekBack = new Date();
+    oneWeekBack.setDate(today.getDate() - 30);
+
+    const payload = {
+      orgCode: userData.orgCode,
+      startDate: oneWeekBack.toISOString().split("T")[0],
+      endDate: today.toISOString().split("T")[0],
+      userId: userData.userId,
+    };
+    getVndRequirementWeekGraph(payload).then((result: any) => {
+      if (result && result?.length >= 0) {
+        setWeekGraphData(result);
+      }
+    });
+  };
+
+  const getRequirementStatusGraphData = () => {
+    const oneWeekBack = new Date();
+    oneWeekBack.setDate(today.getDate() - 30);
+
+    const payload = {
+      orgCode: userData.orgCode,
+      startDate: oneWeekBack.toISOString().split("T")[0],
+      endDate: today.toISOString().split("T")[0],
+    };
+    getRequirementStatusGraph(payload).then((result: any) => {
+      if (result && result?.length >= 0) {
+        setStatusGraphData(result);
+      }
+    });
+  };
+  const getVndRequirementStatusGraphData = () => {
+    const oneWeekBack = new Date();
+    oneWeekBack.setDate(today.getDate() - 30);
+
+    const payload = {
+      orgCode: userData.orgCode,
+      startDate: oneWeekBack.toISOString().split("T")[0],
+      endDate: today.toISOString().split("T")[0],
+      userId: userData.userId,
+    };
+    getRequirementStatusGraph(payload).then((result: any) => {
+      if (result && result?.length >= 0) {
+        setStatusGraphData(result);
+      }
+    });
+  };
+
   const items = [
-    { id: "id_A", value: 10, label: "Open", color: "#007FFF" },
-    { id: "id_B", value: 15, label: "Closed", color: "#5DB996" },
-    { id: "id_C", value: 20, label: "On hold", color: "#7e22ce" },
+    {
+      id: "id_A",
+      value: statusGraphData[0]?.Open,
+      label: "Open",
+      color: "#007FFF",
+    },
+    {
+      id: "id_B",
+      value: statusGraphData[0]?.Closed,
+      label: "Closed",
+      color: "#5DB996",
+    },
+    {
+      id: "id_C",
+      value: statusGraphData[0]?.Onhold,
+      label: "On hold",
+      color: "#7e22ce",
+    },
   ];
-  const dayLabels = data.map((item) => item.day);
-  const viewsData = data.map((item) => item.views);
-  const appliedData = data.map((item) => item.applied);
+
+  const dayLabels = weekGraphData.map((item) => item.weekDay);
+  const viewsData = weekGraphData.map((item) => item.totalPositions);
+  const appliedData = weekGraphData.map((item) => item.totalPlacements);
 
   return (
     <Box className="flex-1 flex justify-between md:flex-wrap sm:flex-col md:flex-row">

@@ -227,4 +227,49 @@ export const updateRequirementStatus = async (
   return response.data;
 };
 
+export const getTopClients = async (payload: any) => {
+  const response = await api.post(
+    "V1/Applicants/Company/Vacancies/Active",
+    payload
+  );
+  return response.data;
+};
+
+export const getTopVendors = async (payload: any) => {
+  const response = await api.post("V1/Applicants/Company/TopVendors", payload);
+  return response.data;
+};
+
+export const getRequirementWeekGraph = async (payload: any) => {
+  const response = await api.post(
+    "V1/Requirement/Company-dashboard/Day-Week/Graph",
+    payload
+  );
+  return response.data;
+};
+
+export const getRequirementStatusGraph = async (payload: any) => {
+  const response = await api.post(
+    "V1/Requirement/Company-dashboard/Requirement/Graph",
+    payload
+  );
+  return response.data;
+};
+
+export const getVndRequirementWeekGraph = async (payload: any) => {
+  const response = await api.post(
+    "V1/Requirement/Vendor-dashboard/Day-Week/Graph",
+    payload
+  );
+  return response.data;
+};
+
+export const getVndRequirementStatusGraph = async (payload: any) => {
+  const response = await api.post(
+    "V1/Requirement/Vendor-dashboard/Requirement/Graph",
+    payload
+  );
+  return response.data;
+};
+
 export default api;
