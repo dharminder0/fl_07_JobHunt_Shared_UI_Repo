@@ -252,10 +252,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
       </div>
       <div className="flex-1 px-4 pb-4">
         {/* Job Statistics */}
-        <div className="flex justify-between mb-4">
+        <div className="flex-1 flex justify-between md:flex-wrap sm:flex-col md:flex-row">
           <JobStatistics pieTitle="Requirements" />
-        </div>
-        <div className="flex justify-between md:flex-wrap sm:flex-col md:flex-row">
           <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
@@ -271,16 +269,16 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                       <div className="flex items-center">
                         <Avatar
                           alt="Org Icon"
-                          src={item?.Logo || undefined}
+                          src={item?.vendorLogo || undefined}
                           className="rounded-full !h-6 !w-6"
                         >
-                          {!item?.Logo && (
+                          {!item?.vendorLogo && (
                             <CorporateFareOutlined fontSize="small" />
                           )}
                         </Avatar>
-                        <p className="text-base ms-2">{item.OrgName}</p>
+                        <p className="text-base ms-2">{item.vendorName}</p>
                       </div>
-                      <p className="text-title ms-2">{item.Total_Placements}</p>
+                      <p className="text-title ms-2">{item.totalPlacements}</p>
                     </Box>
                   </Box>
                 ))}
@@ -334,14 +332,16 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </Box>
             </Box>
           </Box>
+        </div>
+        {/* <div className="flex gap-2 md:flex-wrap sm:flex-col md:flex-row">
           <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
-            {/* Applicants Summary Card */}
+            
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Trending Technologies</p>
                 <p className="pt-4 text-title">Positions</p>
               </div>
-              {/* Progress Bars */}
+             
               <Box className="mt-4">
                 {hotTech.map((item, index) => (
                   <Box key={index} className="mb-3">
@@ -368,7 +368,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               </Box>
             </Box>
           </Box>
-        </div>
+        </div> */}
 
         {/* Job Updates */}
         <p className="text-heading mb-4 mt-6">Requirements need attention</p>
