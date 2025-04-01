@@ -272,4 +272,12 @@ export const getVndRequirementStatusGraph = async (payload: any) => {
   return response.data;
 };
 
+export const getVndTopClients = async (payload: any) => {
+  const response = await api.post(
+    "V1/Applicants/Vendor/Vacancies/Active",
+    payload
+  );
+  return response.data;
+};
+
 export default api;

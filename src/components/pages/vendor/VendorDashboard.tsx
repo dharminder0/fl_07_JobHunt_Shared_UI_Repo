@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Typography, Box } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
 import { useNavigate } from "react-router-dom";
-import { getVndDashboardReqCounts } from "../../../components/sharedService/apiService";
+import {
+  getVndDashboardReqCounts,
+  getVndTopClients,
+} from "../../../components/sharedService/apiService";
 import { RequirementsStatus } from "../../../components/sharedService/enums";
 
 interface VendorDashboard {}
@@ -72,6 +75,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [requirementCounts, setRequirementCounts] = useState<any>({});
+  const [topClients, setTopClients] = useState<any[]>([]);
 
   const handleCardClick = (page: string, status: any) => {
     navigate(`/vendor/${page}`, {
@@ -81,6 +85,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
 
   useEffect(() => {
     getReqDetailCounts();
+    getVndTopClientLists();
   }, []);
 
   const getReqDetailCounts = () => {
@@ -91,6 +96,19 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
         }
       }
     );
+  };
+
+  const getVndTopClientLists = () => {
+    const payload = {
+      userId: userData?.userId,
+      pageNumber: 1,
+      pageSize: 10,
+    };
+    getVndTopClients(payload).then((result: any) => {
+      if (result.count >= 0) {
+        setTopClients(result.list);
+      }
+    });
   };
 
   return (
@@ -146,8 +164,6 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
         {/* Job Statistics */}
         <div className="flex justify-between mb-4">
           <JobStatistics pieTitle="Requirements" />
-        </div>
-        <div className="flex space-x-3">
           <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
             {/* Applicants Summary Card */}
             <Box className="bg-white border px-4 rounded-md">
@@ -157,36 +173,38 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
-                {applicantItems.map((item, index) => (
+                {topClients.map((item: any, index: number) => (
                   <Box key={index} className="mb-3">
                     <Box className="flex justify-between mb-1">
                       <div className="flex items-center">
                         <img
                           src={
-                            !item.logo
+                            !item.clientLogo
                               ? "/assets/images/Companylogo1.png"
-                              : item.logo
+                              : item.clientLogo
                           }
                           className="rounded-full"
                           style={{ width: 25, height: 25 }}
                         />
-                        <p className="text-base ms-2">{item.label}</p>
+                        <p className="text-base ms-2">{item.clientName}</p>
                       </div>
-                      <p className="text-title ms-2">{item.value}</p>
+                      <p className="text-title ms-2">{item.totalPositions}</p>
                     </Box>
                   </Box>
                 ))}
               </Box>
             </Box>
           </Box>
+        </div>
+        {/* <div className="flex space-x-3">
           <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
-            {/* Applicants Summary Card */}
+            
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Trending Technologies</p>
                 <p className="pt-4 text-title">Positions</p>
               </div>
-              {/* Progress Bars */}
+              
               <Box className="mt-4">
                 {hotTech.map((item, index) => (
                   <Box key={index} className="mb-3">
@@ -210,7 +228,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
               </Box>
             </Box>
           </Box>
-        </div>
+        </div> */}
       </div>
     </div>
   );
