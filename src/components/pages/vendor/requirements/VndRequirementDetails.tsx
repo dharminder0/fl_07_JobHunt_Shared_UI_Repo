@@ -71,9 +71,14 @@ const VndRequirementDetails = () => {
     });
   };
   const getRequirementApplicant = (uniqueId: any) => {
-    getRequirementApplicants(uniqueId).then((result: any) => {
-      if (result) {
-        setApplicantData(result);
+    const payload = {
+      requirementUniqueId: uniqueId,
+      page: 1,
+      pageSize: 10,
+    };
+    getRequirementApplicants(payload).then((result: any) => {
+      if (result.count >= 0) {
+        setApplicantData(result.list);
       }
     });
   };

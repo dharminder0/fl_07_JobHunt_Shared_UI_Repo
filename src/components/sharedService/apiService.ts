@@ -190,9 +190,10 @@ export const getApplicantsList = async (payload: any) => {
   return response.data;
 };
 
-export const getRequirementApplicants = async (uniqueId: any) => {
-  const response = await api.get(
-    `V1/Requirement/Get/Applicants?requirementUniqueId=${uniqueId}`
+export const getRequirementApplicants = async (payload: any) => {
+  const response = await api.post(
+    "V1/Requirement/Get/Applicants?requirementUniqueId",
+    payload
   );
   return response.data;
 };
@@ -277,6 +278,16 @@ export const getVndTopClients = async (payload: any) => {
     "V1/Applicants/Vendor/Vacancies/Active",
     payload
   );
+  return response.data;
+};
+
+export const upsertRequirementHot = async (payload: any) => {
+  const response = await api.post("V1/Requirement/Hot-Upsert", payload);
+  return response.data;
+};
+
+export const getHotRequirements = async (payload: any) => {
+  const response = await api.post("V1/Requirement/Hot-Vacancies", payload);
   return response.data;
 };
 
