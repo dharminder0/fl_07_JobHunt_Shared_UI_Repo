@@ -10,6 +10,8 @@ import {
   Tooltip,
   InputAdornment,
   Avatar,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import {
   Edit,
@@ -27,7 +29,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   getOnboardInvitedList,
   getOrgDetailsList,
+  getRequirementApplicants,
   getRequirementsListById,
+  upsertRequirementHot,
 } from "../../../../components/sharedService/apiService";
 import {
   ApplicantsStatus,
@@ -37,154 +41,8 @@ import {
   InvitedType,
   RoleType,
 } from "../../../../components/sharedService/enums";
-
-const applicantData = [
-  {
-    id: 1,
-    vendor: "Fleek IT Solutions",
-    name: "Harshit Tandon",
-    requirement: "React js Developer",
-    client: "Airtel",
-    status: "In Review",
-    date: "13-07-2024",
-    ai: 60,
-    vendorLogo:
-      "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    clientLogo:
-      "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-  },
-  {
-    id: 2,
-    vendor: "DevStringX Technologies",
-    name: "Raj Pathar",
-    requirement: "Sr. Angular developer",
-    client: "IBM Consulting",
-    status: "New",
-    date: "12-06-2024",
-    ai: 70,
-    vendorLogo:
-      "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    clientLogo:
-      "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-  },
-  {
-    id: 3,
-    vendor: "Binemiles Technologies",
-    name: "Sajid Sarkar",
-    requirement: "React Native mobile developer",
-    client: "Capgemini",
-    status: "Rejected",
-    date: "18-05-2024",
-    ai: 50,
-    vendorLogo:
-      "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-    clientLogo:
-      "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-  },
-  {
-    id: 4,
-    vendor: "SDET Tech Pvt. Ltd",
-    name: "Amit Kumar",
-    requirement: "Frontend developer",
-    client: "NTT DATA",
-    status: "Shortlisted",
-    date: "11-04-2024",
-    ai: 80,
-    vendorLogo:
-      "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    clientLogo:
-      "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
-  },
-  {
-    id: 5,
-    vendor: "Fleek IT Solutions",
-    name: "Harshit Tandon",
-    requirement: ".Net developer",
-    client: "Airtel",
-    status: "Placed",
-    date: "13-07-2024",
-    ai: 65,
-    vendorLogo:
-      "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    clientLogo:
-      "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-  },
-];
-
-const activeData = [
-  {
-    id: 1,
-    name: "Fleek IT Solutions",
-    description:
-      "Stripe is a software platform for starting and running internet businesses.",
-    tags: ["Onsite", "50-100", "QA Testing"],
-    place: "Noida",
-    contracts: "20",
-    logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-    candidate: 5,
-    avgScore: 70,
-  },
-  {
-    id: 2,
-    name: "DevStringX Technologies",
-    description:
-      "Take control of your money. Truebill develops a mobile app for you business...",
-    tags: ["Onsite", "10-50", "App Tech"],
-    place: "Delhi(NCR)",
-    contracts: "10",
-    logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    candidate: 3,
-    avgScore: 60,
-  },
-  {
-    id: 3,
-    name: "Binemiles Technologies",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "500+", "Other Tech"],
-    place: "Gurgaon",
-    contracts: "12",
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-    candidate: 2,
-    avgScore: 80,
-  },
-];
-
-const allVendors = [
-  {
-    id: 1,
-    name: "Cyient Limited",
-    description:
-      "Stripe is a software platform for starting and running internet businesses with this platform.",
-    tags: ["Onsite", "50-100", "QA Testing"],
-    place: "Noida",
-    logo: "https://www.cyient.com/hubfs/enhancer.png",
-    candidate: 5,
-    avgScore: 75,
-  },
-  {
-    id: 3,
-    name: "Exzeo Software Pvt Ltd",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "500+", "Other Tech"],
-    place: "Gurgaon",
-    logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-    candidate: 2,
-    avgScore: 70,
-  },
-  {
-    id: 4,
-    name: "Nucleus Software Exports ",
-    description:
-      "Square builds common business tools in unconventional ways and used best technologies...",
-    tags: ["Onsite", "0-10", "App Tech"],
-    place: "Mumbai",
-    logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    candidate: 7,
-    avgScore: 65,
-  },
-];
+import moment from "moment";
+import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 
 const RequirementDetails = () => {
   const navigate = useNavigate();
@@ -197,10 +55,13 @@ const RequirementDetails = () => {
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [matchingScore, setMatchingScore] = React.useState(0);
-  const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
   const [activeDataList, setActiveDataList] = useState<any[]>([]);
   const [companiesfilterData, setCompaniesfilterData] = useState<any[]>([]);
   const [requirementData, setRequirementData] = useState<any>(null);
+  const [applicantData, setApplicantData] = useState<any[]>([]);
+  const [status, setStatus] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState<any>("");
+  const [checked, setChecked] = React.useState(false);
 
   const handleToggle = () => {
     setExpanded((prev) => !prev);
@@ -231,52 +92,29 @@ const RequirementDetails = () => {
     status: !params?.status ? [] : [params?.status],
   });
 
-  const [filterList, setFilterList] = useState<any>({
-    status: [
-      "New",
-      "In Review",
-      "Shortlisted",
-      "Technical Assessment",
-      "Interview Round I",
-      "Interview Round II",
-      "Rejected",
-      "Placed",
-    ],
-  });
+  const pathSegments = document.location.pathname.split("/");
+  const uniqueId = pathSegments.pop();
 
   useEffect(() => {
-    const pathSegments = document.location.pathname.split("/");
-    const uniqueId = pathSegments.pop();
     getRequirementsData(uniqueId);
     getOrgRequestList();
     getOrgDetailsListData();
   }, []);
 
+  useEffect(() => {
+    if (searchText?.length > 2 || searchText?.length == 0) {
+      getRequirementApplicant(uniqueId);
+    }
+  }, [status, searchText]);
+
   const getRequirementsData = (uniqueId: any) => {
     getRequirementsListById(uniqueId).then((result: any) => {
       if (result) {
         setRequirementData(result);
+        setChecked(result.hot);
       }
     });
   };
-
-  useEffect(() => {
-    // Filtering logic
-    const filtered = applicantData.filter((item) => {
-      // Check status filter
-      const statusMatch =
-        searchFilter.status.length === 0 ||
-        searchFilter.status.includes(item.status);
-      // Check search input
-      const searchMatch =
-        searchFilter.searchValue === "" ||
-        item.name
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-      return statusMatch && searchMatch;
-    });
-    setFilteredApplicants(filtered);
-  }, [searchFilter, setFilteredApplicants]);
 
   const getOrgRequestList = () => {
     const payload = {
@@ -316,6 +154,34 @@ const RequirementDetails = () => {
       .catch((error: any) => {
         console.error("Error fetching data:", error);
       });
+  };
+
+  const getRequirementApplicant = (uniqueId: any) => {
+    const payload = {
+      requirementUniqueId: uniqueId,
+      status: status,
+      searchText: searchText,
+      page: 1,
+      pageSize: 10,
+    };
+    getRequirementApplicants(payload).then((result: any) => {
+      if (result.count >= 0) {
+        setApplicantData(result.list);
+      }
+    });
+  };
+
+  const upsertHotRequirement = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const payload = {
+      requirementUniqueId: uniqueId,
+      hot: !event.target.checked ? 0 : 1,
+    };
+    setChecked(event.target.checked);
+    upsertRequirementHot(payload).then((result: any) => {
+      if (result.success) {
+        console.log(result.message);
+      }
+    });
   };
 
   return (
@@ -402,6 +268,16 @@ const RequirementDetails = () => {
                   </div>
                 </Box>
               </div>
+              <div>
+                <Switch
+                  checked={checked}
+                  onChange={upsertHotRequirement}
+                  size="small"
+                  inputProps={{ "aria-label": "controlled" }}
+                  color="error"
+                />
+                <span className="text-base">High Priority</span>
+              </div>
             </Box>
             <div>
               {/* Description */}
@@ -462,12 +338,9 @@ const RequirementDetails = () => {
                         <TextField
                           size="small"
                           className="w-full"
-                          value={searchFilter.searchValue}
+                          value={searchText}
                           onChange={(event) =>
-                            setSearchFilter({
-                              ...searchFilter,
-                              searchValue: event.target.value,
-                            })
+                            setSearchText(event.target.value)
                           }
                           placeholder="Search"
                           slotProps={{
@@ -483,15 +356,12 @@ const RequirementDetails = () => {
                       </div>
                     </div>
                     <div className="max-w-full shrink-0">
-                      <MenuDrpDwn
-                        menuList={filterList?.status}
+                      <MenuDrpDwnV2
+                        menuList={ApplicantsStatus}
                         placeholder="Status"
-                        handleSelectedItem={(selectedItems) => {
-                          setSearchFilter({
-                            ...searchFilter,
-                            status: selectedItems,
-                          });
-                        }}
+                        handleSelectedItem={(selectedItems) =>
+                          setStatus(selectedItems)
+                        }
                       />
                     </div>
                   </div>
@@ -517,30 +387,36 @@ const RequirementDetails = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredApplicants.map((applicant, index) => (
+                  {applicantData.map((applicant, index) => (
                     <tr key={index}>
                       <th className="add-right-shadow">
-                        <div>{applicant.name}</div>
+                        <div>
+                          {applicant.firstName + " " + applicant.lastName}
+                        </div>
                         <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                           <div
                             className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                            onClick={() => getVendorDetails(applicant.id)}
+                            onClick={() =>
+                              getVendorDetails(applicant.vendorOrgCode)
+                            }
                           >
                             <img
                               src={applicant.vendorLogo}
                               style={{ height: 12, width: 12 }}
                               className="me-1"
                             />
-                            <Tooltip title={applicant.vendor} arrow>
+                            <Tooltip title={applicant.vendorOrgName} arrow>
                               <span className="text-ellipsis overflow-hidden truncate">
-                                {applicant.vendor}
+                                {applicant.vendorOrgName}
                               </span>
                             </Tooltip>
                           </div>
                           <div className="flex text-info items-center">
                             <div
                               className="flex cursor-pointer"
-                              onClick={() => handleMatchingDialog(applicant.ai)}
+                              onClick={() =>
+                                handleMatchingDialog(applicant.ai || 65)
+                              }
                             >
                               <svg
                                 width="14px"
@@ -569,7 +445,7 @@ const RequirementDetails = () => {
                                   </g>
                                 </g>
                               </svg>
-                              <span> {applicant.ai}%</span>
+                              <span> {applicant.ai || 65}%</span>
                             </div>
                             <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
                               <Download fontSize="inherit" />
@@ -578,24 +454,28 @@ const RequirementDetails = () => {
                           </div>
                         </div>
                       </th>
-                      <td>{applicant.requirement}</td>
+                      <td>{applicant.title}</td>
                       <td>
                         <Typography
                           className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                            applicant.status === "Placed"
+                            applicant.statusName === "Placed"
                               ? "bg-green-100 text-green-700"
-                              : applicant.status === "Rejected"
+                              : applicant.statusName === "Rejected"
                                 ? "bg-red-100 text-red-700"
-                                : applicant.status === "New"
+                                : applicant.statusName === "New"
                                   ? "bg-orange-100 text-orange-700"
                                   : "bg-indigo-100 text-indigo-700"
                           }`}
-                          onClick={() => handleStatusDialog(applicant.status)}
+                          onClick={() =>
+                            handleStatusDialog(applicant.statusName)
+                          }
                         >
-                          {applicant.status}
+                          {applicant.statusName}
                         </Typography>
                       </td>
-                      <td>{applicant.date}</td>
+                      <td>
+                        {moment(applicant.applicationDate).format("DD-MM-YYYY")}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

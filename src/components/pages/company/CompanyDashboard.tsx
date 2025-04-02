@@ -6,10 +6,12 @@ import { CorporateFareOutlined, Share } from "@mui/icons-material";
 import {
   getAllUsers,
   getDashboardReqCounts,
+  getHotRequirements,
   getTopClients,
   getTopVendors,
 } from "../../sharedService/apiService";
 import { RequirementsStatus } from "../../../components/sharedService/enums";
+import moment from "moment";
 
 interface CompanyDashboardProps {}
 
@@ -19,103 +21,12 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
   const [requirementCounts, setRequirementCounts] = useState<any>({});
   const [topCLients, setTopCLients] = useState<any[]>([]);
   const [topVendor, setTopVendors] = useState<any[]>([]);
+  const [hotRequirements, setHotRequirements] = useState<any[]>([]);
   const openViewList = (typeofList: string) => {
     let currentPath = window.location.pathname;
     const newPath = currentPath.replace("dashboard", typeofList);
     navigate(newPath);
   };
-
-  const applicantData = [
-    {
-      logo: "https://fleekitsolutions.com/wp-content/uploads/2023/09/favicon-32x32-1.png",
-      label: "Fleek IT Solutions",
-      value: 25,
-      color: "bg-purple-500",
-    },
-    {
-      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-      label: "DevStringX Technologies",
-      value: 14,
-      color: "bg-green-500",
-    },
-    {
-      logo: "https://binmile.com/wp-content/uploads/2022/07/bmt-favicon.png",
-      label: "Binemiles Technologies",
-      value: 12,
-      color: "bg-blue-500",
-    },
-    {
-      logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-      label: "SDET Tech Pvt. Ltd",
-      value: 8,
-      color: "bg-yellow-500",
-    },
-    {
-      logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-      label: "JigNect Technologies",
-      value: 10,
-      color: "bg-red-500",
-    },
-  ];
-  const applicantItems = [
-    {
-      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-      label: "Airtel",
-      value: 21,
-      color: "bg-purple-500",
-    },
-    {
-      logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-      label: "IBM Consulting",
-      value: 17,
-      color: "bg-green-500",
-    },
-    {
-      logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-      label: "Capgemini",
-      value: 18,
-      color: "bg-blue-500",
-    },
-    {
-      logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
-      label: "NTT DATA",
-      value: 16,
-      color: "bg-yellow-500",
-    },
-    {
-      logo: "https://companieslogo.com/img/orig/CTSH-82a8444b.png",
-      label: "Cognizant",
-      value: 21,
-      color: "bg-red-500",
-    },
-  ];
-  const hotTech = [
-    {
-      logo: "https://reactnative.dev/img/header_logo.svg",
-      label: "React Native",
-      value: 35,
-      color: "bg-purple-500",
-    },
-    {
-      logo: "https://angular.dev/assets/icons/favicon-48x48.png",
-      label: "Angular",
-      value: 27,
-      color: "bg-green-500",
-    },
-    {
-      logo: "https://www.gstatic.com/devrel-devsite/prod/v3239347c48d1e3c46204782fd038ba187a6753dfa7d7a0d08a574587ae2085f5/android/images/favicon.svg",
-      label: "Android Developer",
-      value: 23,
-      color: "bg-blue-500",
-    },
-    {
-      logo: "https://vuejs.org/logo.svg",
-      label: "Vue Developer",
-      value: 34,
-      color: "bg-yellow-500",
-    },
-    { logo: "", label: "QA Automation", value: 36, color: "bg-red-500" },
-  ];
 
   const attentionData = [
     {
@@ -158,6 +69,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     getReqDetailCounts();
     getTopClientsList();
     getTopVendorsList();
+    getHotRequirementsList();
   }, []);
 
   const getReqDetailCounts = () => {
@@ -188,6 +100,19 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     }).then((result: any) => {
       if (result.totalPages >= 0) {
         setTopVendors(result.list);
+      }
+    });
+  };
+
+  const getHotRequirementsList = () => {
+    const payload = {
+      orgCode: userData?.orgCode,
+      page: 1,
+      pageSize: 10,
+    };
+    getHotRequirements(payload).then((result: any) => {
+      if (result.totalPages >= 0) {
+        setHotRequirements(result.list);
       }
     });
   };
@@ -245,7 +170,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
           onClick={() => handleCardClick("myrequirements", true)}
         >
           <Typography variant="h5" className="!text-red-600">
-            {requirementCounts?.totalApplicants}
+            {requirementCounts?.noApplications}
           </Typography>
           <p className="text-base">No Applicants</p>
         </div>
@@ -374,44 +299,44 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         <p className="text-heading mb-4 mt-6">Requirements need attention</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {attentionData.map((requirement) => (
+          {hotRequirements.map((requirement) => (
             <Grid2 size={3} key={requirement.id}>
               <div
                 className="border rounded-md p-3 hover:bg-indigo-50 hover:border-indigo-700 cursor-pointer"
                 onClick={() =>
-                  navigate(`/company/myrequirements/${requirement.id}`)
+                  navigate(`/company/myrequirements/${requirement.RequirementUniqueId}`)
                 }
               >
                 <div className="flex">
-                  <img
-                    src={
-                      !requirement.logo
-                        ? "/assets/images/Companylogo1.png"
-                        : requirement.logo
-                    }
-                    className="rounded-full mb-2"
-                    style={{ width: 36, height: 36 }}
-                  />
+                  <Avatar
+                    alt={requirement.ClientName}
+                    src={requirement.ClientLogo || undefined}
+                    className="rounded-full !h-8 !w-8"
+                  >
+                    {!requirement.ClientLogo && (
+                      <CorporateFareOutlined fontSize="small" />
+                    )}
+                  </Avatar>
                   <div className="ms-3">
-                    <p className="text-title">{requirement.label}</p>
-                    <p className="text-base">{requirement.client}</p>
+                    <p className="text-title">{requirement.Title}</p>
+                    <p className="text-base">{requirement.ClientName}</p>
                   </div>
                 </div>
                 <div className="flex flex-wrap mb-1">
                   <Chip
-                    label="Remote"
+                    label={requirement.LocationTypeName}
                     variant="outlined"
                     className="my-1 me-1 !text-info"
                     size="small"
                   />
                   <Chip
-                    label="Positions: 3"
+                    label={`Positions: ${requirement.Positions}`}
                     variant="outlined"
                     className="my-1 me-1 !text-info"
                     size="small"
                   />
                   <Chip
-                    label="12-12-2024"
+                    label={moment(requirement.CreatedOn).format("DD-MM-YYYY")}
                     variant="outlined"
                     className="my-1 me-1 !text-info"
                     size="small"
@@ -419,7 +344,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                 </div>
 
                 <Button variant="text" startIcon={<Share />} size="small">
-                  {requirement.vendor}
+                  {requirement.VisibilityName}
                 </Button>
               </div>
             </Grid2>
