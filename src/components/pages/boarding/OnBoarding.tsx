@@ -42,7 +42,7 @@ export default function OnBoarding() {
   );
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [companyType, setCompanyType] = React.useState("");
+  const [companyType, setCompanyType] = React.useState<any>(RoleType.Vendor);
 
   const defaultVal: any = {
     registrationType: ["1"], // Default empty or predefined value
@@ -69,10 +69,8 @@ export default function OnBoarding() {
     data.userId = userData.userId;
     userData.role =
       data?.registrationType === "3" ? `"1", "2"` : data?.registrationType;
-
     upsertCompanyInfo(data)
       .then((result: any) => {
-        console.log("Form result:", result);
         localStorage.setItem("userData", JSON.stringify(userData));
         if (result?.success) {
           setTimeout(() => {
@@ -96,26 +94,6 @@ export default function OnBoarding() {
         }
       } else {
         // Save role type to localStorage and navigate
-        localStorage.setItem(
-          "role",
-          JSON.stringify(
-            companyType === RoleType.Client
-              ? ["company"]
-              : companyType === RoleType.Vendor
-                ? ["vendor"]
-                : companyType === RoleType.Both
-                  ? ["company", "vendor"]
-                  : []
-          )
-        );
-        localStorage.setItem(
-          "activeRole",
-          companyType === RoleType.Client
-            ? "company"
-            : companyType === RoleType.Vendor
-              ? "vendor"
-              : "company"
-        );
         navigate(
           `/${
             companyType === RoleType.Client
@@ -147,6 +125,31 @@ export default function OnBoarding() {
     setCompanyType(value);
     setValue("registrationType", value === "3" ? ["1", "2"] : [value]);
   };
+
+  React.useEffect(() => {
+    if (companyType) {
+      localStorage.setItem(
+        "role",
+        JSON.stringify(
+          companyType === RoleType.Client
+            ? ["company"]
+            : companyType === RoleType.Vendor
+              ? ["vendor"]
+              : companyType === RoleType.Both
+                ? ["company", "vendor"]
+                : []
+        )
+      );
+      localStorage.setItem(
+        "activeRole",
+        companyType === RoleType.Client
+          ? "company"
+          : companyType === RoleType.Vendor
+            ? "vendor"
+            : "company"
+      );
+    }
+  }, [companyType]);
 
   return (
     <div className="bg-white h-screen flex flex-col">
