@@ -46,28 +46,28 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
   }));
 
   const onSubmit = (data: any) => {
-    dispatch(openBackdrop());
+    // dispatch(openBackdrop());
     data.registrationType =
       data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
 
     userData.role =
       data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
-
-    upsertCompanyInfo(data)
-      .then((result: any) => {
-        console.log("Form result:", result);
-        localStorage.setItem("userData", JSON.stringify(userData));
-        if (result?.success) {
-          setTimeout(() => {
-            dispatch(closeBackdrop());
-          }, 1000);
-        }
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
-      });
+    debugger;
+    // upsertCompanyInfo(data)
+    //   .then((result: any) => {
+    //     console.log("Form result:", result);
+    //     localStorage.setItem("userData", JSON.stringify(userData));
+    //     if (result?.success) {
+    //       setTimeout(() => {
+    //         dispatch(closeBackdrop());
+    //       }, 1000);
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     setTimeout(() => {
+    //       dispatch(closeBackdrop());
+    //     }, 1000);
+    //   });
   };
 
   useEffect(() => {
