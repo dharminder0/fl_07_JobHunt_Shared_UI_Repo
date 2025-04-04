@@ -52,7 +52,7 @@ const OrganizationProfile = () => {
   };
 
   const handleOpenDrawer = (name: string) => {
-    dispatch(openDrawer({ drawerName: name}));
+    dispatch(openDrawer({ drawerName: name }));
   };
 
   return (
@@ -120,7 +120,11 @@ const OrganizationProfile = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href={orgData?.website} underline="none">
+                    <Link
+                      href={orgData?.website}
+                      underline="none"
+                      target="_blank"
+                    >
                       <Language fontSize="small" /> {orgData?.website}
                     </Link>
                   </li>
