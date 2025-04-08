@@ -1,5 +1,5 @@
 import { Image as ImageIcon, UploadFile } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface FileUploadBoxProps {
   title?: string;
@@ -88,6 +88,17 @@ const UploadLogo: React.FC<FileUploadBoxProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (iconType === "image" && file?.length > 0 && file[0].fileData) {
+      const isUrl = file[0].fileData.startsWith("http");
+      if (isUrl) {
+        setPreview(file[0].fileData); // Use image URL from external file data
+      } else {
+        setPreview(`data:image/*;base64,${file[0].fileData}`); // Fallback in case it's base64
+      }
+    }
+  }, [file, iconType]);
+
   return (
     <div>
       <div
@@ -110,7 +121,7 @@ const UploadLogo: React.FC<FileUploadBoxProps> = ({
                 <img
                   src={preview}
                   alt="Preview"
-                  className="mt-3 h-[50px] object-cover text-center"
+                  className="h-[75px] object-cover text-center rounded-full"
                 />
               )}
 
