@@ -56,8 +56,8 @@ const VndClients = () => {
 
   const getOrgRequestList = () => {
     const payload = {
-      orgCode: userData?.orgCode,
-      // relatedOrgCode: userData?.orgCode,
+      // orgCode: userData?.orgCode,
+      relatedOrgCode: userData?.orgCode,
       relationshipType: [RoleType.Vendor],
       status:
         tabValue === "Active" ? InvitedType.Accepted : InvitedType.Archived,

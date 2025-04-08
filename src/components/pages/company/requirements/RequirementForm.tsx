@@ -42,6 +42,7 @@ import {
 } from "../../../../components/sharedService/enums";
 import { getClientLists } from "../../../../components/sharedService/apiService";
 import ReactQuill from "react-quill";
+import { useOrgRequestList } from "../../../../components/hooks/useOrgRequestList";
 
 const steps = ["Paste Requirement", "Basic Information", "Vendors"];
 
@@ -178,6 +179,8 @@ const allVendors = [
   },
 ];
 
+const skillsData = ["JavaScript", "React", "Node.js", "Tailwind"];
+
 const RequirementForm = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLoader, setIsLoader] = useState(false);
@@ -191,8 +194,10 @@ const RequirementForm = () => {
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [selectedVendors, setSelectedVendors] = useState<any>([]);
   const [clientListData, setClientListData] = useState<any>([]);
+  const [empaneledVendors, setEmpaneledVendors] = useState<any>([]);
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const orgCode = userData?.orgCode;
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -224,6 +229,7 @@ const RequirementForm = () => {
       remarks: "",
       status: 1,
       userId: "",
+      skills: [],
     },
   });
 
@@ -232,12 +238,12 @@ const RequirementForm = () => {
   const handleCardClick = (company: any) => {
     setSelectedCards((prevSelected: any) => {
       const isSelected = prevSelected.some(
-        (item: any) => item.id === company.id
+        (item: any) => item.relatedOrgCode === company.relatedOrgCode
       );
 
       if (isSelected) {
         // Remove card if already selected
-        return prevSelected.filter((item: any) => item.id !== company.id);
+        return prevSelected.filter((item: any) => item.relatedOrgCode !== company.relatedOrgCode);
       } else {
         // Add card if not selected
         return [...prevSelected, company];
@@ -246,7 +252,7 @@ const RequirementForm = () => {
   };
 
   const isCardSelected = (company: any) =>
-    selectedCards.some((item: any) => item.id === company.id);
+    selectedCards.some((item: any) => item.relatedOrgCode === company.relatedOrgCode);
 
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
@@ -318,6 +324,7 @@ const RequirementForm = () => {
     if (activeStep === 0) {
       await onPromtSubmit();
     } else if (activeStep === 1) {
+      refetch();
       await onSubmit(data);
     } else if (activeStep === 2) {
       await handleSubmitStep2();
@@ -385,6 +392,19 @@ const RequirementForm = () => {
       }
     });
   };
+
+  // empanaled vendor list
+
+  const { activeDataList, isLoading, refetch } = useOrgRequestList({
+    orgCode: orgCode,
+    tabValue: "Active",
+    pageIndex: 1,
+    pageSize: 6,
+  });
+
+  useEffect(() => {
+    setEmpaneledVendors(activeDataList);
+  }, [activeDataList]);
 
   return (
     <div>
@@ -634,23 +654,54 @@ const RequirementForm = () => {
                             />
                           </div>
 
-                          {/* <div>
+                          <div className="col-span-2">
                             <Controller
-                              name="clientId"
+                              name="skills"
                               control={control}
                               render={({ field }) => (
-                                <TextField
-                                  {...field}
-                                  label="Select Client"
-                                  fullWidth
-                                  size="small"
+                                <Autocomplete
+                                  multiple
+                                  options={skillsData}
+                                  value={field.value || []}
+                                  onChange={(_, newValue) =>
+                                    field.onChange(newValue)
+                                  }
+                                  renderTags={(value, getTagProps) => {
+                                    const maxVisible = 4;
+                                    return [
+                                      ...value
+                                        .slice(0, maxVisible)
+                                        .map((option, index) => (
+                                          <span
+                                            key={option}
+                                            className="bg-blue-100 text-blue-800 text-info px-2 py-1 rounded-full mr-1"
+                                          >
+                                            {option}
+                                          </span>
+                                        )),
+                                      value.length > maxVisible && (
+                                        <span
+                                          key="more"
+                                          className="text-gray-500 text-info ml-1"
+                                        >
+                                          +{value.length - maxVisible} more
+                                        </span>
+                                      ),
+                                    ];
+                                  }}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      label="Skills"
+                                      placeholder="Search skills"
+                                      size="small"
+                                    />
+                                  )}
                                 />
                               )}
                             />
-                            <label className="text-info">
-                              Client information will not be shared with Vendors
-                            </label>
-                          </div> */}
+                          </div>
+
                           <div className="col-span-2">
                             <Controller
                               name="remarks"
@@ -723,86 +774,95 @@ const RequirementForm = () => {
                         <h5 className="text-heading mb-3">Empaneled</h5>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {activeData.map((company, idx) => (
-                            <div
-                              key={idx}
-                              onClick={() => handleCardClick(company)}
-                            >
-                              <div
-                                className={`h-100 border p-3 rounded-md cursor-pointer ${
-                                  isCardSelected(company)
-                                    ? "!bg-indigo-100 border-indigo-600"
-                                    : ""
-                                }`}
-                              >
-                                <div className="flex items-center mb-4">
-                                  <img
-                                    src={
-                                      !company.logo
-                                        ? "/assets/images/Companylogo.png"
-                                        : company.logo
-                                    }
-                                    alt={company.name}
-                                    className="me-3"
-                                    style={{ width: 30, height: 30 }}
-                                  />
-                                  <div>
-                                    <Tooltip title={company.name} arrow>
-                                      <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
-                                        {company.name}
-                                      </span>
-                                    </Tooltip>
-                                    <p className="text-base">{company.place}</p>
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <span className="text-base me-4 flex items-center mb-1">
-                                    <AccountCircleOutlined
-                                      fontSize="inherit"
-                                      className="text-indigo-600 mr-1"
-                                    />
-                                    Matching Candidate: {company.candidate}
-                                  </span>
-
+                          {empaneledVendors?.length > 0
+                            ? empaneledVendors.map((company:any, idx:number) => (
+                                <div
+                                  key={idx}
+                                  onClick={() =>
+                                    handleCardClick(company)
+                                  }
+                                >
                                   <div
-                                    className="text-base flex hover:text-indigo-700"
-                                    onClick={() =>
-                                      handleMatchingDialog(company.avgScore)
-                                    }
+                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
+                                      isCardSelected(company)
+                                        ? "!bg-indigo-100 border-indigo-600"
+                                        : ""
+                                    }`}
                                   >
-                                    <svg
-                                      width="14px"
-                                      height="14px"
-                                      viewBox="0 0 512 512"
-                                      version="1.1"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <g
-                                        id="Page-1"
-                                        stroke="none"
-                                        stroke-width="1"
-                                        fill="none"
-                                        fill-rule="evenodd"
+                                    <div className="flex items-center mb-4">
+                                      <img
+                                        src={
+                                          !company.logo
+                                            ? "/assets/images/Companylogo.png"
+                                            : company.logo
+                                        }
+                                        alt={company.orgName}
+                                        className="me-3"
+                                        style={{ width: 30, height: 30 }}
+                                      />
+                                      <div>
+                                        <Tooltip title={company.orgName} arrow>
+                                          <span className="text-ellipsis overflow-hidden truncate text-base font-bold">
+                                            {company.orgName}
+                                          </span>
+                                        </Tooltip>
+                                        <p className="text-base">
+                                          {company?.location[0] || "-"}
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <span className="text-base me-4 flex items-center mb-1">
+                                        <AccountCircleOutlined
+                                          fontSize="inherit"
+                                          className="text-indigo-600 mr-1"
+                                        />
+                                        Matching Candidate:{" "}
+                                        {company?.candidate || 2}
+                                      </span>
+
+                                      <div
+                                        className="text-base flex hover:text-indigo-700"
+                                        onClick={() =>
+                                          handleMatchingDialog(
+                                            company?.avgScore || 76
+                                          )
+                                        }
                                       >
-                                        <g
-                                          id="icon"
-                                          fill="#4640DE"
-                                          transform="translate(64.000000, 64.000000)"
+                                        <svg
+                                          width="14px"
+                                          height="14px"
+                                          viewBox="0 0 512 512"
+                                          version="1.1"
+                                          xmlns="http://www.w3.org/2000/svg"
                                         >
-                                          <path
-                                            d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                            id="Combined-Shape"
-                                          ></path>
-                                        </g>
-                                      </g>
-                                    </svg>
-                                    Avg Score: {company.avgScore}%
+                                          <g
+                                            id="Page-1"
+                                            stroke="none"
+                                            stroke-width="1"
+                                            fill="none"
+                                            fill-rule="evenodd"
+                                          >
+                                            <g
+                                              id="icon"
+                                              fill="#4640DE"
+                                              transform="translate(64.000000, 64.000000)"
+                                            >
+                                              <path
+                                                d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                                id="Combined-Shape"
+                                              ></path>
+                                            </g>
+                                          </g>
+                                        </svg>
+                                        Avg Score: {company?.avgScore || 76}%
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                          ))}
+                              ))
+                            : "No data"}
                         </div>
 
                         <h5 className="text-heading mb-3 mt-5">All Vendors</h5>
@@ -925,6 +985,7 @@ const RequirementForm = () => {
                           <div className="mt-3">
                             <Autocomplete
                               multiple
+                              size="small"
                               id="tags-readOnly"
                               options={companiesfilterData}
                               getOptionLabel={(option) => option.orgName}
@@ -958,6 +1019,7 @@ const RequirementForm = () => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
+                                  size="small"
                                   label="Search vendor"
                                   placeholder="Search"
                                 />

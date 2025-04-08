@@ -23,66 +23,77 @@ import { CorporateFareOutlined } from "@mui/icons-material";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
 import Loader from "../../../sharedComponents/Loader";
+import { useOrgRequestList } from "../../../../components/hooks/useOrgRequestList";
+
+type TabValue = "Active" | "Archived";
 
 const MyVendors = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const orgCode = userData?.orgCode;
   const handleDetails = (id: number) => {
     navigate(`${id}?type=activeView`, {
       state: { previousUrl: location.pathname },
     });
   };
 
-  const [tabValue, setTabValue] = React.useState("Active");
+  const [tabValue, setTabValue] = React.useState<TabValue>("Active");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
   const [isLoader, setIsLoader] = React.useState<boolean>(true);
   const [archivedDatafilterData, setarchivedDatafilterData] = useState<any[]>(
     []
   );
-  const [activeDataList, setActiveDataList] = useState<any[]>([]);
+  // const [activeDataList, setActiveDataList] = useState<any[]>([]);
   const [searchFilter, setSearchFilter] = useState<any>({
     searchValue: "",
   });
 
-  useEffect(() => {
-    getOrgRequestList();
-  }, [tabValue]);
+  // useEffect(() => {
+  //   getOrgRequestList();
+  // }, [tabValue]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setTabValue(newValue);
+    setTabValue(newValue as TabValue);
+    setPageIndex(1); // reset to page 1 when tab changes
   };
 
-  const getOrgRequestList = () => {
-    const payload = {
-      orgCode: userData?.orgCode,
-      // relatedOrgCode: userData?.orgCode,
-      relationshipType: [RoleType.Client],
-      status:
-        tabValue === "Active" ? InvitedType.Accepted : InvitedType.Archived,
-      page: pageIndex,
-      pageSize: pageSize,
-    };
-    setIsLoader(true);
-    getOnboardInvitedList(payload)
-      .then((result: any) => {
-        if (result.count > 0) {
-          setActiveDataList(result.list);
-        } else {
-          setActiveDataList([]);
-        }
-        setTimeout(() => {
-          setIsLoader(false);
-        }, 1000);
-      })
-      .catch((error: any) => {
-        console.error("Error fetching data:", error);
-        setTimeout(() => {
-          setIsLoader(false);
-        }, 1000);
-      });
-  };
+  // const getOrgRequestList = () => {
+  //   const payload = {
+  //     orgCode: userData?.orgCode,
+  //     relationshipType: [RoleType.Client],
+  //     status:
+  //       tabValue === "Active" ? InvitedType.Accepted : InvitedType.Archived,
+  //     page: pageIndex,
+  //     pageSize: pageSize,
+  //   };
+  //   setIsLoader(true);
+  //   getOnboardInvitedList(payload)
+  //     .then((result: any) => {
+  //       if (result.count > 0) {
+  //         setActiveDataList(result.list);
+  //       } else {
+  //         setActiveDataList([]);
+  //       }
+  //       setTimeout(() => {
+  //         setIsLoader(false);
+  //       }, 1000);
+  //     })
+  //     .catch((error: any) => {
+  //       console.error("Error fetching data:", error);
+  //       setTimeout(() => {
+  //         setIsLoader(false);
+  //       }, 1000);
+  //     });
+  // };
+
+  const { activeDataList, isLoading } = useOrgRequestList({
+    orgCode,
+    tabValue,
+    pageIndex,
+    pageSize,
+  });
 
   return (
     <div className="px-4">
@@ -136,7 +147,7 @@ const MyVendors = () => {
         </div>
       </div>
       <>
-        {isLoader ? (
+        {isLoading ? (
           <Loader />
         ) : (
           <>

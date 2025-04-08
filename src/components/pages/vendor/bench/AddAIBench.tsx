@@ -10,6 +10,8 @@ import {
   Select,
   MenuItem,
   FormHelperText,
+  StepLabel,
+  Box,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
@@ -17,6 +19,7 @@ import "react-quill/dist/quill.snow.css";
 import { UpsertBenchDetail } from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/sharedComponents/Loader";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
+import BenchPreview from "./BenchPreview";
 
 interface AddAIBenchProps {
   handleGetBenchDetail: () => void;
@@ -30,50 +33,50 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isLoader, setIsLoader] = useState<boolean>(false);
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      title: "",
-      email: "",
-      phone: "",
-      linkedin: "",
-      cv: "",
-      availability: 1,
-      orgCode: userData.orgCode,
-      userId: userData.userId,
-    },
-  });
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   reset,
+  //   formState: { errors },
+  // } = useForm({
+  //   defaultValues: {
+  //     firstName: "",
+  //     lastName: "",
+  //     title: "",
+  //     email: "",
+  //     phone: "",
+  //     linkedin: "",
+  //     cv: "",
+  //     availability: 1,
+  //     orgCode: userData.orgCode,
+  //     userId: userData.userId,
+  //   },
+  // });
 
-  const onSubmit = (data: any) => {
-    setIsLoader(true);
-    UpsertBenchDetail(data)
-      .then((result: any) => {
-        if (result.success) {
-          setTimeout(() => {
-            reset();
-            setIsLoader(false);
-            setDrawerOpen(false);
-            handleGetBenchDetail();
-          }, 1000);
-        } else {
-          console.log("error", result.message);
-          setTimeout(() => {
-            setIsLoader(false);
-          }, 1000);
-        }
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          setIsLoader(false);
-        }, 1000);
-      });
-  };
+  // const onSubmit = (data: any) => {
+  //   setIsLoader(true);
+  //   UpsertBenchDetail(data)
+  //     .then((result: any) => {
+  //       if (result.success) {
+  //         setTimeout(() => {
+  //           reset();
+  //           setIsLoader(false);
+  //           setDrawerOpen(false);
+  //           handleGetBenchDetail();
+  //         }, 1000);
+  //       } else {
+  //         console.log("error", result.message);
+  //         setTimeout(() => {
+  //           setIsLoader(false);
+  //         }, 1000);
+  //       }
+  //     })
+  //     .catch((error: any) => {
+  //       setTimeout(() => {
+  //         setIsLoader(false);
+  //       }, 1000);
+  //     });
+  // };
 
   const steps = ["Paste CV", "Preview"];
 
@@ -101,9 +104,9 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
     setCvFile(null);
   };
 
-  // const handleSubmit = () => {
-  //   alert(`CV Submitted:\n\n cv`);
-  // };
+  const handleSubmit = () => {
+    alert(`CV Submitted:\n\n cv`);
+  };
 
   return (
     <div className="flex flex-col my-auto">
@@ -162,7 +165,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
             </div>
           </div>
 
-          {/* <div className="p-4 w-full mx-auto h-[calc(100%-108px)] overflow-auto">
+          <div className="p-4 w-full mx-auto h-[calc(100%-108px)] overflow-auto">
             <Box className="w-full h-full">
              
               <Stepper activeStep={activeStep}>
@@ -239,16 +242,16 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                 Preview
               </Button>
             )}
-          </div>*/}
+          </div>
 
-          <div className="!overflow-hidden">
+          {/* <div className="!overflow-hidden">
             {!isLoader ? (
               <div className="h-[calc(100vh-90px)] !overflow-y-auto">
                 <div className="md:w-[95%] lg:w-[95%] xl:w-[70%] p-4 mx-auto">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-2 gap-x-3">
                       <div className="col-span-2">
-                        {/* Title */}
+                        
                         <Controller
                           name="title"
                           control={control}
@@ -267,7 +270,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                         />
                       </div>
 
-                      {/* First Name */}
+                      
                       <Controller
                         name="firstName"
                         control={control}
@@ -285,7 +288,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                         )}
                       />
 
-                      {/* Last Name */}
+                      
                       <Controller
                         name="lastName"
                         control={control}
@@ -304,7 +307,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                       />
                     </div>
 
-                    {/* CV */}
+                    
                     <Controller
                       name="cv"
                       control={control}
@@ -328,7 +331,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                     />
 
                     <div className="grid grid-cols-2 gap-x-3">
-                      {/* Email */}
+                      
                       <Controller
                         name="email"
                         control={control}
@@ -351,7 +354,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           />
                         )}
                       />
-                      {/* Phone */}
+                      
                       <Controller
                         name="phone"
                         control={control}
@@ -376,7 +379,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           />
                         )}
                       />
-                      {/* LinkedIn */}
+                      
                       <Controller
                         name="linkedin"
                         control={control}
@@ -395,7 +398,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                           />
                         )}
                       />
-                      {/* Availability */}
+                      
                       <Controller
                         name="availability"
                         control={control}
@@ -449,7 +452,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                 Submit
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </Drawer>
     </div>
