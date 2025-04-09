@@ -145,9 +145,10 @@ export default function VendorOnboarding() {
                       <div>
                         <div
                           className="h-100 border p-4 rounded-md cursor-pointer"
-                          onClick={() =>
-                            handleCardClick(company?.relatedOrgCode)
-                          }
+                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            handleCardClick(company?.relatedOrgCode);
+                            e.stopPropagation();
+                          }}
                         >
                           <div className="flex align-center mb-4">
                             <Avatar
@@ -206,8 +207,8 @@ export default function VendorOnboarding() {
                         <div
                           className="h-100 border p-4 rounded-md cursor-pointer"
                           onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            handleCardClick(company?.relatedOrgCode);
                             e.stopPropagation();
+                            handleCardClick(company?.relatedOrgCode);
                           }}
                         >
                           <div className="flex align-center">
@@ -247,9 +248,10 @@ export default function VendorOnboarding() {
                               <Tooltip title="Accept">
                                 <IconButton
                                   size="small"
-                                  onClick={() =>
-                                    handleConfirmPopup(company?.id, 2)
-                                  }
+                                  onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    handleConfirmPopup(company?.id, 2);
+                                  }}
                                 >
                                   <Check fontSize="small" color="success" />
                                 </IconButton>
@@ -257,9 +259,10 @@ export default function VendorOnboarding() {
                               <Tooltip title="Declined">
                                 <IconButton
                                   size="small"
-                                  onClick={() =>
-                                    handleConfirmPopup(company?.id, 3)
-                                  }
+                                  onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    handleConfirmPopup(company?.id, 3);
+                                  }}
                                 >
                                   <CloseOutlined
                                     fontSize="small"
