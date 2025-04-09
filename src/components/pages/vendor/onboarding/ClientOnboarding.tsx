@@ -35,8 +35,12 @@ import {
 import PageLoader from "../../../../components/sharedComponents/PageLoader";
 import Loader from "../../../sharedComponents/Loader";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
+import { useLocation, useNavigate } from "react-router";
 
 export default function ClientOnboarding() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [value, setValue] = React.useState("Invited");
   const [invitedList, setInvitedList] = React.useState<any[]>([]);
   const [searchText, setSearchText] = React.useState("");
@@ -99,6 +103,7 @@ export default function ClientOnboarding() {
           setTimeout(() => {
             setIsInviteLoader(false);
             setIsPopupOpen(false);
+            getOrgInvitedList();
           }, 500);
         }
       })
@@ -108,6 +113,12 @@ export default function ClientOnboarding() {
           setIsPopupOpen(false);
         }, 500);
       });
+  };
+
+  const handleDetails = (id: number) => {
+    navigate(`${id}?type=activeView`, {
+      state: { previousUrl: location.pathname },
+    });
   };
 
   return (
@@ -136,7 +147,10 @@ export default function ClientOnboarding() {
                     invitedList?.length > 0 &&
                     invitedList.map((company, idx) => (
                       <div>
-                        <div className="h-100 border p-4 rounded-md cursor-pointer">
+                        <div
+                          className="h-100 border p-4 rounded-md cursor-pointer"
+                          onClick={() => handleDetails(company.orgCode)}
+                        >
                           <div className="flex align-center mb-4">
                             <Avatar
                               alt="Org Icon"
@@ -191,7 +205,10 @@ export default function ClientOnboarding() {
                     invitedList?.length > 0 &&
                     invitedList.map((company, idx) => (
                       <div>
-                        <div className="h-100 border p-4 rounded-md cursor-pointer">
+                        <div
+                          className="h-100 border p-4 rounded-md cursor-pointer"
+                          onClick={() => handleDetails(company.orgCode)}
+                        >
                           <div className="flex align-center">
                             <Avatar
                               alt="Org Icon"

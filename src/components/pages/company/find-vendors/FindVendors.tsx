@@ -206,7 +206,10 @@ const FindVendors = () => {
                           </p>
                         </Tooltip>
                         <p className="line-clamp-1 text-base">
-                          {company.place}
+                          {company.location[0] || "-"}
+                        </p>
+                        <p className="line-clamp-1 text-base">
+                          {company?.statusName || "-"}
                         </p>
                       </div>
                     </div>

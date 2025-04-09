@@ -72,7 +72,11 @@ const VendorDetails = () => {
 
   const getOrgProfile = () => {
     setIsLoader(true);
-    getOrgProfileDetails(pathSegments[pathSegments.length - 1])
+    const payload = {
+      orgCode: pathSegments[pathSegments.length - 1],
+      relatedOrgCode: userData.orgCode,
+    };
+    getOrgProfileDetails(payload)
       .then((result: any) => {
         if (result.success) {
           setOrgData(result.content);

@@ -74,7 +74,11 @@ export default function OrganizationProfileUpdate() {
   }, []);
 
   const getOrgProfile = () => {
-    getOrgProfileDetails(userData.orgCode)
+    const payload = {
+      orgCode: userData.orgCode,
+      relatedOrgCode: "",
+    };
+    getOrgProfileDetails(payload)
       .then((result: any) => {
         if (result.success) {
           setOrgData(result.content);

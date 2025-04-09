@@ -203,7 +203,12 @@ export default function VendorOnboarding() {
                     invitedList?.length > 0 &&
                     invitedList.map((company, idx) => (
                       <div>
-                        <div className="h-100 border p-4 rounded-md cursor-pointer">
+                        <div
+                          className="h-100 border p-4 rounded-md cursor-pointer"
+                          onClick={() =>
+                            handleCardClick(company?.relatedOrgCode)
+                          }
+                        >
                           <div className="flex align-center">
                             <Avatar
                               alt="Org Icon"
