@@ -208,8 +208,9 @@ export default function ClientOnboarding() {
                         <div
                           className="h-100 border p-4 rounded-md cursor-pointer"
                           onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            handleDetails(company.orgCode);
+                            console.log("Clicked:", company?.orgCode);
                             e.stopPropagation();
+                            handleDetails(company.orgCode);
                           }}
                         >
                           <div className="flex align-center">
@@ -249,9 +250,10 @@ export default function ClientOnboarding() {
                               <Tooltip title="Accept">
                                 <IconButton
                                   size="small"
-                                  onClick={() =>
-                                    handleConfirmPopup(company?.id, 2)
-                                  }
+                                  onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    handleConfirmPopup(company?.id, 2);
+                                  }}
                                 >
                                   <Check fontSize="small" color="success" />
                                 </IconButton>
@@ -259,9 +261,10 @@ export default function ClientOnboarding() {
                               <Tooltip title="Declined">
                                 <IconButton
                                   size="small"
-                                  onClick={() =>
-                                    handleConfirmPopup(company?.id, 3)
-                                  }
+                                  onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    handleConfirmPopup(company?.id, 3);
+                                  }}
                                 >
                                   <CloseOutlined
                                     fontSize="small"
