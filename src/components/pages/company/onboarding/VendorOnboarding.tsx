@@ -205,9 +205,10 @@ export default function VendorOnboarding() {
                       <div>
                         <div
                           className="h-100 border p-4 rounded-md cursor-pointer"
-                          onClick={() =>
-                            handleCardClick(company?.relatedOrgCode)
-                          }
+                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            handleCardClick(company?.relatedOrgCode);
+                            e.stopPropagation();
+                          }}
                         >
                           <div className="flex align-center">
                             <Avatar

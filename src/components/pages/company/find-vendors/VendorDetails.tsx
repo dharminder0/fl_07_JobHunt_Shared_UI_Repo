@@ -37,7 +37,10 @@ import {
 } from "../../../../components/sharedService/apiService";
 import Loader from "../../../sharedComponents/Loader";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
-import { RoleType } from "../../../../components/sharedService/enums";
+import {
+  InvitedType,
+  RoleType,
+} from "../../../../components/sharedService/enums";
 import { error } from "console";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 
@@ -262,13 +265,30 @@ const VendorDetails = () => {
               {/* Tech Stack and Office Location */}
               <Grid item xs={12} md={3}>
                 <div className="mb-2 space-y-4">
-                  <Button
-                    onClick={handleClickOpen}
-                    variant="outlined"
-                    startIcon={<Share />}
-                  >
-                    Invite for Empanelment
-                  </Button>
+                  {orgData.status === 0 ||
+                  orgData.status == InvitedType.Declined ? (
+                    <Button
+                      onClick={handleClickOpen}
+                      variant="outlined"
+                      startIcon={<Share />}
+                    >
+                      Invite for Empanelment
+                    </Button>
+                  ) : (
+                    <p
+                      className={`line-clamp-1 text-base ${
+                        orgData?.status === 2
+                          ? "text-green-600"
+                          : orgData?.status === 3
+                            ? "text-red-500"
+                            : orgData?.status === 0 || orgData?.status === 1
+                              ? "text-orange-500"
+                              : ""
+                      }`}
+                    >
+                      {orgData?.statusName}
+                    </p>
+                  )}
 
                   <Dialog
                     fullScreen={fullScreen}
