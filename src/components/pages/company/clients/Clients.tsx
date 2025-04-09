@@ -1,4 +1,5 @@
 import {
+  Button,
   CircularProgress,
   IconButton,
   InputAdornment,
@@ -13,9 +14,12 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import { getClientsList } from "../../../../components/sharedService/apiService";
 import Loader from "../../../sharedComponents/Loader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import React from "react";
+import { AppDispatch } from "../../../../components/redux/store";
+import { openDrawer } from "../../../../components/features/drawerSlice";
+import { Add } from "@mui/icons-material";
 
 const clientDataObj = [
   {
@@ -68,6 +72,8 @@ const clientDataObj = [
 export default function Clients() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch: AppDispatch = useDispatch();
+
   const [clientData, setclientData] = useState<any[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageIndex, setPageIndex] = useState<any>(1);
@@ -151,6 +157,10 @@ export default function Clients() {
       });
   };
 
+  const handleDrawer = () => {
+    dispatch(openDrawer({ drawerName: "AddClient" }));
+  };
+
   return (
     <div className="px-4 py-1 h-full">
       <div className="flex flex-row gap-1 justify-end mb-1">
@@ -191,7 +201,12 @@ export default function Clients() {
           </IconButton>
         </div>
         <ImportClientForm />
-        <CreateClientForm />
+        {/* <CreateClientForm /> */}
+        <div className="flex flex-col my-auto mr-2">
+          <Button variant="outlined" onClick={handleDrawer} startIcon={<Add />}>
+            Add new client
+          </Button>
+        </div>
       </div>
       {/* {clientList && clientList?.length <= 0 && (
         <div className="flex justify-center align-center">

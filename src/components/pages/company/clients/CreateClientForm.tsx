@@ -1,34 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
-import { Add } from "@mui/icons-material";
-import {
-  Box,
-  Drawer,
-  TextareaAutosize,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import FileUploadBox from "../../../sharedComponents/FileUploadBox";
 import { Controller, useForm } from "react-hook-form";
 import { upsertClient } from "../../../../components/sharedService/apiService";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import ReactQuill from "react-quill";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../components/redux/store";
+import { closeDrawer } from "../../../../components/features/drawerSlice";
 
 const CreateClientForm = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
 
-  const toggleDrawer = (open: any) => (event: any) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
-  };
-
+  const dispatch: AppDispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -67,51 +53,47 @@ const CreateClientForm = () => {
         if (result.success) {
           setIsSuccessPopup(true);
           setTimeout(() => {
-            setDrawerOpen(false);
+            handleCloseDrawer();
           }, 1000);
         }
       })
       .catch((error: any) => {
         setTimeout(() => {
-          setIsSuccessPopup(true);
+          setIsSuccessPopup(false);
         }, 1000);
       });
   };
 
+  const handleCloseDrawer = () => {
+    dispatch(closeDrawer());
+  };
+
   return (
     <div className="flex flex-col my-auto">
-      <Button
-        variant="outlined"
-        onClick={toggleDrawer(true)}
-        startIcon={<Add />}
-      >
-        Add new client
-      </Button>
-
-      <Drawer anchor="right" open={drawerOpen}>
-        <div className="h-full w-[calc(100vw-250px)]">
-          <div className="d-flex content-header">
-            <svg
-              className="absolute cursor-pointer left-[8px] top-[11px]"
-              onClick={(event) => toggleDrawer(false)(event)}
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M20 20L4 4.00003M20 4L4.00002 20"
-                stroke="black"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
-            <div className="px-8 py-2 border-b">
-              <h2 className="text-heading">Add new client</h2>
-            </div>
+      <div className="h-full w-[calc(100vw-250px)]">
+        <div className="d-flex content-header">
+          <svg
+            className="absolute cursor-pointer left-[8px] top-[11px]"
+            onClick={handleCloseDrawer}
+            xmlns="http://www.w3.org/2000/svg"
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M20 20L4 4.00003M20 4L4.00002 20"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          <div className="px-8 py-2 border-b">
+            <h2 className="text-heading">Add new client</h2>
           </div>
-          <div className="p-4 w-[50%] overflow-auto h-[calc(100%-95px)] mx-auto">
+        </div>
+        <div className="overflow-auto mx-auto flex justify-center">
+          <div className="p-4 w-[50%] h-[calc(100vh-90px)]">
             <form className="space-y-6">
               <div className="p-4">
                 <div className="space-y-4">
@@ -270,21 +252,22 @@ const CreateClientForm = () => {
               </div>
             </form>
           </div>
-          {/* Submit Button */}
-          <div className="px-4 py-2 border-t">
-            <div className="flex justify-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit(onSubmit)}
-                sx={{ width: 125 }}
-              >
-                Submit
-              </Button>
-            </div>
+        </div>
+        {/* Submit Button */}
+        <div className="px-4 py-2 border-t">
+          <div className="flex justify-end">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit(onSubmit)}
+              sx={{ width: 125 }}
+            >
+              Submit
+            </Button>
           </div>
         </div>
-      </Drawer>
+      </div>
+
       {isSuccessPopup && (
         <SuccessDialog
           title="Client Added successfully"
