@@ -9,6 +9,13 @@ import {
   IconButton,
   Tooltip,
   Avatar,
+  useMediaQuery,
+  useTheme,
+  DialogContent,
+  Button,
+  DialogActions,
+  TextField,
+  Dialog,
 } from "@mui/material";
 import {
   AccessTimeOutlined,
@@ -19,26 +26,42 @@ import {
   MailOutline,
   Phone,
   PictureAsPdf,
+  Share,
   WorkHistory,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { getOrgProfileDetails } from "../../../../components/sharedService/apiService";
+import {
+  dispatchedInvitation,
+  getOrgProfileDetails,
+} from "../../../../components/sharedService/apiService";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
+import {
+  InvitedType,
+  RoleType,
+} from "../../../../components/sharedService/enums";
 
 const VendorCompanyDetails = () => {
+  const theme = useTheme();
   const location = useLocation();
+  const navigate = useNavigate();
   const pathSegments = location.pathname.split("/");
   const searchParams = new URLSearchParams(location.search);
   const userData = JSON.parse(localStorage.userData);
 
   const type = searchParams.get("type");
+  const activeRole = localStorage.getItem("activeRole") || "";
   const [value, setValue] = React.useState("activeView");
   const [orgData, setOrgData] = React.useState<any>([]);
   const [isLoader, setIsLoader] = React.useState<boolean>(false);
   const [previousUrl, setpreviousUrl] = React.useState("");
-  const navigate = useNavigate();
+  const [isInviteLoader, setIsInviteLoader] = React.useState<boolean>(false);
+  const [isSuccessPopup, setIsSuccessPopup] = React.useState<boolean>(false);
   const handleRowClick = (id: any) => {};
+
+  const [open, setOpen] = React.useState(false);
+  const [empMessage, setEmpMessage] = React.useState<any>("");
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (location.state && location.state.previousUrl) {
@@ -230,6 +253,45 @@ const VendorCompanyDetails = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
     navigate(`?type=${newValue}`);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleInvitation = () => {
+    const payload: any = {
+      sender: {
+        email: userData.email,
+        orgCode: userData.orgCode,
+        roleType: activeRole === "company" ? RoleType.Client : RoleType.Vendor,
+      },
+      receiver: {
+        email: orgData?.email,
+        orgCode: orgData?.orgCode,
+      },
+      message: empMessage,
+    };
+    setIsInviteLoader(true);
+    dispatchedInvitation(payload)
+      .then((result: any) => {
+        if (result) {
+          setIsSuccessPopup(true);
+          setTimeout(() => {
+            setIsInviteLoader(false);
+            handleClose();
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setIsInviteLoader(false);
+        }, 1000);
+      });
   };
 
   return (
@@ -524,6 +586,78 @@ const VendorCompanyDetails = () => {
 
         {/* Tech Stack and Office Location */}
         <Grid item xs={12} md={3}>
+          <div className="mb-2 space-y-4">
+            {orgData.status === 0 || orgData.status == InvitedType.Declined ? (
+              <Button
+                onClick={handleClickOpen}
+                variant="outlined"
+                startIcon={<Share />}
+              >
+                Request for Empanelment
+              </Button>
+            ) : (
+              <p
+                className={`line-clamp-1 text-base ${
+                  orgData?.status === 2
+                    ? "text-green-600"
+                    : orgData?.status === 3
+                      ? "text-red-500"
+                      : orgData?.status === 0 || orgData?.status === 1
+                        ? "text-orange-500"
+                        : ""
+                }`}
+              >
+                {orgData?.statusName}
+              </p>
+            )}
+
+            <Dialog
+              fullScreen={fullScreen}
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="responsive-dialog-title"
+            >
+              <DialogContent>
+                <div className="space-y-4">
+                  <p className="text-heading">
+                    Request Clients for Empanelment
+                  </p>
+                  <p className="text-base">
+                    Click the 'Request' button to send a notification to
+                    clients. Interested vendors will follow the instructions to
+                    complete the process. You can track their progress and
+                    manage empaneled clients from the 'Manage Clients' section.
+                  </p>
+                  <p className="text-base">Write a Personalized Message</p>
+                </div>
+                <form className="mt-2 space-y-4">
+                  <TextField
+                    label="Message"
+                    value={empMessage}
+                    onChange={(e) => setEmpMessage(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                    multiline
+                    required
+                    rows={3}
+                  />
+                </form>
+              </DialogContent>
+              <DialogActions sx={{ paddingBottom: 2, paddingRight: 3 }}>
+                <Button autoFocus onClick={handleClose} variant="outlined">
+                  Close
+                </Button>
+                <Button
+                  variant="contained"
+                  disabled={!empMessage}
+                  onClick={handleInvitation}
+                  loading={isInviteLoader}
+                >
+                  Request
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
           <div>
             <h5 className="text-heading mb-2">Contact Information</h5>
 

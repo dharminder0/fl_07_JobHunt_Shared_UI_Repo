@@ -41,7 +41,7 @@ export default function ClientOnboarding() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [value, setValue] = React.useState("Invited");
+  const [value, setValue] = React.useState("Requested");
   const [invitedList, setInvitedList] = React.useState<any[]>([]);
   const [searchText, setSearchText] = React.useState("");
   const [isLoader, setIsLoader] = React.useState<boolean>(true);
@@ -62,8 +62,8 @@ export default function ClientOnboarding() {
 
   const getOrgInvitedList = () => {
     const payload = {
-      ...(value === "Invited" && { orgCode: userData?.orgCode }),
-      ...(value === "Requested" && { relatedOrgCode: userData?.orgCode }),
+      ...(value === "Requested" && { orgCode: userData?.orgCode }),
+      ...(value === "Invited" && { relatedOrgCode: userData?.orgCode }),
       relationshipType: [RoleType.Vendor],
       status: InvitedType.Pending,
       page: pageIndex,
@@ -130,8 +130,8 @@ export default function ClientOnboarding() {
         indicatorColor="primary"
         aria-label="secondary tabs example"
       >
-        <Tab value="Invited" label="Invited for Empanelment" />
         <Tab value="Requested" label="Requested for Empanelment" />
+        <Tab value="Invited" label="Invited for Empanelment" />
       </Tabs>
 
       <div className="mt-4">
@@ -140,7 +140,7 @@ export default function ClientOnboarding() {
           <Loader />
         ) : (
           <>
-            {value == "Invited" && (
+            {value == "Requested" && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {invitedList &&
@@ -198,7 +198,7 @@ export default function ClientOnboarding() {
               </>
             )}
 
-            {value == "Requested" && (
+            {value == "Invited" && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {invitedList &&
@@ -207,7 +207,10 @@ export default function ClientOnboarding() {
                       <div>
                         <div
                           className="h-100 border p-4 rounded-md cursor-pointer"
-                          onClick={() => handleDetails(company.orgCode)}
+                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            handleDetails(company.orgCode);
+                            e.stopPropagation();
+                          }}
                         >
                           <div className="flex align-center">
                             <Avatar

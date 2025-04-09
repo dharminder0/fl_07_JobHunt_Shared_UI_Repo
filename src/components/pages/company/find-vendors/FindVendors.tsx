@@ -205,12 +205,27 @@ const FindVendors = () => {
                             {company.orgName}
                           </p>
                         </Tooltip>
-                        <p className="line-clamp-1 text-base">
-                          {company.location[0] || "-"}
-                        </p>
-                        <p className="line-clamp-1 text-base">
-                          {company?.statusName || "-"}
-                        </p>
+                        {company.location[0] && (
+                          <p className="line-clamp-1 text-base">
+                            {company.location[0]}
+                          </p>
+                        )}
+                        {company?.statusName && (
+                          <p
+                            className={`line-clamp-1 text-base ${
+                              company?.status === 2
+                                ? "text-green-600"
+                                : company?.status === 3
+                                  ? "text-red-500"
+                                  : company?.status === 0 ||
+                                      company?.status === 1
+                                    ? "text-orange-500"
+                                    : ""
+                            }`}
+                          >
+                            {company?.statusName}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <p className="text-base line-clamp-2">

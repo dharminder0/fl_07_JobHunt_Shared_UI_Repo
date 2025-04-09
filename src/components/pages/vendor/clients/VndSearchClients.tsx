@@ -29,6 +29,7 @@ const VndSearchClients = () => {
   const [strength, setStrength] = useState<string[]>([]);
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const userData = JSON.parse(localStorage.userData);
 
   const [filterList, setFilterList] = useState<any>({
     TechnologiesList: [
@@ -82,6 +83,7 @@ const VndSearchClients = () => {
 
   const getOrgDetailsListData = () => {
     const payload = {
+      orgCode: userData.orgCode,
       role: [RoleType.Client],
       page: pageIndex,
       pageSize: pageSize,
@@ -207,9 +209,27 @@ const VndSearchClients = () => {
                             {company.orgName}
                           </p>
                         </Tooltip>
-                        <p className="line-clamp-1 text-base">
-                          {company.place}
-                        </p>
+                        {company.location[0] && (
+                          <p className="line-clamp-1 text-base">
+                            {company.location[0] || "-"}
+                          </p>
+                        )}
+                        {company.statusName && (
+                          <p
+                            className={`line-clamp-1 text-base ${
+                              company?.status === 2
+                                ? "text-green-600"
+                                : company?.status === 3
+                                  ? "text-red-500"
+                                  : company?.status === 0 ||
+                                      company?.status === 1
+                                    ? "text-orange-500"
+                                    : ""
+                            }`}
+                          >
+                            {company?.statusName}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <p className="text-base line-clamp-2">
