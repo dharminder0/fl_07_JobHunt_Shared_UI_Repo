@@ -20,6 +20,8 @@ import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 
 const FindVendors = () => {
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
   const [isLoader, setIsLoader] = useState<boolean>(false);
@@ -80,6 +82,7 @@ const FindVendors = () => {
   const getOrgDetailsListData = () => {
     const payload = {
       role: [RoleType.Vendor],
+      orgCode: userData?.orgCode,
       page: pageIndex,
       pageSize: pageSize,
       searchText,

@@ -4,13 +4,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useOrganizationType } from "../../contexts/OrganizationTypeContext";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
-import { CorporateFareOutlined } from "@mui/icons-material";
+import { Add, CorporateFareOutlined } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { openDrawer } from "../features/drawerSlice";
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const dispatch: AppDispatch = useDispatch();
   const role = JSON.parse(localStorage.getItem("role") || "[]");
   const activeRole = localStorage.getItem("activeRole") || ""; // Active role from localStorage
   const [organizationList, setOrganization] = useState<any[]>([]);
@@ -77,6 +82,10 @@ const Header: React.FC<HeaderProps> = () => {
     setAnchorEl(null);
   };
 
+  const handleReqDrawer = () => {
+    dispatch(openDrawer({ drawerName: "CmpPostRequirement" }));
+  };
+
   return (
     <div className="h-[52px] px-5 shadow-[0px_-1px_0px_0px_#D6DDEB_inset] flex justify-between">
       <div className="flex gap-3">
@@ -86,7 +95,9 @@ const Header: React.FC<HeaderProps> = () => {
             src={userData.companyIcon || undefined}
             className="rounded-full !h-8 !w-8"
           >
-            {!userData.companyIcon && <CorporateFareOutlined fontSize="small" />}
+            {!userData.companyIcon && (
+              <CorporateFareOutlined fontSize="small" />
+            )}
           </Avatar>
         </div>
         <div
@@ -146,7 +157,17 @@ const Header: React.FC<HeaderProps> = () => {
             stroke="white"
           />
         </svg>
-        {organizationType === "company" && <RequirementForm />}
+        {organizationType === "company" && (
+          <div className="flex flex-col my-auto mr-2">
+            <Button
+              variant="contained"
+              onClick={handleReqDrawer}
+              startIcon={<Add />}
+            >
+              Post a requirement
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

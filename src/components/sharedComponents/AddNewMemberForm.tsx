@@ -72,9 +72,27 @@ const AddNewMemberForm = ({ isEditable = false, data = {} }: any) => {
     <>
       <div className="h-full">
         <div className="px-4 border-b flex h-[45px] items-center">
-          <h2 className="text-heading">
-            {!isEditable ? "Add new team member" : "Update Details"}
-          </h2>
+          <svg
+            className="absolute cursor-pointer left-[8px] top-[15px]"
+            onClick={() => dispatch(closeDrawer())}
+            xmlns="http://www.w3.org/2000/svg"
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M20 20L4 4.00003M20 4L4.00002 20"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          <div className="px-3">
+            <h2 className="text-heading">
+              {!isEditable ? "Add new team member" : "Update Details"}
+            </h2>
+          </div>
         </div>
 
         <div className="w-full overflow-auto h-[calc(100%-90px)]">
