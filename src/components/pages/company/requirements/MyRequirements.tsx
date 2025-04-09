@@ -24,6 +24,7 @@ import TablePreLoader from "../../../../components/sharedComponents/TablePreLoad
 import { RoleType } from "../../../../components/sharedService/enums";
 import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
+import { useSelector } from "react-redux";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
@@ -43,6 +44,8 @@ const MyRequirements = () => {
   const [client, setClient] = useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any[]>([]);
+
+  const drawerState = useSelector((state: any) => state.drawer);
 
   const handleRowClick = (clientCode: number, type: string) => {
     switch (type) {
@@ -115,6 +118,12 @@ const MyRequirements = () => {
       getRequirementsData();
     }
   }, [searchText, resource, status, client]);
+
+  useEffect(() => {
+    if (!drawerState.isOpen) {
+      getRequirementsData();
+    }
+  }, [drawerState]);
 
   return (
     <>

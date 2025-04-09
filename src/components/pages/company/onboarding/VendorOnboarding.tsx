@@ -35,8 +35,10 @@ import {
 import PageLoader from "../../../../components/sharedComponents/PageLoader";
 import Loader from "../../../sharedComponents/Loader";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
+import { useNavigate } from "react-router";
 
 export default function VendorOnboarding() {
+  const navigate = useNavigate();
   const [value, setValue] = React.useState("Invited");
   const [invitedList, setInvitedList] = React.useState<any[]>([]);
   const [searchText, setSearchText] = React.useState("");
@@ -99,6 +101,7 @@ export default function VendorOnboarding() {
           setTimeout(() => {
             setIsInviteLoader(false);
             setIsPopupOpen(false);
+            getOrgInvitedList();
           }, 500);
         }
       })
@@ -108,6 +111,10 @@ export default function VendorOnboarding() {
           setIsPopupOpen(false);
         }, 500);
       });
+  };
+
+  const handleCardClick = (orgCode: string) => {
+    navigate(`${orgCode}`);
   };
 
   return (
@@ -136,7 +143,12 @@ export default function VendorOnboarding() {
                     invitedList?.length > 0 &&
                     invitedList.map((company, idx) => (
                       <div>
-                        <div className="h-100 border p-4 rounded-md cursor-pointer">
+                        <div
+                          className="h-100 border p-4 rounded-md cursor-pointer"
+                          onClick={() =>
+                            handleCardClick(company?.relatedOrgCode)
+                          }
+                        >
                           <div className="flex align-center mb-4">
                             <Avatar
                               alt="Org Icon"

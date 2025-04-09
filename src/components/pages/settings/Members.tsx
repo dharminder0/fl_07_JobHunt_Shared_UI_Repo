@@ -9,7 +9,7 @@ import { Box, Button, IconButton, TextField } from "@mui/material";
 import AddNewMemberForm from "../../sharedComponents/AddNewMemberForm";
 import { openDrawer } from "../../../components/features/drawerSlice";
 import { AppDispatch } from "../../../components/redux/store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getMembersList } from "../../../components/sharedService/apiService";
 import moment from "moment";
 import TablePreLoader from "../../../components/sharedComponents/TablePreLoader";
@@ -23,6 +23,8 @@ export default function Members() {
   const [pageSize, setPageSize] = useState(10);
   const [membersList, setMembersList] = useState<any[]>([]);
 
+  const drawerState = useSelector((state: any) => state.drawer);
+
   const handleOpenDrawer = (name: string, data?: any) => {
     dispatch(openDrawer({ drawerName: name, data: data }));
   };
@@ -32,6 +34,12 @@ export default function Members() {
       getMemberListData();
     }
   }, [search]);
+
+  useEffect(() => {
+    if (!drawerState.isOpen) {
+      getMemberListData();
+    }
+  }, [drawerState]);
 
   const getMemberListData = () => {
     const payload = {
@@ -47,15 +55,18 @@ export default function Members() {
       .then((result: any) => {
         if (result.count > 0) {
           setMembersList(result.list);
-          setIsTableLoader(false);
         } else {
           setMembersList([]);
-          setIsTableLoader(false);
         }
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 1000);
       })
       .catch(() => {
         setMembersList([]);
-        setIsTableLoader(false);
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 1000);
       });
   };
 

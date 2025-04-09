@@ -52,7 +52,7 @@ const CompanyInfo = forwardRef((props: ChildProps, ref: any) => {
 
     userData.role =
       data?.registrationType === "3" ? ["1", "2"] : [data?.registrationType];
-    debugger;
+
     // upsertCompanyInfo(data)
     //   .then((result: any) => {
     //     console.log("Form result:", result);

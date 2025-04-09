@@ -85,7 +85,12 @@ export default function AppRoutes() {
             <Route index element={<Clients />} />
             <Route path=":id" element={<ClientDetails />} />
           </Route>
-          <Route path="vndonboarding" element={<VendorOnboarding />} />
+          <Route path="vndonboarding">
+            <Route index element={<VendorOnboarding />} />{" "}
+            {/* List all applications */}
+            <Route path=":id" element={<VendorDetails />} />{" "}
+            {/* View specific application */}
+          </Route>
           <Route path="candidates" element={<MyCandidates />} />
           <Route path="profile" element={<OrganizationProfile />} />
           <Route path="subscriptions" element={<Subscriptions />} />
