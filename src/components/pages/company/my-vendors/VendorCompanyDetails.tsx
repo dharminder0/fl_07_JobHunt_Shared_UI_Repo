@@ -30,6 +30,8 @@ const VendorCompanyDetails = () => {
   const location = useLocation();
   const pathSegments = location.pathname.split("/");
   const searchParams = new URLSearchParams(location.search);
+  const userData = JSON.parse(localStorage.userData);
+
   const type = searchParams.get("type");
   const [value, setValue] = React.useState("activeView");
   const [orgData, setOrgData] = React.useState<any>([]);
@@ -204,7 +206,11 @@ const VendorCompanyDetails = () => {
 
   const getOrgProfile = () => {
     setIsLoader(true);
-    getOrgProfileDetails(pathSegments[pathSegments.length - 1])
+    const payload = {
+      orgCode: pathSegments[pathSegments.length - 1],
+      relatedOrgCode: userData.orgCode,
+    };
+    getOrgProfileDetails(payload)
       .then((result: any) => {
         if (result.success) {
           setOrgData(result.content);

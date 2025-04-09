@@ -51,10 +51,8 @@ export const setEVerify = async (token: string, otp: string) => {
   return response.data;
 };
 
-export const getOrgProfileDetails = async (orgCode: string) => {
-  const response = await api.get(
-    `V1/Organization/GetProfile?orgCode=${orgCode}`
-  );
+export const getOrgProfileDetails = async (payload: any) => {
+  const response = await api.post("V1/Organization/GetProfile", payload);
   return response.data;
 };
 

@@ -11,6 +11,7 @@ import { CloseOutlined } from "@mui/icons-material";
 import VndBench from "../pages/vendor/bench/VndBench";
 import CreateClientForm from "../pages/company/clients/CreateClientForm";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
+import AddAIBench from "../pages/vendor/bench/AddAIBench";
 
 interface CommonDrawerProps {
   name: string; // Unique name for the drawer
@@ -55,6 +56,7 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
         {currentDrawer === "OrgProfileUpdate" && <OrganizationProfileUpdate />}
         {currentDrawer === "AddClient" && <CreateClientForm />}
         {currentDrawer === "CmpPostRequirement" && <RequirementForm />}
+        {currentDrawer === "AddAIBench" && <AddAIBench />}
       </div>
     </Drawer>
   );

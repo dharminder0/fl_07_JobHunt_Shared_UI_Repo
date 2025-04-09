@@ -126,7 +126,10 @@ export default function AppRoutes() {
             <Route index element={<VndSearchClients />} />
             <Route path=":id" element={<VendorCompanyDetails />} />
           </Route>
-          <Route path="onboarding" element={<ClientOnboarding />} />
+          <Route path="onboarding">
+            <Route index element={<ClientOnboarding />} />
+            <Route path=":id" element={<VendorCompanyDetails />} />
+          </Route>
           <Route path="profile" element={<OrganizationProfile />} />
           <Route path="subscriptions" element={<Subscriptions />} />
           <Route path="members" element={<Members />} />
