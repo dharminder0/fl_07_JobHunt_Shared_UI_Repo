@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   getVndTopClients,
 } from "../../../components/sharedService/apiService";
 import { RequirementsStatus } from "../../../components/sharedService/enums";
+import { AddOutlined } from "@mui/icons-material";
 
 interface VendorDashboard {}
 
@@ -169,29 +170,49 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Top Clients</p>
-                <p className="pt-4 text-title">Positions</p>
+                {topClients?.length > 0 && (
+                  <p className="pt-4 text-title">Positions</p>
+                )}
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
-                {topClients.map((item: any, index: number) => (
-                  <Box key={index} className="mb-3">
-                    <Box className="flex justify-between mb-1">
-                      <div className="flex items-center">
-                        <img
-                          src={
-                            !item.clientLogo
-                              ? "/assets/images/Companylogo1.png"
-                              : item.clientLogo
-                          }
-                          className="rounded-full"
-                          style={{ width: 25, height: 25 }}
-                        />
-                        <p className="text-base ms-2">{item.clientName}</p>
-                      </div>
-                      <p className="text-title ms-2">{item.totalPositions}</p>
+                {topClients?.length > 0 ? (
+                  topClients.map((item: any, index: number) => (
+                    <Box key={index} className="mb-3">
+                      <Box className="flex justify-between mb-1">
+                        <div className="flex items-center">
+                          <img
+                            src={
+                              !item.clientLogo
+                                ? "/assets/images/Companylogo1.png"
+                                : item.clientLogo
+                            }
+                            className="rounded-full"
+                            style={{ width: 25, height: 25 }}
+                          />
+                          <p className="text-base ms-2">{item.clientName}</p>
+                        </div>
+                        <p className="text-title ms-2">{item.totalPositions}</p>
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
+                  ))
+                ) : (
+                  <div className="pb-5 text-center">
+                    <p className="text-base mb-5">
+                      You haven't added any clients. Start by clicking 'Create
+                      new clients' button to search client and request them for
+                      empanelement.
+                    </p>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => navigate("/vendor/searchclient")}
+                      startIcon={<AddOutlined fontSize="small" />}
+                    >
+                      Create new clients
+                    </Button>
+                  </div>
+                )}
               </Box>
             </Box>
           </Box>
