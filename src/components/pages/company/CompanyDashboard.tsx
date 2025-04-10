@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography, Box, Button, Chip, Grid2, Avatar } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
-import { CorporateFareOutlined, Share } from "@mui/icons-material";
+import {
+  Add,
+  AddOutlined,
+  CorporateFareOutlined,
+  Share,
+} from "@mui/icons-material";
 import {
   getAllUsers,
   getDashboardReqCounts,
@@ -184,38 +189,62 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Top Vendors</p>
-                <p className="pt-4 text-title">Placements</p>
+                {topVendor?.length > 0 && (
+                  <p className="pt-4 text-title">Placements</p>
+                )}
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
-                {topVendor.map((item, index) => (
-                  <Box key={index} className="mb-3">
-                    <Box className="flex justify-between mb-1">
-                      <div className="flex items-center">
-                        <Avatar
-                          alt="Org Icon"
-                          src={item?.vendorLogo || undefined}
-                          className="rounded-full !h-6 !w-6"
-                        >
-                          {!item?.vendorLogo && (
-                            <CorporateFareOutlined fontSize="small" />
-                          )}
-                        </Avatar>
-                        <p className="text-base ms-2">{item.vendorName}</p>
-                      </div>
-                      <p className="text-title ms-2">{item.totalPlacements}</p>
+                {topVendor?.length > 0 ? (
+                  topVendor.map((item, index) => (
+                    <Box key={index} className="mb-3">
+                      <Box className="flex justify-between mb-1">
+                        <div className="flex items-center">
+                          <Avatar
+                            alt="Org Icon"
+                            src={item?.vendorLogo || undefined}
+                            className="rounded-full !h-6 !w-6"
+                          >
+                            {!item?.vendorLogo && (
+                              <CorporateFareOutlined fontSize="small" />
+                            )}
+                          </Avatar>
+                          <p className="text-base ms-2">{item.vendorName}</p>
+                        </div>
+                        <p className="text-title ms-2">
+                          {item.totalPlacements}
+                        </p>
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
+                  ))
+                ) : (
+                  <div className="pb-5 text-center">
+                    <p className="text-base mb-5">
+                      You haven't empaneled any vendors. Start by clicking
+                      'Invite Vendors' button to search vendors to streamline
+                      your partnerships.
+                    </p>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => openViewList("findvendors")}
+                      startIcon={<AddOutlined fontSize="small" />}
+                    >
+                      Invite Vendors
+                    </Button>
+                  </div>
+                )}
               </Box>
-              <div className="mb-1.5 text-end">
-                <Button
-                  variant="text"
-                  onClick={() => openViewList("myvendors")}
-                >
-                  View all
-                </Button>
-              </div>
+              {topVendor?.length > 0 && (
+                <div className="mb-1.5 text-end">
+                  <Button
+                    variant="text"
+                    onClick={() => openViewList("myvendors")}
+                  >
+                    View all
+                  </Button>
+                </div>
+              )}
             </Box>
           </Box>
           <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
@@ -223,37 +252,58 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             <Box className="bg-white border px-4 rounded-md">
               <div className="flex justify-between">
                 <p className="pt-4 text-title">Top Clients</p>
-                <p className="pt-4 text-title">Positions</p>
+                {topCLients?.length > 0 && (
+                  <p className="pt-4 text-title">Positions</p>
+                )}
               </div>
               {/* Progress Bars */}
               <Box className="mt-4">
-                {topCLients.map((item, index) => (
-                  <Box key={index} className="mb-3">
-                    <Box className="flex justify-between mb-1">
-                      <div className="flex items-center">
-                        <Avatar
-                          alt="Org Icon"
-                          src={item.clientLogo || undefined}
-                          className="rounded-full !h-6 !w-6"
-                        >
-                          {!item.clientLogo && (
-                            <CorporateFareOutlined fontSize="small" />
-                          )}
-                        </Avatar>
-                        <p className="text-base ms-2">{item.clientName}</p>
-                      </div>
-                      <p className="text-title ms-2">{item.totalPositions}</p>
+                {topCLients?.length > 0 ? (
+                  topCLients.map((item, index) => (
+                    <Box key={index} className="mb-3">
+                      <Box className="flex justify-between mb-1">
+                        <div className="flex items-center">
+                          <Avatar
+                            alt="Org Icon"
+                            src={item.clientLogo || undefined}
+                            className="rounded-full !h-6 !w-6"
+                          >
+                            {!item.clientLogo && (
+                              <CorporateFareOutlined fontSize="small" />
+                            )}
+                          </Avatar>
+                          <p className="text-base ms-2">{item.clientName}</p>
+                        </div>
+                        <p className="text-title ms-2">{item.totalPositions}</p>
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
-                <div className="mb-1.5 text-end">
-                  <Button
-                    variant="text"
-                    onClick={() => openViewList("clients")}
-                  >
-                    View all
-                  </Button>
-                </div>
+                  ))
+                ) : (
+                  <div className="pb-5 text-center">
+                    <p className="text-base mb-5">
+                      You haven't added any clients. Start by adding your top
+                      clients to showcase your portfolio.
+                    </p>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => openViewList("clients")}
+                      startIcon={<AddOutlined fontSize="small" />}
+                    >
+                      Create new clients
+                    </Button>
+                  </div>
+                )}
+                {topCLients?.length > 0 && (
+                  <div className="mb-1.5 text-end">
+                    <Button
+                      variant="text"
+                      onClick={() => openViewList("clients")}
+                    >
+                      View all
+                    </Button>
+                  </div>
+                )}
               </Box>
             </Box>
           </Box>
@@ -296,60 +346,71 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
         </div> */}
 
         {/* Job Updates */}
-        <p className="text-heading mb-4 mt-6">Requirements need attention</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {hotRequirements.map((requirement) => (
-            <Grid2 size={3} key={requirement.id}>
-              <div
-                className="border rounded-md p-3 hover:bg-indigo-50 hover:border-indigo-700 cursor-pointer"
-                onClick={() =>
-                  navigate(`/company/myrequirements/${requirement.RequirementUniqueId}`)
-                }
-              >
-                <div className="flex">
-                  <Avatar
-                    alt={requirement.ClientName}
-                    src={requirement.ClientLogo || undefined}
-                    className="rounded-full !h-8 !w-8"
+        {hotRequirements?.length > 0 && (
+          <>
+            <p className="text-heading mb-4 mt-6">
+              Requirements need attention
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {hotRequirements.map((requirement) => (
+                <Grid2 size={3} key={requirement.id}>
+                  <div
+                    className="border rounded-md p-3 hover:bg-indigo-50 hover:border-indigo-700 cursor-pointer"
+                    onClick={() =>
+                      navigate(
+                        `/company/myrequirements/${requirement.RequirementUniqueId}`
+                      )
+                    }
                   >
-                    {!requirement.ClientLogo && (
-                      <CorporateFareOutlined fontSize="small" />
-                    )}
-                  </Avatar>
-                  <div className="ms-3">
-                    <p className="text-title">{requirement.Title}</p>
-                    <p className="text-base">{requirement.ClientName}</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap mb-1">
-                  <Chip
-                    label={requirement.LocationTypeName}
-                    variant="outlined"
-                    className="my-1 me-1 !text-info"
-                    size="small"
-                  />
-                  <Chip
-                    label={`Positions: ${requirement.Positions}`}
-                    variant="outlined"
-                    className="my-1 me-1 !text-info"
-                    size="small"
-                  />
-                  <Chip
-                    label={moment(requirement.CreatedOn).format("DD-MM-YYYY")}
-                    variant="outlined"
-                    className="my-1 me-1 !text-info"
-                    size="small"
-                  />
-                </div>
+                    <div className="flex">
+                      <Avatar
+                        alt={requirement.ClientName}
+                        src={requirement.ClientLogo || undefined}
+                        className="rounded-full !h-8 !w-8"
+                      >
+                        {!requirement.ClientLogo && (
+                          <CorporateFareOutlined fontSize="small" />
+                        )}
+                      </Avatar>
+                      <div className="ms-3">
+                        <p className="text-title">{requirement.Title}</p>
+                        <p className="text-base">{requirement.ClientName}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap mb-1">
+                      <Chip
+                        label={requirement.LocationTypeName}
+                        variant="outlined"
+                        className="my-1 me-1 !text-info"
+                        size="small"
+                      />
+                      <Chip
+                        label={`Positions: ${requirement.Positions}`}
+                        variant="outlined"
+                        className="my-1 me-1 !text-info"
+                        size="small"
+                      />
+                      <Chip
+                        label={moment(requirement.CreatedOn).format(
+                          "DD-MM-YYYY"
+                        )}
+                        variant="outlined"
+                        className="my-1 me-1 !text-info"
+                        size="small"
+                      />
+                    </div>
 
-                <Button variant="text" startIcon={<Share />} size="small">
-                  {requirement.VisibilityName}
-                </Button>
-              </div>
-            </Grid2>
-          ))}
-        </div>
+                    <Button variant="text" startIcon={<Share />} size="small">
+                      {requirement.VisibilityName}
+                    </Button>
+                  </div>
+                </Grid2>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
