@@ -1,3 +1,4 @@
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   AccessTimeOutlined,
   DownloadOutlined,
@@ -78,27 +79,25 @@ export default function BenchPreview({ benchData = {} }: any) {
             <p className="text-base">{benchData?.profile?.objective || "-"}</p>
           </div>
 
-          {benchData?.summary?.length > 0 && (
-            <div>
-              <p className="text-title font-bold group/item flex items-center mb-1">
-                Summary
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
-              </p>
-              <ul className="text-base list-disc ps-4">
-                {benchData?.summary?.map((item: any) => <li>{item}</li>)}
-              </ul>
+          <div>
+            <p className="text-title font-bold group/item flex items-center mb-1">
+              Summary
+              <div className="group/edit invisible group-hover/item:visible">
+                <span className="group-hover/edit:text-gray-700">
+                  <IconButton
+                    aria-label="edit"
+                    sx={{ marginLeft: 1 }}
+                    size="small"
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </span>
+              </div>
+            </p>
+            <div className="text-base">
+              <HtmlRenderer content={benchData?.summary} />
             </div>
-          )}
+          </div>
 
           {/* <div>
             <p className="text-title font-bold group/item flex items-center mb-1">
@@ -147,7 +146,7 @@ export default function BenchPreview({ benchData = {} }: any) {
                   <p className="text-base font-bold">
                     Title: {project?.title || "-"}
                   </p>{" "}
-                  <p className="text-base">Role: Frontend Development</p>
+                  <p className="text-base">Role: {project?.role || "-"}</p>
                   <p>Description:</p>
                   <p>{project?.description || "-"}</p>
                   <p>Responsibilities:</p>
