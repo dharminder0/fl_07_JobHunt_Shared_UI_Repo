@@ -123,7 +123,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
       title: benchData.profile?.title ?? "",
       email: benchData.contact_details?.email ?? "",
       cv: benchData,
-      availability: AvailabilityStatus.Immediate,
+      availability: 1,
       orgCode: userData.orgCode,
       userId: userData.userId,
     };
@@ -132,10 +132,10 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
     UpsertBenchDetail(payload)
       .then((result: any) => {
         if (result.success) {
+          setIsSuccessPopup(true);
           setTimeout(() => {
             setIsLoader(false);
             handleCloseDrawer();
-            setIsSuccessPopup(true);
           }, 1000);
         } else {
           setTimeout(() => {
