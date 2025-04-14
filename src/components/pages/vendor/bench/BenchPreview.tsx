@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const skills = ["React js", "jQuery", "Angular", "React native", "Android"];
 const certifications = ["AWS", "Azure", "Scrum Master", "PMP"];
-export default function BenchPreview() {
+export default function BenchPreview({ benchData = {} }: any) {
   const PrintDocument = () => {
     const printContent = document.getElementById("printSection");
     if (printContent) {
@@ -40,10 +40,13 @@ export default function BenchPreview() {
                 style={{ height: 60, width: 60 }}
               />
               <div className="ms-2">
-                <p className="text-title font-bold">Raj Pathar</p>
-                <p className="text-base">Software Associate</p>
+                <p className="text-title font-bold">
+                  {benchData?.profile?.name || "-"}
+                </p>
+                <p className="text-base">{benchData?.profile?.title || "-"}</p>
                 <p className="text-base">
-                  <AccessTimeOutlined fontSize="inherit" /> 8 years
+                  <AccessTimeOutlined fontSize="inherit" />{" "}
+                  {benchData?.profile?.experience || "-"}
                 </p>
               </div>
             </div>
@@ -72,13 +75,7 @@ export default function BenchPreview() {
                 </span>
               </div>
             </p>
-            <p className="text-base">
-              A highly motivated front-end developer with 4+ years of experience
-              in creating interactive and responsive web applications.
-              Proficient in Bootstrap, JavaScript, and jQuery, and skilled in
-              using modern frameworks like React and React Native for both web
-              and mobile development.
-            </p>
+            <p className="text-base">{benchData?.profile?.objective || "-"}</p>
           </div>
 
           <div>
@@ -96,31 +93,10 @@ export default function BenchPreview() {
                 </span>
               </div>
             </p>
-            <ul className="text-base list-disc ps-4">
-              <li>
-                Develop and maintain React Native applications for iOS and
-                Android, improving mobile user experience.
-              </li>
-              <li>
-                Create and optimize React web applications, utilizing TypeScript
-                and JavaScript for responsive, interactive user interfaces.
-              </li>
-              <li>
-                Implement REST APIs to connect applications to back-end
-                services, enhancing functionality.
-              </li>
-              <li>
-                Leverage HTML, CSS, Bootstrap, and jQuery to build responsive
-                web interfaces.
-              </li>
-              <li>
-                Use Git and GitHub for version control, ensuring efficient
-                collaboration and code management.
-              </li>
-            </ul>
+            <p className="text-base">{benchData?.summary || "-"}</p>
           </div>
 
-          <div>
+          {/* <div>
             <p className="text-title font-bold group/item flex items-center mb-1">
               Technical Skills
               <div className="group/edit invisible group-hover/item:visible">
@@ -144,7 +120,7 @@ export default function BenchPreview() {
               <li>Mobile Development: iOS, Android</li>
               <li>Version Control: GitHub, Bitbucket</li>
             </ul>
-          </div>
+          </div> */}
 
           <div className="text-base space-y-2">
             <p className="text-title font-bold group/item flex items-center mb-2">
@@ -161,26 +137,28 @@ export default function BenchPreview() {
                 </span>
               </div>
             </p>
-            <p className="text-base font-bold">Title: Yomentor</p>{" "}
-            <p className="text-base">Role: Frontend Development</p>
-            <p>Description:</p>
-            <p>
-              An AI-powered platform designed for students preparing for
-              competitive exams like CAT, JEE, and NEET. The platform generates
-              customized tests based on user-selected subjects, topics,
-              difficulty levels, and question types.
-            </p>
-            <p>Responsibilities:</p>
-            <ul className="text-base list-disc ps-4">
-              <li>
-                Frontend Technologies: Bootstrap, JavaScript, jQuery, HTML, CSS,
-                SCSS, TypeScript, JavaScript
-              </li>
-              <li>Frameworks & Libraries: React, React Native</li>
-              <li>Mobile Development: iOS, Android</li>
-              <li>Version Control: GitHub, Bitbucket</li>
-            </ul>
-            <p className="text-base font-bold mt-6">Title: Treatians </p>{" "}
+            {benchData?.projects?.length > 0 &&
+              benchData?.projects?.map((project: any, idx: number) => (
+                <>
+                  <p className="text-base font-bold">
+                    Title: {project?.title || "-"}
+                  </p>{" "}
+                  <p className="text-base">Role: Frontend Development</p>
+                  <p>Description:</p>
+                  <p>{project?.description || "-"}</p>
+                  <p>Responsibilities:</p>
+                  {project?.responsibilities?.length > 0 && (
+                    <ul className="text-base list-disc ps-4">
+                      {project?.responsibilities.map(
+                        (item: any, index: number) => (
+                          <li key={index}>{item}</li>
+                        )
+                      )}
+                    </ul>
+                  )}
+                </>
+              ))}
+            {/* <p className="text-base font-bold mt-6">Title: Treatians </p>{" "}
             <p className="text-base">Role: Frontend Development</p>
             <p>Description:</p>
             <p>
@@ -202,7 +180,7 @@ export default function BenchPreview() {
               <li>Frameworks & Libraries: React, React Native</li>
               <li>Mobile Development: iOS, Android</li>
               <li>Version Control: GitHub, Bitbucket</li>
-            </ul>
+            </ul> */}
           </div>
         </div>
         <div className="p-4 w-[30%] mx-auto space-y-4 bg-gray-100">
@@ -225,30 +203,30 @@ export default function BenchPreview() {
               <li>
                 <a
                   className="text-base hover:text-indigo-700"
-                  href="mailto:raj@fleekitsolutions.com"
+                  href={`mailto:${benchData?.contact_details?.email}`}
                 >
                   <EmailOutlined fontSize="inherit" className="me-1" />
-                  raj@fleekitsolutions.com
+                  {benchData?.contact_details?.email}
                 </a>
               </li>
               <li>
                 <a
                   className="text-base hover:text-indigo-700"
-                  href="tel:9111292929"
+                  href={`tel:${benchData?.contact_details?.phone}`}
                 >
                   <Phone fontSize="inherit" className="me-1" />
-                  9111292929
+                  {benchData?.contact_details?.phone}
                 </a>
               </li>
               <li>
                 <a
                   className="text-base hover:text-indigo-700"
-                  href="https://www.linkedin.com/in/bertjan-wolfs-24593b59"
+                  href={benchData?.contact_details?.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <LinkedIn fontSize="inherit" className="me-1" />
-                  https://www.linkedin.com/in/bertjan-wolfs-24593b59
+                  {benchData?.contact_details?.linkedin}
                 </a>
               </li>
             </ul>
@@ -269,17 +247,18 @@ export default function BenchPreview() {
                 </span>
               </div>
             </p>
-            {certifications.map((item) => (
-              <>
-                <Chip
-                  key={item}
-                  label={item}
-                  variant="outlined"
-                  sx={{ fontSize: 12 }}
-                  className="my-1 me-1"
-                />
-              </>
-            ))}
+            {benchData?.certifications?.length > 0 &&
+              benchData?.certifications?.map((item: any) => (
+                <>
+                  <Chip
+                    key={item}
+                    label={item}
+                    variant="outlined"
+                    sx={{ fontSize: 12 }}
+                    className="my-1 me-1"
+                  />
+                </>
+              ))}
           </div>
           <div>
             <p className="text-title group/item flex items-center">
@@ -296,17 +275,18 @@ export default function BenchPreview() {
                 </span>
               </div>
             </p>
-            {skills.map((item) => (
-              <>
-                <Chip
-                  key={item}
-                  label={item}
-                  variant="outlined"
-                  sx={{ fontSize: 12 }}
-                  className="my-1 me-1"
-                />
-              </>
-            ))}
+            {benchData?.top_skills?.length > 0 &&
+              benchData?.top_skills?.map((item: any) => (
+                <>
+                  <Chip
+                    key={item}
+                    label={item}
+                    variant="outlined"
+                    sx={{ fontSize: 12 }}
+                    className="my-1 me-1"
+                  />
+                </>
+              ))}
           </div>
 
           <div>
@@ -324,9 +304,12 @@ export default function BenchPreview() {
                 </span>
               </div>
             </p>
-            <p className="text-base mt-2">
-              BTech in Computer Science and Engineering
-            </p>
+            {benchData?.education?.length > 0 &&
+              benchData?.education?.map((item: any, index: number) => (
+                <p className="text-base mt-2" key={index}>
+                  {item}
+                </p>
+              ))}
           </div>
         </div>
       </div>

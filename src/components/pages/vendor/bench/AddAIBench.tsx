@@ -16,13 +16,17 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { UpsertBenchDetail } from "../../../../components/sharedService/apiService";
+import {
+  generateRequirement,
+  UpsertBenchDetail,
+} from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/sharedComponents/Loader";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 import BenchPreview from "./BenchPreview";
 import { closeDrawer } from "../../../../components/features/drawerSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
+import configData from "../../../sharedService/config.json";
 
 interface AddAIBenchProps {
   handleGetBenchDetail?: () => void;
@@ -37,6 +41,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   const [cvText, setCvText] = useState("");
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [benchData, setBenchData] = useState<any>({});
 
   // const {
   //   control,
@@ -110,7 +115,32 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   };
 
   const handleSubmit = () => {
-    alert(`CV Submitted:\n\n cv`);
+    console.log(benchData);
+  };
+
+  const handlePreview = () => {
+    const payload = {
+      promptCode: configData.BenchPromtCode,
+      loginUserId: userData?.userId,
+      promptJson: cvText,
+    };
+    setIsLoader(true);
+    generateRequirement(payload)
+      .then((result: any) => {
+        if (result && !!result) {
+          console.log(result);
+          setBenchData(result);
+          handleNext();
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
   };
 
   const handleCloseDrawer = () => {
@@ -180,7 +210,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                 </div>
               )}
 
-              {activeStep === 1 && <BenchPreview />}
+              {activeStep === 1 && <BenchPreview benchData={benchData} />}
             </div>
           </Box>
         </div>
@@ -210,8 +240,9 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
           {activeStep === 0 && (
             <Button
               variant="contained"
-              onClick={handleNext}
+              onClick={handlePreview}
               disabled={!cvText}
+              loading={isLoader}
               className="bg-blue-500 hover:bg-blue-600"
             >
               Preview
