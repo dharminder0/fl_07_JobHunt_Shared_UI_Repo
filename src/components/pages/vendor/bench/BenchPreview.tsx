@@ -78,23 +78,27 @@ export default function BenchPreview({ benchData = {} }: any) {
             <p className="text-base">{benchData?.profile?.objective || "-"}</p>
           </div>
 
-          <div>
-            <p className="text-title font-bold group/item flex items-center mb-1">
-              Summary
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700">
-                  <IconButton
-                    aria-label="edit"
-                    sx={{ marginLeft: 1 }}
-                    size="small"
-                  >
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
-            </p>
-            <p className="text-base">{benchData?.summary || "-"}</p>
-          </div>
+          {benchData?.summary?.length > 0 && (
+            <div>
+              <p className="text-title font-bold group/item flex items-center mb-1">
+                Summary
+                <div className="group/edit invisible group-hover/item:visible">
+                  <span className="group-hover/edit:text-gray-700">
+                    <IconButton
+                      aria-label="edit"
+                      sx={{ marginLeft: 1 }}
+                      size="small"
+                    >
+                      <Edit fontSize="small" />
+                    </IconButton>
+                  </span>
+                </div>
+              </p>
+              <ul className="text-base list-disc ps-4">
+                {benchData?.summary?.map((item: any) => <li>{item}</li>)}
+              </ul>
+            </div>
+          )}
 
           {/* <div>
             <p className="text-title font-bold group/item flex items-center mb-1">
@@ -200,35 +204,41 @@ export default function BenchPreview({ benchData = {} }: any) {
               </div>
             </p>
             <ul>
-              <li>
-                <a
-                  className="text-base hover:text-indigo-700"
-                  href={`mailto:${benchData?.contact_details?.email}`}
-                >
-                  <EmailOutlined fontSize="inherit" className="me-1" />
-                  {benchData?.contact_details?.email}
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-base hover:text-indigo-700"
-                  href={`tel:${benchData?.contact_details?.phone}`}
-                >
-                  <Phone fontSize="inherit" className="me-1" />
-                  {benchData?.contact_details?.phone}
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-base hover:text-indigo-700"
-                  href={benchData?.contact_details?.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <LinkedIn fontSize="inherit" className="me-1" />
-                  {benchData?.contact_details?.linkedin}
-                </a>
-              </li>
+              {benchData?.contact_details?.email && (
+                <li>
+                  <a
+                    className="text-base hover:text-indigo-700"
+                    href={`mailto:${benchData?.contact_details?.email}`}
+                  >
+                    <EmailOutlined fontSize="inherit" className="me-1" />
+                    {benchData?.contact_details?.email}
+                  </a>
+                </li>
+              )}
+              {benchData?.contact_details?.phone && (
+                <li>
+                  <a
+                    className="text-base hover:text-indigo-700"
+                    href={`tel:${benchData?.contact_details?.phone}`}
+                  >
+                    <Phone fontSize="inherit" className="me-1" />
+                    {benchData?.contact_details?.phone}
+                  </a>
+                </li>
+              )}
+              {benchData?.contact_details?.linkedin && (
+                <li>
+                  <a
+                    className="text-base hover:text-indigo-700"
+                    href={benchData?.contact_details?.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedIn fontSize="inherit" className="me-1" />
+                    {benchData?.contact_details?.linkedin}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 
