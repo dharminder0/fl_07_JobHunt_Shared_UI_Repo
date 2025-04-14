@@ -485,9 +485,6 @@ const RequirementForm = () => {
                         <Controller
                           name="clientCode"
                           control={control}
-                          rules={{
-                            required: "Resources Available For is required",
-                          }}
                           render={({ field }) => (
                             <FormControl fullWidth size="small">
                               <InputLabel>Select Client</InputLabel>
