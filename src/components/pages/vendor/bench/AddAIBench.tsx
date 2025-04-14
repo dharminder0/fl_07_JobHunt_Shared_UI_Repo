@@ -123,7 +123,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
       title: benchData.profile?.title ?? "",
       email: benchData.contact_details?.email ?? "",
       cv: benchData,
-      availability: 0,
+      availability: AvailabilityStatus.Immediate,
       orgCode: userData.orgCode,
       userId: userData.userId,
     };
