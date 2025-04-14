@@ -147,8 +147,7 @@ export default function BenchPreview({ benchData = {} }: any) {
                     Title: {project?.title || "-"}
                   </p>{" "}
                   <p className="text-base">Role: {project?.role || "-"}</p>
-                  <p>Description:</p>
-                  <p>{project?.description || "-"}</p>
+                  <p>Description: {project?.description || "-"}</p>
                   <p>Responsibilities:</p>
                   {project?.responsibilities?.length > 0 && (
                     <ul className="text-base list-disc ps-4">
