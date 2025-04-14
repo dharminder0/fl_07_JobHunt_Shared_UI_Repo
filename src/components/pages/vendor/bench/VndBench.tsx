@@ -435,9 +435,11 @@ export default function VndBench({ drawerData = {} }: any) {
                               <div className="flex items-center justify-between text-base">
                                 <div
                                   onClick={() =>
-                                    handleDrawer("bench", true, {
-                                      id: item?.id,
-                                    })
+                                    handleDrawer(
+                                      "bench",
+                                      true,
+                                      JSON.parse(item.cv)
+                                    )
                                   }
                                   className="cursor-pointer hover:text-indigo-700"
                                 >
@@ -588,7 +590,7 @@ export default function VndBench({ drawerData = {} }: any) {
 
             {drawerObj.type === "bench" && (
               <div className="overflow-auto h-[calc(100%-38px)]">
-                <BenchPreview />
+                <BenchPreview benchData={drawerObj.data} />
               </div>
             )}
             {drawerObj.type === "requirement" && (
