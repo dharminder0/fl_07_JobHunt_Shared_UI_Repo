@@ -1,3 +1,4 @@
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   AccessTimeOutlined,
   DownloadOutlined,
@@ -93,7 +94,9 @@ export default function BenchPreview({ benchData = {} }: any) {
                 </span>
               </div>
             </p>
-            <p className="text-base">{benchData?.summary || "-"}</p>
+            <div className="text-base">
+              <HtmlRenderer content={benchData?.summary} />
+            </div>
           </div>
 
           {/* <div>
@@ -143,7 +146,7 @@ export default function BenchPreview({ benchData = {} }: any) {
                   <p className="text-base font-bold">
                     Title: {project?.title || "-"}
                   </p>{" "}
-                  <p className="text-base">Role: Frontend Development</p>
+                  <p className="text-base">Role: {project?.role || "-"}</p>
                   <p>Description:</p>
                   <p>{project?.description || "-"}</p>
                   <p>Responsibilities:</p>
@@ -200,35 +203,41 @@ export default function BenchPreview({ benchData = {} }: any) {
               </div>
             </p>
             <ul>
-              <li>
-                <a
-                  className="text-base hover:text-indigo-700"
-                  href={`mailto:${benchData?.contact_details?.email}`}
-                >
-                  <EmailOutlined fontSize="inherit" className="me-1" />
-                  {benchData?.contact_details?.email}
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-base hover:text-indigo-700"
-                  href={`tel:${benchData?.contact_details?.phone}`}
-                >
-                  <Phone fontSize="inherit" className="me-1" />
-                  {benchData?.contact_details?.phone}
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-base hover:text-indigo-700"
-                  href={benchData?.contact_details?.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <LinkedIn fontSize="inherit" className="me-1" />
-                  {benchData?.contact_details?.linkedin}
-                </a>
-              </li>
+              {benchData?.contact_details?.email && (
+                <li>
+                  <a
+                    className="text-base hover:text-indigo-700"
+                    href={`mailto:${benchData?.contact_details?.email}`}
+                  >
+                    <EmailOutlined fontSize="inherit" className="me-1" />
+                    {benchData?.contact_details?.email}
+                  </a>
+                </li>
+              )}
+              {benchData?.contact_details?.phone && (
+                <li>
+                  <a
+                    className="text-base hover:text-indigo-700"
+                    href={`tel:${benchData?.contact_details?.phone}`}
+                  >
+                    <Phone fontSize="inherit" className="me-1" />
+                    {benchData?.contact_details?.phone}
+                  </a>
+                </li>
+              )}
+              {benchData?.contact_details?.linkedin && (
+                <li>
+                  <a
+                    className="text-base hover:text-indigo-700"
+                    href={benchData?.contact_details?.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkedIn fontSize="inherit" className="me-1" />
+                    {benchData?.contact_details?.linkedin}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
 
