@@ -27,6 +27,7 @@ import { closeDrawer } from "../../../../components/features/drawerSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import configData from "../../../sharedService/config.json";
+import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 
 interface AddAIBenchProps {
   handleGetBenchDetail?: () => void;
@@ -41,6 +42,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   const [cvText, setCvText] = useState("");
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [benchData, setBenchData] = useState<any>({});
 
   // const {
@@ -115,7 +117,38 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   };
 
   const handleSubmit = () => {
-    console.log(benchData);
+    const payload = {
+      firstName: benchData.profile?.name ?? "",
+      lastName: "",
+      title: benchData.profile?.title ?? "",
+      email: benchData.contact_details?.email ?? "",
+      cv: benchData,
+      availability: 0,
+      orgCode: userData.orgCode,
+      userId: userData.userId,
+    };
+
+    setIsLoader(true);
+    UpsertBenchDetail(payload)
+      .then((result: any) => {
+        if (result.success) {
+          setTimeout(() => {
+            setIsLoader(false);
+            handleCloseDrawer();
+            setIsSuccessPopup(true);
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            setIsLoader(false);
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+          setIsSuccessPopup(false);
+        }, 1000);
+      });
   };
 
   const handlePreview = () => {
@@ -232,6 +265,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                 variant="contained"
                 onClick={handleSubmit}
                 className="bg-green-500 hover:bg-green-600"
+                loading={isLoader}
               >
                 Submit CV
               </Button>
@@ -460,6 +494,13 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
             </div>
           </div> */}
       </div>
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="AI Bench added successfully"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
+      )}
     </div>
   );
 };
