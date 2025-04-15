@@ -6,9 +6,14 @@ import {
   EmailOutlined,
   LinkedIn,
   Phone,
+  PictureAsPdf,
+  PictureAsPdfOutlined,
 } from "@mui/icons-material";
 import { Button, Chip, IconButton, TextField } from "@mui/material";
-import React from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import React, { useRef } from "react";
+import htmlDocx from "html-docx-js/dist/html-docx";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
@@ -38,10 +43,93 @@ export default function BenchPreview({ benchData = {} }: any) {
     setFormStates({ isOpen: !formStates.isOpen, useForm: useFor });
   };
 
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const downloadPDF = async () => {
+    if (contentRef.current) {
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      // Adding the fonts.
+      doc.setFont("Poppins-Regular", "normal");
+
+      await doc.html(contentRef.current, {
+        x: 0,
+        y: 0,
+        html2canvas: {
+          scale: 0.34, // Adjust scale as needed
+          windowWidth: 595 , // Match A4 width in px
+          windowHeight: 842,
+        },
+        callback: (doc) => {
+          doc.save("document.pdf");
+        },
+      });
+    }
+  };
+
+  const downloadDOC = () => {
+    if (!contentRef.current) return;
+
+    const header =
+      "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+      "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+      "xmlns='http://www.w3.org/TR/REC-html40'>" +
+      "<head><meta charset='utf-8'><title>Document</title></head><body>";
+    const footer = "</body></html>";
+    const html = header + contentRef.current.innerHTML + footer;
+
+    const blob = new Blob(["\ufeff", html], {
+      type: "application/msword",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "document.doc";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadDocx = () => {
+    if (!contentRef.current) return;
+
+    const html = `<html><body>${contentRef.current.innerHTML}</body></html>`;
+    const blob = htmlDocx.asBlob(html);
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "export.docx";
+    link.click();
+
+    URL.revokeObjectURL(url); // optional cleanup
+  };
+
   return (
     <>
       {/* body */}
-      <div className="w-full flex flex-wrap" id="printSection">
+      <div className="w-[70%] flex justify-end space-x-4 px-4">
+        <Button
+          startIcon={<PictureAsPdfOutlined fontSize="inherit" />}
+          onClick={downloadPDF}
+        >
+          Download Pdf
+        </Button>
+        <Button
+          startIcon={<DownloadOutlined fontSize="inherit" />}
+          onClick={handleDownloadDocx}
+        >
+          Download Doc
+        </Button>
+      </div>
+      <div
+        className="w-full flex flex-wrap mx-auto"
+        id="printSection"
+        ref={contentRef}
+      >
         <div className="p-6 w-[70%] mx-auto space-y-4 border-e">
           <div className="flex justify-between">
             <div className="flex">
@@ -60,14 +148,6 @@ export default function BenchPreview({ benchData = {} }: any) {
                   {benchData?.profile?.experience || "-"}
                 </p>
               </div>
-            </div>
-            <div>
-              <Button
-                startIcon={<DownloadOutlined fontSize="inherit" />}
-                onClick={PrintDocument}
-              >
-                Download
-              </Button>
             </div>
           </div>
 
@@ -290,14 +370,18 @@ export default function BenchPreview({ benchData = {} }: any) {
               : benchData?.projects?.length > 0 &&
                 benchData.projects.map((project: any, idx: number) => (
                   <div key={idx} className="mb-6">
-                    <p className="text-base font-bold">
+                    <p className="text-base font-bold my-1">
                       Title: {project?.title || "-"}
                     </p>
-                    <p className="text-base">Role: {project?.role || "-"}</p>
-                    <p className="text-base">
+                    <p className="text-base mb-1">
+                      Role: {project?.role || "-"}
+                    </p>
+                    <p className="text-base mb-1">
                       Description: {project?.description || "-"}
                     </p>
-                    <p className="text-base font-medium">Responsibilities:</p>
+                    <p className="text-base font-medium mb-1">
+                      Responsibilities:
+                    </p>
                     {project?.responsibilities?.length > 0 && (
                       <ul className="text-base list-disc ps-4">
                         {project.responsibilities.map(

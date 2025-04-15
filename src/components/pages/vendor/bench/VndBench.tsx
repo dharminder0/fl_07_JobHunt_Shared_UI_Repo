@@ -28,6 +28,7 @@ import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import {
   getBenchDetails,
   getBenchList,
+  getTechStackList,
   upsertApplications,
 } from "../../../../components/sharedService/apiService";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
@@ -70,6 +71,7 @@ export default function VndBench({ drawerData = {} }: any) {
   const [activeTab, setActiveTab] = useState("benchTab");
   const [benchDatadetails, setbenchDatadetails] = useState<any[]>([]);
   const [availability, setAvailability] = useState<any[]>([]);
+  const [techStack, setTechStack] = useState<any[]>([]);
   const [drawerObj, setDrawerObj] = useState({
     type: "bench",
     isOpen: false,
@@ -110,6 +112,7 @@ export default function VndBench({ drawerData = {} }: any) {
   useEffect(() => {
     if (searchText?.length > 2 || searchText?.length == 0) {
       fetchBenchList();
+      getTechStacks();
     }
   }, [searchText, availability]);
 
@@ -145,6 +148,14 @@ export default function VndBench({ drawerData = {} }: any) {
           setIsTableLoader(false);
         }, 1000);
       });
+  };
+
+  const getTechStacks = () => {
+    getTechStackList(userData.orgCode).then((result: any) => {
+      if (result && result?.length >= 0) {
+        setTechStack(result);
+      }
+    });
   };
 
   const handleMatchingDialog = (score: number) => {
@@ -396,7 +407,7 @@ export default function VndBench({ drawerData = {} }: any) {
                     )}
                     <th className="add-right-shadow">Resource name</th>
                     <th>Role</th>
-                    <th>Skill Set</th>
+                    {/* <th>Skill Set</th> */}
                     <th>Availability</th>
                   </tr>
                 </thead>
@@ -519,7 +530,7 @@ export default function VndBench({ drawerData = {} }: any) {
                           </div>
                         </th>
                         <td>{item.title || "-"}</td>
-                        <td>{item.skills || "-"}</td>
+                        {/* <td>{item.skills || "-"}</td> */}
                         <td>{item?.availabilityName || "-"}</td>
                       </tr>
                     ))}
@@ -540,19 +551,19 @@ export default function VndBench({ drawerData = {} }: any) {
                   </tr>
                 </thead>
                 <tbody>
-                  {teckStackData.map((item, index) => (
+                  {techStack.map((item, index) => (
                     <tr key={item?.id}>
-                      <th className="add-right-shadow">{item.tech}</th>
+                      <th className="add-right-shadow">{item.SkillName}</th>
                       <td>
                         <div
                           className="cursor-pointer hover:text-indigo-700"
                           onClick={() =>
                             handleDrawer("techStack", true, {
-                              tech: item.tech,
+                              tech: item.SkillName,
                             })
                           }
                         >
-                          {item.resources}
+                          {item.ResourceCount}
                         </div>
                       </td>
                     </tr>
