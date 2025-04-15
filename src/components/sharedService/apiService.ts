@@ -289,4 +289,9 @@ export const getHotRequirements = async (payload: any) => {
   return response.data;
 };
 
+export const getTechStackList = async (orgCode: any) => {
+  const response = await api.post(`V1/Resources/TechStack?orgCode=${orgCode}`);
+  return response.data;
+};
+
 export default api;

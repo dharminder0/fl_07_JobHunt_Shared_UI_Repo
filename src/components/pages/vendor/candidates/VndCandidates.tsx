@@ -94,7 +94,7 @@ export default function VndCandidates() {
   };
 
   const handleOpenDrawer = (name: string) => {
-    dispatch(openDrawer({ drawerName: name}));
+    dispatch(openDrawer({ drawerName: name }));
   };
 
   return (
@@ -170,11 +170,13 @@ export default function VndCandidates() {
                       className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                       onClick={() => handleRowClick(applicant.clientCode)}
                     >
-                      <img
-                        src={applicant.clientOrgLogo}
-                        style={{ height: 12, width: 12 }}
-                        className="me-1"
-                      />
+                      {applicant.clientOrgLogo && (
+                        <img
+                          src={applicant.clientOrgLogo}
+                          style={{ height: 12, width: 12 }}
+                          className="me-1"
+                        />
+                      )}
                       <Tooltip title={applicant.clientOrgName} arrow>
                         <span className="text-ellipsis overflow-hidden truncate">
                           {applicant.clientOrgName}
@@ -222,7 +224,7 @@ export default function VndCandidates() {
                     </div>
                   </div>
                 </th>
-                <td>{applicant.requirement}</td>
+                <td>{applicant.title}</td>
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
