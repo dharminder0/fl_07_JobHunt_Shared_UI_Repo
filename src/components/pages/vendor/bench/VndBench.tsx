@@ -112,9 +112,12 @@ export default function VndBench({ drawerData = {} }: any) {
   useEffect(() => {
     if (searchText?.length > 2 || searchText?.length == 0) {
       fetchBenchList();
-      getTechStacks();
     }
-  }, [searchText, availability]);
+  }, [searchText, availability, activeTab]);
+
+  useEffect(() => {
+    getTechStacks();
+  }, [activeTab]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -151,10 +154,14 @@ export default function VndBench({ drawerData = {} }: any) {
   };
 
   const getTechStacks = () => {
+    setIsTableLoader(true);
     getTechStackList(userData.orgCode).then((result: any) => {
       if (result && result?.length >= 0) {
         setTechStack(result);
       }
+      setTimeout(() => {
+        setIsTableLoader(false);
+      }, 1000);
     });
   };
 
@@ -229,8 +236,17 @@ export default function VndBench({ drawerData = {} }: any) {
     });
   };
 
-  const handleOpenDrawer = () => {
-    dispatch(openDrawer({ drawerName: "AddAIBench" }));
+  const handleOpenDrawer = (name: string, obj?: any) => {
+    if (drawerData?.isOpen) {
+      window.open(
+        window.location.origin + `/vendor/bench/${obj?.id}`,
+        "_blank"
+      );
+    } else {
+      dispatch(
+        openDrawer({ drawerName: name, data: !obj ? {} : JSON.parse(obj?.cv) })
+      );
+    }
   };
 
   return (
@@ -353,7 +369,10 @@ export default function VndBench({ drawerData = {} }: any) {
             {!drawerData?.isOpen && (
               // <AddAIBench handleGetBenchDetail={fetchBenchList} />
               <div className="flex flex-col my-auto mr-2">
-                <Button variant="outlined" onClick={handleOpenDrawer}>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleOpenDrawer("AddAIBench")}
+                >
                   <svg
                     width="14px"
                     height="14px"
@@ -445,12 +464,16 @@ export default function VndBench({ drawerData = {} }: any) {
                             <div className="ms-2 w-[100%]">
                               <div className="flex items-center justify-between text-base">
                                 <div
+                                  // onClick={() =>
+                                  //   handleDrawer(
+                                  //     "bench",
+                                  //     true,
+                                  //     JSON.parse(item.cv)
+                                  //   )
+                                  // }
+
                                   onClick={() =>
-                                    handleDrawer(
-                                      "bench",
-                                      true,
-                                      JSON.parse(item.cv)
-                                    )
+                                    handleOpenDrawer("benchPreview", item)
                                   }
                                   className="cursor-pointer hover:text-indigo-700"
                                 >
@@ -550,6 +573,12 @@ export default function VndBench({ drawerData = {} }: any) {
                     <th>Resources</th>
                   </tr>
                 </thead>
+
+                <TablePreLoader
+                  isTableLoader={isTableLoader}
+                  data={techStack}
+                />
+
                 <tbody>
                   {techStack.map((item, index) => (
                     <tr key={item?.id}>

@@ -24,6 +24,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SuccessDialog from "../../sharedComponents/SuccessDialog";
 import FileUploadBox from "../../sharedComponents/FileUploadBox";
+import UploadLogo from "../../sharedComponents/UploadLogo";
 
 export default function UserDetails() {
   const [tabValue, setTabValue] = React.useState("Profile");
@@ -100,6 +101,12 @@ export default function UserDetails() {
           phone: result.content?.phone,
           gender: result.content?.gender,
           dob: moment(result.content?.dob).format("YYYY-MM-DD"),
+          profileAvatar: [
+            {
+              fileName: "",
+              fileData: result.content?.profileAvatar,
+            },
+          ],
         });
         reset1({ oldEmail: result.content?.userName });
         reset2({ email: result.content?.userName });
@@ -108,7 +115,6 @@ export default function UserDetails() {
   };
 
   const onSubmit = (data: any) => {
-    console.log("Form Submitted", data);
     dispatch(openBackdrop());
     updateUserDetails(data)
       .then((result: any) => {
@@ -178,7 +184,7 @@ export default function UserDetails() {
             {/* Profile Photo Section */}
             <div className="flex items-start gap-4 mb-6">
               <div className="relative">
-                <Avatar
+                {/* <Avatar
                   src={!formData?.profileAvatar ? "" : formData?.profileAvatar}
                   alt="Profile Photo"
                   sizes="large"
@@ -190,7 +196,7 @@ export default function UserDetails() {
                   name="profilePhoto"
                   // onChange={handleInputChange}
                   className="absolute bottom-0 left-0 cursor-pointer opacity-0 w-full h-full"
-                />
+                /> */}
                 {/* <FileUploadBox
                   title="Upload Logo"
                   fileSize="128 x 128"
@@ -198,6 +204,13 @@ export default function UserDetails() {
                   onUpload={(file: any) => setValue("profileAvatar", file)}
                   file={watch("profileAvatar")}
                 /> */}
+                <UploadLogo
+                  title="Upload Profile"
+                  fileSize="128 x 128"
+                  iconType="image"
+                  onUpload={(file: any) => setValue("profileAvatar", file)}
+                  file={watch("profileAvatar")}
+                />
               </div>
             </div>
 

@@ -8,6 +8,8 @@ interface FileUploadBoxProps {
   file?: { fileName: string; fileData: string }[]; // Accepts externally controlled file format
   outputFormat?: "png" | "jpeg" | "webp" | null; // Image conversion format
   onUpload?: (file: { fileName: string; fileData: string }[]) => void;
+  height?: number;
+  width?: number;
 }
 
 const UploadLogo: React.FC<FileUploadBoxProps> = ({
@@ -17,6 +19,8 @@ const UploadLogo: React.FC<FileUploadBoxProps> = ({
   file = [],
   outputFormat = null,
   onUpload,
+  height = 100,
+  width = 100,
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
   // Converts image to specified format
@@ -108,7 +112,7 @@ const UploadLogo: React.FC<FileUploadBoxProps> = ({
       >
         <label
           htmlFor={`file-upload-${title}`}
-          className="w-[100px] h-[100px] p-3 text-center border border-dashed border-gray-500 rounded-full cursor-pointer hover:bg-blue-50"
+          className={`w-[${width}px] h-[${height}px] p-3 text-center border border-dashed border-gray-500 rounded-full cursor-pointer hover:bg-blue-50`}
         >
           <div className="flex flex-col items-center justify-center">
             {/* Icon */}
