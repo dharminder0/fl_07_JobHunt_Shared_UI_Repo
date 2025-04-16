@@ -17,6 +17,7 @@ import htmlDocx from "html-docx-js/dist/html-docx";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
+const html2pdf = require("html2pdf.js");
 export default function BenchPreview({ benchData = {} }: any) {
   const [tempBenchData, setTempBenchData] = React.useState(benchData ?? {});
   const [formStates, setFormStates] = React.useState({
@@ -40,33 +41,62 @@ export default function BenchPreview({ benchData = {} }: any) {
   };
 
   const handleFormStates = (useFor: string) => {
-    setFormStates({ isOpen: !formStates.isOpen, useForm: useFor });
+    setFormStates({
+      isOpen: !formStates.isOpen || formStates.useForm !== useFor,
+      useForm: useFor,
+    });
   };
 
   const contentRef = useRef<HTMLDivElement>(null);
-
   const downloadPDF = async () => {
     if (contentRef.current) {
-      const doc = new jsPDF({
-        format: "a4",
-        unit: "px",
-      });
+      // const doc = new jsPDF({
+      //   format: "a4",
+      //   unit: "mm",
+      // });
 
-      // Adding the fonts.
-      doc.setFont("Poppins-Regular", "normal");
+      // const a4WidthPx = 794;
+      // const contentWidthPx = 800;
 
-      await doc.html(contentRef.current, {
-        x: 0,
-        y: 0,
-        html2canvas: {
-          scale: 0.34, // Adjust scale as needed
-          windowWidth: 595 , // Match A4 width in px
-          windowHeight: 842,
-        },
-        callback: (doc) => {
-          doc.save("document.pdf");
-        },
-      });
+      // const scale = a4WidthPx / contentWidthPx;
+
+      // await doc.html(contentRef.current, {
+      //   x: 0,
+      //   y: 0,
+      //   html2canvas: {
+      //     scale: 0.255, // Dynamically fit to A4 width
+      //     scrollY: 0,
+      //     windowWidth: 300,
+      //   },
+      //   callback: function (doc) {
+      //     doc.save("document.pdf");
+      //   },
+      //   autoPaging: "text", // Auto adjust to next page if content overflows
+      // });
+
+      const element = contentRef.current;
+
+      if (element) {
+        const opt = {
+          margin: 0,
+          filename: "document.pdf",
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2, // Increase for better quality
+            useCORS: true,
+            allowTaint: false,
+          },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait",
+          },
+        };
+
+        setTimeout(() => {
+          html2pdf().set(opt).from(element).save();
+        }, 300);
+      }
     }
   };
 
@@ -94,18 +124,23 @@ export default function BenchPreview({ benchData = {} }: any) {
   };
 
   const handleDownloadDocx = () => {
-    if (!contentRef.current) return;
-
-    const html = `<html><body>${contentRef.current.innerHTML}</body></html>`;
-    const blob = htmlDocx.asBlob(html);
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "export.docx";
-    link.click();
-
-    URL.revokeObjectURL(url); // optional cleanup
+    if (contentRef.current) {
+      const html = contentRef.current.innerHTML;
+      const doc = htmlDocx.asBlob(
+        `<!DOCTYPE html><html><head><meta charset="utf-8"> <style>
+        body {
+          font-family: 'Cambria', sans-serif;
+        }
+      </style></head><body>${html}</body></html>`
+      );
+      const url = URL.createObjectURL(doc);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "skills.docx";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
@@ -126,7 +161,7 @@ export default function BenchPreview({ benchData = {} }: any) {
         </Button>
       </div>
       <div
-        className="w-full flex flex-wrap mx-auto"
+        className="w-full h-full flex flex-wrap mx-auto"
         id="printSection"
         ref={contentRef}
       >
@@ -254,32 +289,6 @@ export default function BenchPreview({ benchData = {} }: any) {
             </div>
           </div>
 
-          {/* <div>
-            <p className="text-title font-bold group/item flex items-center mb-1">
-              Technical Skills
-              <div className="group/edit invisible group-hover/item:visible">
-                <span className="group-hover/edit:text-gray-700">
-                  <IconButton
-                    aria-label="edit"
-                    sx={{ marginLeft: 1 }}
-                    size="small"
-                  >
-                    <Edit fontSize="small" />
-                  </IconButton>
-                </span>
-              </div>
-            </p>
-            <ul className="text-base list-disc ps-4">
-              <li>
-                Frontend Technologies: Bootstrap, JavaScript, jQuery, HTML, CSS,
-                SCSS, TypeScript, JavaScript
-              </li>
-              <li>Frameworks & Libraries: React, React Native</li>
-              <li>Mobile Development: iOS, Android</li>
-              <li>Version Control: GitHub, Bitbucket</li>
-            </ul>
-          </div> */}
-
           <div className="text-base space-y-2">
             <p className="text-title font-bold group/item flex items-center mb-2">
               Projects
@@ -393,30 +402,6 @@ export default function BenchPreview({ benchData = {} }: any) {
                     )}
                   </div>
                 ))}
-
-            {/* <p className="text-base font-bold mt-6">Title: Treatians </p>{" "}
-            <p className="text-base">Role: Frontend Development</p>
-            <p>Description:</p>
-            <p>
-              Treatians is an innovative medical tourism facilitator that unites
-              top healthcare services, facilities, and doctors from across India
-              on one seamless digital platform. We empower health-seekers to
-              effortlessly book consultations, treatments, and medical travel,
-              eliminating the hassle of navigating multiple providers. Our
-              commitment to transparency, affordability, and quality ensures a
-              value-driven healthcare experience, eradicating unfair pricing and
-              enhancing patient satisfaction.
-            </p>
-            <p>Responsibilities:</p>
-            <ul className="text-base list-disc ps-4">
-              <li>
-                Frontend Technologies: Bootstrap, JavaScript, jQuery, HTML, CSS,
-                SCSS, TypeScript, JavaScript
-              </li>
-              <li>Frameworks & Libraries: React, React Native</li>
-              <li>Mobile Development: iOS, Android</li>
-              <li>Version Control: GitHub, Bitbucket</li>
-            </ul> */}
           </div>
         </div>
         <div className="p-4 w-[30%] mx-auto space-y-4 bg-gray-100">
@@ -472,6 +457,7 @@ export default function BenchPreview({ benchData = {} }: any) {
                     value={tempBenchData?.contact_details?.phone}
                     fullWidth
                     size="small"
+                    className="!my-2"
                     onChange={(e) =>
                       setTempBenchData((prev: any) => ({
                         ...prev,
@@ -565,16 +551,23 @@ export default function BenchPreview({ benchData = {} }: any) {
                 )}
               </div>
             ) : (
-              benchData?.certifications?.length > 0 &&
-              benchData.certifications.map((item: string, index: number) => (
-                <Chip
-                  key={index}
-                  label={item}
-                  variant="outlined"
-                  sx={{ fontSize: 12 }}
-                  className="my-1 me-1"
-                />
-              ))
+              <div className="flex flex-wrap">
+                {benchData?.certifications?.length > 0 &&
+                  benchData.certifications.map(
+                    (item: string, index: number) => (
+                      <div
+                        key={index}
+                        // className="my-1 me-1 text-base border-1 border px-3 py-1 rounded-full border-gray-400 line-clamp-2"
+                        className="my-1 me-1 text-base"
+                      >
+                        {item}
+                        {index === benchData?.certifications?.length - 1
+                          ? ""
+                          : ", "}
+                      </div>
+                    )
+                  )}
+              </div>
             )}
           </div>
           <div>
@@ -615,16 +608,15 @@ export default function BenchPreview({ benchData = {} }: any) {
                 )}
               </div>
             ) : (
-              benchData?.top_skills?.length > 0 &&
-              benchData.top_skills.map((item: string, index: number) => (
-                <Chip
-                  key={index}
-                  label={item}
-                  variant="outlined"
-                  sx={{ fontSize: 12 }}
-                  className="my-1 me-1"
-                />
-              ))
+              <div className="flex flex-wrap items-center">
+                {benchData?.top_skills?.length > 0 &&
+                  benchData.top_skills.map((item: string, index: number) => (
+                    <div key={index} className="my-1 me-1 text-base">
+                      {item}
+                      {index === benchData?.top_skills?.length - 1 ? "" : ", "}
+                    </div>
+                  ))}
+              </div>
             )}
           </div>
 
