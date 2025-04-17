@@ -294,4 +294,9 @@ export const getTechStackList = async (orgCode: any) => {
   return response.data;
 };
 
+export const getSkillsList = async () => {
+  const response = await api.get("V1/Skill/GetList");
+  return response.data;
+};
+
 export default api;

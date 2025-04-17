@@ -13,6 +13,8 @@ import {
 import {
   Autocomplete,
   Avatar,
+  Checkbox,
+  Chip,
   FormControl,
   InputLabel,
   MenuItem,
@@ -31,6 +33,7 @@ import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,
   getOrgDetailsList,
+  getSkillsList,
   shareRequirement,
   upsertRequirement,
 } from "../../../../components/sharedService/apiService";
@@ -45,10 +48,14 @@ import { useOrgRequestList } from "../../../../components/hooks/useOrgRequestLis
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import { closeDrawer } from "../../../../components/features/drawerSlice";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 
 const steps = ["Paste Requirement", "Basic Information", "Vendors"];
 
-const skillsData = ["JavaScript", "React", "Node.js", "Tailwind"];
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const RequirementForm = () => {
   const [isLoader, setIsLoader] = useState(false);
@@ -63,6 +70,8 @@ const RequirementForm = () => {
   const [selectedVendors, setSelectedVendors] = useState<any>([]);
   const [clientListData, setClientListData] = useState<any>([]);
   const [empaneledVendors, setEmpaneledVendors] = useState<any>([]);
+  const [skillsData, setSkillsData] = useState<any[]>([]);
+  const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -82,7 +91,7 @@ const RequirementForm = () => {
       description: "",
       experience: "",
       budget: "",
-      locationType: "",
+      locationType: 1,
       location: "",
       positions: "",
       duration: "",
@@ -158,8 +167,11 @@ const RequirementForm = () => {
           console.log(result);
           reset(result);
           setValue("status", 1);
+          setValue("locationType", LocationType[result?.location]);
+          debugger
           handleNext();
         }
+        getSkillList();
         setTimeout(() => {
           setIsLoader(false);
         }, 1000);
@@ -204,15 +216,18 @@ const RequirementForm = () => {
     shareRequirement(payload)
       .then((res: any) => {
         if (res) {
-          closeReqDrawer();
+          setIsSuccessPopup(true);
         }
         setTimeout(() => {
+          closeReqDrawer();
           setIsLoader(false);
+          setIsSuccessPopup(false);
         }, 1500);
       })
       .catch((error: any) => {
         setTimeout(() => {
           setIsLoader(false);
+          setIsSuccessPopup(false);
         }, 1000);
       });
   };
@@ -251,6 +266,14 @@ const RequirementForm = () => {
     getClientLists(userData?.orgCode).then((result: any) => {
       if (result) {
         setClientListData(result);
+      }
+    });
+  };
+
+  const getSkillList = () => {
+    getSkillsList().then((result: any) => {
+      if (result) {
+        setSkillsData(result);
       }
     });
   };
@@ -371,7 +394,7 @@ const RequirementForm = () => {
                         )}
                       />
                     </div>
-                    <div className="">
+                    {/* <div className="">
                       <Controller
                         name="description"
                         control={control}
@@ -386,7 +409,21 @@ const RequirementForm = () => {
                           />
                         )}
                       />
-                    </div>
+                    </div> */}
+
+                    <Controller
+                      name="description" // your form field name
+                      control={control}
+                      defaultValue=""
+                      render={({ field: { onChange, value } }) => (
+                        <ReactQuill
+                          theme="snow"
+                          value={value}
+                          onChange={onChange}
+                          placeholder="Job Description"
+                        />
+                      )}
+                    />
 
                     <div className="grid grid-cols-2 gap-4">
                       <Controller
@@ -521,35 +558,21 @@ const RequirementForm = () => {
                               onChange={(_, newValue) =>
                                 field.onChange(newValue)
                               }
-                              renderTags={(value, getTagProps) => {
-                                const maxVisible = 4;
-                                return [
-                                  ...value
-                                    .slice(0, maxVisible)
-                                    .map((option, index) => (
-                                      <span
-                                        key={option}
-                                        className="bg-blue-100 text-blue-800 text-info px-2 py-1 rounded-full mr-1"
-                                      >
-                                        {option}
-                                      </span>
-                                    )),
-                                  value.length > maxVisible && (
-                                    <span
-                                      key="more"
-                                      className="text-gray-500 text-info ml-1"
-                                    >
-                                      +{value.length - maxVisible} more
-                                    </span>
-                                  ),
-                                ];
-                              }}
+                              renderTags={(value, getTagProps) =>
+                                value.map((option, index) => (
+                                  <Chip
+                                    variant="outlined"
+                                    size="small" // ✅ This makes the chip smaller
+                                    label={option}
+                                    {...getTagProps({ index })}
+                                  />
+                                ))
+                              }
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
                                   label="Skills"
                                   placeholder="Search skills"
-                                  size="small"
                                 />
                               )}
                             />
@@ -937,6 +960,13 @@ const RequirementForm = () => {
           </div>
         </div>
       </div>
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="Requirement created and shared successfully"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
+      )}
     </div>
   );
 };
