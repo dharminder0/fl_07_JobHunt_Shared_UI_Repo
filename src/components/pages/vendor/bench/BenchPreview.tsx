@@ -13,11 +13,12 @@ import { Button, Chip, IconButton, TextField } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import React, { useRef } from "react";
-import htmlDocx from "html-docx-js/dist/html-docx";
+// import htmlDocx from "html-docx-js/dist/html-docx";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const html2pdf = require("html2pdf.js");
+const htmlDocx = require('html-docx-js/dist/html-docx');
 export default function BenchPreview({ benchData = {} }: any) {
   const [tempBenchData, setTempBenchData] = React.useState(benchData ?? {});
   const [formStates, setFormStates] = React.useState({
