@@ -29,6 +29,7 @@ import {
   getBenchDetails,
   getBenchList,
   getTechStackList,
+  matchRequirementToCandidates,
   upsertApplications,
 } from "../../../../components/sharedService/apiService";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
@@ -36,7 +37,11 @@ import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
-import { openDrawer } from "../../../../components/features/drawerSlice";
+import {
+  closeBackdrop,
+  openBackdrop,
+  openDrawer,
+} from "../../../../components/features/drawerSlice";
 
 const teckStackData = [
   {
@@ -64,6 +69,7 @@ export default function VndBench({ drawerData = {} }: any) {
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState<any>({ type: "", message: "" });
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
@@ -229,6 +235,10 @@ export default function VndBench({ drawerData = {} }: any) {
       if (result.success) {
         setTimeout(() => {
           setIsSuccessPopup(true);
+          setShowPopup({
+            type: "sucess",
+            message: "Application has been submitted successfully",
+          });
           setSelectedRows([]);
           setDrawerObj((prev: any) => ({ ...prev, isOpen: false }));
         }, 500);
@@ -246,6 +256,33 @@ export default function VndBench({ drawerData = {} }: any) {
       dispatch(
         openDrawer({ drawerName: name, data: !obj ? {} : JSON.parse(obj?.cv) })
       );
+    }
+  };
+
+  const handleMatchingPositions = async () => {
+    try {
+      dispatch(openBackdrop());
+      const data = await matchRequirementToCandidates(selectedRows);
+      if (data && data.length >= 0) {
+        setTimeout(() => {
+          setIsSuccessPopup(true);
+          setShowPopup({
+            type: "sucess",
+            message: "Matching positions found",
+          });
+          dispatch(closeBackdrop());
+        }, 1000);
+      }
+    } catch (err) {
+      console.error("Failed to fetch positions:", err);
+      setTimeout(() => {
+        dispatch(closeBackdrop());
+        setIsSuccessPopup(true);
+        setShowPopup({
+          type: "error",
+          message: "Failed to fetch positions",
+        });
+      }, 2000);
     }
   };
 
@@ -312,6 +349,18 @@ export default function VndBench({ drawerData = {} }: any) {
                   Apply
                 </Button>
               )}
+              {!drawerData?.isOpen && drawerData.type !== "techStack" && (
+                <Button
+                  variant="contained"
+                  size="small"
+                  disabled={selectedRows?.length <= 0}
+                  className="!mr-2"
+                  onClick={handleMatchingPositions}
+                >
+                  Check matching positions
+                </Button>
+              )}
+
               <div className="flex grow w-[220px] mx-2">
                 <div className="flex-col flex-grow">
                   <TextField
@@ -414,16 +463,14 @@ export default function VndBench({ drawerData = {} }: any) {
               <table>
                 <thead>
                   <tr>
-                    {drawerData?.isOpen && (
-                      <th className="multi-select">
-                        <input
-                          type="checkbox"
-                          checked={isAllSelected}
-                          onChange={toggleSelectAll}
-                          className="cursor-pointer"
-                        />
-                      </th>
-                    )}
+                    <th className="multi-select">
+                      <input
+                        type="checkbox"
+                        checked={isAllSelected}
+                        onChange={toggleSelectAll}
+                        className="cursor-pointer"
+                      />
+                    </th>
                     <th className="add-right-shadow">Resource name</th>
                     <th>Role</th>
                     {/* <th>Skill Set</th> */}
@@ -445,16 +492,15 @@ export default function VndBench({ drawerData = {} }: any) {
                           isSelected(item.id) ? "bg-blue-100" : "bg-white"
                         }`}
                       >
-                        {drawerData?.isOpen && (
-                          <th className="multi-select">
-                            <input
-                              type="checkbox"
-                              checked={isSelected(item.id)}
-                              onChange={() => toggleRowSelection(item)}
-                              className="cursor-pointer"
-                            />
-                          </th>
-                        )}
+                        <th className="multi-select">
+                          <input
+                            type="checkbox"
+                            checked={isSelected(item.id)}
+                            onChange={() => toggleRowSelection(item)}
+                            className="cursor-pointer"
+                          />
+                        </th>
+
                         <th className="add-right-shadow">
                           <div className="flex items-center">
                             <AccountCircleOutlined
@@ -646,9 +692,10 @@ export default function VndBench({ drawerData = {} }: any) {
       </div>
       {isSuccessPopup && (
         <SuccessDialog
-          title="Application has been submitted successfully"
-          isOpenModal={isSuccessPopup}
+          title={showPopup.message}
+          isOpenModal={showPopup.isVisible}
           setIsOpenModal={setIsSuccessPopup}
+          type={showPopup.type}
         />
       )}
     </>

@@ -6,6 +6,7 @@ import {
   Tooltip,
   IconButton,
   Drawer,
+  Button,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -24,7 +25,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import VndBench from "../bench/VndBench";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
 import React from "react";
-import { getRequirementsList } from "../../../../components/sharedService/apiService";
+import {
+  getRequirementsList,
+  matchRequirementToCandidates,
+  upsertMatchingIds,
+} from "../../../../components/sharedService/apiService";
 import {
   LocationTypeStatus,
   RequirementStatus,
@@ -35,10 +40,17 @@ import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import moment from "moment";
 import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../components/redux/store";
+import {
+  closeBackdrop,
+  openBackdrop,
+} from "../../../../components/features/drawerSlice";
 
 const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch: AppDispatch = useDispatch();
   const params = location.state || {};
   const paramStatus = !params?.status
     ? benchDrawerData?.status
@@ -48,13 +60,18 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const activeRole = localStorage.getItem("activeRole") || "";
   const [drawerObj, setDrawerObj] = useState({ data: {}, isOpen: false });
   const [matchingObj, setMatchingObj] = useState({ isOpen: false, score: 0 });
-  const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [isSuccessPopup, setIsSuccessPopup] = useState<any>({
+    isVisible: false,
+    type: "success",
+    message: "",
+  });
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [searchText, setSearchText] = React.useState("");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [status, setStatus] = useState<any[]>(
     !paramStatus ? [] : [paramStatus]
   );
@@ -85,7 +102,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
   const handleDrawer = (data: object, isOpen: boolean) => {
     if (benchDrawerData.isOpen) {
-      setIsSuccessPopup(true);
+      // setIsSuccessPopup(true);
+      setIsSuccessPopup({
+        isVisible: true,
+        type: "success",
+        message: "Application has been submitted successfully",
+      });
     } else {
       setDrawerObj((prev) => ({ ...prev, data: data, isOpen: isOpen }));
     }
@@ -150,10 +172,105 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   }, [searchText, resource, status, client, pageIndex]);
 
+  const isSelected = (id: number) => selectedRows.includes(id);
+  const isAllSelected = selectedRows.length === requirementData.list?.length;
+
+  const toggleRowSelection = (row: any) => {
+    setSelectedRows((prevSelectedRows) => {
+      const exists = prevSelectedRows.includes(row.id);
+      if (exists) {
+        // Remove the row id if it's already selected
+        return prevSelectedRows.filter((id) => id !== row.id);
+      }
+      // Add the row id if it's not selected
+      return [...prevSelectedRows, row.id];
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedRows.length === requirementData?.list?.length) {
+      setSelectedRows([]); // Deselect all
+    } else {
+      setSelectedRows(requirementData?.list.map((row: any) => row.id)); // Store only IDs
+    }
+  };
+
+  // const handleMatchingCandidate = async () => {
+  //   dispatch(openBackdrop());
+  //   try {
+  //     const data = await matchRequirementToCandidates(selectedRows);
+  //     if (data && data.length >= 0) {
+  //       setTimeout(() => {
+  //         setIsSuccessPopup({
+  //           isVisible: true,
+  //           type: "success",
+  //           message: "Found Matching Candidate",
+  //         });
+  //         dispatch(closeBackdrop());
+  //       }, 1000);
+  //     }
+  //   } catch (err) {
+  //     console.error("Failed to fetch candidates:", err);
+  //     setIsSuccessPopup({
+  //       isVisible: true,
+  //       type: "error",
+  //       message: "Error to found matching candidate",
+  //     });
+  //     setTimeout(() => {
+  //       dispatch(closeBackdrop());
+  //     }, 1000);
+  //   }
+  // };
+
+  const handleMatchingCandidate = async () => {
+    const payload = {
+      resourceId: [],
+      requirementId: selectedRows,
+    };
+    dispatch(openBackdrop());
+    upsertMatchingIds(payload)
+      .then((result: any) => {
+        if (result && result?.length >= 0) {
+          setTimeout(() => {
+            setIsSuccessPopup({
+              isVisible: true,
+              type: "success",
+              message: "Found Matching Candidate",
+            });
+            getRequirementsData();
+            dispatch(closeBackdrop());
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsSuccessPopup({
+            isVisible: true,
+            type: "error",
+            message: "Error to found matching candidate",
+          });
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
+  };
+
   return (
     <>
       <div className="px-2 py-3 h-[calc(100%-20px)]">
-        <div className="flex flex-row gap-1 justify-end mb-1">
+        <div
+          className={`flex flex-row gap-1 mb-1 ${!benchDrawerData?.isOpen ? "justify-between" : "justify-end"}`}
+        >
+          {!benchDrawerData?.isOpen && (
+            <div className="flex items-center">
+              <Button
+                variant="contained"
+                disabled={selectedRows?.length <= 0}
+                onClick={handleMatchingCandidate}
+              >
+                Check matching candidate
+              </Button>
+            </div>
+          )}
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
               <div className="flex grow w-[220px] mr-2">
@@ -213,6 +330,16 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           <table>
             <thead>
               <tr>
+                {!benchDrawerData?.isOpen && (
+                  <th className="multi-select">
+                    <input
+                      type="checkbox"
+                      checked={isAllSelected}
+                      onChange={toggleSelectAll}
+                      className="cursor-pointer"
+                    />
+                  </th>
+                )}
                 <th className="add-right-shadow">Role</th>
                 <th>Status</th>
                 <th>Date Posted</th>
@@ -231,6 +358,16 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                 requirementData.list?.length > 0 &&
                 requirementData.list.map((requirement: any) => (
                   <tr key={requirement.uniqueId}>
+                    {!benchDrawerData?.isOpen && (
+                      <th className="multi-select">
+                        <input
+                          type="checkbox"
+                          checked={isSelected(requirement.id)}
+                          onChange={() => toggleRowSelection(requirement)}
+                          className="cursor-pointer"
+                        />
+                      </th>
+                    )}
                     <th className="add-right-shadow">
                       <div className="flex items-center justify-between">
                         <div
@@ -281,6 +418,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             onClick={() =>
                               handleDrawer(
                                 {
+                                  id: requirement.id,
                                   role: requirement.title,
                                   client: requirement.clientName,
                                   clientLogo: requirement.clientLogo,
@@ -292,7 +430,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                           >
                             {benchDrawerData.isOpen
                               ? "Apply"
-                              : `${requirement?.matchingCandidate || 3} Matching Candidates`}
+                              : `${requirement?.matchingCandidates || 0} Matching Candidates`}
                           </div>
                         </div>
                       </div>
@@ -430,9 +568,18 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
         {isSuccessPopup && (
           <SuccessDialog
-            title="Application has been submitted successfully"
-            isOpenModal={isSuccessPopup}
-            setIsOpenModal={setIsSuccessPopup}
+            title={isSuccessPopup.message}
+            isOpenModal={isSuccessPopup.isVisible}
+            setIsOpenModal={(value: any) => {
+              setTimeout(() => {
+                setIsSuccessPopup({
+                  isVisible: value,
+                  type: "",
+                  message: "",
+                });
+              }, 2000);
+            }}
+            type={isSuccessPopup.type}
           />
         )}
       </div>

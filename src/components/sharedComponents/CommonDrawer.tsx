@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeDrawer } from "../features/drawerSlice";
 import Drawer from "@mui/material/Drawer"; // Material-UI Drawer
 import { RootState } from "../redux/store";
 import AddNewMemberForm from "./AddNewMemberForm";
-import BenchPreview from "../pages/vendor/bench/BenchPreview";
+import BenchPreview, {
+  BenchPreviewHandles,
+} from "../pages/vendor/bench/BenchPreview";
 import OrganizationProfileUpdate from "../pages/settings/OrganizationProfileUpdate";
-import { IconButton, Tooltip } from "@mui/material";
-import { CloseOutlined } from "@mui/icons-material";
+import { Button, IconButton, Tooltip } from "@mui/material";
+import {
+  CloseOutlined,
+  DownloadOutlined,
+  PictureAsPdfOutlined,
+} from "@mui/icons-material";
 import VndBench from "../pages/vendor/bench/VndBench";
 import CreateClientForm from "../pages/company/clients/CreateClientForm";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
@@ -19,6 +25,8 @@ interface CommonDrawerProps {
 }
 
 const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
+  const benchRef = useRef<BenchPreviewHandles>(null);
+
   const dispatch = useDispatch();
   const { isOpen, currentDrawer, drawerData } = useSelector(
     (state: RootState) => state.drawer
@@ -26,6 +34,14 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
 
   const handleClose = () => {
     dispatch(closeDrawer());
+  };
+
+  const handlePDF = () => {
+    benchRef.current?.downloadPDF();
+  };
+
+  const handleDOCX = () => {
+    benchRef.current?.handleDownloadDocx();
   };
 
   return (
@@ -53,29 +69,43 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
         )}
         {currentDrawer === "benchPreview" && (
           <>
-            <div className="d-flex content-header">
-              <svg
-                className="absolute cursor-pointer left-[8px] top-[11px]"
-                onClick={handleClose}
-                xmlns="http://www.w3.org/2000/svg"
-                width="13"
-                height="13"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M20 20L4 4.00003M20 4L4.00002 20"
-                  stroke="black"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <div className="px-8 py-2 border-b">
+            <div className="flex content-header border-b flex justify-between items-center">
+              <div className="px-8 py-2 flex">
+                <svg
+                  className="absolute cursor-pointer left-[8px] top-[11px]"
+                  onClick={handleClose}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M20 20L4 4.00003M20 4L4.00002 20"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <h2 className="text-heading">Bench Preview</h2>
               </div>
+              <div>
+                <Button
+                  startIcon={<PictureAsPdfOutlined fontSize="inherit" />}
+                  onClick={handlePDF}
+                >
+                  Download Pdf
+                </Button>
+                <Button
+                  startIcon={<DownloadOutlined fontSize="inherit" />}
+                  onClick={handleDOCX}
+                >
+                  Download Doc
+                </Button>
+              </div>
             </div>
-            <div className="p-4 w-full mx-auto h-[calc(100vh-40px)] overflow-auto">
-              <BenchPreview benchData={drawerData} />
+            <div className="p-4 w-full mx-auto h-[calc(100vh-38px)] overflow-auto">
+              <BenchPreview benchData={drawerData} ref={benchRef} />
             </div>
           </>
         )}

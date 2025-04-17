@@ -168,7 +168,6 @@ const RequirementForm = () => {
           reset(result);
           setValue("status", 1);
           setValue("locationType", LocationType[result?.location]);
-          debugger
           handleNext();
         }
         getSkillList();
