@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "./api";
 
 export const getAllUsers = async () => {
@@ -297,6 +298,34 @@ export const getTechStackList = async (orgCode: any) => {
 export const getSkillsList = async () => {
   const response = await api.get("V1/Skill/GetList");
   return response.data;
+};
+
+export const upsertMatchingIds = async (payload: any) => {
+  const response = await api.post("V1/MatchRecord/GetMatchRecord", payload);
+  return response.data;
+};
+
+export const matchRequirementToCandidates = async (
+  requirementIds: number[]
+) => {
+  try {
+    const response = await axios.post(
+      "http://192.168.1.117:8000/match_requirement_to_candidates",
+      {
+        requirement_ids: requirementIds,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error; // rethrow if you want the caller to handle it
+  }
 };
 
 export default api;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Stepper,
   Drawer,
@@ -22,18 +22,29 @@ import {
 } from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/sharedComponents/Loader";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
-import BenchPreview from "./BenchPreview";
-import { closeDrawer } from "../../../../components/features/drawerSlice";
+import BenchPreview, { BenchPreviewHandles } from "./BenchPreview";
+import { closeBackdrop, closeDrawer, openBackdrop } from "../../../../components/features/drawerSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import configData from "../../../sharedService/config.json";
 import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
+import { DownloadOutlined, PictureAsPdfOutlined } from "@mui/icons-material";
 
 interface AddAIBenchProps {
   handleGetBenchDetail?: () => void;
 }
 
 const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
+  const benchRef = useRef<BenchPreviewHandles>(null);
+
+  const handlePDF = () => {
+    benchRef.current?.downloadPDF();
+  };
+
+  const handleDOCX = () => {
+    benchRef.current?.handleDownloadDocx();
+  };
+
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const dispatch: AppDispatch = useDispatch();
 
@@ -128,24 +139,24 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
       userId: userData.userId,
     };
 
-    setIsLoader(true);
+    dispatch(openBackdrop());
     UpsertBenchDetail(payload)
       .then((result: any) => {
         if (result.success) {
           setIsSuccessPopup(true);
           setTimeout(() => {
-            setIsLoader(false);
+            dispatch(closeBackdrop());
             handleCloseDrawer();
           }, 1000);
         } else {
           setTimeout(() => {
-            setIsLoader(false);
+            dispatch(closeBackdrop());
           }, 1000);
         }
       })
       .catch((error: any) => {
         setTimeout(() => {
-          setIsLoader(false);
+          dispatch(closeBackdrop());
           setIsSuccessPopup(false);
         }, 1000);
       });
@@ -157,7 +168,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
       loginUserId: userData?.userId,
       promptJson: cvText,
     };
-    setIsLoader(true);
+    dispatch(openBackdrop());
     generateRequirement(payload)
       .then((result: any) => {
         if (result && !!result) {
@@ -166,12 +177,12 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
           handleNext();
         }
         setTimeout(() => {
-          setIsLoader(false);
+          dispatch(closeBackdrop());
         }, 1000);
       })
       .catch((error: any) => {
         setTimeout(() => {
-          setIsLoader(false);
+          dispatch(closeBackdrop());
         }, 1000);
       });
   };
@@ -183,25 +194,43 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   return (
     <div className="flex flex-col my-auto">
       <div className="w-[calc(100vw-250px)] h-full">
-        <div className="d-flex content-header">
-          <svg
-            className="absolute cursor-pointer left-[8px] top-[11px]"
-            onClick={handleCloseDrawer}
-            xmlns="http://www.w3.org/2000/svg"
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M20 20L4 4.00003M20 4L4.00002 20"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-          <div className="px-8 py-2 border-b">
+        <div className="flex content-header justify-between items-center border-b">
+          <div className="px-8 py-2 flex">
+            <svg
+              className="absolute cursor-pointer left-[8px] top-[11px]"
+              onClick={handleCloseDrawer}
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M20 20L4 4.00003M20 4L4.00002 20"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
             <h2 className="text-heading">Add Bench</h2>
+          </div>
+          <div>
+            {benchData && Object.keys(benchData)?.length > 0 && (
+              <>
+                <Button
+                  startIcon={<PictureAsPdfOutlined fontSize="inherit" />}
+                  onClick={handlePDF}
+                >
+                  Download Pdf
+                </Button>
+                <Button
+                  startIcon={<DownloadOutlined fontSize="inherit" />}
+                  onClick={handleDOCX}
+                >
+                  Download Doc
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
@@ -243,7 +272,9 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
                 </div>
               )}
 
-              {activeStep === 1 && <BenchPreview benchData={benchData} />}
+              {activeStep === 1 && (
+                <BenchPreview benchData={benchData} ref={benchRef} />
+              )}
             </div>
           </Box>
         </div>
