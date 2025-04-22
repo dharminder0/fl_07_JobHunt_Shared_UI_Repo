@@ -31,6 +31,7 @@ import {
   getTechStackList,
   matchRequirementToCandidates,
   upsertApplications,
+  upsertMatchingIds,
 } from "../../../../components/sharedService/apiService";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
@@ -233,12 +234,12 @@ export default function VndBench({ drawerData = {} }: any) {
     };
     upsertApplications(payload).then((result: any) => {
       if (result.success) {
+        setShowPopup({
+          type: "success",
+          message: "Application has been submitted successfully",
+        });
         setTimeout(() => {
           setIsSuccessPopup(true);
-          setShowPopup({
-            type: "sucess",
-            message: "Application has been submitted successfully",
-          });
           setSelectedRows([]);
           setDrawerObj((prev: any) => ({ ...prev, isOpen: false }));
         }, 500);
@@ -260,30 +261,35 @@ export default function VndBench({ drawerData = {} }: any) {
   };
 
   const handleMatchingPositions = async () => {
-    try {
-      dispatch(openBackdrop());
-      const data = await matchRequirementToCandidates(selectedRows);
-      if (data && data.length >= 0) {
-        setTimeout(() => {
-          setIsSuccessPopup(true);
+    const payload = {
+      resourceId: selectedRows,
+      requirementId: [],
+    };
+    dispatch(openBackdrop());
+    upsertMatchingIds(payload)
+      .then((result: any) => {
+        if (result && result?.length >= 0) {
           setShowPopup({
-            type: "sucess",
-            message: "Matching positions found",
+            type: "success",
+            message: "Found Matching Positions",
           });
-          dispatch(closeBackdrop());
-        }, 1000);
-      }
-    } catch (err) {
-      console.error("Failed to fetch positions:", err);
-      setTimeout(() => {
-        dispatch(closeBackdrop());
-        setIsSuccessPopup(true);
+          setTimeout(() => {
+            setIsSuccessPopup(true);
+            fetchBenchList();
+            dispatch(closeBackdrop());
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
         setShowPopup({
           type: "error",
-          message: "Failed to fetch positions",
+          message: "Error to found matching Positions",
         });
-      }, 2000);
-    }
+        setTimeout(() => {
+          setIsSuccessPopup(true);
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
 
   return (
@@ -692,10 +698,10 @@ export default function VndBench({ drawerData = {} }: any) {
       </div>
       {isSuccessPopup && (
         <SuccessDialog
-          title={showPopup.message}
-          isOpenModal={showPopup.isVisible}
+          title={showPopup?.message}
+          isOpenModal={isSuccessPopup}
           setIsOpenModal={setIsSuccessPopup}
-          type={showPopup.type}
+          type={showPopup?.type}
         />
       )}
     </>

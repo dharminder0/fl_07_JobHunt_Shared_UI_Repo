@@ -296,7 +296,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
                   <>
                     <Avatar
                       src={
-                        !userData?.profileAvatar ? "" : userData?.profileAvatar
+                        !userData?.companyIcon ? "" : userData?.companyIcon
                       }
                       alt="Profile Photo"
                       sizes="large"

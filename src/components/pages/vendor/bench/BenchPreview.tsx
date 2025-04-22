@@ -1,3 +1,4 @@
+import { getCVDetailById } from "../../../../components/sharedService/apiService";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   AccessTimeOutlined,
@@ -12,10 +13,17 @@ import {
 import { Button, Chip, IconButton, TextField } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 // import htmlDocx from "html-docx-js/dist/html-docx";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSafeLocation } from "../../../../components/hooks/useSafeLocation";
 
 const html2pdf = require("html2pdf.js");
 const htmlDocx = require("html-docx-js/dist/html-docx");
@@ -31,8 +39,8 @@ export type BenchPreviewHandles = {
 
 const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
   (props, ref) => {
-    const { benchData = {} } = props;
-
+    // const { benchData = {} } = props;
+    const [benchData, setBenchData] = useState(props.benchData);
     // Expose this method to the parent
     useImperativeHandle(ref, () => ({
       downloadPDF,
@@ -114,6 +122,24 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
         link.click();
         document.body.removeChild(link);
       }
+    };
+
+    const location = useSafeLocation();
+    const pathSegments = location?.pathname.split("/");
+
+    useEffect(() => {
+      if (pathSegments) {
+        const id = parseInt(pathSegments[pathSegments?.length - 1]);
+        if (id && id > 0) {
+          getCVDetailsById(id);
+        }
+      }
+    }, []);
+
+    const getCVDetailsById = (id: any) => {
+      getCVDetailById(id).then((result: any) => {
+        setBenchData(result);
+      });
     };
 
     return (

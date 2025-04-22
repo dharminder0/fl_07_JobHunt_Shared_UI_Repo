@@ -239,7 +239,8 @@ const VndClientDetails = () => {
             <Avatar
               alt="Org Icon"
               src={clientData?.faviconURL || undefined}
-              className="rounded-full !h-12 w-100 me-3"
+              className="rounded-full me-3"
+              sx={{ width: 45, height: 45 }}
             >
               {!clientData?.faviconURL && (
                 <CorporateFareOutlined fontSize="small" />
