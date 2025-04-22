@@ -18,6 +18,8 @@ import VndBench from "../pages/vendor/bench/VndBench";
 import CreateClientForm from "../pages/company/clients/CreateClientForm";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
 import AddAIBench from "../pages/vendor/bench/AddAIBench";
+import MatchingPositions from "../pages/vendor/bench/MatchingPositions";
+import MatchingCandidates from "../pages/vendor/requirements/MatchingCandidates";
 
 interface CommonDrawerProps {
   name: string; // Unique name for the drawer
@@ -114,6 +116,12 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
         {currentDrawer === "AddClient" && <CreateClientForm />}
         {currentDrawer === "CmpPostRequirement" && <RequirementForm />}
         {currentDrawer === "AddAIBench" && <AddAIBench />}
+        {currentDrawer === "MatchingPositions" && (
+          <MatchingPositions benchDrawerData={drawerData} />
+        )}
+        {currentDrawer === "MatchingCandidates" && (
+          <MatchingCandidates drawerData={drawerData} />
+        )}
       </div>
     </Drawer>
   );

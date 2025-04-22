@@ -134,38 +134,46 @@ const OrganizationProfile = () => {
                   </li>
                 </ul>
               </div>
-              <div className="mt-4">
-                <h5 className="text-heading flex items-center mb-2">
-                  Office Location
-                </h5>
-                <ul className="text-gray-700 text-base">
-                  {orgData?.officeLocation &&
-                    orgData?.officeLocation?.length > 0 &&
-                    orgData?.officeLocation.map((item: any) => (
-                      <li>
-                        <LocationOnOutlined fontSize="small" color="primary" />{" "}
-                        {item.city}, {item.stateName}
-                      </li>
-                    ))}
-                </ul>
-              </div>
+              {orgData?.officeLocation &&
+                orgData?.officeLocation?.length > 0 && (
+                  <div className="mt-4">
+                    <h5 className="text-heading flex items-center mb-2">
+                      Office Location
+                    </h5>
+                    <ul className="text-gray-700 text-base">
+                      {orgData?.officeLocation &&
+                        orgData?.officeLocation?.length > 0 &&
+                        orgData?.officeLocation.map((item: any) => (
+                          <li>
+                            <LocationOnOutlined
+                              fontSize="small"
+                              color="primary"
+                            />{" "}
+                            {item.city}, {item.stateName}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
 
-              <div className="mt-4">
-                <h5 className="text-heading flex items-center mb-2">
-                  Social Links
-                </h5>
-                <ul className="text-gray-700 text-base">
-                  {orgData?.socialLinks &&
-                    orgData?.socialLinks?.length > 0 &&
-                    orgData?.socialLinks.map((item: any) => (
-                      <li>
-                        <Link href={item?.url} underline="none">
-                          <SocialIcon platform={item.platform} /> {item?.name}
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+              {orgData?.socialLinks && orgData?.socialLinks?.length > 0 && (
+                <div className="mt-4">
+                  <h5 className="text-heading flex items-center mb-2">
+                    Social Links
+                  </h5>
+                  <ul className="text-gray-700 text-base">
+                    {orgData?.socialLinks &&
+                      orgData?.socialLinks?.length > 0 &&
+                      orgData?.socialLinks.map((item: any) => (
+                        <li>
+                          <Link href={item?.url} underline="none">
+                            <SocialIcon platform={item.platform} /> {item?.name}
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              )}
             </Grid>
           </Grid>
         </>

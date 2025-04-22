@@ -310,6 +310,16 @@ export const getCVDetailById = async (id: any) => {
   return response.data;
 };
 
+export const getMatchingPositions = async (payload: any) => {
+  const response = await api.post("V1/Bench/MatchResult", payload);
+  return response.data;
+};
+
+export const getMatchingCandidates = async (payload: any) => {
+  const response = await api.post("V1/Requirement/MatchResult", payload);
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {

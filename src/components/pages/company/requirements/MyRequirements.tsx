@@ -6,6 +6,7 @@ import {
   Tooltip,
   IconButton,
   CircularProgress,
+  Avatar,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -55,25 +56,27 @@ const MyRequirements = () => {
   const drawerState = useSelector((state: any) => state.drawer);
 
   const handleRowClick = (clientCode: number, type: string) => {
-    switch (type) {
-      case "applicant":
-        navigate(`/company/candidates`, {
-          state: { previousUrl: location.pathname },
-        });
-        break;
-      case "client":
-        navigate(`/company/clients/${clientCode}?type=activeView`, {
-          state: { previousUrl: location.pathname },
-        });
-        break;
-      case "myvendors":
-        navigate(`/company/myvendors/${clientCode}?type=openView`, {
-          state: { previousUrl: location.pathname },
-        });
-        break;
-      default:
-        navigate(`${clientCode}`);
-        break;
+    if (clientCode) {
+      switch (type) {
+        case "applicant":
+          navigate(`/company/candidates`, {
+            state: { previousUrl: location.pathname },
+          });
+          break;
+        case "client":
+          navigate(`/company/clients/${clientCode}?type=activeView`, {
+            state: { previousUrl: location.pathname },
+          });
+          break;
+        case "myvendors":
+          navigate(`/company/myvendors/${clientCode}?type=openView`, {
+            state: { previousUrl: location.pathname },
+          });
+          break;
+        default:
+          navigate(`${clientCode}`);
+          break;
+      }
     }
   };
 
@@ -240,15 +243,21 @@ const MyRequirements = () => {
                           }
                         >
                           {requirement?.clientLogo && (
-                            <img
-                              src={requirement?.clientLogo}
-                              style={{ height: 12, width: 12 }}
-                              className="me-1"
+                            // <img
+                            //   src={requirement?.clientLogo}
+                            //   style={{ height: 12, width: 12 }}
+                            //   className="me-1"
+                            // />
+                            <Avatar
+                              alt={requirement?.clientName}
+                              src={requirement?.clientLogo || undefined}
+                              className="rounded-full"
+                              sx={{ height: 12, width: 12, fontSize: 10 }}
                             />
                           )}
                           <Tooltip title={requirement?.clientName} arrow>
-                            <span className="text-ellipsis overflow-hidden truncate">
-                              {requirement?.clientName || "-"}
+                            <span className="text-ellipsis overflow-hidden truncate ps-1">
+                              {requirement?.clientName || "Self"}
                             </span>
                           </Tooltip>
                         </div>
