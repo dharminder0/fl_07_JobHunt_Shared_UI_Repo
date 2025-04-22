@@ -93,8 +93,8 @@ export default function VndCandidates() {
     setMatchingScore(score);
   };
 
-  const handleOpenDrawer = (name: string) => {
-    dispatch(openDrawer({ drawerName: name }));
+  const handleOpenDrawer = (name: string, cvData: any) => {
+    dispatch(openDrawer({ drawerName: name, data: cvData }));
   };
 
   return (
@@ -159,10 +159,7 @@ export default function VndCandidates() {
             {applicantData.map((applicant, index) => (
               <tr key={index}>
                 <th className="add-right-shadow">
-                  <div
-                    className="cursor-pointer hover:text-indigo-700"
-                    onClick={() => handleOpenDrawer("benchPreview")}
-                  >
+                  <div className="cursor-pointer hover:text-indigo-700">
                     {applicant.firstName} {applicant.lastName}
                   </div>
                   <div className="flex items-center justify-between text-secondary-text text-info mt-1">
@@ -217,7 +214,12 @@ export default function VndCandidates() {
                         </svg>
                         <span> {applicant.ai || 75}%</span>
                       </div>
-                      <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
+                      <div
+                        className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 "
+                        onClick={() =>
+                          handleOpenDrawer("benchPreview", applicant?.cv)
+                        }
+                      >
                         <Download fontSize="inherit" />
                         <span className="text-info">CV</span>
                       </div>

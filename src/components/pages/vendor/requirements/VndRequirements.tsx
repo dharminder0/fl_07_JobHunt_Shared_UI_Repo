@@ -7,6 +7,7 @@ import {
   IconButton,
   Drawer,
   Button,
+  Avatar,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -445,15 +446,24 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                           }
                         >
                           {requirement?.clientLogo && (
-                            <img
-                              src={requirement.clientLogo}
-                              style={{ height: 12, width: 12 }}
-                              className="me-1"
+                            // <img
+                            //   src={requirement.clientLogo}
+                            //   style={{ height: 12, width: 12 }}
+                            //   className="me-1"
+                            // />
+                            <Avatar
+                              src={
+                                !requirement.clientLogo
+                                  ? ""
+                                  : requirement.clientLogo
+                              }
+                              alt={requirement.clientName}
+                              sx={{ width: 12, height: 12, fontSize: 10 }}
                             />
                           )}
                           {requirement?.clientName && (
                             <Tooltip title={requirement.clientName} arrow>
-                              <span className="text-ellipsis overflow-hidden truncate">
+                              <span className="text-ellipsis overflow-hidden truncate ps-1">
                                 {requirement.clientName}
                               </span>
                             </Tooltip>
@@ -568,18 +578,16 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
         {isSuccessPopup && (
           <SuccessDialog
-            title={isSuccessPopup.message}
-            isOpenModal={isSuccessPopup.isVisible}
+            title={isSuccessPopup?.message}
+            isOpenModal={isSuccessPopup?.isVisible}
             setIsOpenModal={(value: any) => {
-              setTimeout(() => {
-                setIsSuccessPopup({
-                  isVisible: value,
-                  type: "",
-                  message: "",
-                });
-              }, 2000);
+              setIsSuccessPopup({
+                isVisible: value,
+                type: "",
+                message: "",
+              });
             }}
-            type={isSuccessPopup.type}
+            type={isSuccessPopup?.type}
           />
         )}
       </div>

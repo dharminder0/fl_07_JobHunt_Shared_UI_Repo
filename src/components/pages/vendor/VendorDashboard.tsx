@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box, Button, Avatar } from "@mui/material";
 import JobStatistics from "../../sharedComponents/JobStatistics";
 import { useNavigate } from "react-router-dom";
 import {
@@ -181,7 +181,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                     <Box key={index} className="mb-3">
                       <Box className="flex justify-between mb-1">
                         <div className="flex items-center">
-                          <img
+                          {/* <img
                             src={
                               !item.clientLogo
                                 ? "/assets/images/Companylogo1.png"
@@ -189,6 +189,12 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                             }
                             className="rounded-full"
                             style={{ width: 25, height: 25 }}
+                          /> */}
+                          <Avatar
+                            src={item.clientLogo}
+                            alt={item.clientName}
+                            sizes="large"
+                            sx={{ width: 25, height: 25 }}
                           />
                           <p className="text-base ms-2">{item.clientName}</p>
                         </div>

@@ -305,6 +305,11 @@ export const upsertMatchingIds = async (payload: any) => {
   return response.data;
 };
 
+export const getCVDetailById = async (id: any) => {
+  const response = await api.get(`V1/Bench/GetCv?id=${id}`);
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {
