@@ -201,7 +201,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                       <Box className="flex justify-between mb-1">
                         <div className="flex items-center">
                           <Avatar
-                            alt="Org Icon"
+                            alt={item.vendorName} 
                             src={item?.vendorLogo || undefined}
                             className="rounded-full !h-6 !w-6"
                           >
@@ -264,7 +264,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                       <Box className="flex justify-between mb-1">
                         <div className="flex items-center">
                           <Avatar
-                            alt="Org Icon"
+                            alt={item.clientName}
                             src={item.clientLogo || undefined}
                             className="rounded-full !h-6 !w-6"
                           >

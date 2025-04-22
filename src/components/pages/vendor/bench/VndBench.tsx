@@ -43,6 +43,7 @@ import {
   openBackdrop,
   openDrawer,
 } from "../../../../components/features/drawerSlice";
+import MatchingPositions from "./MatchingPositions";
 
 const teckStackData = [
   {
@@ -254,9 +255,7 @@ export default function VndBench({ drawerData = {} }: any) {
         "_blank"
       );
     } else {
-      dispatch(
-        openDrawer({ drawerName: name, data: !obj ? {} : JSON.parse(obj?.cv) })
-      );
+      dispatch(openDrawer({ drawerName: name, data: !obj ? {} : obj }));
     }
   };
 
@@ -509,10 +508,19 @@ export default function VndBench({ drawerData = {} }: any) {
 
                         <th className="add-right-shadow">
                           <div className="flex items-center">
-                            <AccountCircleOutlined
-                              fontSize="medium"
-                              className="text-secondary-text"
-                            />
+                            {!item.avtar ? (
+                              <AccountCircleOutlined
+                                fontSize="medium"
+                                className="text-secondary-text"
+                              />
+                            ) : (
+                              <img
+                                src={item.avtar}
+                                alt={item?.firstName}
+                                style={{ height: 24, width: 24 }}
+                                className="rounded-full"
+                              />
+                            )}
                             <div className="ms-2 w-[100%]">
                               <div className="flex items-center justify-between text-base">
                                 <div
@@ -525,7 +533,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                   // }
 
                                   onClick={() =>
-                                    handleOpenDrawer("benchPreview", item)
+                                    handleOpenDrawer("benchPreview", item.cv)
                                   }
                                   className="cursor-pointer hover:text-indigo-700"
                                 >
@@ -536,7 +544,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                   <div
                                     className="flex justify-end cursor-pointer hover:text-indigo-700"
                                     onClick={() =>
-                                      handleDrawer("requirement", true, {
+                                      handleOpenDrawer("MatchingPositions", {
                                         id: item?.id,
                                         resource:
                                           item?.firstName + item?.lastName,
@@ -545,7 +553,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                       })
                                     }
                                   >
-                                    {item.matchingJobs} Matching positions
+                                    {item.matchingCount} Matching positions
                                   </div>
                                 )}
                                 {drawerData?.isOpen && (
@@ -687,7 +695,7 @@ export default function VndBench({ drawerData = {} }: any) {
             )}
             {drawerObj.type === "requirement" && (
               <div className="px-4">
-                <VndRequirements benchDrawerData={drawerObj} />
+                <MatchingPositions benchDrawerData={drawerObj} />
               </div>
             )}
             {drawerObj.type === "techStack" && (

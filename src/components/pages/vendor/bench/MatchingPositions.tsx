@@ -27,8 +27,10 @@ import VndBench from "../bench/VndBench";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
 import React from "react";
 import {
+  getMatchingPositions,
   getRequirementsList,
   matchRequirementToCandidates,
+  upsertApplications,
   upsertMatchingIds,
 } from "../../../../components/sharedService/apiService";
 import {
@@ -45,15 +47,17 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import {
   closeBackdrop,
+  closeDrawer,
   openBackdrop,
-  openDrawer,
 } from "../../../../components/features/drawerSlice";
+import { useSafeNavigate } from "../../../../components/hooks/useSafeNavigate";
+import { useSafeLocation } from "../../../../components/hooks/useSafeLocation";
 
-const VndRequirements = ({ benchDrawerData = {} }: any) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const MatchingPositions = ({ benchDrawerData = {} }: any) => {
+  const navigate = useSafeNavigate();
+  const location = useSafeLocation();
   const dispatch: AppDispatch = useDispatch();
-  const params = location.state || {};
+  const params = location?.state || {};
   const paramStatus = !params?.status
     ? benchDrawerData?.status
     : params?.status;
@@ -73,7 +77,6 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const [searchText, setSearchText] = React.useState("");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
-  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [status, setStatus] = useState<any[]>(
     !paramStatus ? [] : [paramStatus]
   );
@@ -96,7 +99,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     if (!benchDrawerData.isOpen) {
       if (tab) {
         navigate(`/vendor/clients/${id}?type=${tab}`, {
-          state: { previousUrl: location.pathname },
+          state: { previousUrl: location?.pathname },
         });
       }
     }
@@ -115,18 +118,35 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   };
 
-  const handleOpenDrawer = (name: string, data: any) => {
-    dispatch(openDrawer({ drawerName: name, data: !data ? {} : data }));
-  };
-
-  const toggleDrawer = (open: any) => (event: any) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerObj((prev) => ({ ...prev, isOpen: open }));
+  const handleApply = (uniqueId: any) => {
+    const payload = {
+      resourceId: [benchDrawerData.id],
+      requirementUniqueId: uniqueId,
+      status: 1,
+      userId: userData.userId,
+    };
+    dispatch(openBackdrop());
+    upsertApplications(payload)
+      .then((result: any) => {
+        if (result.success) {
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+            setIsSuccessPopup({
+              isVisible: true,
+              type: "success",
+              message: "Application has been submitted successfully",
+            });
+          }, 1000);
+          setTimeout(() => {
+            dispatch(closeDrawer());
+          }, 3000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 500);
+      });
   };
 
   const handleMatchingDialog = (score: number) => {
@@ -143,21 +163,14 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const getRequirementsData = () => {
     setIsTableLoader(true);
     const payload = {
+      resourcesId: benchDrawerData?.id,
       orgCode: userData.orgCode,
-      searchText: searchText,
-      page: pageIndex,
-      pageSize: pageSize,
-      locationType: resource,
-      status: status,
-      clientCode: client,
-      userId: userData.userId,
-      roleType: [activeRole === "vendor" && RoleType.Vendor],
     };
 
-    getRequirementsList(payload)
+    getMatchingPositions(payload)
       .then((result: any) => {
-        if (result && result?.totalPages > 0) {
-          SetRequirementData(result);
+        if (result && result?.length > 0) {
+          SetRequirementData(result[0].Records);
         } else {
           SetRequirementData([]);
         }
@@ -178,105 +191,35 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   }, [searchText, resource, status, client, pageIndex]);
 
-  const isSelected = (id: number) => selectedRows.includes(id);
-  const isAllSelected = selectedRows.length === requirementData.list?.length;
-
-  const toggleRowSelection = (row: any) => {
-    setSelectedRows((prevSelectedRows) => {
-      const exists = prevSelectedRows.includes(row.id);
-      if (exists) {
-        // Remove the row id if it's already selected
-        return prevSelectedRows.filter((id) => id !== row.id);
-      }
-      // Add the row id if it's not selected
-      return [...prevSelectedRows, row.id];
-    });
-  };
-
-  const toggleSelectAll = () => {
-    if (selectedRows.length === requirementData?.list?.length) {
-      setSelectedRows([]); // Deselect all
-    } else {
-      setSelectedRows(requirementData?.list.map((row: any) => row.id)); // Store only IDs
-    }
-  };
-
-  // const handleMatchingCandidate = async () => {
-  //   dispatch(openBackdrop());
-  //   try {
-  //     const data = await matchRequirementToCandidates(selectedRows);
-  //     if (data && data.length >= 0) {
-  //       setTimeout(() => {
-  //         setIsSuccessPopup({
-  //           isVisible: true,
-  //           type: "success",
-  //           message: "Found Matching Candidate",
-  //         });
-  //         dispatch(closeBackdrop());
-  //       }, 1000);
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to fetch candidates:", err);
-  //     setIsSuccessPopup({
-  //       isVisible: true,
-  //       type: "error",
-  //       message: "Error to found matching candidate",
-  //     });
-  //     setTimeout(() => {
-  //       dispatch(closeBackdrop());
-  //     }, 1000);
-  //   }
-  // };
-
-  const handleMatchingCandidate = async () => {
-    const payload = {
-      resourceId: [],
-      requirementId: selectedRows,
-    };
-    dispatch(openBackdrop());
-    upsertMatchingIds(payload)
-      .then((result: any) => {
-        if (result && result?.length >= 0) {
-          setTimeout(() => {
-            setIsSuccessPopup({
-              isVisible: true,
-              type: "success",
-              message: "Found Matching Candidate",
-            });
-            getRequirementsData();
-            dispatch(closeBackdrop());
-          }, 1000);
-        }
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          setIsSuccessPopup({
-            isVisible: true,
-            type: "error",
-            message: "Error to found matching candidate",
-          });
-          dispatch(closeBackdrop());
-        }, 1000);
-      });
-  };
-
   return (
     <>
       <div className="px-2 py-3 h-[calc(100%-20px)]">
-        <div
-          className={`flex flex-row gap-1 mb-1 ${!benchDrawerData?.isOpen ? "justify-between" : "justify-end"}`}
-        >
-          {!benchDrawerData?.isOpen && (
-            <div className="flex items-center">
-              <Button
-                variant="contained"
-                disabled={selectedRows?.length <= 0}
-                onClick={handleMatchingCandidate}
-              >
-                Check matching candidate
-              </Button>
-            </div>
-          )}
+        <div className="flex content-header border-b flex justify-between items-center pb-2">
+          <div className="px-8 flex">
+            <svg
+              className="absolute cursor-pointer left-[8px] top-[14px]"
+              onClick={() => dispatch(closeDrawer())}
+              xmlns="http://www.w3.org/2000/svg"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M20 20L4 4.00003M20 4L4.00002 20"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            <h2 className="text-heading">Matching Positions</h2>
+          </div>
+        </div>
+
+        <div className="flex flex-row gap-1 mb-1 justify-between items-center">
+          <div>
+            <p>{benchDrawerData?.resource}</p>
+          </div>
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
               <div className="flex grow w-[220px] mr-2">
@@ -336,16 +279,6 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           <table>
             <thead>
               <tr>
-                {!benchDrawerData?.isOpen && (
-                  <th className="multi-select">
-                    <input
-                      type="checkbox"
-                      checked={isAllSelected}
-                      onChange={toggleSelectAll}
-                      className="cursor-pointer"
-                    />
-                  </th>
-                )}
                 <th className="add-right-shadow">Role</th>
                 <th>Status</th>
                 <th>Date Posted</th>
@@ -356,84 +289,64 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
             <TablePreLoader
               isTableLoader={isTableLoader}
-              data={requirementData.list}
+              data={requirementData}
             />
 
             <tbody>
               {!isTableLoader &&
-                requirementData.list?.length > 0 &&
-                requirementData.list.map((requirement: any) => (
-                  <tr key={requirement.uniqueId}>
-                    {!benchDrawerData?.isOpen && (
-                      <th className="multi-select">
-                        <input
-                          type="checkbox"
-                          checked={isSelected(requirement.id)}
-                          onChange={() => toggleRowSelection(requirement)}
-                          className="cursor-pointer"
-                        />
-                      </th>
-                    )}
+                requirementData?.length > 0 &&
+                requirementData.map((requirement: any) => (
+                  <tr key={requirement.UniqueId}>
                     <th className="add-right-shadow">
                       <div className="flex items-center justify-between">
                         <div
-                          onClick={() => handleRowClick(requirement.uniqueId)}
+                          onClick={() => handleRowClick(requirement.UniqueId)}
                           className="cursor-pointer hover:text-indigo-700"
                         >
-                          {requirement.title}
+                          {requirement.Title}
                         </div>
                         <div className="flex text-secondary-text text-info">
                           <div className="mx-2">
-                            {benchDrawerData?.isOpen && (
-                              <div
-                                className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                onClick={() => handleMatchingDialog(64)}
+                            <div
+                              className="flex justify-end cursor-pointer hover:text-indigo-700"
+                              onClick={() =>
+                                handleMatchingDialog(requirement?.MatchingScore)
+                              }
+                            >
+                              <svg
+                                width="14px"
+                                height="14px"
+                                viewBox="0 0 512 512"
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                <svg
-                                  width="14px"
-                                  height="14px"
-                                  viewBox="0 0 512 512"
-                                  version="1.1"
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <g
+                                  id="Page-1"
+                                  stroke="none"
+                                  stroke-width="1"
+                                  fill="none"
+                                  fill-rule="evenodd"
                                 >
                                   <g
-                                    id="Page-1"
-                                    stroke="none"
-                                    stroke-width="1"
-                                    fill="none"
-                                    fill-rule="evenodd"
+                                    id="icon"
+                                    fill="#4640DE"
+                                    transform="translate(64.000000, 64.000000)"
                                   >
-                                    <g
-                                      id="icon"
-                                      fill="#4640DE"
-                                      transform="translate(64.000000, 64.000000)"
-                                    >
-                                      <path
-                                        d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                        id="Combined-Shape"
-                                      ></path>
-                                    </g>
+                                    <path
+                                      d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                      id="Combined-Shape"
+                                    ></path>
                                   </g>
-                                </svg>
-                                <span> {requirement?.aiScore || 64}%</span>
-                              </div>
-                            )}
+                                </g>
+                              </svg>
+                              <span> {requirement?.MatchingScore || 0}%</span>
+                            </div>
                           </div>
                           <div
                             className="cursor-pointer hover:text-indigo-700"
-                            onClick={() =>
-                              handleOpenDrawer("MatchingCandidates", {
-                                id: requirement?.id,
-                                role: requirement?.title,
-                                client: requirement.clientName,
-                                clientLogo: requirement.clientLogo,
-                                uniqueId: requirement.uniqueId,
-                              })
-                            }
+                            onClick={() => handleApply(requirement.UniqueId)}
                           >
-                            {benchDrawerData.isOpen
-                              ? "Apply"
-                              : `${requirement?.matchingCandidates || 0} Matching Candidates`}
+                            Apply
                           </div>
                         </div>
                       </div>
@@ -448,11 +361,6 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                           }
                         >
                           {requirement?.clientLogo && (
-                            // <img
-                            //   src={requirement.clientLogo}
-                            //   style={{ height: 12, width: 12 }}
-                            //   className="me-1"
-                            // />
                             <Avatar
                               src={
                                 !requirement.clientLogo
@@ -472,22 +380,22 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                           )}
                         </div>
                         <div className="flex w-[128px]">
-                          {requirement?.locationTypeName && (
+                          {requirement?.Location && (
                             <div className="flex items-center ms-1">
                               <LocationOnOutlined
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span>{requirement.locationTypeName}</span>
+                              <span>{requirement.Location}</span>
                             </div>
                           )}
-                          {requirement?.duration && (
+                          {requirement?.Duration && (
                             <div className="flex items-center ms-1">
                               <AccessTimeOutlined
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span>{requirement.duration}</span>
+                              <span>{requirement.Duration}</span>
                             </div>
                           )}
                         </div>
@@ -496,19 +404,19 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     <td>
                       <Typography
                         className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${
-                          requirement.statusName === "Open"
+                          requirement.StatusName === "Open"
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
                         }`}
                         onClick={() =>
-                          handleStatusDialog(requirement.statusName)
+                          handleStatusDialog(requirement.StatusName)
                         }
                       >
-                        {requirement.statusName || "-"}
+                        {requirement.StatusName || "-"}
                       </Typography>
                     </td>
                     <td>
-                      {moment(requirement.createdOn).format("DD-MM-YYYY")}
+                      {moment(requirement.UpdatedOn).format("DD-MM-YYYY")}
                     </td>
                     <td
                       className="cursor-pointer hover:text-indigo-700"
@@ -516,7 +424,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                         handleClickToClient(requirement.clientCode, "openView")
                       }
                     >
-                      {requirement.positions} ({requirement?.placed || 0})
+                      {requirement.Positions} ({requirement?.placed || 0})
                     </td>
                     <td>{requirement?.applicants || "-"}</td>
                   </tr>
@@ -525,7 +433,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           </table>
         </div>
 
-        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 sm:px-4">
+        {/* <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 sm:px-4">
           <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
               <p className="text-base text-gray-700">
@@ -555,28 +463,16 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
               <ChevronRight />
             </IconButton>
           </div>
-        </div>
+        </div> */}
 
-        <Drawer
-          anchor="right"
-          open={drawerObj.isOpen}
-          onClose={toggleDrawer(false)}
-        >
-          <div style={{ width: "calc(100vw - 250px)" }}>
-            <VndBench drawerData={drawerObj} />
-          </div>
-        </Drawer>
-
-        {benchDrawerData?.isOpen && (
-          <MatchingSkillsDialog
-            title="Matching Score Analysis"
-            isMatchOpen={matchingObj.isOpen}
-            setIsMatchOpen={(e: any) =>
-              setMatchingObj((prev) => ({ ...prev, isOpen: e }))
-            }
-            aiScore={matchingObj?.score}
-          />
-        )}
+        <MatchingSkillsDialog
+          title="Matching Score Analysis"
+          isMatchOpen={matchingObj.isOpen}
+          setIsMatchOpen={(e: any) =>
+            setMatchingObj((prev) => ({ ...prev, isOpen: e }))
+          }
+          aiScore={matchingObj?.score}
+        />
 
         {isSuccessPopup && (
           <SuccessDialog
@@ -606,4 +502,4 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   );
 };
 
-export default VndRequirements;
+export default MatchingPositions;

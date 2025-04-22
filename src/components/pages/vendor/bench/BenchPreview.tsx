@@ -2,6 +2,7 @@ import { getCVDetailById } from "../../../../components/sharedService/apiService
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   AccessTimeOutlined,
+  AccountCircleOutlined,
   DownloadOutlined,
   Edit,
   EmailOutlined,
@@ -167,11 +168,25 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
           <div className="p-6 w-[70%] mx-auto space-y-4 border-e">
             <div className="flex justify-between">
               <div className="flex">
-                <img
+                {/* <img
                   src={"/assets/images/Avatar.png"}
                   alt="resource image"
                   style={{ height: 60, width: 60 }}
-                />
+                /> */}
+                {!benchData?.avtar ? (
+                  <AccountCircleOutlined
+                    fontSize="large"
+                    className="text-secondary-text"
+                    sx={{ height: 60, width: 60 }}
+                  />
+                ) : (
+                  <img
+                    src={benchData?.avtar}
+                    alt={benchData?.profile?.name}
+                    style={{ height: 60, width: 60 }}
+                    className="rounded-full"
+                  />
+                )}
                 <div className="ms-2">
                   <p className="text-title font-bold">
                     {benchData?.profile?.name || "-"}

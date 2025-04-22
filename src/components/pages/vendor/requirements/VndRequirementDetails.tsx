@@ -21,14 +21,24 @@ import {
 import moment from "moment";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 import { RoleType } from "../../../../components/sharedService/enums";
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import { AppDispatch } from "@/components/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  closeBackdrop,
+  openBackdrop,
+} from "../../../../components/features/drawerSlice";
 
 const VndRequirementDetails = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch: AppDispatch = useDispatch();
+
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const activeRole = localStorage.getItem("activeRole") || "";
   const [activeTab, setActiveTab] = useState(0);
   const [matchingScore, setMatchingScore] = React.useState(0);
+  const [isLoader, setIsLoader] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
@@ -58,17 +68,28 @@ const VndRequirementDetails = () => {
   const pathSegments = document.location.pathname.split("/");
   const uniqueId = pathSegments.pop();
   useEffect(() => {
+    dispatch(openBackdrop());
     getRequirementsData(uniqueId);
     getRequirementApplicant(uniqueId);
     getRequirementsSimiliarData();
   }, [uniqueId]);
 
   const getRequirementsData = (uniqueId: any) => {
-    getRequirementsListById(uniqueId).then((result: any) => {
-      if (result) {
-        setRequirementData(result);
-      }
-    });
+    getRequirementsListById(uniqueId)
+      .then((result: any) => {
+        if (result) {
+          setRequirementData(result);
+
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
   const getRequirementApplicant = (uniqueId: any) => {
     const payload = {
@@ -76,11 +97,22 @@ const VndRequirementDetails = () => {
       page: 1,
       pageSize: 10,
     };
-    getRequirementApplicants(payload).then((result: any) => {
-      if (result.count >= 0) {
-        setApplicantData(result.list);
-      }
-    });
+    setIsLoader(true);
+    getRequirementApplicants(payload)
+      .then((result: any) => {
+        if (result.count >= 0) {
+          setApplicantData(result.list);
+          setTimeout(() => {
+            setIsLoader(false);
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
 
   const getRequirementsSimiliarData = () => {
@@ -94,13 +126,19 @@ const VndRequirementDetails = () => {
       roleType: [activeRole === "vendor" && RoleType.Vendor],
     };
 
-    getRequirementsList(payload).then((result: any) => {
-      if (result && result?.totalPages > 0) {
-        SetSimiliarData(result.list);
-      } else {
-        SetSimiliarData([]);
-      }
-    });
+    getRequirementsList(payload)
+      .then((result: any) => {
+        if (result && result?.totalPages > 0) {
+          SetSimiliarData(result.list);
+        } else {
+          SetSimiliarData([]);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
 
   return (
@@ -189,10 +227,8 @@ const VndRequirementDetails = () => {
         </Box>
         <div>
           {/* Description */}
-          <div className="mb-4 mt-2">
-            <p className="text-gray-600 text-base">
-              {requirementData?.description}
-            </p>
+          <div className="mb-4 mt-2 text-gray-600 text-base">
+            <HtmlRenderer content={requirementData?.description} />
           </div>
 
           {/* Responsibilities */}
@@ -226,6 +262,9 @@ const VndRequirementDetails = () => {
                     <th>Application Date</th>
                   </tr>
                 </thead>
+
+                <TablePreLoader isTableLoader={isLoader} data={applicantData} />
+
                 <tbody>
                   {applicantData.map((applicant, index) => (
                     <tr

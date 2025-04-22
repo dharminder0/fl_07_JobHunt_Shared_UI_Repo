@@ -43,10 +43,18 @@ import {
 } from "../../../../components/sharedService/enums";
 import moment from "moment";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/components/redux/store";
+import {
+  closeBackdrop,
+  openBackdrop,
+} from "../../../../components/features/drawerSlice";
+import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 
 const RequirementDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch: AppDispatch = useDispatch();
   const params = location.state || {};
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [activeTab, setActiveTab] = useState(0);
@@ -62,6 +70,8 @@ const RequirementDetails = () => {
   const [status, setStatus] = useState<any[]>([]);
   const [searchText, setSearchText] = useState<any>("");
   const [checked, setChecked] = React.useState(false);
+  const [isSuccessPopup, setIsSuccessPopup] = useState<any>(false);
+  const [hotUpdateStatus, setHotUpdateStatus] = useState<any>({});
 
   const handleToggle = () => {
     setExpanded((prev) => !prev);
@@ -96,6 +106,7 @@ const RequirementDetails = () => {
   const uniqueId = pathSegments.pop();
 
   useEffect(() => {
+    dispatch(openBackdrop());
     getRequirementsData(uniqueId);
     getOrgRequestList();
     getOrgDetailsListData();
@@ -108,12 +119,21 @@ const RequirementDetails = () => {
   }, [status, searchText]);
 
   const getRequirementsData = (uniqueId: any) => {
-    getRequirementsListById(uniqueId).then((result: any) => {
-      if (result) {
-        setRequirementData(result);
-        setChecked(result.hot);
-      }
-    });
+    getRequirementsListById(uniqueId)
+      .then((result: any) => {
+        if (result) {
+          setRequirementData(result);
+          setChecked(result.hot);
+        }
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
 
   const getOrgRequestList = () => {
@@ -131,9 +151,14 @@ const RequirementDetails = () => {
         } else {
           setActiveDataList([]);
         }
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
       })
       .catch((error: any) => {
-        console.error("Error fetching data:", error);
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
       });
   };
 
@@ -150,9 +175,14 @@ const RequirementDetails = () => {
         } else {
           setCompaniesfilterData([]);
         }
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
       })
       .catch((error: any) => {
-        console.error("Error fetching data:", error);
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
       });
   };
 
@@ -164,11 +194,20 @@ const RequirementDetails = () => {
       page: 1,
       pageSize: 10,
     };
-    getRequirementApplicants(payload).then((result: any) => {
-      if (result.count >= 0) {
-        setApplicantData(result.list);
-      }
-    });
+    getRequirementApplicants(payload)
+      .then((result: any) => {
+        if (result.count >= 0) {
+          setApplicantData(result.list);
+        }
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
 
   const upsertHotRequirement = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -177,11 +216,24 @@ const RequirementDetails = () => {
       hot: !event.target.checked ? 0 : 1,
     };
     setChecked(event.target.checked);
-    upsertRequirementHot(payload).then((result: any) => {
-      if (result.success) {
-        console.log(result.message);
-      }
-    });
+
+    dispatch(openBackdrop());
+    upsertRequirementHot(payload)
+      .then((result: any) => {
+        if (result.success) {
+          setHotUpdateStatus(result);
+          setIsSuccessPopup(true);
+        }
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+          setIsSuccessPopup(false);
+        }, 1000);
+      });
   };
 
   return (
@@ -648,6 +700,15 @@ const RequirementDetails = () => {
         setIsMatchOpen={setIsMatchOpen}
         aiScore={matchingScore}
       />
+
+      {isSuccessPopup && (
+        <SuccessDialog
+          title={hotUpdateStatus?.message}
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+          type={!hotUpdateStatus?.success ? "error" : "success"}
+        />
+      )}
     </div>
   );
 };
