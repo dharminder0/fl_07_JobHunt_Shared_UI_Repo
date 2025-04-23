@@ -233,7 +233,7 @@ const VndRequirementDetails = () => {
 
           {/* Responsibilities */}
           <Box>
-            <p className="text-title mb-2">Responsibilities</p>
+            <p className="text-title mb-2">Remarks</p>
             <p className="text-gray-600 text-base">
               {requirementData?.remarks}
             </p>
