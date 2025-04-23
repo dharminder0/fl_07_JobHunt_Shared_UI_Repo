@@ -246,7 +246,7 @@ const ClientDetails = () => {
             <Avatar
               alt="Org Icon"
               src={clientData?.faviconURL || undefined}
-              className="rounded-full !h-12 !w-100 me-3"
+              className="rounded-full me-3 !h-[60px] !w-[60px]"
             >
               {!clientData?.faviconURL && (
                 <CorporateFareOutlined fontSize="small" />

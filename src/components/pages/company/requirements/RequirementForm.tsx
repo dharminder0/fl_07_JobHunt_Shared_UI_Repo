@@ -167,7 +167,7 @@ const RequirementForm = () => {
           console.log(result);
           reset(result);
           setValue("status", 1);
-          setValue("locationType", LocationType[result?.location]);
+          setValue("locationType", LocationType[result?.locationType]);
           handleNext();
         }
         getSkillList();
@@ -343,24 +343,25 @@ const RequirementForm = () => {
                     format and structure it to match the required format, making
                     it easier to manage and process.
                   </p>
-                  {/* <TextField
-                      label="Paste Requirements"
-                      name="promptJson"
-                      onChange={(e: any) => setPromptJson(e.target.value)}
-                      defaultValue={promptJson}
-                      fullWidth
-                      multiline
-                      rows={25}
-                      size="small"
-                    /> */}
+                  <TextField
+                    label="Paste Requirements"
+                    name="promptJson"
+                    onChange={(e: any) => setPromptJson(e.target.value)}
+                    defaultValue={promptJson}
+                    fullWidth
+                    multiline
+                    minRows={25}
+                    maxRows={40}
+                    size="small"
+                  />
 
-                  <ReactQuill
+                  {/* <ReactQuill
                     theme="snow"
                     value={promptJson}
                     defaultValue={promptJson}
                     onChange={setPromptJson}
                     placeholder="Paste Requirements"
-                  />
+                  /> */}
                 </div>
               </div>
             ) : (
