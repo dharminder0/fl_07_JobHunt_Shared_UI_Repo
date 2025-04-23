@@ -260,6 +260,33 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       });
   };
 
+  const getCandidates = async () => {
+    dispatch(openBackdrop());
+    try {
+      const data = await matchRequirementToCandidates(selectedRows);
+      if (data) {
+        setTimeout(() => {
+          setIsSuccessPopup({
+            isVisible: true,
+            type: "success",
+            message: "Found Matching Candidate",
+          });
+          getRequirementsData();
+          dispatch(closeBackdrop());
+        }, 1000);
+      }
+    } catch (err) {
+      setTimeout(() => {
+        setIsSuccessPopup({
+          isVisible: true,
+          type: "error",
+          message: "Error to found matching candidate",
+        });
+        dispatch(closeBackdrop());
+      }, 1000);
+    }
+  };
+
   return (
     <>
       <div className="px-2 py-3 h-[calc(100%-20px)]">
@@ -271,7 +298,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
               <Button
                 variant="contained"
                 disabled={selectedRows?.length <= 0}
-                onClick={handleMatchingCandidate}
+                onClick={getCandidates}
               >
                 Check matching candidate
               </Button>

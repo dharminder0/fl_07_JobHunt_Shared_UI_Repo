@@ -320,14 +320,42 @@ export const getMatchingCandidates = async (payload: any) => {
   return response.data;
 };
 
+export const upsetAvatar = async (payload: any) => {
+  const response = await api.post("V1/Bench/Cv/UpsertAvtar", payload);
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {
   try {
     const response = await axios.post(
-      "http://192.168.1.117:8000/match_requirement_to_candidates",
+      "https://fl-07-agent-shared-api-test.azurewebsites.net/match_requirement_to_candidates",
       {
         requirement_ids: requirementIds,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error; // rethrow if you want the caller to handle it
+  }
+};
+
+export const matchCandidateToRequirements = async (
+  candidate_ids: number[]
+) => {
+  try {
+    const response = await axios.post(
+      "https://fl-07-agent-shared-api-test.azurewebsites.net/match_candidate_to_requirements",
+      {
+        candidate_ids: candidate_ids,
       },
       {
         headers: {

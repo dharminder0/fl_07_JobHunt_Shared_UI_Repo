@@ -29,6 +29,7 @@ import {
   getBenchDetails,
   getBenchList,
   getTechStackList,
+  matchCandidateToRequirements,
   matchRequirementToCandidates,
   upsertApplications,
   upsertMatchingIds,
@@ -291,6 +292,33 @@ export default function VndBench({ drawerData = {} }: any) {
       });
   };
 
+  const getRequirements = async () => {
+    dispatch(openBackdrop());
+    try {
+      const data = await matchCandidateToRequirements(selectedRows);
+      if (data) {
+        setShowPopup({
+          type: "success",
+          message: "Found Matching Positions",
+        });
+        setTimeout(() => {
+          setIsSuccessPopup(true);
+          fetchBenchList();
+          dispatch(closeBackdrop());
+        }, 1000);
+      }
+    } catch (err) {
+      setShowPopup({
+        type: "error",
+        message: "Error to found matching Positions",
+      });
+      setTimeout(() => {
+        setIsSuccessPopup(true);
+        dispatch(closeBackdrop());
+      }, 1000);
+    }
+  };
+
   return (
     <>
       {drawerData?.isOpen && drawerData.type !== "techStack" && (
@@ -360,7 +388,7 @@ export default function VndBench({ drawerData = {} }: any) {
                   size="small"
                   disabled={selectedRows?.length <= 0}
                   className="!mr-2"
-                  onClick={handleMatchingPositions}
+                  onClick={getRequirements}
                 >
                   Check matching positions
                 </Button>
@@ -548,7 +576,8 @@ export default function VndBench({ drawerData = {} }: any) {
                                         id: item?.id,
                                         resource:
                                           item?.firstName + item?.lastName,
-                                        experience: item?.experience,
+                                        experience:
+                                          item?.cv?.profile?.experience,
                                         location: item?.location,
                                       })
                                     }
@@ -595,10 +624,10 @@ export default function VndBench({ drawerData = {} }: any) {
                               </div>
                               <div className="flex items-center justify-between text-secondary-text text-info">
                                 <div className="flex">
-                                  {item?.experience && (
+                                  {item?.cv?.profile?.experience && (
                                     <p>
                                       <WorkHistory fontSize="inherit" />{" "}
-                                      {item.experience}
+                                      {item?.cv?.profile?.experience}
                                     </p>
                                   )}
                                   {item?.location && (

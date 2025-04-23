@@ -19,16 +19,22 @@ import "react-quill/dist/quill.snow.css";
 import {
   generateRequirement,
   UpsertBenchDetail,
+  upsetAvatar,
 } from "../../../../components/sharedService/apiService";
 import Loader from "../../../../components/sharedComponents/Loader";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 import BenchPreview, { BenchPreviewHandles } from "./BenchPreview";
-import { closeBackdrop, closeDrawer, openBackdrop } from "../../../../components/features/drawerSlice";
+import {
+  closeBackdrop,
+  closeDrawer,
+  openBackdrop,
+} from "../../../../components/features/drawerSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import configData from "../../../sharedService/config.json";
 import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 import { DownloadOutlined, PictureAsPdfOutlined } from "@mui/icons-material";
+import UploadLogo from "../../../../components/sharedComponents/UploadLogo";
 
 interface AddAIBenchProps {
   handleGetBenchDetail?: () => void;
@@ -45,6 +51,14 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
     benchRef.current?.handleDownloadDocx();
   };
 
+  const fetchChildData = () => {
+    if (benchRef.current) {
+      const dataFromChild = benchRef.current.getBenchData();
+      setBenchData(dataFromChild);
+      handleSubmit();
+    }
+  };
+
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const dispatch: AppDispatch = useDispatch();
 
@@ -55,53 +69,10 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [benchData, setBenchData] = useState<any>({});
+  const [benchId, setBenchId] = useState<any>(0);
+  const [Image, setImage] = useState<any>({});
 
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   reset,
-  //   formState: { errors },
-  // } = useForm({
-  //   defaultValues: {
-  //     firstName: "",
-  //     lastName: "",
-  //     title: "",
-  //     email: "",
-  //     phone: "",
-  //     linkedin: "",
-  //     cv: "",
-  //     availability: 1,
-  //     orgCode: userData.orgCode,
-  //     userId: userData.userId,
-  //   },
-  // });
-
-  // const onSubmit = (data: any) => {
-  //   setIsLoader(true);
-  //   UpsertBenchDetail(data)
-  //     .then((result: any) => {
-  //       if (result.success) {
-  //         setTimeout(() => {
-  //           reset();
-  //           setIsLoader(false);
-  //           setDrawerOpen(false);
-  //           handleGetBenchDetail();
-  //         }, 1000);
-  //       } else {
-  //         console.log("error", result.message);
-  //         setTimeout(() => {
-  //           setIsLoader(false);
-  //         }, 1000);
-  //       }
-  //     })
-  //     .catch((error: any) => {
-  //       setTimeout(() => {
-  //         setIsLoader(false);
-  //       }, 1000);
-  //     });
-  // };
-
-  const steps = ["Paste CV", "Preview"];
+  const steps = ["Paste CV", "Preview", "Photo Upload"];
 
   const toggleDrawer = (open: any) => (event: any) => {
     if (
@@ -143,10 +114,10 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
     UpsertBenchDetail(payload)
       .then((result: any) => {
         if (result.success) {
-          setIsSuccessPopup(true);
+          setBenchId(result.content);
           setTimeout(() => {
             dispatch(closeBackdrop());
-            handleCloseDrawer();
+            handleNext();
           }, 1000);
         } else {
           setTimeout(() => {
@@ -172,7 +143,6 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
     generateRequirement(payload)
       .then((result: any) => {
         if (result && !!result) {
-          console.log(result);
           setBenchData(result);
           handleNext();
         }
@@ -189,6 +159,23 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
 
   const handleCloseDrawer = () => {
     dispatch(closeDrawer());
+  };
+
+  const handleUploadPhoto = () => {
+    const payload = {
+      benchId: benchId,
+      logoURL: Image,
+    };
+    dispatch(openBackdrop());
+    upsetAvatar(payload).then((result: any) => {
+      if (result) {
+        setIsSuccessPopup(true);
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+          handleCloseDrawer();
+        }, 1000);
+      }
+    });
   };
 
   return (
@@ -275,6 +262,19 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
               {activeStep === 1 && (
                 <BenchPreview benchData={benchData} ref={benchRef} />
               )}
+
+              {activeStep === 2 && (
+                <div>
+                  <h3>Upload Profile Photo</h3>
+                  <UploadLogo
+                    title="Upload Photo"
+                    fileSize="128 x 128"
+                    iconType="image"
+                    onUpload={(file: any) => setImage(file)}
+                    file={Image}
+                  />
+                </div>
+              )}
             </div>
           </Box>
         </div>
@@ -283,24 +283,37 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
             activeStep === 0 ? "justify-end" : "justify-between"
           }`}
         >
+          {activeStep !== 0 && (
+            <Button
+              variant="outlined"
+              onClick={handleBack}
+              className="text-blue-500 border-blue-500 hover:bg-blue-50"
+            >
+              Back
+            </Button>
+          )}
+
+          {activeStep === 2 && (
+            <Button
+              variant="contained"
+              onClick={handleUploadPhoto}
+              // onClick={fetchChildData}
+              className="bg-green-500 hover:bg-green-600"
+              loading={isLoader}
+            >
+              Upload
+            </Button>
+          )}
           {activeStep === 1 && (
-            <>
-              <Button
-                variant="outlined"
-                onClick={handleBack}
-                className="text-blue-500 border-blue-500 hover:bg-blue-50"
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-                className="bg-green-500 hover:bg-green-600"
-                loading={isLoader}
-              >
-                Submit CV
-              </Button>
-            </>
+            <Button
+              variant="contained"
+              // onClick={handleSubmit}
+              onClick={fetchChildData}
+              className="bg-green-500 hover:bg-green-600"
+              loading={isLoader}
+            >
+              Submit CV
+            </Button>
           )}
           {activeStep === 0 && (
             <Button

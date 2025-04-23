@@ -19,7 +19,10 @@ import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
-import { openDrawer } from "../../../../components/features/drawerSlice";
+import {
+  closeDrawer,
+  openDrawer,
+} from "../../../../components/features/drawerSlice";
 
 export default function MatchingCandidates({ drawerData = {} }: any) {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -85,31 +88,19 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
     setMatchingScore(score);
   };
 
-  const handleDrawer = (useFor: string, isOpen: boolean, obj: any) => {
-    if (drawerDatas?.isOpen) {
-      window.open(
-        window.location.origin + `/vendor/bench/${obj?.id}`,
-        "_blank"
-      );
-    } else {
-      setDrawerObj((prev) => ({
-        ...prev,
-        type: useFor,
-        isOpen: isOpen,
-        data: obj,
-      }));
-    }
+  const handleOpenCV = (id: any) => {
+    window.open(window.location.origin + `/vendor/bench/${id}`, "_blank");
   };
 
   const toggleRowSelection = (row: any) => {
     setSelectedRows((prevSelectedRows) => {
-      const exists = prevSelectedRows.includes(row.id);
+      const exists = prevSelectedRows.includes(row.BenchId);
       if (exists) {
         // Remove the row id if it's already selected
-        return prevSelectedRows.filter((id) => id !== row.id);
+        return prevSelectedRows.filter((BenchId) => BenchId !== row.BenchId);
       }
       // Add the row id if it's not selected
-      return [...prevSelectedRows, row.id];
+      return [...prevSelectedRows, row.BenchId];
     });
   };
 
@@ -117,11 +108,11 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
     if (selectedRows.length === benchDatadetails.length) {
       setSelectedRows([]); // Deselect all
     } else {
-      setSelectedRows(benchDatadetails.map((row) => row.id)); // Store only IDs
+      setSelectedRows(benchDatadetails.map((row) => row.BenchId)); // Store only IDs
     }
   };
 
-  const isSelected = (id: number) => selectedRows.includes(id);
+  const isSelected = (BenchId: number) => selectedRows.includes(BenchId);
   const isAllSelected = selectedRows.length === benchDatadetails.length;
 
   const handleApply = () => {
@@ -153,16 +144,32 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
         "_blank"
       );
     } else {
-      dispatch(
-        openDrawer({ drawerName: name, data: !obj ? {} : JSON.parse(obj?.cv) })
-      );
+      dispatch(openDrawer({ drawerName: name, data: !obj ? {} : obj?.Cv }));
     }
   };
 
   return (
     <>
       <div className="border-b py-2 px-4 flex justify-between items-center">
-        <h5 className="text-heading">Matching Candidates</h5>
+        <div className="px-4 flex">
+          <svg
+            className="absolute cursor-pointer left-[8px] top-[11px]"
+            onClick={() => dispatch(closeDrawer())}
+            xmlns="http://www.w3.org/2000/svg"
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M20 20L4 4.00003M20 4L4.00002 20"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          <h2 className="text-heading">Matching Candidates</h2>
+        </div>
       </div>
 
       <div className="px-4 py-3 h-full">
@@ -267,13 +274,13 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                   <tr
                     key={item?.id}
                     className={`${
-                      isSelected(item.id) ? "bg-blue-100" : "bg-white"
+                      isSelected(item.BenchId) ? "bg-blue-100" : "bg-white"
                     }`}
                   >
                     <th className="multi-select">
                       <input
                         type="checkbox"
-                        checked={isSelected(item.id)}
+                        checked={isSelected(item.BenchId)}
                         onChange={() => toggleRowSelection(item)}
                         className="cursor-pointer"
                       />
@@ -281,22 +288,29 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
 
                     <th className="add-right-shadow">
                       <div className="flex items-center">
-                        <AccountCircleOutlined
-                          fontSize="medium"
-                          className="text-secondary-text"
-                        />
+                        {!item.Cv?.avatar ? (
+                          <AccountCircleOutlined
+                            fontSize="medium"
+                            className="text-secondary-text"
+                          />
+                        ) : (
+                          <img
+                            src={item.Cv?.avatar}
+                            alt={item?.FirstName}
+                            style={{ height: 24, width: 24 }}
+                            className="rounded-full"
+                          />
+                        )}
                         <div className="ms-2 w-[100%]">
                           <div className="flex items-center justify-between text-base">
                             <div
-                              onClick={() =>
-                                handleOpenDrawer("benchPreview", item)
-                              }
+                              onClick={() => handleOpenCV(item.BenchId)}
                               className="cursor-pointer hover:text-indigo-700"
                             >
                               {item?.FirstName} {item?.LastName}
                             </div>
 
-                            {!drawerDatas?.isOpen && (
+                            {/* {!drawerDatas?.isOpen && (
                               <div
                                 className="flex justify-end cursor-pointer hover:text-indigo-700"
                                 onClick={() =>
@@ -310,50 +324,48 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                               >
                                 {item.matchingJobs} Matching positions
                               </div>
-                            )}
-                            {drawerDatas?.isOpen && (
-                              <div
-                                className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                onClick={() =>
-                                  handleMatchingDialog(item?.aiScore || 60)
-                                }
+                            )} */}
+                            <div
+                              className="flex justify-end cursor-pointer hover:text-indigo-700"
+                              onClick={() =>
+                                handleMatchingDialog(item?.MatchScore || 0)
+                              }
+                            >
+                              <svg
+                                width="14px"
+                                height="14px"
+                                viewBox="0 0 512 512"
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                <svg
-                                  width="14px"
-                                  height="14px"
-                                  viewBox="0 0 512 512"
-                                  version="1.1"
-                                  xmlns="http://www.w3.org/2000/svg"
+                                <g
+                                  id="Page-1"
+                                  stroke="none"
+                                  stroke-width="1"
+                                  fill="none"
+                                  fill-rule="evenodd"
                                 >
                                   <g
-                                    id="Page-1"
-                                    stroke="none"
-                                    stroke-width="1"
-                                    fill="none"
-                                    fill-rule="evenodd"
+                                    id="icon"
+                                    fill="#4640DE"
+                                    transform="translate(64.000000, 64.000000)"
                                   >
-                                    <g
-                                      id="icon"
-                                      fill="#4640DE"
-                                      transform="translate(64.000000, 64.000000)"
-                                    >
-                                      <path
-                                        d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                        id="Combined-Shape"
-                                      ></path>
-                                    </g>
+                                    <path
+                                      d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                      id="Combined-Shape"
+                                    ></path>
                                   </g>
-                                </svg>
-                                <span> {item?.aiScore || 60}%</span>
-                              </div>
-                            )}
+                                </g>
+                              </svg>
+                              <span> {item?.MatchScore || 0}%</span>
+                            </div>
                           </div>
                           <div className="flex items-center justify-between text-secondary-text text-info">
                             <div className="flex">
-                              {item?.experience && (
+                              {item?.Cv?.profile?.experience && (
                                 <p>
                                   <WorkHistory fontSize="inherit" />{" "}
-                                  {item.experience}
+                                  {item?.Cv?.profile?.experience}
                                 </p>
                               )}
                               {item?.location && (
@@ -376,14 +388,12 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
           </table>
         </div>
 
-        {drawerDatas?.isOpen && (
-          <MatchingSkillsDialog
-            title="Matching Score Analysis"
-            isMatchOpen={isMatchOpen}
-            setIsMatchOpen={setIsMatchOpen}
-            aiScore={matchingScore}
-          />
-        )}
+        <MatchingSkillsDialog
+          title="Matching Score Analysis"
+          isMatchOpen={isMatchOpen}
+          setIsMatchOpen={setIsMatchOpen}
+          aiScore={matchingScore}
+        />
       </div>
       {isSuccessPopup && (
         <SuccessDialog
