@@ -50,6 +50,8 @@ import {
   openBackdrop,
 } from "../../../../components/features/drawerSlice";
 import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
+import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 
 const RequirementDetails = () => {
   const navigate = useNavigate();
@@ -70,6 +72,7 @@ const RequirementDetails = () => {
   const [status, setStatus] = useState<any[]>([]);
   const [searchText, setSearchText] = useState<any>("");
   const [checked, setChecked] = React.useState(false);
+  const [isLoader, setIsLoader] = useState<any>(false);
   const [isSuccessPopup, setIsSuccessPopup] = useState<any>(false);
   const [hotUpdateStatus, setHotUpdateStatus] = useState<any>({});
 
@@ -194,17 +197,20 @@ const RequirementDetails = () => {
       page: 1,
       pageSize: 10,
     };
+    setIsLoader(true);
     getRequirementApplicants(payload)
       .then((result: any) => {
         if (result.count >= 0) {
           setApplicantData(result.list);
         }
         setTimeout(() => {
+          setIsLoader(false);
           dispatch(closeBackdrop());
         }, 1000);
       })
       .catch((error: any) => {
         setTimeout(() => {
+          setIsLoader(false);
           dispatch(closeBackdrop());
         }, 1000);
       });
@@ -333,31 +339,13 @@ const RequirementDetails = () => {
             </Box>
             <div>
               {/* Description */}
-              <div className="mb-4 mt-2">
-                <p className="text-gray-600 text-base">
-                  {requirementData?.description}
-                </p>
+              <div className="mb-4 mt-2 text-gray-600 text-base">
+                <HtmlRenderer content={requirementData?.description} />
               </div>
 
               {/* Responsibilities */}
               <Box className="mb-4">
-                <p className="text-title mb-2">Responsibilities</p>
-                {/* <ul className="list-none">
-                  {[
-                    "Community engagement to ensure that is supported and actively represented online",
-                    "Focus on social media content development and publication",
-                    "Marketing and strategy support",
-                    "Stay on top of trends on social media platforms, and suggest content ideas to the team",
-                    "Engage with online communities",
-                  ].map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center text-gray-600 text-base"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul> */}
+                <p className="text-title mb-2">Remarks</p>
                 <p className="text-gray-600 text-base">
                   {requirementData?.remarks}
                 </p>
@@ -438,98 +426,104 @@ const RequirementDetails = () => {
                     <th>Application Date</th>
                   </tr>
                 </thead>
+
+                <TablePreLoader data={applicantData} isTableLoader={isLoader} />
+
                 <tbody>
-                  {applicantData.map((applicant, index) => (
-                    <tr key={index}>
-                      <th className="add-right-shadow">
-                        <div>
-                          {applicant.firstName + " " + applicant.lastName}
-                        </div>
-                        <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                          <div
-                            className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                            onClick={() =>
-                              getVendorDetails(applicant.vendorOrgCode)
-                            }
-                          >
-                            <img
-                              src={applicant.vendorLogo}
-                              style={{ height: 12, width: 12 }}
-                              className="me-1"
-                            />
-                            <Tooltip title={applicant.vendorOrgName} arrow>
-                              <span className="text-ellipsis overflow-hidden truncate">
-                                {applicant.vendorOrgName}
-                              </span>
-                            </Tooltip>
+                  {applicantData?.length > 0 &&
+                    applicantData.map((applicant, index) => (
+                      <tr key={index}>
+                        <th className="add-right-shadow">
+                          <div>
+                            {applicant.firstName + " " + applicant.lastName}
                           </div>
-                          <div className="flex text-info items-center">
+                          <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                             <div
-                              className="flex cursor-pointer"
+                              className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                               onClick={() =>
-                                handleMatchingDialog(applicant.ai || 65)
+                                getVendorDetails(applicant.vendorOrgCode)
                               }
                             >
-                              <svg
-                                width="14px"
-                                height="14px"
-                                viewBox="0 0 512 512"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <title>ai</title>
-                                <g
-                                  id="Page-1"
-                                  stroke="none"
-                                  stroke-width="1"
-                                  fill="none"
-                                  fill-rule="evenodd"
-                                >
-                                  <g
-                                    id="icon"
-                                    fill="#4640DE"
-                                    transform="translate(64.000000, 64.000000)"
-                                  >
-                                    <path
-                                      d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
-                                      id="Combined-Shape"
-                                    ></path>
-                                  </g>
-                                </g>
-                              </svg>
-                              <span> {applicant.ai || 65}%</span>
+                              <img
+                                src={applicant.vendorLogo}
+                                style={{ height: 12, width: 12 }}
+                                className="me-1"
+                              />
+                              <Tooltip title={applicant.vendorOrgName} arrow>
+                                <span className="text-ellipsis overflow-hidden truncate">
+                                  {applicant.vendorOrgName}
+                                </span>
+                              </Tooltip>
                             </div>
-                            <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
-                              <Download fontSize="inherit" />
-                              <span className="text-info">CV</span>
+                            <div className="flex text-info items-center">
+                              <div
+                                className="flex cursor-pointer"
+                                onClick={() =>
+                                  handleMatchingDialog(applicant.ai || 65)
+                                }
+                              >
+                                <svg
+                                  width="14px"
+                                  height="14px"
+                                  viewBox="0 0 512 512"
+                                  version="1.1"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <title>ai</title>
+                                  <g
+                                    id="Page-1"
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd"
+                                  >
+                                    <g
+                                      id="icon"
+                                      fill="#4640DE"
+                                      transform="translate(64.000000, 64.000000)"
+                                    >
+                                      <path
+                                        d="M320,64 L320,320 L64,320 L64,64 L320,64 Z M171.749388,128 L146.817842,128 L99.4840387,256 L121.976629,256 L130.913039,230.977 L187.575039,230.977 L196.319607,256 L220.167172,256 L171.749388,128 Z M260.093778,128 L237.691519,128 L237.691519,256 L260.093778,256 L260.093778,128 Z M159.094727,149.47526 L181.409039,213.333 L137.135039,213.333 L159.094727,149.47526 Z M341.333333,256 L384,256 L384,298.666667 L341.333333,298.666667 L341.333333,256 Z M85.3333333,341.333333 L128,341.333333 L128,384 L85.3333333,384 L85.3333333,341.333333 Z M170.666667,341.333333 L213.333333,341.333333 L213.333333,384 L170.666667,384 L170.666667,341.333333 Z M85.3333333,0 L128,0 L128,42.6666667 L85.3333333,42.6666667 L85.3333333,0 Z M256,341.333333 L298.666667,341.333333 L298.666667,384 L256,384 L256,341.333333 Z M170.666667,0 L213.333333,0 L213.333333,42.6666667 L170.666667,42.6666667 L170.666667,0 Z M256,0 L298.666667,0 L298.666667,42.6666667 L256,42.6666667 L256,0 Z M341.333333,170.666667 L384,170.666667 L384,213.333333 L341.333333,213.333333 L341.333333,170.666667 Z M0,256 L42.6666667,256 L42.6666667,298.666667 L0,298.666667 L0,256 Z M341.333333,85.3333333 L384,85.3333333 L384,128 L341.333333,128 L341.333333,85.3333333 Z M0,170.666667 L42.6666667,170.666667 L42.6666667,213.333333 L0,213.333333 L0,170.666667 Z M0,85.3333333 L42.6666667,85.3333333 L42.6666667,128 L0,128 L0,85.3333333 Z"
+                                        id="Combined-Shape"
+                                      ></path>
+                                    </g>
+                                  </g>
+                                </svg>
+                                <span> {applicant.ai || 65}%</span>
+                              </div>
+                              <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
+                                <Download fontSize="inherit" />
+                                <span className="text-info">CV</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </th>
-                      <td>{applicant.title}</td>
-                      <td>
-                        <Typography
-                          className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                            applicant.statusName === "Placed"
-                              ? "bg-green-100 text-green-700"
-                              : applicant.statusName === "Rejected"
-                                ? "bg-red-100 text-red-700"
-                                : applicant.statusName === "New"
-                                  ? "bg-orange-100 text-orange-700"
-                                  : "bg-indigo-100 text-indigo-700"
-                          }`}
-                          onClick={() =>
-                            handleStatusDialog(applicant.statusName)
-                          }
-                        >
-                          {applicant.statusName}
-                        </Typography>
-                      </td>
-                      <td>
-                        {moment(applicant.applicationDate).format("DD-MM-YYYY")}
-                      </td>
-                    </tr>
-                  ))}
+                        </th>
+                        <td>{applicant.title}</td>
+                        <td>
+                          <Typography
+                            className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
+                              applicant.statusName === "Placed"
+                                ? "bg-green-100 text-green-700"
+                                : applicant.statusName === "Rejected"
+                                  ? "bg-red-100 text-red-700"
+                                  : applicant.statusName === "New"
+                                    ? "bg-orange-100 text-orange-700"
+                                    : "bg-indigo-100 text-indigo-700"
+                            }`}
+                            onClick={() =>
+                              handleStatusDialog(applicant.statusName)
+                            }
+                          >
+                            {applicant.statusName}
+                          </Typography>
+                        </td>
+                        <td>
+                          {moment(applicant.applicationDate).format(
+                            "DD-MM-YYYY"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
