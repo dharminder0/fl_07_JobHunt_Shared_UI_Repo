@@ -183,7 +183,9 @@ export default function VndCandidates() {
                     <div className="flex text-info">
                       <div
                         className="flex cursor-pointer"
-                        onClick={() => handleMatchingDialog(applicant.ai)}
+                        onClick={() =>
+                          handleMatchingDialog(applicant.matchScore)
+                        }
                       >
                         <svg
                           width="14px"
@@ -212,7 +214,7 @@ export default function VndCandidates() {
                             </g>
                           </g>
                         </svg>
-                        <span> {applicant.ai || 75}%</span>
+                        <span> {applicant.matchScore || 0}%</span>
                       </div>
                       <div
                         className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 "

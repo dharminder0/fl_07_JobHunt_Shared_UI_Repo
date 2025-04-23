@@ -36,19 +36,24 @@ type BenchPreviewProps = {
 export type BenchPreviewHandles = {
   downloadPDF: () => void;
   handleDownloadDocx: () => void;
+  getBenchData: () => any;
 };
 
 const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
   (props, ref) => {
     // const { benchData = {} } = props;
     const [benchData, setBenchData] = useState(props.benchData);
+    const [tempBenchData, setTempBenchData] = React.useState(benchData ?? {});
+
     // Expose this method to the parent
     useImperativeHandle(ref, () => ({
       downloadPDF,
       handleDownloadDocx,
+      getBenchData: () => {
+        return tempBenchData;
+      },
     }));
 
-    const [tempBenchData, setTempBenchData] = React.useState(benchData ?? {});
     const [formStates, setFormStates] = React.useState({
       isOpen: false,
       useForm: "",
@@ -140,6 +145,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
     const getCVDetailsById = (id: any) => {
       getCVDetailById(id).then((result: any) => {
         setBenchData(result);
+        setTempBenchData(result);
       });
     };
 
@@ -168,12 +174,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
           <div className="p-6 w-[70%] mx-auto space-y-4 border-e">
             <div className="flex justify-between">
               <div className="flex">
-                {/* <img
-                  src={"/assets/images/Avatar.png"}
-                  alt="resource image"
-                  style={{ height: 60, width: 60 }}
-                /> */}
-                {!benchData?.avtar ? (
+                {!tempBenchData?.avatar ? (
                   <AccountCircleOutlined
                     fontSize="large"
                     className="text-secondary-text"
@@ -181,22 +182,22 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                   />
                 ) : (
                   <img
-                    src={benchData?.avtar}
-                    alt={benchData?.profile?.name}
+                    src={tempBenchData?.avatar}
+                    alt={tempBenchData?.profile?.name}
                     style={{ height: 60, width: 60 }}
                     className="rounded-full"
                   />
                 )}
                 <div className="ms-2">
                   <p className="text-title font-bold">
-                    {benchData?.profile?.name || "-"}
+                    {tempBenchData?.profile?.name || "-"}
                   </p>
                   <p className="text-base">
-                    {benchData?.profile?.title || "-"}
+                    {tempBenchData?.profile?.title || "-"}
                   </p>
                   <p className="text-base">
                     <AccessTimeOutlined fontSize="inherit" />{" "}
-                    {benchData?.profile?.experience || "-"}
+                    {tempBenchData?.profile?.experience || "-"}
                   </p>
                 </div>
               </div>
@@ -236,7 +237,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                 />
               ) : (
                 <p className="text-base">
-                  {benchData?.profile?.objective || "-"}
+                  {tempBenchData?.profile?.objective || "-"}
                 </p>
               )}
             </div>
@@ -294,11 +295,13 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                   </button> */}
                   </div>
                 ) : (
-                  benchData?.summary?.length > 0 && (
+                  tempBenchData?.summary?.length > 0 && (
                     <ul className="text-base list-disc ps-4">
-                      {benchData.summary.map((item: string, index: number) => (
-                        <li key={index}>{item}</li>
-                      ))}
+                      {tempBenchData.summary.map(
+                        (item: string, index: number) => (
+                          <li key={index}>{item}</li>
+                        )
+                      )}
                     </ul>
                   )
                 )}
@@ -396,8 +399,8 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                       )}
                     </div>
                   ))
-                : benchData?.projects?.length > 0 &&
-                  benchData.projects.map((project: any, idx: number) => (
+                : tempBenchData?.projects?.length > 0 &&
+                  tempBenchData.projects.map((project: any, idx: number) => (
                     <div key={idx} className="mb-6">
                       <p className="text-base font-bold my-1">
                         Title: {project?.title || "-"}
@@ -442,7 +445,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                 </div>
               </p>
               <ul>
-                {benchData?.contact_details?.email &&
+                {tempBenchData?.contact_details?.email &&
                   (formStates.isOpen && formStates.useForm === "contact" ? (
                     <TextField
                       label="Email"
@@ -463,14 +466,14 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                     <li>
                       <a
                         className="text-base hover:text-indigo-700"
-                        href={`mailto:${benchData?.contact_details?.email}`}
+                        href={`mailto:${tempBenchData?.contact_details?.email}`}
                       >
                         <EmailOutlined fontSize="inherit" className="me-1" />
-                        {benchData?.contact_details?.email}
+                        {tempBenchData?.contact_details?.email}
                       </a>
                     </li>
                   ))}
-                {benchData?.contact_details?.phone &&
+                {tempBenchData?.contact_details?.phone &&
                   (formStates.isOpen && formStates.useForm === "contact" ? (
                     <TextField
                       label="Phone"
@@ -492,14 +495,14 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                     <li>
                       <a
                         className="text-base hover:text-indigo-700"
-                        href={`tel:${benchData?.contact_details?.phone}`}
+                        href={`tel:${tempBenchData?.contact_details?.phone}`}
                       >
                         <Phone fontSize="inherit" className="me-1" />
-                        {benchData?.contact_details?.phone}
+                        {tempBenchData?.contact_details?.phone}
                       </a>
                     </li>
                   ))}
-                {benchData?.contact_details?.linkedin &&
+                {tempBenchData?.contact_details?.linkedin &&
                   (formStates.isOpen && formStates.useForm === "contact" ? (
                     <TextField
                       label="LinkedIn"
@@ -520,12 +523,12 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                     <li>
                       <a
                         className="text-base hover:text-indigo-700"
-                        href={benchData?.contact_details?.linkedin}
+                        href={tempBenchData?.contact_details?.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <LinkedIn fontSize="inherit" className="me-1" />
-                        {benchData?.contact_details?.linkedin}
+                        {tempBenchData?.contact_details?.linkedin}
                       </a>
                     </li>
                   ))}
@@ -572,8 +575,8 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                 </div>
               ) : (
                 <div className="flex flex-wrap">
-                  {benchData?.certifications?.length > 0 &&
-                    benchData.certifications.map(
+                  {tempBenchData?.certifications?.length > 0 &&
+                    tempBenchData.certifications.map(
                       (item: string, index: number) => (
                         <div
                           key={index}
@@ -581,7 +584,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                           className="my-1 me-1 text-base"
                         >
                           {item}
-                          {index === benchData?.certifications?.length - 1
+                          {index === tempBenchData?.certifications?.length - 1
                             ? ""
                             : ", "}
                         </div>
@@ -629,15 +632,17 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                 </div>
               ) : (
                 <div className="flex flex-wrap items-center">
-                  {benchData?.top_skills?.length > 0 &&
-                    benchData.top_skills.map((item: string, index: number) => (
-                      <div key={index} className="my-1 me-1 text-base">
-                        {item}
-                        {index === benchData?.top_skills?.length - 1
-                          ? ""
-                          : ", "}
-                      </div>
-                    ))}
+                  {tempBenchData?.top_skills?.length > 0 &&
+                    tempBenchData.top_skills.map(
+                      (item: string, index: number) => (
+                        <div key={index} className="my-1 me-1 text-base">
+                          {item}
+                          {index === tempBenchData?.top_skills?.length - 1
+                            ? ""
+                            : ", "}
+                        </div>
+                      )
+                    )}
                 </div>
               )}
             </div>
@@ -681,11 +686,13 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                   )}
                 </div>
               ) : (
-                benchData?.education?.length > 0 && (
+                tempBenchData?.education?.length > 0 && (
                   <ul className="text-base list-disc ps-4">
-                    {benchData.education.map((item: string, index: number) => (
-                      <li key={index}>{item}</li>
-                    ))}
+                    {tempBenchData.education.map(
+                      (item: string, index: number) => (
+                        <li key={index}>{item}</li>
+                      )
+                    )}
                   </ul>
                 )
               )}

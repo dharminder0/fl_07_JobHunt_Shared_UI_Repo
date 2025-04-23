@@ -235,7 +235,7 @@ export default function Clients() {
                   onClick={() => handleRowClick(item.clientCode, "activeView")}
                 >
                   <div className="flex">
-                    {item?.logoURL && (
+                    {item?.faviconURL && (
                       <img
                         src={item.faviconURL}
                         style={{ height: 16, width: 16 }}
