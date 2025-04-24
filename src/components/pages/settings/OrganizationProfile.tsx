@@ -48,7 +48,6 @@ const OrganizationProfile = () => {
         }, 1000);
       })
       .catch((error: any) => {
-        console.log(error);
         setTimeout(() => {
           setIsLoader(false);
         }, 1000);

@@ -250,7 +250,6 @@ const DashboardLayoutBasic: React.FC<DashboardLayoutBasicProps> = React.memo(
     const router = useDemoRouter(`/${activeRole}/dashboard`);
     // Remove this const when copying and pasting into your project.
     // const demoWindow = window !== undefined ? window() : undefined;
-    console.log("Current path:", router.pathname);
     React.useEffect(() => {
       if (router.pathname) {
         navigate(router.pathname);

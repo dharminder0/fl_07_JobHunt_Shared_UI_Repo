@@ -1,12 +1,9 @@
 import {
   Avatar,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   IconButton,
   Link,
   Tab,
@@ -17,7 +14,6 @@ import React, { useEffect } from "react";
 import { Chip } from "@mui/material";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
-  Cancel,
   CancelOutlined,
   Check,
   CheckCircleOutlineOutlined,
@@ -32,7 +28,6 @@ import {
   getOnboardInvitedList,
   inviteStatusChange,
 } from "../../../../components/sharedService/apiService";
-import PageLoader from "../../../../components/sharedComponents/PageLoader";
 import Loader from "../../../sharedComponents/Loader";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
 import { useLocation, useNavigate } from "react-router";
@@ -43,7 +38,6 @@ export default function ClientOnboarding() {
 
   const [value, setValue] = React.useState("Requested");
   const [invitedList, setInvitedList] = React.useState<any[]>([]);
-  const [searchText, setSearchText] = React.useState("");
   const [isLoader, setIsLoader] = React.useState<boolean>(true);
   const [isInviteLoader, setIsInviteLoader] = React.useState<boolean>(false);
   const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
@@ -140,7 +134,7 @@ export default function ClientOnboarding() {
           <Loader />
         ) : (
           <>
-            {value == "Requested" && (
+            {value === "Requested" && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {invitedList &&
@@ -198,7 +192,7 @@ export default function ClientOnboarding() {
               </>
             )}
 
-            {value == "Invited" && (
+            {value === "Invited" && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {invitedList &&
@@ -208,7 +202,6 @@ export default function ClientOnboarding() {
                         <div
                           className="h-100 border p-4 rounded-md cursor-pointer"
                           onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            console.log("Clicked:", company?.orgCode);
                             e.stopPropagation();
                             handleDetails(company.orgCode);
                           }}

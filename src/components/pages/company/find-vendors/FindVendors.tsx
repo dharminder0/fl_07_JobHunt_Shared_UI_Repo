@@ -103,7 +103,6 @@ const FindVendors = () => {
         }, 1000);
       })
       .catch((error: any) => {
-        console.error("Error fetching data:", error);
         setTimeout(() => {
           setIsLoader(false);
         }, 1000);

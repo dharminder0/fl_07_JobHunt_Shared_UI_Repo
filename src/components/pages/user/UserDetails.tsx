@@ -126,7 +126,6 @@ export default function UserDetails() {
         }, 1000);
       })
       .catch((error: any) => {
-        console.log(error);
         setTimeout(() => {
           dispatch(closeBackdrop());
         }, 1000);
