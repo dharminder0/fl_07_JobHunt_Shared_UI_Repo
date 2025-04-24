@@ -34,7 +34,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
 
   const getRequirementWeekGraphData = () => {
     const oneWeekBack = new Date();
-    oneWeekBack.setDate(today.getDate() - 30);
+    oneWeekBack.setDate(today.getDate() - 7);
 
     const payload = {
       orgCode: userData.orgCode,
@@ -50,7 +50,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
 
   const getVndRequirementWeekGraphData = () => {
     const oneWeekBack = new Date();
-    oneWeekBack.setDate(today.getDate() - 30);
+    oneWeekBack.setDate(today.getDate() - 7);
 
     const payload = {
       orgCode: userData.orgCode,
@@ -67,7 +67,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
 
   const getRequirementStatusGraphData = () => {
     const oneWeekBack = new Date();
-    oneWeekBack.setDate(today.getDate() - 30);
+    oneWeekBack.setDate(today.getDate() - 7);
 
     const payload = {
       orgCode: userData.orgCode,
@@ -82,7 +82,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
   };
   const getVndRequirementStatusGraphData = () => {
     const oneWeekBack = new Date();
-    oneWeekBack.setDate(today.getDate() - 30);
+    oneWeekBack.setDate(today.getDate() - 7);
 
     const payload = {
       orgCode: userData.orgCode,
@@ -194,9 +194,9 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
         </div> */}
       <div className="sm:w-[99%] border p-3 rounded-md lg:w-[33%] md:w-[49%] mb-4">
         {pieTitle && <div className="text-title">{pieTitle}</div>}
-        {(statusGraphData[0]?.Open !== 0 ||
+        {statusGraphData[0]?.Open !== 0 ||
         statusGraphData[0]?.Closed !== 0 ||
-        statusGraphData[0]?.Onhold !== 0) ? (
+        statusGraphData[0]?.Onhold !== 0 ? (
           <PieChart
             series={[
               {

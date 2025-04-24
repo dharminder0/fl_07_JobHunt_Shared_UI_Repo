@@ -8,9 +8,8 @@ import BenchPreview, {
   BenchPreviewHandles,
 } from "../pages/vendor/bench/BenchPreview";
 import OrganizationProfileUpdate from "../pages/settings/OrganizationProfileUpdate";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import { Button } from "@mui/material";
 import {
-  CloseOutlined,
   DownloadOutlined,
   PictureAsPdfOutlined,
 } from "@mui/icons-material";

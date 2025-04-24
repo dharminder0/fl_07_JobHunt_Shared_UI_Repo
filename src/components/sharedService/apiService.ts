@@ -325,6 +325,11 @@ export const upsetAvatar = async (payload: any) => {
   return response.data;
 };
 
+export const getMatchingVendors = async (payload: any) => {
+  const response = await api.post("V1/Requirement/MatchingVendors", payload);
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {
@@ -348,9 +353,7 @@ export const matchRequirementToCandidates = async (
   }
 };
 
-export const matchCandidateToRequirements = async (
-  candidate_ids: number[]
-) => {
+export const matchCandidateToRequirements = async (candidate_ids: number[]) => {
   try {
     const response = await axios.post(
       "https://fl-07-agent-shared-api-test.azurewebsites.net/match_candidate_to_requirements",

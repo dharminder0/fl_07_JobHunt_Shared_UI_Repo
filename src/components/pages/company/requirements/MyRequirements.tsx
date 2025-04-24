@@ -133,7 +133,7 @@ const MyRequirements = () => {
     if (!drawerState.isOpen) {
       getRequirementsData();
     }
-  }, [drawerState]);
+  }, [drawerState.isOpen]);
 
   return (
     <>
@@ -262,20 +262,28 @@ const MyRequirements = () => {
                           </Tooltip>
                         </div>
                         <div className="flex w-[128px]">
-                          <div className="flex items-center ms-1">
-                            <LocationOnOutlined
-                              fontSize="inherit"
-                              className="mr-1"
-                            />
-                            <span>{requirement?.locationTypeName || "-"}</span>
-                          </div>
-                          <div className="flex items-center ms-1">
-                            <AccessTimeOutlined
-                              fontSize="inherit"
-                              className="mr-1"
-                            />
-                            <span>{requirement?.duration || "-"}</span>
-                          </div>
+                          {requirement?.locationTypeName && (
+                            <div className="flex items-center ms-1">
+                              <LocationOnOutlined
+                                fontSize="inherit"
+                                className="mr-1"
+                              />
+                              <span>
+                                {requirement?.locationTypeName || "-"}
+                              </span>
+                            </div>
+                          )}
+                          {requirement?.duration && (
+                            <div className="flex items-center ms-1">
+                              <AccessTimeOutlined
+                                fontSize="inherit"
+                                className="mr-1"
+                              />
+                              <span className="truncate w-[70px]">
+                                {requirement?.duration || "-"}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </th>
