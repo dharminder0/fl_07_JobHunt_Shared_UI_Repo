@@ -138,7 +138,7 @@ export const getClientDataByClientCode = async (clientCode: any) => {
 };
 
 export const getOnboardInvitedList = async (payload: any) => {
-  const response = await api.post("V1/Organization/List/Invitation", payload);
+  const response = await api.post("V1/Organization/Empaneled-list", payload);
   return response.data;
 };
 

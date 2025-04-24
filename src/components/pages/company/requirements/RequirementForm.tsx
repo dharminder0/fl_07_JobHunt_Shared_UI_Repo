@@ -61,7 +61,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const RequirementForm = () => {
   const [isLoader, setIsLoader] = useState(false);
   const [isVendorLoader, setIsVendorLoader] = useState(false);
-  const [tabValue, setTabValue] = React.useState("recommendation");
+  const [tabValue, setTabValue] = React.useState("share");
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedCards, setSelectedCards] = useState([]);
@@ -141,12 +141,9 @@ const RequirementForm = () => {
       .then((result: any) => {
         if (result.success) {
           handleNext();
-          getCandidates();
           setTimeout(() => {
             setRequirementData(result.content);
-            refetch();
-            getOrgDetailsListData();
-          }, 1000);
+          }, 500);
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -293,6 +290,17 @@ const RequirementForm = () => {
   useEffect(() => {
     setEmpaneledVendors(activeDataList);
   }, [activeDataList]);
+
+  useEffect(() => {
+    if (tabValue === "recommendation") {
+      getCandidates();
+      setTimeout(() => {
+        refetch();
+      }, 500);
+    } else if (tabValue === "share") {
+      getOrgDetailsListData();
+    }
+  }, [tabValue]);
 
   const closeReqDrawer = () => {
     dispatch(closeDrawer());
@@ -654,16 +662,16 @@ const RequirementForm = () => {
                   aria-label="secondary tabs example"
                 >
                   <Tab
-                    icon={<ShareOutlined fontSize="inherit" />}
-                    value="recommendation"
-                    label="AI Recommendation"
-                    iconPosition="start"
-                  />
-                  <Tab
                     value="share"
                     label="Share"
                     iconPosition="start"
                     icon={<ShareOutlined fontSize="inherit" />}
+                  />
+                  <Tab
+                    icon={<ShareOutlined fontSize="inherit" />}
+                    value="recommendation"
+                    label="AI Recommendation"
+                    iconPosition="start"
                   />
                 </Tabs>
 
@@ -907,7 +915,7 @@ const RequirementForm = () => {
                       <div className="mt-3">
                         <Autocomplete
                           multiple
-                          size="small"
+                          size="medium"
                           id="tags-readOnly"
                           options={companiesfilterData}
                           getOptionLabel={(option) => option.orgName}
@@ -938,7 +946,7 @@ const RequirementForm = () => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              size="small"
+                              size="medium"
                               label="Search vendor"
                               placeholder="Search"
                             />
