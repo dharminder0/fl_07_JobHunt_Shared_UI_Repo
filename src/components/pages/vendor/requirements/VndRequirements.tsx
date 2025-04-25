@@ -453,7 +453,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                                 id: requirement?.id,
                                 role: requirement?.title,
                                 client: requirement.clientName,
-                                clientLogo: requirement.clientLogo,
+                                clientLogo: requirement.clientFavicon,
                                 uniqueId: requirement.uniqueId,
                               })
                             }
@@ -474,17 +474,17 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             )
                           }
                         >
-                          {requirement?.clientLogo && (
+                          {requirement?.clientFavicon && (
                             // <img
-                            //   src={requirement.clientLogo}
+                            //   src={requirement.clientFavicon}
                             //   style={{ height: 12, width: 12 }}
                             //   className="me-1"
                             // />
                             <Avatar
                               src={
-                                !requirement.clientLogo
+                                !requirement.clientFavicon
                                   ? ""
-                                  : requirement.clientLogo
+                                  : requirement.clientFavicon
                               }
                               alt={requirement.clientName}
                               sx={{ width: 12, height: 12, fontSize: 10 }}
