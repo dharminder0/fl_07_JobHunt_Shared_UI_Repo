@@ -170,9 +170,9 @@ const VndRequirementDetails = () => {
                 </div>
               </h5>
               <div className="flex items-center">
-                {requirementData?.clientLogo && (
+                {requirementData?.clientFavicon && (
                   <img
-                    src={requirementData?.clientLogo}
+                    src={requirementData?.clientFavicon}
                     alt=""
                     style={{ width: 16, height: 16 }}
                   />
@@ -366,11 +366,11 @@ const VndRequirementDetails = () => {
               </div>
               <div className="flex items-center justify-between flex-wrap text-secondary-text text-info mt-1">
                 <div className="flex items-center w-full">
-                  {!item.clientLogo ? (
+                  {!item.clientFavicon ? (
                     <CorporateFareOutlined fontSize="medium" />
                   ) : (
                     <img
-                      src={item.clientLogo}
+                      src={item.clientFavicon}
                       style={{ height: 12, width: 12 }}
                       className="me-1"
                     />

@@ -242,15 +242,15 @@ const MyRequirements = () => {
                             handleRowClick(requirement.clientCode, "client")
                           }
                         >
-                          {requirement?.clientLogo && (
+                          {requirement?.clientFavicon && (
                             // <img
-                            //   src={requirement?.clientLogo}
+                            //   src={requirement?.clientFavicon}
                             //   style={{ height: 12, width: 12 }}
                             //   className="me-1"
                             // />
                             <Avatar
                               alt={requirement?.clientName}
-                              src={requirement?.clientLogo || undefined}
+                              src={requirement?.clientFavicon || undefined}
                               className="rounded-full"
                               sx={{ height: 12, width: 12, fontSize: 10 }}
                             />

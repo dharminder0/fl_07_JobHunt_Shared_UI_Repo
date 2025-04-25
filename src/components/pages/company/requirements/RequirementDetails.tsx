@@ -43,11 +43,12 @@ import {
 } from "../../../../components/sharedService/enums";
 import moment from "moment";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/components/redux/store";
 import {
   closeBackdrop,
   openBackdrop,
+  openDrawer,
 } from "../../../../components/features/drawerSlice";
 import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
@@ -57,6 +58,8 @@ const RequirementDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
+  const drawerState = useSelector((state: any) => state.drawer);
+
   const params = location.state || {};
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [activeTab, setActiveTab] = useState(0);
@@ -116,7 +119,17 @@ const RequirementDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (searchText?.length > 2 || searchText?.length == 0) {
+    if (!drawerState?.isOpen) {
+      getRequirementsData(uniqueId);
+    }
+  }, [drawerState]);
+
+  useEffect(() => {
+    if (
+      searchText?.length > 2 ||
+      searchText?.length == 0 ||
+      status?.length > 0
+    ) {
       getRequirementApplicant(uniqueId);
     }
   }, [status, searchText]);
@@ -265,16 +278,27 @@ const RequirementDetails = () => {
                     {requirementData?.title}
                     <div className="group/edit invisible group-hover/item:visible">
                       <span className="group-hover/edit:text-gray-700 ">
-                        <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
+                        <IconButton
+                          aria-label="edit"
+                          sx={{ marginLeft: 2 }}
+                          onClick={() =>
+                            dispatch(
+                              openDrawer({
+                                drawerName: "CmpUpdateRequirement",
+                                data: requirementData,
+                              })
+                            )
+                          }
+                        >
                           <Edit fontSize="small" />
                         </IconButton>
                       </span>
                     </div>
                   </h5>
                   <div className="flex items-center">
-                    {requirementData?.clientLogo && (
+                    {requirementData?.clientFavicon && (
                       <img
-                        src={requirementData?.clientLogo}
+                        src={requirementData?.clientFavicon}
                         alt=""
                         style={{ width: 16, height: 16 }}
                       />

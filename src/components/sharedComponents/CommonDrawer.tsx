@@ -9,16 +9,14 @@ import BenchPreview, {
 } from "../pages/vendor/bench/BenchPreview";
 import OrganizationProfileUpdate from "../pages/settings/OrganizationProfileUpdate";
 import { Button } from "@mui/material";
-import {
-  DownloadOutlined,
-  PictureAsPdfOutlined,
-} from "@mui/icons-material";
+import { DownloadOutlined, PictureAsPdfOutlined } from "@mui/icons-material";
 import VndBench from "../pages/vendor/bench/VndBench";
 import CreateClientForm from "../pages/company/clients/CreateClientForm";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
 import AddAIBench from "../pages/vendor/bench/AddAIBench";
 import MatchingPositions from "../pages/vendor/bench/MatchingPositions";
 import MatchingCandidates from "../pages/vendor/requirements/MatchingCandidates";
+import RequirementUpdate from "../pages/company/requirements/RequirementUpdate";
 
 interface CommonDrawerProps {
   name: string; // Unique name for the drawer
@@ -114,6 +112,9 @@ const CommonDrawer: React.FC<CommonDrawerProps> = ({ name, children }) => {
         {currentDrawer === "OrgProfileUpdate" && <OrganizationProfileUpdate />}
         {currentDrawer === "AddClient" && <CreateClientForm />}
         {currentDrawer === "CmpPostRequirement" && <RequirementForm />}
+        {currentDrawer === "CmpUpdateRequirement" && (
+          <RequirementUpdate requirementData={drawerData} />
+        )}
         {currentDrawer === "AddAIBench" && <AddAIBench />}
         {currentDrawer === "MatchingPositions" && (
           <MatchingPositions benchDrawerData={drawerData} />
