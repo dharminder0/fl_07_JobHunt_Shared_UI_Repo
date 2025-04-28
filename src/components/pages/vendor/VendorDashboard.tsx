@@ -205,9 +205,9 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                 ) : (
                   <div className="pb-5 text-center">
                     <p className="text-base mb-5">
-                      You haven't added any clients. Start by clicking 'Create
-                      new clients' button to search client and request them for
-                      empanelement.
+                      You haven't empaneled with any client yet. Start by
+                      clicking the 'Request for Empanelment' button to search
+                      for clients and send them a request.
                     </p>
                     <Button
                       variant="outlined"
@@ -215,7 +215,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                       onClick={() => navigate("/vendor/searchclient")}
                       startIcon={<AddOutlined fontSize="small" />}
                     >
-                      Create new clients
+                      Request for empanelment
                     </Button>
                   </div>
                 )}

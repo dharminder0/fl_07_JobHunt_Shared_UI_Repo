@@ -133,21 +133,15 @@ const VendorDetails = () => {
   const userData = JSON.parse(localStorage.userData);
   const handleInvitation = () => {
     const payload: any = {
-      sender: {
-        email: userData.email,
-        orgCode: userData.orgCode,
-        roleType: activeRole === "vendor" ? RoleType.Vendor : RoleType.Client,
-      },
-      receiver: {
-        email: orgData?.email,
-        orgCode: orgData?.orgCode,
-      },
-      message: empMessage,
+      partnerCode: userData.orgCode,
+      vendorCode: orgData.orgCode,
+      statusId: 1,
+      createdBy: userData.userId,
     };
     setIsInviteLoader(true);
     dispatchedInvitation(payload)
       .then((result: any) => {
-        if (result) {
+        if (result?.success) {
           setIsSuccessPopup(true);
           setTimeout(() => {
             setIsInviteLoader(false);
@@ -161,6 +155,7 @@ const VendorDetails = () => {
         }, 1000);
       });
   };
+  
   return (
     <>
       <div className="min-h-screen p-6">
