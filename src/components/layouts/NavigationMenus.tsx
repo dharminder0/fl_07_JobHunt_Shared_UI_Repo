@@ -115,7 +115,7 @@ export const VENDOR_NAVIGATION:Navigation = [
   },
   {
     segment: "vendor",
-    title: "Clients",
+    title: "Partners",
     icon: <BusinessOutlinedIcon />,
     children: [
       {
@@ -123,11 +123,11 @@ export const VENDOR_NAVIGATION:Navigation = [
         title: "Empaneled",
         icon: <BusinessOutlinedIcon />,
       },
-      {
-        segment: "searchclient",
-        title: "Search",
-        icon: <ScreenSearchDesktopOutlinedIcon />,
-      },
+      // {
+      //   segment: "searchclient",
+      //   title: "Search",
+      //   icon: <ScreenSearchDesktopOutlinedIcon />,
+      // },
       {
         segment: "onboarding",
         title: "Onboarding",

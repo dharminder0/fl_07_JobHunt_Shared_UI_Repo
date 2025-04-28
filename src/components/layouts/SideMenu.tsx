@@ -167,7 +167,7 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           path: "/vendor/bench",
         },
         {
-          text: "Clients",
+          text: "Partners",
           icon: <BusinessOutlinedIcon fontSize="inherit" />,
           id: 4,
           path: "/vendor/clients",
@@ -178,12 +178,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
               id: 11,
               path: "/vendor/clients",
             },
-            {
-              text: "Search",
-              icon: <ScreenSearchDesktopOutlinedIcon fontSize="inherit" />,
-              id: 22,
-              path: "/vendor/searchclient",
-            },
+            // {
+            //   text: "Search",
+            //   icon: <ScreenSearchDesktopOutlinedIcon fontSize="inherit" />,
+            //   id: 22,
+            //   path: "/vendor/searchclient",
+            // },
             {
               text: "Onboarding",
               icon: <HandshakeOutlinedIcon fontSize="inherit" />,

@@ -39,7 +39,7 @@ import { useNavigate } from "react-router";
 
 export default function VendorOnboarding() {
   const navigate = useNavigate();
-  const [value, setValue] = React.useState("Invited");
+
   const [invitedList, setInvitedList] = React.useState<any[]>([]);
   const [searchText, setSearchText] = React.useState("");
   const [isLoader, setIsLoader] = React.useState<boolean>(true);
@@ -50,19 +50,14 @@ export default function VendorOnboarding() {
   const [pageSize, setPageSize] = React.useState(10);
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-
   useEffect(() => {
     getOrgInvitedList();
-  }, [value]);
+  }, []);
 
   const getOrgInvitedList = () => {
     const payload = {
-      ...(value === "Invited" && { orgCode: userData?.orgCode }),
-      ...(value === "Requested" && { relatedOrgCode: userData?.orgCode }),
-      relationshipType: [RoleType.Client],
+      orgCode: userData?.orgCode,
+      relationshipType: [RoleType.Vendor],
       status: InvitedType.Pending,
       page: pageIndex,
       pageSize: pageSize,
@@ -95,7 +90,12 @@ export default function VendorOnboarding() {
 
   const handleInvitation = () => {
     setIsInviteLoader(true);
-    inviteStatusChange(statusData.id, statusData.status)
+    const payload = {
+      partnerVendorRelId: statusData.id,
+      statusId: statusData.status,
+      updatedBy: userData.userId,
+    };
+    inviteStatusChange(payload)
       .then((result: any) => {
         if (result) {
           setTimeout(() => {
@@ -119,179 +119,67 @@ export default function VendorOnboarding() {
 
   return (
     <div className="px-4 py-1">
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        textColor="primary"
-        indicatorColor="primary"
-        aria-label="secondary tabs example"
-      >
-        <Tab value="Invited" label="Invited for Empanelment" />
-        <Tab value="Requested" label="Requested for Empanelment" />
-      </Tabs>
-
       <div className="mt-4">
         {isLoader ? (
           // <PageLoader />
           <Loader />
-        ) : (
+        ) : invitedList && invitedList?.length > 0 ? (
           <>
-            {value == "Invited" && (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {invitedList &&
-                    invitedList?.length > 0 &&
-                    invitedList.map((company, idx) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {invitedList.map((company, idx) => (
+                <div key={idx}>
+                  <div
+                    className="h-100 border p-4 rounded-md cursor-pointer"
+                    onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                      handleCardClick(company?.relatedOrgCode);
+                      e.stopPropagation();
+                    }}
+                  >
+                    <div className="flex align-center mb-4">
+                      <Avatar
+                        alt="Org Icon"
+                        src={company.logo || undefined}
+                        className="rounded-full !h-10 !w-10 me-3"
+                      >
+                        {!company.logo && (
+                          <CorporateFareOutlined fontSize="small" />
+                        )}
+                      </Avatar>
                       <div>
-                        <div
-                          className="h-100 border p-4 rounded-md cursor-pointer"
-                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            handleCardClick(company?.relatedOrgCode);
-                            e.stopPropagation();
-                          }}
-                        >
-                          <div className="flex align-center mb-4">
-                            <Avatar
-                              alt="Org Icon"
-                              src={company.logo || undefined}
-                              className="rounded-full !h-10 !w-10 me-3"
-                            >
-                              {!company.logo && (
-                                <CorporateFareOutlined fontSize="small" />
-                              )}
-                            </Avatar>
-                            <div>
-                              <Tooltip title={company.orgName} arrow>
-                                <p className="text-title line-clamp-1 font-bold">
-                                  {company.orgName}
-                                </p>
-                              </Tooltip>
-                              <p className="line-clamp-1 text-base">
-                                {company?.location[0] || "-"}
-                              </p>{" "}
-                              {company.statusName && (
-                                <Link href="#" underline="none" fontSize={12}>
-                                  {company.statusName}
-                                </Link>
-                              )}
-                            </div>
-                          </div>
-                          <p className="text-base line-clamp-2">
-                            <HtmlRenderer content={company?.description} />
+                        <Tooltip title={company.orgName} arrow>
+                          <p className="text-title line-clamp-1 font-bold">
+                            {company.orgName}
                           </p>
-                          <div className="flex flex-wrap mt-2">
-                            <Chip
-                              label={company?.empCount}
-                              size="small"
-                              variant="outlined"
-                              sx={{ fontSize: 10 }}
-                              className="my-1 me-1"
-                            />
-                          </div>
-                        </div>
+                        </Tooltip>
+                        <p className="line-clamp-1 text-base">
+                          {company?.location[0] || "-"}
+                        </p>{" "}
+                        {company.statusName && (
+                          <Link href="#" underline="none" fontSize={12}>
+                            {company.statusName}
+                          </Link>
+                        )}
                       </div>
-                    ))}
+                    </div>
+                    <p className="text-base line-clamp-2">
+                      <HtmlRenderer content={company?.description} />
+                    </p>
+                    <div className="flex flex-wrap mt-2">
+                      <Chip
+                        label={company?.empCount}
+                        size="small"
+                        variant="outlined"
+                        sx={{ fontSize: 10 }}
+                        className="my-1 me-1"
+                      />
+                    </div>
+                  </div>
                 </div>
-
-                {invitedList && invitedList?.length <= 0 && <NoDataAvailable />}
-              </>
-            )}
-
-            {value == "Requested" && (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {invitedList &&
-                    invitedList?.length > 0 &&
-                    invitedList.map((company, idx) => (
-                      <div>
-                        <div
-                          className="h-100 border p-4 rounded-md cursor-pointer"
-                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            e.stopPropagation();
-                            handleCardClick(company?.relatedOrgCode);
-                          }}
-                        >
-                          <div className="flex align-center">
-                            <Avatar
-                              alt="Org Icon"
-                              src={company.logo || undefined}
-                              className="rounded-full !h-10 !w-10 me-3"
-                            >
-                              {!company.logo && (
-                                <CorporateFareOutlined fontSize="small" />
-                              )}
-                            </Avatar>
-                            <div>
-                              <Tooltip title={company.orgName} arrow>
-                                <p className="text-title line-clamp-1 font-bold">
-                                  {company.orgName}
-                                </p>
-                              </Tooltip>
-                              <p className="line-clamp-1 text-base">
-                                {company?.location[0] || "-"}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center justify-between w-full my-1">
-                            {company.statusName && (
-                              <Link
-                                href="#"
-                                underline="none"
-                                fontSize={12}
-                                color="warning"
-                              >
-                                {company.statusName}
-                              </Link>
-                            )}
-                            <div>
-                              <Tooltip title="Accept">
-                                <IconButton
-                                  size="small"
-                                  onClick={(e: any) => {
-                                    e.stopPropagation();
-                                    handleConfirmPopup(company?.id, 2);
-                                  }}
-                                >
-                                  <Check fontSize="small" color="success" />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="Declined">
-                                <IconButton
-                                  size="small"
-                                  onClick={(e: any) => {
-                                    e.stopPropagation();
-                                    handleConfirmPopup(company?.id, 3);
-                                  }}
-                                >
-                                  <CloseOutlined
-                                    fontSize="small"
-                                    color="error"
-                                  />
-                                </IconButton>
-                              </Tooltip>
-                            </div>
-                          </div>
-                          <p className="text-base line-clamp-2">
-                            <HtmlRenderer content={company?.description} />
-                          </p>
-                          <div className="flex flex-wrap mt-2">
-                            <Chip
-                              label={company?.empCount}
-                              size="small"
-                              variant="outlined"
-                              sx={{ fontSize: 10 }}
-                              className="my-1 me-1"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-                {invitedList && invitedList?.length <= 0 && <NoDataAvailable />}
-              </>
-            )}
+              ))}
+            </div>
           </>
+        ) : (
+          <NoDataAvailable />
         )}
 
         {isPopupOpen && (

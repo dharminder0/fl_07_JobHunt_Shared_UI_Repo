@@ -7,7 +7,7 @@ export const RoleData: any = [
   },
   {
     id: "2",
-    name: "Company",
+    name: "Partner",
     role: "company",
     isActive: false,
   },

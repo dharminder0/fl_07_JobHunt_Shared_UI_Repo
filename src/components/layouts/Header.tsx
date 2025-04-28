@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   const [routesData, setRoutesData] = useState([
     {
-      title: "Company",
+      title: "Partner",
       code: "company",
       redirectTo: "/company",
       isActive: false,
