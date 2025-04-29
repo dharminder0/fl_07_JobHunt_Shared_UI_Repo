@@ -144,6 +144,7 @@ const RequirementForm = () => {
           handleNext();
           setTimeout(() => {
             setRequirementData(result.content);
+            getOrgDetailsListData();
           }, 500);
         }
         setTimeout(() => {
@@ -210,7 +211,12 @@ const RequirementForm = () => {
     const payload = {
       requirementId: requirementData?.UniqueId,
       visibility: shareWith,
-      orgCode: shareWith == 1 ? selectedVendors : [],
+      orgCode:
+        shareWith == 1
+          ? selectedVendors
+          : shareWith == 2
+            ? [userData.orgCode]
+            : [],
     };
     shareRequirement(payload)
       .then((res: any) => {
