@@ -6,71 +6,13 @@ import {
   getVndDashboardReqCounts,
   getVndTopClients,
 } from "../../../components/sharedService/apiService";
-import { RequirementsStatus } from "../../../components/sharedService/enums";
+import {
+  RequirementsStatus,
+  RoleType,
+} from "../../../components/sharedService/enums";
 import { AddOutlined } from "@mui/icons-material";
 
 interface VendorDashboard {}
-
-const applicantItems = [
-  {
-    logo: "https://www.teleperformance.com/css/assets/favicon.ico",
-    label: "Teleperformance",
-    value: 21,
-    color: "bg-purple-500",
-  },
-  {
-    logo: "https://d1rz4ui464s6g7.cloudfront.net/wp-content/uploads/2024/05/20122313/kpit-favicon.png",
-    label: "KPIT Technologiess",
-    value: 17,
-    color: "bg-green-500",
-  },
-  {
-    logo: "https://www.mphasis.com/content/dam/mphasis-com/common/icons/favicon.ico",
-    label: "Mphasis",
-    value: 18,
-    color: "bg-blue-500",
-  },
-  {
-    logo: "https://www.fisglobal.com/-/media/fisglobal/images/Main/logos/FISfavicons/favicon-192x192.png",
-    label: "Fidelity Information Services",
-    value: 16,
-    color: "bg-yellow-500",
-  },
-  {
-    logo: "https://careers.coforge.com/coforge/favicon.ico",
-    label: "Coforge",
-    value: 21,
-    color: "bg-red-500",
-  },
-];
-
-const hotTech = [
-  {
-    logo: "https://reactnative.dev/img/header_logo.svg",
-    label: "React Native",
-    value: 35,
-    color: "bg-purple-500",
-  },
-  {
-    logo: "https://angular.dev/assets/icons/favicon-48x48.png",
-    label: "Angular",
-    value: 27,
-    color: "bg-green-500",
-  },
-  {
-    logo: "https://www.gstatic.com/devrel-devsite/prod/v3239347c48d1e3c46204782fd038ba187a6753dfa7d7a0d08a574587ae2085f5/android/images/favicon.svg",
-    label: "Android Developer",
-    value: 23,
-    color: "bg-blue-500",
-  },
-  {
-    logo: "https://vuejs.org/logo.svg",
-    label: "Vue Developer",
-    value: 34,
-    color: "bg-yellow-500",
-  },
-  { logo: "", label: "QA Automation", value: 36, color: "bg-red-500" },
-];
 
 const VendorDashboard: React.FC<VendorDashboard> = () => {
   const navigate = useNavigate();
@@ -90,13 +32,15 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
   }, []);
 
   const getReqDetailCounts = () => {
-    getVndDashboardReqCounts(userData?.userId, userData?.orgCode).then(
-      (result: any) => {
-        if (Object.keys(result).length >= 0) {
-          setRequirementCounts(result);
-        }
+    getVndDashboardReqCounts(
+      userData?.userId,
+      userData?.orgCode,
+      RoleType.Vendor
+    ).then((result: any) => {
+      if (Object.keys(result).length >= 0) {
+        setRequirementCounts(result);
       }
-    );
+    });
   };
 
   const getVndTopClientLists = () => {
