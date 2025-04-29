@@ -144,6 +144,7 @@ const VendorDetails = () => {
         if (result?.success) {
           setIsSuccessPopup(true);
           setTimeout(() => {
+            getOrgProfile();
             setIsInviteLoader(false);
             handleClose();
           }, 1000);
@@ -155,7 +156,7 @@ const VendorDetails = () => {
         }, 1000);
       });
   };
-  
+
   return (
     <>
       <div className="min-h-screen p-6">
