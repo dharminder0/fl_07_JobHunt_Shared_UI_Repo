@@ -208,9 +208,13 @@ export const getDashboardReqCounts = async (orgCode: any) => {
   return response.data;
 };
 
-export const getVndDashboardReqCounts = async (userId: any, orgCode: any) => {
+export const getVndDashboardReqCounts = async (
+  userId: any,
+  orgCode: any,
+  roleTyle: any
+) => {
   const response = await api.get(
-    `V1/Requirement/Vendor-dashboard/${userId}/${orgCode}`
+    `V1/Requirement/Vendor-dashboard/${userId}/${orgCode}?roleType=${roleTyle}`
   );
   return response.data;
 };
