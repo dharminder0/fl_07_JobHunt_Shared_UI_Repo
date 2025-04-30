@@ -128,7 +128,7 @@ export default function ClientOnboarding() {
                     className="h-100 border p-4 rounded-md cursor-pointer"
                     onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                       e.stopPropagation();
-                      handleDetails(company.relatedOrgCode);
+                      handleDetails(company.orgCode);
                     }}
                   >
                     <div className="flex align-center">

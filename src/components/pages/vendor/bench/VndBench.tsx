@@ -118,15 +118,25 @@ export default function VndBench({ drawerData = {} }: any) {
   //     setbenchDatadetails([]);
   //   });
 
-  useEffect(() => {
-    if (searchText?.length > 2 || searchText?.length == 0) {
-      fetchBenchList();
-    }
-  }, [searchText, availability, activeTab]);
+  const hasMounted = useRef(false);
 
   useEffect(() => {
-    getTechStacks();
-  }, [activeTab]);
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+  
+    if (
+      (searchText?.length > 2 || searchText?.length === 0) &&
+      activeTab === "benchTab"
+    ) {
+      fetchBenchList();
+    }
+  
+    if (activeTab === "techStack") {
+      getTechStacks();
+    }
+  }, [searchText, availability, activeTab]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -145,14 +155,12 @@ export default function VndBench({ drawerData = {} }: any) {
     setIsTableLoader(true);
     getBenchList(payload)
       .then((result: any) => {
-        if (result?.list && result?.list.length > 0) {
+        if (result?.list && result?.list.length >= 0) {
           setbenchDatadetails(result.list);
-        } else {
-          setbenchDatadetails([]);
+          setTimeout(() => {
+            setIsTableLoader(false);
+          }, 1000);
         }
-        setTimeout(() => {
-          setIsTableLoader(false);
-        }, 1000);
       })
       .catch((error) => {
         setbenchDatadetails([]);

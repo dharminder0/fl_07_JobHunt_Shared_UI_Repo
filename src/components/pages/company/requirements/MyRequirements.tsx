@@ -89,8 +89,9 @@ const MyRequirements = () => {
     setSelectedStatus(requirement.statusName);
   };
 
-  const getRequirementsData = () => {
+  const getRequirementsData = async () => {
     setIsTableLoader(true);
+
     const payload = {
       orgCode: userData.orgCode,
       searchText: searchText,
@@ -100,25 +101,21 @@ const MyRequirements = () => {
       status: status,
       clientCode: client,
       userId: userData.userId,
-      roleType: [activeRole === "company" && RoleType.Client],
+      roleType: activeRole === "company" ? [RoleType.Client] : [],
     };
 
-    getRequirementsList(payload)
-      .then((result: any) => {
-        if (result && result?.totalPages > 0) {
-          SetRequirementData(result);
-        } else {
-          SetRequirementData([]);
-        }
-        setTimeout(() => {
-          setIsTableLoader(false);
-        }, 1000);
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          setIsTableLoader(false);
-        }, 1000);
-      });
+    try {
+      const result = await getRequirementsList(payload);
+      if (result && result.totalPages >= 0) {
+        SetRequirementData(result);
+      }
+    } catch (error) {
+      console.error("Error fetching requirements:", error);
+    } finally {
+      setTimeout(() => {
+        setIsTableLoader(false);
+      }, 1000);
+    }
   };
 
   const clientList = useClientList(userData?.orgCode);

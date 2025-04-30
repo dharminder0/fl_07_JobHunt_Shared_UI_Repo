@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box } from "@mui/material";
 import { BarChart, LineChart, PieChart } from "@mui/x-charts";
 import {
@@ -97,30 +97,42 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
     });
   };
 
-  const items = [
-    {
-      id: "id_A",
-      value: statusGraphData[0]?.Open,
-      label: "Open",
-      color: "#007FFF",
-    },
-    {
-      id: "id_B",
-      value: statusGraphData[0]?.Closed,
-      label: "Closed",
-      color: "#5DB996",
-    },
-    {
-      id: "id_C",
-      value: statusGraphData[0]?.Onhold,
-      label: "On hold",
-      color: "#7e22ce",
-    },
-  ];
+  const items = useMemo(
+    () => [
+      {
+        id: "id_A",
+        value: statusGraphData[0]?.Open,
+        label: "Open",
+        color: "#007FFF",
+      },
+      {
+        id: "id_B",
+        value: statusGraphData[0]?.Closed,
+        label: "Closed",
+        color: "#5DB996",
+      },
+      {
+        id: "id_C",
+        value: statusGraphData[0]?.Onhold,
+        label: "On hold",
+        color: "#7e22ce",
+      },
+    ],
+    [statusGraphData]
+  );
 
-  const dayLabels = weekGraphData.map((item) => item.weekDay);
-  const viewsData = weekGraphData.map((item) => item.totalPositions);
-  const appliedData = weekGraphData.map((item) => item.totalPlacements);
+  const dayLabels = useMemo(
+    () => weekGraphData.map((item) => item.weekDay),
+    [weekGraphData]
+  );
+  const viewsData = useMemo(
+    () => weekGraphData.map((item) => item.totalPositions),
+    [weekGraphData]
+  );
+  const appliedData = useMemo(
+    () => weekGraphData.map((item) => item.totalPlacements),
+    [weekGraphData]
+  );
 
   return (
     <>
@@ -221,4 +233,4 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
   );
 };
 
-export default JobStatistics;
+export default React.memo(JobStatistics);
