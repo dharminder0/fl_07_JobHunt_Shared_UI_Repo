@@ -239,7 +239,7 @@ const RequirementForm = () => {
 
   const getOrgDetailsListData = () => {
     const payload = {
-      role: [RoleType.Vendor],
+      role: RoleType.Vendor,
       page: 1,
       pageSize: 10,
       searchText: "",

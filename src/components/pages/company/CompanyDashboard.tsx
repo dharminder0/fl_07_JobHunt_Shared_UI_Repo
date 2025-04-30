@@ -341,7 +341,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
                         <div className="flex">
                           <Avatar
                             alt={requirement.ClientName}
-                            src={requirement.ClientLogo || undefined}
+                            src={requirement.FavIconURL || undefined}
                             className="rounded-full !h-8 !w-8"
                           >
                             {!requirement.ClientLogo && (
