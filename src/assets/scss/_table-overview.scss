@@ -32,9 +32,10 @@
     box-shadow: 2px 2px 4px 0 #e0e0e0;
     &.multi-select {
       min-width: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+      text-align: center;
     }
     &.add-right-shadow {
       left: 0;
@@ -217,6 +218,6 @@
   }
 }
 
-.text-center{
+.text-center {
   text-align: center !important;
 }
