@@ -8,7 +8,11 @@ import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import ReactQuill from "react-quill";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
-import { closeDrawer } from "../../../../components/features/drawerSlice";
+import {
+  closeBackdrop,
+  closeDrawer,
+  openBackdrop,
+} from "../../../../components/features/drawerSlice";
 
 const CreateClientForm = () => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -48,11 +52,13 @@ const CreateClientForm = () => {
   });
 
   const onSubmit = (data: any) => {
+    dispatch(openBackdrop());
     upsertClient(data)
       .then((result: any) => {
         if (result.success) {
           setIsSuccessPopup(true);
           setTimeout(() => {
+            dispatch(closeBackdrop());
             handleCloseDrawer();
           }, 1000);
         }
@@ -60,6 +66,7 @@ const CreateClientForm = () => {
       .catch((error: any) => {
         setTimeout(() => {
           setIsSuccessPopup(false);
+          dispatch(closeBackdrop());
         }, 1000);
       });
   };

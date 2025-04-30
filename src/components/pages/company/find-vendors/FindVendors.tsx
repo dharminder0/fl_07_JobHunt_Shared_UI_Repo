@@ -81,7 +81,7 @@ const FindVendors = () => {
 
   const getOrgDetailsListData = () => {
     const payload = {
-      role: [RoleType.Vendor],
+      role: RoleType.Vendor,
       orgCode: userData?.orgCode,
       page: pageIndex,
       pageSize: pageSize,
