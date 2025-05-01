@@ -466,13 +466,13 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                       </div>
                       <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                         <div
-                          className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                          onClick={() =>
-                            handleClickToClient(
-                              requirement.partnerCode,
-                              "activeView"
-                            )
-                          }
+                          className="flex items-center min-w-[135px] max-w-[150px]"
+                          // onClick={() =>
+                          //   handleClickToClient(
+                          //     requirement.partnerCode,
+                          //     "activeView"
+                          //   )
+                          // }
                         >
                           {requirement?.partnerFavicon && (
                             // <img
