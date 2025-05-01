@@ -258,7 +258,7 @@ const MyRequirements = () => {
                             </span>
                           </Tooltip>
                         </div>
-                        <div className="flex w-[128px]">
+                        <div className="flex w-[128px] justify-end">
                           {requirement?.locationTypeName && (
                             <div className="flex items-center ms-1">
                               <LocationOnOutlined

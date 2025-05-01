@@ -138,7 +138,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     setSelectedStatus(status);
   };
 
-  const clientList = useClientList(userData?.orgCode);
+  // const clientList = useClientList(userData?.orgCode);
 
   const getRequirementsData = () => {
     setIsTableLoader(true);
@@ -149,7 +149,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       pageSize: pageSize,
       locationType: resource,
       status: status,
-      clientCode: client,
+      // clientCode: client,
       userId: userData.userId,
       roleType: [activeRole === "vendor" && RoleType.Vendor],
     };
@@ -326,7 +326,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                   />
                 </div>
               </div>
-              <div className="max-w-full shrink-0">
+              {/* <div className="max-w-full shrink-0">
                 <MenuDrpDwnByValue
                   menuList={clientList}
                   placeholder="Client"
@@ -334,7 +334,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     setClient(selectedItems)
                   }
                 />
-              </div>
+              </div> */}
               <div className="max-w-full shrink-0">
                 <MenuDrpDwnV2
                   menuList={RequirementStatus}
@@ -469,12 +469,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                           className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                           onClick={() =>
                             handleClickToClient(
-                              requirement.clientCode,
+                              requirement.partnerCode,
                               "activeView"
                             )
                           }
                         >
-                          {requirement?.clientFavicon && (
+                          {requirement?.partnerFavicon && (
                             // <img
                             //   src={requirement.clientFavicon}
                             //   style={{ height: 12, width: 12 }}
@@ -482,30 +482,32 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             // />
                             <Avatar
                               src={
-                                !requirement.clientFavicon
+                                !requirement.partnerFavicon
                                   ? ""
-                                  : requirement.clientFavicon
+                                  : requirement.partnerFavicon
                               }
-                              alt={requirement.clientName}
+                              alt={requirement.partnerName}
                               sx={{ width: 12, height: 12, fontSize: 10 }}
                             />
                           )}
-                          {requirement?.clientName && (
-                            <Tooltip title={requirement.clientName} arrow>
+                          {requirement?.partnerName && (
+                            <Tooltip title={requirement.partnerName} arrow>
                               <span className="text-ellipsis overflow-hidden truncate ps-1">
-                                {requirement.clientName}
+                                {requirement.partnerName}
                               </span>
                             </Tooltip>
                           )}
                         </div>
-                        <div className="flex w-[128px]">
+                        <div className="flex w-[128px] justify-end">
                           {requirement?.locationTypeName && (
                             <div className="flex items-center ms-1">
                               <LocationOnOutlined
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span>{requirement.locationTypeName}</span>
+                              <span>
+                                {requirement?.locationTypeName || "-"}
+                              </span>
                             </div>
                           )}
                           {requirement?.duration && (
@@ -514,7 +516,9 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span>{requirement.duration}</span>
+                              <span className="truncate w-[70px]">
+                                {requirement?.duration || "-"}
+                              </span>
                             </div>
                           )}
                         </div>
