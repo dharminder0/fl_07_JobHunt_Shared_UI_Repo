@@ -33,6 +33,7 @@ import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,
   getMatchingVendors,
+  getOnboardInvitedList,
   getOrgDetailsList,
   getSkillsList,
   matchRequirementToCandidates,
@@ -239,16 +240,14 @@ const RequirementForm = () => {
 
   const getOrgDetailsListData = () => {
     const payload = {
-      role: RoleType.Vendor,
+      orgCode: userData.orgCode,
+      relationshipType: [RoleType.Client],
+      status: 2,
       page: 1,
-      pageSize: 10,
-      searchText: "",
-      technology: [],
-      resource: [],
-      strength: [],
+      pageSize: 50,
     };
     setIsLoader(true);
-    getOrgDetailsList(payload)
+    getOnboardInvitedList(payload)
       .then((result: any) => {
         if (result.count > 0) {
           setcompaniesfilterData(result.list);
