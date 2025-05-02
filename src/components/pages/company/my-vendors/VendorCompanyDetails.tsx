@@ -19,7 +19,10 @@ import {
 } from "@mui/material";
 import {
   AccessTimeOutlined,
+  AccountCircleOutlined,
   CorporateFareOutlined,
+  Handshake,
+  HandshakeOutlined,
   Language,
   LocationOn,
   LocationOnOutlined,
@@ -33,13 +36,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   dispatchedInvitation,
+  getBenchList,
   getOrgProfileDetails,
+  getVendorContractData,
 } from "../../../../components/sharedService/apiService";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   InvitedType,
   RoleType,
 } from "../../../../components/sharedService/enums";
+import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
+import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
+import moment from "moment";
 
 const VendorCompanyDetails = () => {
   const theme = useTheme();
@@ -51,12 +59,15 @@ const VendorCompanyDetails = () => {
 
   const type = searchParams.get("type");
   const activeRole = localStorage.getItem("activeRole") || "";
-  const [value, setValue] = React.useState("activeView");
+  const [tabValue, setTabValue] = React.useState("benchView");
   const [orgData, setOrgData] = React.useState<any>([]);
+  const [benchList, setBenchList] = React.useState<any>([]);
+  const [contractData, setContractData] = React.useState<any>([]);
   const [isLoader, setIsLoader] = React.useState<boolean>(false);
   const [previousUrl, setpreviousUrl] = React.useState("");
   const [isInviteLoader, setIsInviteLoader] = React.useState<boolean>(false);
   const [isSuccessPopup, setIsSuccessPopup] = React.useState<boolean>(false);
+  const [isTableLoader, setIsTableLoader] = React.useState(true);
   const handleRowClick = (id: any) => {};
 
   const [open, setOpen] = React.useState(false);
@@ -68,7 +79,7 @@ const VendorCompanyDetails = () => {
       setpreviousUrl(location.state.previousUrl);
     }
     if (type) {
-      !type ? setValue("activeView") : setValue(type);
+      !type ? setTabValue("activeView") : setTabValue(type);
     }
   }, [type, location.state]);
 
@@ -117,41 +128,6 @@ const VendorCompanyDetails = () => {
       client: "JigNect Technologies",
       resource: "Vinod Agarwal",
       logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-    },
-  ];
-
-  const benchData = [
-    {
-      id: 1,
-      resource: "Raj Pathar",
-      skills: "Software Associate",
-      experience: "8 years",
-      location: "Noida",
-      availability: "Immediate",
-    },
-    {
-      id: 2,
-      resource: "Harshit Tandon ",
-      skills: "Front End Lead",
-      experience: "8 years",
-      location: "Noida",
-      availability: "Immediate",
-    },
-    {
-      id: 3,
-      resource: "Sajid Sarkar ",
-      skills: "Software Developer",
-      experience: "4 years",
-      location: "Noida",
-      availability: "Immediate",
-    },
-    {
-      id: 4,
-      resource: "Vaibav Rastogi",
-      skills: "Front End Developer",
-      experience: "3 years",
-      location: "Noida",
-      availability: "Immediate",
     },
   ];
 
@@ -237,6 +213,14 @@ const VendorCompanyDetails = () => {
       .then((result: any) => {
         if (result.success) {
           setOrgData(result.content);
+          setTabValue(
+            result.content.status === InvitedType.Accepted
+              ? "activeView"
+              : "benchView"
+          );
+          if (result.content.status !== InvitedType.Accepted) {
+            fetchBenchList(result.content.orgCode);
+          }
         }
         setTimeout(() => {
           setIsLoader(false);
@@ -250,7 +234,7 @@ const VendorCompanyDetails = () => {
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    setTabValue(newValue);
     navigate(`?type=${newValue}`);
   };
 
@@ -264,23 +248,18 @@ const VendorCompanyDetails = () => {
 
   const handleInvitation = () => {
     const payload: any = {
-      sender: {
-        email: userData.email,
-        orgCode: userData.orgCode,
-        roleType: activeRole === "company" ? RoleType.Client : RoleType.Vendor,
-      },
-      receiver: {
-        email: orgData?.email,
-        orgCode: orgData?.orgCode,
-      },
-      message: empMessage,
+      partnerCode: userData.orgCode,
+      vendorCode: orgData.orgCode,
+      statusId: 1,
+      createdBy: userData.userId,
     };
     setIsInviteLoader(true);
     dispatchedInvitation(payload)
       .then((result: any) => {
-        if (result) {
+        if (result?.success) {
           setIsSuccessPopup(true);
           setTimeout(() => {
+            getOrgProfile();
             setIsInviteLoader(false);
             handleClose();
           }, 1000);
@@ -292,6 +271,68 @@ const VendorCompanyDetails = () => {
         }, 1000);
       });
   };
+
+  const fetchBenchList = (orgCode: any) => {
+    const payload = {
+      searchText: "",
+      orgCode: orgCode,
+      page: 1,
+      availability: [],
+      pageSize: 20,
+    };
+    setIsTableLoader(true);
+    getBenchList(payload)
+      .then((result: any) => {
+        if (result?.list && result?.list.length >= 0) {
+          setBenchList(result.list);
+          setTimeout(() => {
+            setIsTableLoader(false);
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        setBenchList([]);
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 1000);
+      });
+  };
+
+  const getContractData = () => {
+    const payload = {
+      pageNumber: 1,
+      pageSize: 10,
+      isActiveContracts: tabValue === "activeView" ? true : false,
+      isPastContracts: tabValue === "pastView" ? true : false,
+      isOpenPosition: tabValue === "openView" ? true : false,
+      partnerCode: userData.orgCode,
+      vendorCode: orgData.orgCode,
+    };
+    setIsTableLoader(true);
+    getVendorContractData(payload)
+      .then((result: any) => {
+        if (result && result.success && result.content.totalRecords > 0) {
+          setContractData(result.content.records);
+          setTimeout(() => {
+            setIsTableLoader(false);
+          }, 500);
+        } else {
+          setContractData([]);
+          setTimeout(() => {
+            setIsTableLoader(false);
+          }, 500);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsTableLoader(false);
+        }, 500);
+      });
+  };
+
+  useEffect(() => {
+    getContractData();
+  }, [tabValue]);
 
   return (
     <div className="min-h-screen p-6">
@@ -343,18 +384,24 @@ const VendorCompanyDetails = () => {
           <div className="my-2">
             <Box sx={{ width: "100%" }}>
               <Tabs
-                value={value}
+                value={tabValue}
                 onChange={handleChange}
                 textColor="primary"
                 indicatorColor="primary"
                 aria-label="secondary tabs example"
               >
-                <Tab value="activeView" label="Active Contracts" />
-                <Tab value="pastView" label="Past Contracts" />
-                <Tab value="openView" label="Open Positions" />
+                {orgData.status === InvitedType.Accepted && (
+                  <Tab value="activeView" label="Active Contracts" />
+                )}
+                {orgData.status === InvitedType.Accepted && (
+                  <Tab value="pastView" label="Past Contracts" />
+                )}
+                {orgData.status === InvitedType.Accepted && (
+                  <Tab value="openView" label="Open Positions" />
+                )}
                 <Tab value="benchView" label="Bench Strength" />
               </Tabs>
-              {value === "activeView" && (
+              {tabValue === "activeView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -365,22 +412,31 @@ const VendorCompanyDetails = () => {
                         <th>Resource</th>
                       </tr>
                     </thead>
+
+                    <TablePreLoader
+                      isTableLoader={isTableLoader}
+                      data={contractData}
+                    />
+
                     <tbody>
-                      {activeContracts.map((item, index) => (
-                        <tr key={index} onClick={() => handleRowClick(item.id)}>
+                      {contractData.map((item: any, index: number) => (
+                        <tr
+                          key={index}
+                          onClick={() => handleRowClick(item?.id)}
+                        >
                           {/* <th className="add-right-shadow">{item.title}</th> */}
                           <th className="add-right-shadow">
-                            {item.title}
+                            {item.requirementTitle}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
-                                  src={item.logo}
+                                  src={item?.clientLogoUrl}
                                   style={{ height: 12, width: 12 }}
                                   className="me-1"
                                 />
-                                <Tooltip title={item.client} arrow>
+                                <Tooltip title={item?.client} arrow>
                                   <span className="text-ellipsis overflow-hidden truncate">
-                                    {item.client}
+                                    {item?.client || "Self"}
                                   </span>
                                 </Tooltip>
                               </div>
@@ -396,15 +452,19 @@ const VendorCompanyDetails = () => {
                               {item.client}
                             </div>
                           </td> */}
-                          <td>{item.startDate}</td>
-                          <td>{item.resource}</td>
+                          <td>
+                            {moment(item.requirmentPostedDate).format(
+                              "DD-MM-YYYY"
+                            )}
+                          </td>
+                          <td>{item.resourceName}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               )}
-              {value === "pastView" && (
+              {tabValue === "pastView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -416,21 +476,30 @@ const VendorCompanyDetails = () => {
                         <th>Resource</th>
                       </tr>
                     </thead>
+
+                    <TablePreLoader
+                      isTableLoader={isTableLoader}
+                      data={contractData}
+                    />
+
                     <tbody>
-                      {activeContracts.map((item, index) => (
-                        <tr key={index} onClick={() => handleRowClick(item.id)}>
+                      {contractData.map((item: any, index: number) => (
+                        <tr
+                          key={index}
+                          onClick={() => handleRowClick(item?.id)}
+                        >
                           <th className="add-right-shadow">
                             {item.title}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
-                                  src={item.logo}
+                                  src={item?.clientLogoUrl}
                                   style={{ height: 12, width: 12 }}
                                   className="me-1"
                                 />
-                                <Tooltip title={item.client} arrow>
+                                <Tooltip title={item?.client} arrow>
                                   <span className="text-ellipsis overflow-hidden truncate">
-                                    {item.client}
+                                    {item?.client || "Self"}
                                   </span>
                                 </Tooltip>
                               </div>
@@ -446,16 +515,16 @@ const VendorCompanyDetails = () => {
                               {item.client}
                             </div>
                           </td> */}
-                          <td>{item.startDate}</td>
-                          <td>{item.endDate}</td>
-                          <td>{item.resource}</td>
+                          <td>{item.requirmentPostedDate}</td>
+                          <td>{item?.endDate || "-"}</td>
+                          <td>{item.resourceName}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               )}
-              {value === "openView" && (
+              {tabValue === "openView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -468,42 +537,54 @@ const VendorCompanyDetails = () => {
                         {/* <th>Contract period</th> */}
                       </tr>
                     </thead>
+
+                    <TablePreLoader
+                      isTableLoader={isTableLoader}
+                      data={contractData}
+                    />
+
                     <tbody>
-                      {jobData.map((job, index) => (
-                        <tr key={index} onClick={() => handleRowClick(job.id)}>
+                      {contractData.map((job: any, index: number) => (
+                        <tr key={index} onClick={() => handleRowClick(job?.id)}>
                           {/* <th className="add-right-shadow">{job.role}</th> */}
                           <th className="add-right-shadow">
                             <div className="cursor-pointer hover:text-indigo-700">
-                              {job.role}
+                              {job.requirementTitle}
                             </div>
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
-                                  src={job.logo}
+                                  src={job?.clientLogoUrl}
                                   style={{ height: 12, width: 12 }}
                                   className="me-1"
                                 />
-                                <Tooltip title={job.client} arrow>
+                                <Tooltip title={job?.client} arrow>
                                   <span className="text-ellipsis overflow-hidden truncate">
-                                    {job.client}
+                                    {job?.client || "Self"}
                                   </span>
                                 </Tooltip>
                               </div>
-                              <div className="flex w-[128px]">
-                                <div className="flex items-center ms-1">
-                                  <LocationOnOutlined
-                                    fontSize="inherit"
-                                    className="mr-1"
-                                  />
-                                  <span>{job.requirementType}</span>
-                                </div>
-                                <div className="flex items-center ms-1">
-                                  <AccessTimeOutlined
-                                    fontSize="inherit"
-                                    className="mr-1"
-                                  />
-                                  <span>{job.contractPeriod}</span>
-                                </div>
+                              <div className="flex w-[128px] justify-end">
+                                {job?.Location && (
+                                  <div className="flex items-center ms-1">
+                                    <LocationOnOutlined
+                                      fontSize="inherit"
+                                      className="mr-1"
+                                    />
+                                    <span>{job?.Location || "-"}</span>
+                                  </div>
+                                )}
+                                {job?.contractPeriod && (
+                                  <div className="flex items-center ms-1">
+                                    <AccessTimeOutlined
+                                      fontSize="inherit"
+                                      className="mr-1"
+                                    />
+                                    <span className="truncate w-[70px]">
+                                      {job?.contractPeriod || "-"}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </th>
@@ -517,7 +598,11 @@ const VendorCompanyDetails = () => {
                               {job.client}
                             </div>
                           </td> */}
-                          <td>{job.datePosted}</td>
+                          <td>
+                            {moment(job.requirmentPostedDate).format(
+                              "DD-MM-YYYY"
+                            )}
+                          </td>
                           {/* <td>
                             <Typography
                               className={`px-3 py-1 rounded-full !text-base text-center ${
@@ -529,7 +614,7 @@ const VendorCompanyDetails = () => {
                               {job.requirementType}
                             </Typography>
                           </td> */}
-                          <td>{job.noOfPositions}</td>
+                          <td>{job.numberOfPosition}</td>
                           {/* <td>{job.contractPeriod}</td> */}
                         </tr>
                       ))}
@@ -537,7 +622,7 @@ const VendorCompanyDetails = () => {
                   </table>
                 </div>
               )}
-              {value === "benchView" && (
+              {tabValue === "benchView" && (
                 <div className="table-body mt-4">
                   <table>
                     <thead>
@@ -549,30 +634,69 @@ const VendorCompanyDetails = () => {
                         <th>Availability</th>
                       </tr>
                     </thead>
+
+                    <TablePreLoader
+                      isTableLoader={isTableLoader}
+                      data={benchList}
+                    />
+
                     <tbody>
-                      {benchData.map((item, index) => (
+                      {benchList.map((item: any, index: number) => (
                         <tr key={index} onClick={() => handleRowClick(item.id)}>
                           <th className="add-right-shadow">
-                            {item.resource}
-                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px]">
-                                <div className="flex">
-                                  <p>
-                                    <WorkHistory fontSize="inherit" />{" "}
-                                    {item.experience}
-                                  </p>
-                                  <p className="ms-1">
-                                    <LocationOn fontSize="inherit" />{" "}
-                                    {item.location}
-                                  </p>
+                            <div className="flex items-center">
+                              {!item.avtar ? (
+                                <AccountCircleOutlined
+                                  fontSize="medium"
+                                  className="text-secondary-text"
+                                />
+                              ) : (
+                                <img
+                                  src={item.avtar}
+                                  alt={item?.firstName}
+                                  style={{ height: 24, width: 24 }}
+                                  className="rounded-full"
+                                />
+                              )}
+                              <div className="ms-2 w-[100%]">
+                                <div className="flex items-center justify-between text-base">
+                                  <div
+                                    // onClick={() =>
+                                    //   handleOpenDrawer("benchPreview", item.cv)
+                                    // }
+                                    className="cursor-pointer hover:text-indigo-700"
+                                  >
+                                    {item?.firstName}
+                                  </div>
+                                </div>
+                                <div className="flex items-center justify-between text-secondary-text text-info">
+                                  <div className="flex">
+                                    {item?.cv?.profile?.experience && (
+                                      <p>
+                                        <WorkHistory fontSize="inherit" />{" "}
+                                        {item?.cv?.profile?.experience}
+                                      </p>
+                                    )}
+                                    {item?.location && (
+                                      <p className="ms-1">
+                                        <LocationOn fontSize="inherit" />{" "}
+                                        {item.location}
+                                      </p>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </th>
-                          <td>{item.skills}</td>
+                          <td className="truncate">
+                            {item.cv.top_skills?.length > 0 &&
+                              item.cv.top_skills.map((skill: any) => (
+                                <span>{skill}, </span>
+                              ))}
+                          </td>
                           {/* <td>{item.experience}</td> */}
                           {/* <td>{item.location}</td> */}
-                          <td>{item.availability}</td>
+                          <td>{item.availabilityName}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -590,9 +714,9 @@ const VendorCompanyDetails = () => {
               <Button
                 onClick={handleClickOpen}
                 variant="outlined"
-                startIcon={<Share />}
+                startIcon={<HandshakeOutlined />}
               >
-                Request for Empanelment
+                Invite for Empanelment
               </Button>
             ) : (
               <p
@@ -618,14 +742,12 @@ const VendorCompanyDetails = () => {
             >
               <DialogContent>
                 <div className="space-y-4">
-                  <p className="text-heading">
-                    Request Clients for Empanelment
-                  </p>
+                  <p className="text-heading">Invite Vendors for Empanelment</p>
                   <p className="text-base">
-                    Click the 'Request' button to send a notification to
-                    clients. Interested vendors will follow the instructions to
-                    complete the process. You can track their progress and
-                    manage empaneled clients from the 'Manage Clients' section.
+                    Click the 'Invite' button to send a notification to vendors.
+                    Interested vendors will follow the instructions to complete
+                    the process. You can track their progress and manage
+                    empaneled vendors from the 'Manage Vendors' section.
                   </p>
                   <p className="text-base">Write a Personalized Message</p>
                 </div>
@@ -652,7 +774,7 @@ const VendorCompanyDetails = () => {
                   onClick={handleInvitation}
                   loading={isInviteLoader}
                 >
-                  Request
+                  Invite
                 </Button>
               </DialogActions>
             </Dialog>
@@ -723,6 +845,13 @@ const VendorCompanyDetails = () => {
           </div> */}
         </Grid>
       </Grid>
+      {isSuccessPopup && (
+        <SuccessDialog
+          title="Invited successfully for Empanelment"
+          isOpenModal={isSuccessPopup}
+          setIsOpenModal={setIsSuccessPopup}
+        />
+      )}
     </div>
   );
 };

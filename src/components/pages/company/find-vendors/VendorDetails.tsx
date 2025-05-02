@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import {
   CorporateFareOutlined,
+  HandshakeOutlined,
   Language,
   LocationOnOutlined,
   MailOutline,
@@ -265,7 +266,7 @@ const VendorDetails = () => {
                     <Button
                       onClick={handleClickOpen}
                       variant="outlined"
-                      startIcon={<Share />}
+                      startIcon={<HandshakeOutlined  fontSize="inherit"/>}
                     >
                       Invite for Empanelment
                     </Button>

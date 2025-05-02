@@ -264,8 +264,8 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
               )}
 
               {activeStep === 2 && (
-                <div>
-                  <h3>Upload Profile Photo</h3>
+                <div className="flex h-[calc(100vh-150px)] items-center justify-center flex-col">
+                  <h3 className="mb-3">Upload Profile Photo</h3>
                   <UploadLogo
                     title="Upload Photo"
                     fileSize="128 x 128"

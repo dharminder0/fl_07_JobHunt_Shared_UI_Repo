@@ -21,6 +21,7 @@ import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { useClientList } from "../../../../components/hooks/useClientList";
+import { ApplicationEnums } from "../../../../components/sharedService/enums";
 
 export default function MyCandidates() {
   const navigate = useNavigate();
@@ -263,11 +264,11 @@ export default function MyCandidates() {
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                      applicant.statusName === "Placed"
+                      applicant.status === ApplicationEnums.Selected
                         ? "bg-green-100 text-green-700"
-                        : applicant.statusName === "Rejected"
+                        : applicant.status === ApplicationEnums.Rejected
                           ? "bg-red-100 text-red-700"
-                          : applicant.statusName === "New"
+                          : applicant.status === ApplicationEnums.New
                             ? "bg-orange-100 text-orange-700"
                             : "bg-indigo-100 text-indigo-700"
                     }`}

@@ -71,13 +71,13 @@ export const RequirementStatus: any = [
 export const ApplicantsStatus: any = [
   {
     id: 1,
-    name: "New",
+    name: "New Application",
     value: "New",
   },
   {
     id: 2,
-    name: "In Review",
-    value: "In Review",
+    name: "Under Review",
+    value: "UnderReview",
   },
   {
     id: 3,
@@ -87,27 +87,52 @@ export const ApplicantsStatus: any = [
   {
     id: 4,
     name: "Technical Assessment",
-    value: "Technical Assessment",
+    value: "TechnicalAssessment",
   },
   {
     id: 5,
-    name: "Interview Round I",
-    value: "Interview Round I",
+    name: "Interview Round 1",
+    value: "InterviewRound1",
   },
   {
     id: 6,
-    name: "Interview Round II",
-    value: "Interview Round II",
+    name: "Interview Round 2",
+    value: "InterviewRound2",
   },
   {
     id: 7,
+    name: "Interview Round 3",
+    value: "InterviewRound3",
+  },
+  {
+    id: 8,
+    name: "Selected",
+    value: "Selected",
+  },
+  {
+    id: 9,
+    name: "Onboarded",
+    value: "Onboarded",
+  },
+  {
+    id: 10,
+    name: "Contract Closed",
+    value: "ContractClosed",
+  },
+  {
+    id: 11,
     name: "Rejected",
     value: "Rejected",
   },
   {
-    id: 8,
-    name: "Placed",
-    value: "Placed",
+    id: 12,
+    name: "On Hold",
+    value: "OnHold",
+  },
+  {
+    id: 13,
+    name: "Withdrawn",
+    value: "Withdrawn",
   },
 ];
 

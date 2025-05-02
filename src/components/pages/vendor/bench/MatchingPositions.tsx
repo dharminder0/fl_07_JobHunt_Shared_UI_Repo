@@ -379,14 +379,16 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                             </Tooltip>
                           )}
                         </div>
-                        <div className="flex w-[128px]">
+                        <div className="flex w-[128px] justify-end">
                           {requirement?.Location && (
                             <div className="flex items-center ms-1">
                               <LocationOnOutlined
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span>{requirement.Location}</span>
+                              <span>
+                                {requirement?.Location || "-"}
+                              </span>
                             </div>
                           )}
                           {requirement?.Duration && (
@@ -395,7 +397,9 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span>{requirement.Duration}</span>
+                              <span className="truncate w-[70px]">
+                                {requirement?.Duration || "-"}
+                              </span>
                             </div>
                           )}
                         </div>
