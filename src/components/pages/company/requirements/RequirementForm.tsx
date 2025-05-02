@@ -212,12 +212,7 @@ const RequirementForm = () => {
     const payload = {
       requirementId: requirementData?.UniqueId,
       visibility: shareWith,
-      orgCode:
-        shareWith == 1
-          ? selectedVendors
-          : shareWith == 2
-            ? [userData.orgCode]
-            : [],
+      orgCode: shareWith == 1 ? selectedVendors : [],
     };
     shareRequirement(payload)
       .then((res: any) => {

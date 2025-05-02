@@ -29,7 +29,7 @@ const FindVendors = () => {
   const [resource, setResource] = useState<any[]>([]);
   const [strength, setStrength] = useState<string[]>([]);
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
 
   const [filterList, setFilterList] = useState<any>({
     TechnologiesList: [

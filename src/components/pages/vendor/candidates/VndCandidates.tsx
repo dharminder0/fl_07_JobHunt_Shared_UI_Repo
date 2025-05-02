@@ -23,6 +23,7 @@ import { ApplicantsStatus } from "../../../../components/sharedService/shareData
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
+import { ApplicationEnums } from "../../../../components/sharedService/enums";
 
 export default function VndCandidates() {
   const location = useLocation();
@@ -232,11 +233,11 @@ export default function VndCandidates() {
                 <td>
                   <Typography
                     className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                      applicant.statusName === "Placed"
+                      applicant.status === ApplicationEnums.Selected
                         ? "bg-green-100 text-green-700"
-                        : applicant.statusName === "Rejected"
+                        : applicant.status === ApplicationEnums.Rejected
                           ? "bg-red-100 text-red-700"
-                          : applicant.statusName === "New"
+                          : applicant.status === ApplicationEnums.New
                             ? "bg-orange-100 text-orange-700"
                             : "bg-indigo-100 text-indigo-700"
                     }`}

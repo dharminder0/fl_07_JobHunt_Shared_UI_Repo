@@ -33,3 +33,19 @@ export const InvitedType: any = {
   Declined: 3,
   Archived: 4,
 };
+
+export enum ApplicationEnums {
+  New = 1,
+  UnderReview = 2,
+  Shortlisted = 3,
+  TechnicalAssessment = 4,
+  InterviewRound1 = 5,
+  InterviewRound2 = 6,
+  InterviewRound3 = 7,
+  Selected = 8,
+  Onboarded = 9,
+  ContractClosed = 10,
+  Rejected = 11,
+  OnHold = 12,
+  Withdrawn = 13,
+}

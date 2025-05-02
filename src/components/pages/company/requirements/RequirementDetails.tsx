@@ -180,7 +180,7 @@ const RequirementDetails = () => {
 
   const getOrgDetailsListData = () => {
     const payload = {
-      role: [RoleType.Vendor],
+      role: RoleType.Vendor,
       page: 1,
       pageSize: 3,
     };
