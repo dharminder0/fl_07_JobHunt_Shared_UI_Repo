@@ -31,7 +31,9 @@
     // =======
     box-shadow: 2px 2px 4px 0 #e0e0e0;
     &.multi-select {
+      width: 50px;
       min-width: 50px;
+      max-width: 50px;
       // display: flex;
       // align-items: center;
       // justify-content: center;
