@@ -331,7 +331,11 @@ const VendorCompanyDetails = () => {
   };
 
   useEffect(() => {
-    getContractData();
+    if (tabValue !== "benchView") {
+      getContractData();
+    } else if (orgData.orgCode) {
+      fetchBenchList(orgData.orgCode);
+    }
   }, [tabValue]);
 
   return (
