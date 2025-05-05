@@ -7,7 +7,6 @@ import {
   IconButton,
   CircularProgress,
   Avatar,
-  Button,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -20,10 +19,7 @@ import {
 import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
-import {
-  getRequirementsList,
-  matchRequirementToCandidates,
-} from "../../../../components/sharedService/apiService";
+import { getRequirementsList } from "../../../../components/sharedService/apiService";
 import moment from "moment";
 import MenuDrpDwnV2 from "../../../sharedComponents/MenuDrpDwnV2";
 import {
@@ -34,19 +30,11 @@ import TablePreLoader from "../../../../components/sharedComponents/TablePreLoad
 import { RoleType } from "../../../../components/sharedService/enums";
 import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/components/redux/store";
-import {
-  closeBackdrop,
-  openBackdrop,
-} from "../../../../components/features/drawerSlice";
-import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
-import IconAi from "../../../../components/sharedComponents/IconAi";
+import { useSelector } from "react-redux";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch: AppDispatch = useDispatch();
   const params = location.state || {};
   const paramStatus = params?.status;
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -58,18 +46,12 @@ const MyRequirements = () => {
   const [searchText, setSearchText] = React.useState("");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
-  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [status, setStatus] = useState<any[]>(
     !paramStatus ? [] : [paramStatus]
   );
   const [client, setClient] = useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any>([]);
-  const [isSuccessPopup, setIsSuccessPopup] = useState<any>({
-    isVisible: false,
-    type: "success",
-    message: "",
-  });
 
   const drawerState = useSelector((state: any) => state.drawer);
 
@@ -136,56 +118,6 @@ const MyRequirements = () => {
     }
   };
 
-  const isSelected = (id: number) => selectedRows.includes(id);
-  const isAllSelected = selectedRows.length === requirementData.list?.length;
-
-  const toggleRowSelection = (row: any) => {
-    setSelectedRows((prevSelectedRows) => {
-      const exists = prevSelectedRows.includes(row.id);
-      if (exists) {
-        // Remove the row id if it's already selected
-        return prevSelectedRows.filter((id) => id !== row.id);
-      }
-      // Add the row id if it's not selected
-      return [...prevSelectedRows, row.id];
-    });
-  };
-
-  const toggleSelectAll = () => {
-    if (selectedRows.length === requirementData?.list?.length) {
-      setSelectedRows([]); // Deselect all
-    } else {
-      setSelectedRows(requirementData?.list.map((row: any) => row.id)); // Store only IDs
-    }
-  };
-
-  const getCandidates = async () => {
-    dispatch(openBackdrop());
-    try {
-      const data = await matchRequirementToCandidates(selectedRows);
-      if (data) {
-        setIsSuccessPopup({
-          isVisible: true,
-          type: "success",
-          message: "Found Matching Candidate",
-        });
-        setTimeout(() => {
-          getRequirementsData();
-          dispatch(closeBackdrop());
-        }, 2000);
-      }
-    } catch (err) {
-      setTimeout(() => {
-        setIsSuccessPopup({
-          isVisible: true,
-          type: "error",
-          message: "Error to found matching candidate",
-        });
-        dispatch(closeBackdrop());
-      }, 1000);
-    }
-  };
-
   const clientList = useClientList(userData?.orgCode);
 
   useEffect(() => {
@@ -203,17 +135,7 @@ const MyRequirements = () => {
   return (
     <>
       <div className="px-2 py-3 h-[calc(100%-20px)]">
-        <div className="flex flex-row gap-1 justify-between mb-1">
-          <div className="flex items-center">
-            <Button
-              variant="text"
-              disabled={selectedRows?.length <= 0}
-              onClick={getCandidates}
-            >
-              <IconAi />
-              Check matching candidate
-            </Button>
-          </div>
+        <div className="flex flex-row gap-1 justify-end mb-1">
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
               <div className="flex grow w-[220px] mr-2">
@@ -273,14 +195,6 @@ const MyRequirements = () => {
           <table className="relative">
             <thead>
               <tr>
-                <th className="multi-select">
-                  <input
-                    type="checkbox"
-                    checked={isAllSelected}
-                    onChange={toggleSelectAll}
-                    className="cursor-pointer"
-                  />
-                </th>
                 <th className="add-right-shadow">Role</th>
                 <th>Status</th>
                 <th>Date Posted</th>
@@ -302,14 +216,6 @@ const MyRequirements = () => {
                 requirementData.list?.length > 0 &&
                 requirementData.list.map((requirement: any) => (
                   <tr key={requirement.uniqueId}>
-                    <th className="multi-select">
-                      <input
-                        type="checkbox"
-                        checked={isSelected(requirement.id)}
-                        onChange={() => toggleRowSelection(requirement)}
-                        className="cursor-pointer"
-                      />
-                    </th>
                     <th className="add-right-shadow">
                       <div className="flex items-center justify-between">
                         <div
@@ -447,21 +353,6 @@ const MyRequirements = () => {
           </div>
         </div>
       </div>
-
-      {isSuccessPopup && (
-        <SuccessDialog
-          title={isSuccessPopup?.message}
-          isOpenModal={isSuccessPopup?.isVisible}
-          setIsOpenModal={(value: any) => {
-            setIsSuccessPopup({
-              isVisible: value,
-              type: "",
-              message: "",
-            });
-          }}
-          type={isSuccessPopup?.type}
-        />
-      )}
 
       <StatusDialog
         title="Requirement Status"

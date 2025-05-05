@@ -18,6 +18,7 @@ import {
   Download,
   AccountCircleOutlined,
   CorporateFareOutlined,
+  RefreshOutlined,
 } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,10 +28,12 @@ import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import {
+  getMatchingVendors,
   getOnboardInvitedList,
   getOrgDetailsList,
   getRequirementApplicants,
   getRequirementsListById,
+  matchRequirementToCandidates,
   upsertRequirementHot,
 } from "../../../../components/sharedService/apiService";
 import {
@@ -65,13 +68,11 @@ const RequirementDetails = () => {
   const params = location.state || {};
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [activeTab, setActiveTab] = useState(0);
-  const [expanded, setExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [matchingScore, setMatchingScore] = React.useState(0);
-  const [activeDataList, setActiveDataList] = useState<any[]>([]);
-  const [companiesfilterData, setCompaniesfilterData] = useState<any[]>([]);
+  const [activeDataList, setActiveDataList] = useState<any>({});
   const [requirementData, setRequirementData] = useState<any>(null);
   const [applicantData, setApplicantData] = useState<any[]>([]);
   const [status, setStatus] = useState<any[]>([]);
@@ -79,11 +80,7 @@ const RequirementDetails = () => {
   const [checked, setChecked] = React.useState(false);
   const [isLoader, setIsLoader] = useState<any>(false);
   const [isSuccessPopup, setIsSuccessPopup] = useState<any>(false);
-  const [hotUpdateStatus, setHotUpdateStatus] = useState<any>({});
-
-  const handleToggle = () => {
-    setExpanded((prev) => !prev);
-  };
+  const [updateStatus, setUpdateStatus] = useState<any>({});
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -105,26 +102,21 @@ const RequirementDetails = () => {
     });
   };
 
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    status: !params?.status ? [] : [params?.status],
-  });
-
   const pathSegments = document.location.pathname.split("/");
   const uniqueId = pathSegments.pop();
 
   useEffect(() => {
     dispatch(openBackdrop());
-    getRequirementsData(uniqueId);
-    getOrgRequestList();
-    getOrgDetailsListData();
+    if (uniqueId) {
+      getRequirementsData(uniqueId);
+    }
   }, []);
 
   useEffect(() => {
-    if (!drawerState?.isOpen) {
+    if (!drawerState?.isOpen && uniqueId) {
       getRequirementsData(uniqueId);
     }
-  }, [drawerState]);
+  }, [drawerState.isOpen]);
 
   useEffect(() => {
     if (
@@ -142,56 +134,7 @@ const RequirementDetails = () => {
         if (result) {
           setRequirementData(result);
           setChecked(result.hot);
-        }
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
-      });
-  };
-
-  const getOrgRequestList = () => {
-    const payload = {
-      orgCode: userData?.orgCode,
-      relationshipType: [RoleType.Client],
-      status: InvitedType.Accepted,
-      page: 1,
-      pageSize: 3,
-    };
-    getOnboardInvitedList(payload)
-      .then((result: any) => {
-        if (result.count > 0) {
-          setActiveDataList(result.list);
-        } else {
-          setActiveDataList([]);
-        }
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
-      });
-  };
-
-  const getOrgDetailsListData = () => {
-    const payload = {
-      role: RoleType.Vendor,
-      page: 1,
-      pageSize: 3,
-    };
-    getOrgDetailsList(payload)
-      .then((result: any) => {
-        if (result.count > 0) {
-          setCompaniesfilterData(result.list);
-        } else {
-          setCompaniesfilterData([]);
+          getMatchingVendorsList(result.id);
         }
         setTimeout(() => {
           dispatch(closeBackdrop());
@@ -242,7 +185,7 @@ const RequirementDetails = () => {
     upsertRequirementHot(payload)
       .then((result: any) => {
         if (result.success) {
-          setHotUpdateStatus(result);
+          setUpdateStatus(result);
           setIsSuccessPopup(true);
         }
         setTimeout(() => {
@@ -255,6 +198,52 @@ const RequirementDetails = () => {
           setIsSuccessPopup(false);
         }, 1000);
       });
+  };
+
+  const getMatchingVendorsList = (requirementId: any) => {
+    const payload = {
+      requirementId: requirementId,
+      orgCode: userData.orgCode,
+    };
+    setIsLoader(true);
+    getMatchingVendors(payload)
+      .then((result: any) => {
+        if (result) {
+          setActiveDataList(result);
+        }
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
+  };
+
+  const getCandidates = async () => {
+    dispatch(openBackdrop());
+    try {
+      const data = await matchRequirementToCandidates([requirementData.id]);
+      if (data && data[0].status == "Success") {
+        setIsSuccessPopup(true);
+        setUpdateStatus({ success: true, message: "Matching candidate found" });
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+          getMatchingVendorsList(requirementData.id);
+        }, 2000);
+      }
+    } catch (err) {
+      setIsSuccessPopup(false);
+      setUpdateStatus({
+        success: false,
+        message: "Matching candidate not found",
+      });
+      setTimeout(() => {
+        dispatch(closeBackdrop());
+      }, 1000);
+    }
   };
 
   return (
@@ -531,21 +520,28 @@ const RequirementDetails = () => {
         )}
       </div>
       <div className="w-[30%] p-3">
-        {activeDataList?.length > 0 && (
+        <div className="flex justify-between items-center mb-3">
+          <div className="text-title">Empaneled</div>
+          <IconButton aria-label="refresh" onClick={getCandidates}>
+            <Tooltip title="Refresh matching vendors">
+            <RefreshOutlined fontSize="inherit" />
+            </Tooltip>
+          </IconButton>
+        </div>
+        {activeDataList.empaneledVendor?.length > 0 && (
           <>
-            <div className="text-title mb-3 mt-1">Empaneled</div>
-            {activeDataList.map((vendor) => (
+            {activeDataList.empaneledVendor.map((vendor: any) => (
               <div
                 className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
-                onClick={() => getVendorDetails(vendor.orgCode)}
+                onClick={() => getVendorDetails(vendor.matchingOrgCode)}
               >
                 <div className="flex items-center mb-1">
                   <Avatar
                     alt={vendor.orgName}
-                    src={vendor?.logo || undefined}
+                    src={vendor?.orgLogo || undefined}
                     className="rounded-full !h-8 !w-8 mr-1"
                   >
-                    {!vendor?.logo && (
+                    {!vendor?.orgLogo && (
                       <CorporateFareOutlined fontSize="medium" />
                     )}
                   </Avatar>
@@ -555,7 +551,7 @@ const RequirementDetails = () => {
                         {vendor.orgName}
                       </span>
                     </Tooltip>
-                    <p className="text-base">{vendor?.location[0]}</p>
+                    <p className="text-base">{vendor?.city}</p>
                   </div>
                 </div>
 
@@ -565,7 +561,7 @@ const RequirementDetails = () => {
                       fontSize="inherit"
                       className="text-indigo-600 mr-1"
                     />
-                    Matching Candidate: {vendor?.candidate || 2}
+                    Matching Candidate: {vendor?.numberOfCandidates}
                   </span>
 
                   <div
@@ -573,20 +569,20 @@ const RequirementDetails = () => {
                     // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
                     <IconAi />
-                    Avg Score: {vendor?.avgScore || 75}%
+                    Avg Score: {vendor?.averageMatchingScore}%
                   </div>
                 </div>
               </div>
             ))}
           </>
         )}
-        {companiesfilterData?.length > 0 && (
+        {activeDataList.publicVendor?.length > 0 && (
           <>
             <div className="text-title mb-3 mt-4">All Vendors</div>
-            {companiesfilterData.map((company) => (
+            {activeDataList.publicVendor.map((company: any) => (
               <div
                 className="mb-2 border rounded-md p-2 cursor-pointer hover:border-indigo-700 hover:bg-primary-hover"
-                onClick={() => getVendorDetails(company.orgCode)}
+                onClick={() => getVendorDetails(company.matchingOrgCode)}
               >
                 <div className="flex items-center mb-1">
                   <Avatar
@@ -604,7 +600,7 @@ const RequirementDetails = () => {
                         {company.orgName}
                       </span>
                     </Tooltip>
-                    <p className="text-base">{company.place}</p>
+                    <p className="text-base">{company?.city}</p>
                   </div>
                 </div>
 
@@ -614,7 +610,7 @@ const RequirementDetails = () => {
                       fontSize="inherit"
                       className="text-indigo-600 mr-1"
                     />
-                    Matching Candidate: {company?.candidate || 3}
+                    Matching Candidate: {company?.numberOfCandidates}
                   </span>
 
                   <div
@@ -622,7 +618,7 @@ const RequirementDetails = () => {
                     // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
                     <IconAi />
-                    Avg Score: {company?.avgScore || 65}%
+                    Avg Score: {company?.averageMatchingScore || 65}%
                   </div>
                 </div>
               </div>
@@ -647,10 +643,10 @@ const RequirementDetails = () => {
 
       {isSuccessPopup && (
         <SuccessDialog
-          title={hotUpdateStatus?.message}
+          title={updateStatus?.message}
           isOpenModal={isSuccessPopup}
           setIsOpenModal={setIsSuccessPopup}
-          type={!hotUpdateStatus?.success ? "error" : "success"}
+          type={!updateStatus?.success ? "error" : "success"}
         />
       )}
     </div>
