@@ -81,6 +81,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const [client, setClient] = React.useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any>([]);
+  const [requirementCount, setRequirementCount] = React.useState<any>();
 
   const handleRowClick = (id: number) => {
     if (!benchDrawerData.isOpen) {
@@ -153,12 +154,14 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       // clientCode: client,
       userId: userData.userId,
       roleType: [activeRole === "vendor" && RoleType.Vendor],
+      isHotEnable: !params?.isHot ? false : true,
     };
 
     getRequirementsList(payload)
       .then((result: any) => {
         if (result && result?.totalPages > 0) {
-          SetRequirementData(result);
+          SetRequirementData(result.list);
+          setRequirementCount(result.count);
         } else {
           SetRequirementData([]);
         }
@@ -180,7 +183,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   }, [searchText, resource, status, client, pageIndex]);
 
   const isSelected = (id: number) => selectedRows.includes(id);
-  const isAllSelected = selectedRows.length === requirementData.list?.length;
+  const isAllSelected = selectedRows.length === requirementData?.length;
 
   const toggleRowSelection = (row: any) => {
     setSelectedRows((prevSelectedRows) => {
@@ -195,7 +198,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   };
 
   const toggleSelectAll = () => {
-    if (selectedRows.length === requirementData?.list?.length) {
+    if (selectedRows.length === requirementData?.length) {
       setSelectedRows([]); // Deselect all
     } else {
       setSelectedRows(requirementData?.list.map((row: any) => row.id)); // Store only IDs
@@ -344,6 +347,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                   handleSelectedItem={(selectedItems) =>
                     setStatus(selectedItems)
                   }
+                  selectedId={status[0]}
                 />
               </div>
               <div className="max-w-full shrink-0">
@@ -385,13 +389,13 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
 
             <TablePreLoader
               isTableLoader={isTableLoader}
-              data={requirementData.list}
+              data={requirementData}
             />
 
             <tbody>
               {!isTableLoader &&
-                requirementData.list?.length > 0 &&
-                requirementData.list.map((requirement: any) => (
+                requirementData?.length > 0 &&
+                requirementData.map((requirement: any) => (
                   <tr key={requirement.uniqueId}>
                     {!benchDrawerData?.isOpen && (
                       <th className="multi-select">
@@ -539,9 +543,9 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
               <p className="text-base text-gray-700">
                 Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
                 <span>
-                  {Math.min(pageIndex * pageSize, requirementData?.count || 0)}
+                  {Math.min(pageIndex * pageSize, requirementCount || 0)}
                 </span>{" "}
-                of <span>{requirementData?.count || 0}</span> results
+                of <span>{requirementCount || 0}</span> results
               </p>
             </div>
           </div>
@@ -557,7 +561,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
               size="small"
               onClick={() => setPageIndex(pageIndex + 1)}
               disabled={
-                pageIndex >= Math.ceil((requirementData?.count || 0) / pageSize)
+                pageIndex >= Math.ceil((requirementCount || 0) / pageSize)
               }
             >
               <ChevronRight />

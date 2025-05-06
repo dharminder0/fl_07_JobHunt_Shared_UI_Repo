@@ -46,12 +46,11 @@ const MyRequirements = () => {
   const [searchText, setSearchText] = React.useState("");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
-  const [status, setStatus] = useState<any[]>(
-    !paramStatus ? [] : [paramStatus]
-  );
+  const [status, setStatus] = useState<any>(!paramStatus ? [] : [paramStatus]);
   const [client, setClient] = useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any>([]);
+  const [requirementCount, setRequirementCount] = React.useState<any>();
 
   const drawerState = useSelector((state: any) => state.drawer);
 
@@ -91,7 +90,6 @@ const MyRequirements = () => {
 
   const getRequirementsData = async () => {
     setIsTableLoader(true);
-
     const payload = {
       orgCode: userData.orgCode,
       searchText: searchText,
@@ -102,20 +100,26 @@ const MyRequirements = () => {
       clientCode: client,
       userId: userData.userId,
       roleType: activeRole === "company" ? [RoleType.Client] : [],
+      isHotEnable: !params?.isHot ? false : true,
     };
 
-    try {
-      const result = await getRequirementsList(payload);
-      if (result && result.totalPages >= 0) {
-        SetRequirementData(result);
-      }
-    } catch (error) {
-      console.error("Error fetching requirements:", error);
-    } finally {
-      setTimeout(() => {
-        setIsTableLoader(false);
-      }, 1000);
-    }
+    getRequirementsList(payload)
+      .then((result: any) => {
+        if (result && result.count >= 0) {
+          SetRequirementData(result.list);
+          setRequirementCount(result.count);
+          setTimeout(() => {
+            setIsTableLoader(false);
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        console.error("Error fetching requirements:", error);
+        setTimeout(() => {
+          SetRequirementData([]);
+          setIsTableLoader(false);
+        }, 1000);
+      });
   };
 
   const clientList = useClientList(userData?.orgCode);
@@ -124,7 +128,7 @@ const MyRequirements = () => {
     if (searchText?.length > 3 || searchText?.length == 0) {
       getRequirementsData();
     }
-  }, [searchText, resource, status, client, pageIndex]);
+  }, [searchText, resource, client, pageIndex, status]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -174,6 +178,7 @@ const MyRequirements = () => {
                   handleSelectedItem={(selectedItems) =>
                     setStatus(selectedItems)
                   }
+                  selectedId={status[0]}
                 />
               </div>
               <div className="max-w-full shrink-0">
@@ -208,13 +213,13 @@ const MyRequirements = () => {
 
             <TablePreLoader
               isTableLoader={isTableLoader}
-              data={requirementData?.list}
+              data={requirementData}
             />
 
             <tbody>
               {!isTableLoader &&
-                requirementData.list?.length > 0 &&
-                requirementData.list.map((requirement: any) => (
+                requirementData?.length > 0 &&
+                requirementData.map((requirement: any) => (
                   <tr key={requirement.uniqueId}>
                     <th className="add-right-shadow">
                       <div className="flex items-center justify-between">
@@ -327,9 +332,9 @@ const MyRequirements = () => {
               <p className="text-base text-gray-700">
                 Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
                 <span>
-                  {Math.min(pageIndex * pageSize, requirementData?.count || 0)}
+                  {Math.min(pageIndex * pageSize, requirementCount || 0)}
                 </span>{" "}
-                of <span>{requirementData?.count || 0}</span> results
+                of <span>{requirementCount || 0}</span> results
               </p>
             </div>
           </div>
@@ -345,7 +350,7 @@ const MyRequirements = () => {
               size="small"
               onClick={() => setPageIndex(pageIndex + 1)}
               disabled={
-                pageIndex >= Math.ceil((requirementData?.count || 0) / pageSize)
+                pageIndex >= Math.ceil((requirementCount || 0) / pageSize)
               }
             >
               <ChevronRight />
