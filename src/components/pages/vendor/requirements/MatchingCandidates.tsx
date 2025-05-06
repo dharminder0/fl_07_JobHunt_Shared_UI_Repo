@@ -284,6 +284,7 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                         checked={isSelected(item.BenchId)}
                         onChange={() => toggleRowSelection(item)}
                         className="cursor-pointer"
+                        disabled={item.IsApplied}
                       />
                     </th>
 
