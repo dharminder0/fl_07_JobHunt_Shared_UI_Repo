@@ -22,15 +22,19 @@ interface MenuDrpDwnV2Props {
   menuList: MenuItemType[];
   placeholder: string;
   handleSelectedItem: (selectedIds: number[]) => void;
+  selectedId?: any;
 }
 
 const MenuDrpDwnV2: React.FC<MenuDrpDwnV2Props> = ({
   menuList,
   placeholder,
   handleSelectedItem,
+  selectedId,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<number[]>(
+    !selectedId ? [] : [selectedId]
+  );
   const [filter, setFilter] = useState<string>("");
   const [debouncedFilter, setDebouncedFilter] = useState<string>(filter);
 

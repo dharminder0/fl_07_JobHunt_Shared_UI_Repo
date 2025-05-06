@@ -207,7 +207,7 @@ export default function MyCandidates() {
                         onClick={() => handleMatchingDialog(applicant.ai || 75)}
                       >
                         <IconAi />
-                        <span> {applicant.ai || 75}%</span>
+                        <span> {applicant.matchingScore}%</span>
                       </div>
                       <div
                         className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700"
