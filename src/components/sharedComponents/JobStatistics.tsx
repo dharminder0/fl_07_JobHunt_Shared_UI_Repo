@@ -4,6 +4,7 @@ import { BarChart, LineChart, PieChart } from "@mui/x-charts";
 import {
   getRequirementStatusGraph,
   getRequirementWeekGraph,
+  getVndRequirementStatusGraph,
   getVndRequirementWeekGraph,
 } from "../sharedService/apiService";
 
@@ -80,6 +81,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
       }
     });
   };
+
   const getVndRequirementStatusGraphData = () => {
     const oneWeekBack = new Date();
     oneWeekBack.setDate(today.getDate() - 7);
@@ -90,7 +92,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
       endDate: today.toISOString().split("T")[0],
       userId: userData.userId,
     };
-    getRequirementStatusGraph(payload).then((result: any) => {
+    getVndRequirementStatusGraph(payload).then((result: any) => {
       if (result && result?.length >= 0) {
         setStatusGraphData(result);
       }
