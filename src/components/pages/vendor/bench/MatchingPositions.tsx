@@ -318,12 +318,17 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                               <span> {requirement?.MatchingScore || 0}%</span>
                             </div>
                           </div>
-                          <div
-                            className="cursor-pointer hover:text-indigo-700"
-                            onClick={() => handleApply(requirement.UniqueId)}
-                          >
-                            Apply
-                          </div>
+                          {!requirement.IsApplied && (
+                            <div
+                              className="cursor-pointer hover:text-indigo-700"
+                              onClick={() => handleApply(requirement.UniqueId)}
+                            >
+                              Apply
+                            </div>
+                          )}
+                          {requirement.IsApplied && (
+                            <div className="text-indigo-700">Applied</div>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center justify-between text-secondary-text text-info mt-1">

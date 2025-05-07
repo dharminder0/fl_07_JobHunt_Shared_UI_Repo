@@ -3,7 +3,13 @@ import {
   LocationOn,
   WorkHistory,
 } from "@mui/icons-material";
-import { TextField, InputAdornment, IconButton, Button } from "@mui/material";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Button,
+  Tooltip,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SearchIcon from "@mui/icons-material/Search";
@@ -279,13 +285,25 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                     }`}
                   >
                     <th className="multi-select">
-                      <input
-                        type="checkbox"
-                        checked={isSelected(item.BenchId)}
-                        onChange={() => toggleRowSelection(item)}
-                        className="cursor-pointer"
-                        disabled={item.IsApplied}
-                      />
+                      {!item.IsApplied && (
+                        <input
+                          type="checkbox"
+                          checked={isSelected(item.BenchId)}
+                          onChange={() => toggleRowSelection(item)}
+                          className="cursor-pointer"
+                        />
+                      )}
+                      {item.IsApplied && (
+                        <Tooltip title="Already applied">
+                          <input
+                            type="checkbox"
+                            checked={isSelected(item.BenchId)}
+                            onChange={() => toggleRowSelection(item)}
+                            className="cursor-pointer"
+                            disabled={item.IsApplied}
+                          />
+                        </Tooltip>
+                      )}
                     </th>
 
                     <th className="add-right-shadow">
