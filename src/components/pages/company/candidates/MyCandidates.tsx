@@ -211,9 +211,9 @@ export default function MyCandidates() {
                       <div className="flex text-info items-center">
                         <div
                           className="flex cursor-pointer hover:text-indigo-700"
-                          onClick={() =>
-                            handleMatchingDialog(applicant.ai || 75)
-                          }
+                          // onClick={() =>
+                          //   handleMatchingDialog(applicant.matchingScore)
+                          // }
                         >
                           <IconAi />
                           <span> {applicant.matchingScore}%</span>

@@ -1,9 +1,7 @@
 import {
   AccountCircleOutlined,
-  Cancel,
-  CancelOutlined,
-  CloseOutlined,
   LocationOn,
+  QuestionMarkOutlined,
   WorkHistory,
 } from "@mui/icons-material";
 import {
@@ -14,25 +12,21 @@ import {
   Button,
   Tabs,
   Tab,
-  debounce,
+  DialogActions,
+  DialogContent,
+  Dialog,
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import AddBenchForm from "./AddBenchForm";
+import React, { useEffect, useRef, useState } from "react";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import AddAIBench from "./AddAIBench";
 import BenchPreview from "./BenchPreview";
-import VndRequirements from "../requirements/VndRequirements";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import {
-  getBenchDetails,
   getBenchList,
   getTechStackList,
   matchCandidateToRequirements,
-  matchRequirementToCandidates,
   upsertApplications,
-  upsertMatchingIds,
 } from "../../../../components/sharedService/apiService";
 import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
@@ -47,32 +41,14 @@ import {
 import MatchingPositions from "./MatchingPositions";
 import IconAi from "../../../../components/sharedComponents/IconAi";
 
-const teckStackData = [
-  {
-    id: 1,
-    tech: "Angular",
-    resources: 3,
-  },
-  {
-    id: 2,
-    tech: "React js",
-    resources: 5,
-  },
-  {
-    id: 3,
-    tech: "Devops",
-    resources: 2,
-  },
-];
-
 export default function VndBench({ drawerData = {} }: any) {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const dispatch: AppDispatch = useDispatch();
   const drawerState = useSelector((state: any) => state.drawer);
 
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
-  const [benchFliterData, setbenchFliterData] = useState<any[]>([]);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<any>({ type: "", message: "" });
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
@@ -88,36 +64,10 @@ export default function VndBench({ drawerData = {} }: any) {
     data: {},
     status: "Open",
   });
-  const [filterList, setFilterList] = useState<any>({
-    availability: ["Immediate"],
-    roles: [
-      "Software Associate",
-      "Front End Lead",
-      "Software Developer",
-      "Front End Developer",
-    ],
-  });
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    availability: [],
-    roles: [],
-  });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue);
   };
-  // getBenchDetails(userData.orgCode)
-  //   .then((result: any) => {
-  //     if (result && result.length > 0) {
-  //       setbenchDatadetails(result);
-  //     } else {
-  //       setbenchDatadetails([]);
-  //     }
-  //   })
-  //   .catch((error: any) => {
-  //     console.error("Error fetching bench details:", error);
-  //     setbenchDatadetails([]);
-  //   });
 
   const hasMounted = useRef(false);
 
@@ -269,39 +219,8 @@ export default function VndBench({ drawerData = {} }: any) {
     }
   };
 
-  const handleMatchingPositions = async () => {
-    const payload = {
-      resourceId: selectedRows,
-      requirementId: [],
-    };
-    dispatch(openBackdrop());
-    upsertMatchingIds(payload)
-      .then((result: any) => {
-        if (result && result?.length >= 0) {
-          setShowPopup({
-            type: "success",
-            message: "Found Matching Positions",
-          });
-          setTimeout(() => {
-            setIsSuccessPopup(true);
-            fetchBenchList();
-            dispatch(closeBackdrop());
-          }, 1000);
-        }
-      })
-      .catch((error: any) => {
-        setShowPopup({
-          type: "error",
-          message: "Error to found matching Positions",
-        });
-        setTimeout(() => {
-          setIsSuccessPopup(true);
-          dispatch(closeBackdrop());
-        }, 1000);
-      });
-  };
-
   const getRequirements = async () => {
+    setIsPopupOpen(false);
     dispatch(openBackdrop());
     try {
       const data = await matchCandidateToRequirements(selectedRows);
@@ -397,7 +316,7 @@ export default function VndBench({ drawerData = {} }: any) {
                   size="small"
                   disabled={selectedRows?.length <= 0}
                   className="!mr-2"
-                  onClick={getRequirements}
+                  onClick={() => setIsPopupOpen(true)}
                 >
                   <IconAi />
                   Check matching positions
@@ -572,9 +491,9 @@ export default function VndBench({ drawerData = {} }: any) {
                                 {drawerData?.isOpen && (
                                   <div
                                     className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                    onClick={() =>
-                                      handleMatchingDialog(item?.aiScore || 60)
-                                    }
+                                    // onClick={() =>
+                                    //   handleMatchingDialog(item?.aiScore)
+                                    // }
                                   >
                                     <IconAi />
                                     <span> {item?.aiScore || 60}%</span>
@@ -699,6 +618,44 @@ export default function VndBench({ drawerData = {} }: any) {
           setIsOpenModal={setIsSuccessPopup}
           type={showPopup?.type}
         />
+      )}
+
+      {isPopupOpen && (
+        <React.Fragment>
+          <Dialog
+            // fullScreen={fullScreen}
+            open={isPopupOpen}
+            // onClose={() => setIsPopupOpen(false)}
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogContent>
+              <div className="flex justify-center mb-4">
+                <IconAi width="40px" height="40px" />
+              </div>
+              <p className="text-base">
+                Are you sure to want to check matching ai score of candidates?
+              </p>
+            </DialogContent>
+            <DialogActions className="!mb-2 !me-2">
+              <Button
+                autoFocus
+                onClick={() => setIsPopupOpen(false)}
+                variant="outlined"
+                size="small"
+              >
+                Close
+              </Button>
+              <Button
+                onClick={getRequirements}
+                autoFocus
+                variant="contained"
+                size="small"
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
       )}
     </>
   );

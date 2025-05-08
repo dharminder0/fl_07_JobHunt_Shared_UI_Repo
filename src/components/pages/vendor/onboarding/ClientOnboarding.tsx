@@ -218,9 +218,6 @@ export default function ClientOnboarding() {
               onClose={() => setIsPopupOpen(false)}
               aria-labelledby="responsive-dialog-title"
             >
-              {/* <DialogTitle id="responsive-dialog-title">
-                {"Use Google's location service?"}
-              </DialogTitle> */}
               <DialogContent>
                 <div className="flex justify-center mb-4">
                   {statusData?.status === 2 && (

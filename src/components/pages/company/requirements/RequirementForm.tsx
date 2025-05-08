@@ -186,11 +186,6 @@ const RequirementForm = () => {
       });
   };
 
-  const handleMatchingDialog = (score: number) => {
-    setIsMatchOpen(true);
-    setMatchingScore(score);
-  };
-
   const handleShareWith = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

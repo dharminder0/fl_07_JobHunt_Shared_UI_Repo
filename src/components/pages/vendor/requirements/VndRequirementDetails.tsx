@@ -31,6 +31,7 @@ import { useDispatch } from "react-redux";
 import {
   closeBackdrop,
   openBackdrop,
+  openDrawer,
 } from "../../../../components/features/drawerSlice";
 import IconAi from "../../../../components/sharedComponents/IconAi";
 
@@ -281,14 +282,24 @@ const VndRequirementDetails = () => {
                           <div className="flex text-info items-center text-secondary-text">
                             <div
                               className="flex cursor-pointer"
-                              onClick={() =>
-                                handleMatchingDialog(applicant?.ai || 74)
-                              }
+                              // onClick={() =>
+                              //   handleMatchingDialog(applicant?.ai)
+                              // }
                             >
                               <IconAi />
-                              <span> {applicant?.ai || 74}%</span>
+                              <span> {applicant?.matchingScore}%</span>
                             </div>
-                            <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
+                            <div
+                              className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700"
+                              onClick={() =>
+                                dispatch(
+                                  openDrawer({
+                                    drawerName: "benchPreview",
+                                    data: JSON.parse(applicant.cvData),
+                                  })
+                                )
+                              }
+                            >
                               <Download fontSize="inherit" />
                               <span className="text-info">CV</span>
                             </div>
