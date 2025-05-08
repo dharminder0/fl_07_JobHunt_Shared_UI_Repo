@@ -135,11 +135,12 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
           type: "success",
           message: "Application has been submitted successfully",
         });
+        setIsSuccessPopup(true);
         setTimeout(() => {
-          setIsSuccessPopup(true);
           setSelectedRows([]);
+          dispatch(closeDrawer());
           setDrawerObj((prev: any) => ({ ...prev, isOpen: false }));
-        }, 500);
+        }, 100);
       }
     });
   };
