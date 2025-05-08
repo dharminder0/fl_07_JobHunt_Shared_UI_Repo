@@ -96,8 +96,8 @@ const VndClients = () => {
             indicatorColor="primary"
             aria-label="secondary tabs example"
           >
-            <Tab value="Active" label="Active Clients" />
-            <Tab value="Archived" label="Archived Clients" />
+            <Tab value="Active" label="Active Partners" />
+            <Tab value="Archived" label="Archived Partners" />
           </Tabs>
         </div>
         <div className="w-1/2 flex flex-row justify-end">

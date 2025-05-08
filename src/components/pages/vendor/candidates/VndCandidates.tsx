@@ -188,9 +188,9 @@ export default function VndCandidates() {
                     <div className="flex text-info">
                       <div
                         className="flex cursor-pointer"
-                        onClick={() =>
-                          handleMatchingDialog(applicant.matchScore)
-                        }
+                        // onClick={() =>
+                        //   handleMatchingDialog(applicant.matchScore)
+                        // }
                       >
                         <IconAi />
                         <span> {applicant.matchScore || 0}%</span>

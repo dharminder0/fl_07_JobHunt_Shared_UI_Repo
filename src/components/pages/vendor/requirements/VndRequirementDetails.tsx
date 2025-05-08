@@ -281,9 +281,9 @@ const VndRequirementDetails = () => {
                           <div className="flex text-info items-center text-secondary-text">
                             <div
                               className="flex cursor-pointer"
-                              onClick={() =>
-                                handleMatchingDialog(applicant?.ai || 74)
-                              }
+                              // onClick={() =>
+                              //   handleMatchingDialog(applicant?.ai)
+                              // }
                             >
                               <IconAi />
                               <span> {applicant?.ai || 74}%</span>

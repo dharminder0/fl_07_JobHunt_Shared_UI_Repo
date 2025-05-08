@@ -310,9 +310,9 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                           <div className="mx-2">
                             <div
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
-                              onClick={() =>
-                                handleMatchingDialog(requirement?.MatchingScore)
-                              }
+                              // onClick={() =>
+                              //   handleMatchingDialog(requirement?.MatchingScore)
+                              // }
                             >
                               <IconAi />
                               <span> {requirement?.MatchingScore || 0}%</span>

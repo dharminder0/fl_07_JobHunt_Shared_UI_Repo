@@ -12,6 +12,10 @@ import {
   Avatar,
   Switch,
   FormControlLabel,
+  Button,
+  DialogContent,
+  DialogActions,
+  Dialog,
 } from "@mui/material";
 import {
   Edit,
@@ -80,6 +84,7 @@ const RequirementDetails = () => {
   const [checked, setChecked] = React.useState(false);
   const [isLoader, setIsLoader] = useState<any>(false);
   const [isSuccessPopup, setIsSuccessPopup] = useState<any>(false);
+  const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [updateStatus, setUpdateStatus] = useState<any>({});
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -223,6 +228,7 @@ const RequirementDetails = () => {
   };
 
   const getCandidates = async () => {
+    setIsPopupOpen(false);
     dispatch(openBackdrop());
     try {
       const data = await matchRequirementToCandidates([requirementData.id]);
@@ -473,14 +479,24 @@ const RequirementDetails = () => {
                             <div className="flex text-info items-center">
                               <div
                                 className="flex cursor-pointer"
-                                onClick={() =>
-                                  handleMatchingDialog(applicant.ai || 65)
-                                }
+                                // onClick={() =>
+                                //   handleMatchingDialog(applicant.ai)
+                                // }
                               >
                                 <IconAi />
-                                <span> {applicant.ai || 65}%</span>
+                                <span> {applicant.matchingScore}%</span>
                               </div>
-                              <div className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700 ">
+                              <div
+                                className="ms-2 text-indigo-500 cursor-pointer hover:text-indigo-700"
+                                onClick={() =>
+                                  dispatch(
+                                    openDrawer({
+                                      drawerName: "benchPreview",
+                                      data: JSON.parse(applicant.cvData),
+                                    })
+                                  )
+                                }
+                              >
                                 <Download fontSize="inherit" />
                                 <span className="text-info">CV</span>
                               </div>
@@ -522,9 +538,9 @@ const RequirementDetails = () => {
       <div className="w-[30%] p-3">
         <div className="flex justify-between items-center mb-3">
           <div className="text-title">Empaneled</div>
-          <IconButton aria-label="refresh" onClick={getCandidates}>
+          <IconButton aria-label="refresh" onClick={() => setIsPopupOpen(true)}>
             <Tooltip title="Refresh matching vendors">
-            <RefreshOutlined fontSize="inherit" />
+              <RefreshOutlined fontSize="inherit" />
             </Tooltip>
           </IconButton>
         </div>
@@ -618,7 +634,7 @@ const RequirementDetails = () => {
                     // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
                     <IconAi />
-                    Avg Score: {company?.averageMatchingScore || 65}%
+                    Avg Score: {company?.matchingScore}%
                   </div>
                 </div>
               </div>
@@ -648,6 +664,45 @@ const RequirementDetails = () => {
           setIsOpenModal={setIsSuccessPopup}
           type={!updateStatus?.success ? "error" : "success"}
         />
+      )}
+
+      {isPopupOpen && (
+        <React.Fragment>
+          <Dialog
+            // fullScreen={fullScreen}
+            open={isPopupOpen}
+            // onClose={() => setIsPopupOpen(false)}
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogContent>
+              <div className="flex justify-center mb-4">
+                <IconAi width="40px" height="40px" />
+              </div>
+              <p className="text-base">
+                Are you sure to want to check matching vendor for this
+                requirement?
+              </p>
+            </DialogContent>
+            <DialogActions className="!mb-2 !me-2">
+              <Button
+                autoFocus
+                onClick={() => setIsPopupOpen(false)}
+                variant="outlined"
+                size="small"
+              >
+                Close
+              </Button>
+              <Button
+                onClick={getCandidates}
+                autoFocus
+                variant="contained"
+                size="small"
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
       )}
     </div>
   );

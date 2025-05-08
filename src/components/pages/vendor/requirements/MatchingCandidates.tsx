@@ -348,9 +348,9 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                             )} */}
                             <div
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
-                              onClick={() =>
-                                handleMatchingDialog(item?.MatchScore || 0)
-                              }
+                              // onClick={() =>
+                              //   handleMatchingDialog(item?.MatchScore)
+                              // }
                             >
                               <IconAi />
                               <span> {item?.MatchScore || 0}%</span>

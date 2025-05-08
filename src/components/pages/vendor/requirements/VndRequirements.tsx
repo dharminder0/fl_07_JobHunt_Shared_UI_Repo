@@ -8,16 +8,17 @@ import {
   Drawer,
   Button,
   Avatar,
+  DialogContent,
+  Dialog,
+  DialogActions,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   AccessTimeOutlined,
-  AccountCircleOutlined,
   ChevronLeft,
   ChevronRight,
-  LocationOn,
   LocationOnOutlined,
-  WorkHistory,
+  QuestionMarkOutlined,
 } from "@mui/icons-material";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
@@ -39,8 +40,6 @@ import TablePreLoader from "../../../../components/sharedComponents/TablePreLoad
 import { RoleType } from "../../../../components/sharedService/enums";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import moment from "moment";
-import { useClientList } from "../../../../components/hooks/useClientList";
-import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import {
@@ -62,6 +61,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const activeRole = localStorage.getItem("activeRole") || "";
   const [drawerObj, setDrawerObj] = useState({ data: {}, isOpen: false });
+  const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [matchingObj, setMatchingObj] = useState({ isOpen: false, score: 0 });
   const [isSuccessPopup, setIsSuccessPopup] = useState<any>({
     isVisible: false,
@@ -104,19 +104,6 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   };
 
-  const handleDrawer = (data: object, isOpen: boolean) => {
-    if (benchDrawerData.isOpen) {
-      // setIsSuccessPopup(true);
-      setIsSuccessPopup({
-        isVisible: true,
-        type: "success",
-        message: "Application has been submitted successfully",
-      });
-    } else {
-      setDrawerObj((prev) => ({ ...prev, data: data, isOpen: isOpen }));
-    }
-  };
-
   const handleOpenDrawer = (name: string, data: any) => {
     dispatch(openDrawer({ drawerName: name, data: !data ? {} : data }));
   };
@@ -139,8 +126,6 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     setIsDialogOpen(true);
     setSelectedStatus(status);
   };
-
-  // const clientList = useClientList(userData?.orgCode);
 
   const getRequirementsData = () => {
     setIsTableLoader(true);
@@ -205,66 +190,8 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   };
 
-  // const handleMatchingCandidate = async () => {
-  //   dispatch(openBackdrop());
-  //   try {
-  //     const data = await matchRequirementToCandidates(selectedRows);
-  //     if (data && data.length >= 0) {
-  //       setTimeout(() => {
-  //         setIsSuccessPopup({
-  //           isVisible: true,
-  //           type: "success",
-  //           message: "Found Matching Candidate",
-  //         });
-  //         dispatch(closeBackdrop());
-  //       }, 1000);
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to fetch candidates:", err);
-  //     setIsSuccessPopup({
-  //       isVisible: true,
-  //       type: "error",
-  //       message: "Error to found matching candidate",
-  //     });
-  //     setTimeout(() => {
-  //       dispatch(closeBackdrop());
-  //     }, 1000);
-  //   }
-  // };
-
-  const handleMatchingCandidate = async () => {
-    const payload = {
-      resourceId: [],
-      requirementId: selectedRows,
-    };
-    dispatch(openBackdrop());
-    upsertMatchingIds(payload)
-      .then((result: any) => {
-        if (result && result?.length >= 0) {
-          setTimeout(() => {
-            setIsSuccessPopup({
-              isVisible: true,
-              type: "success",
-              message: "Found Matching Candidate",
-            });
-            getRequirementsData();
-            dispatch(closeBackdrop());
-          }, 1000);
-        }
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          setIsSuccessPopup({
-            isVisible: true,
-            type: "error",
-            message: "Error to found matching candidate",
-          });
-          dispatch(closeBackdrop());
-        }, 1000);
-      });
-  };
-
   const getCandidates = async () => {
+    setIsPopupOpen(false);
     dispatch(openBackdrop());
     try {
       const data = await matchRequirementToCandidates(selectedRows);
@@ -302,7 +229,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
               <Button
                 variant="text"
                 disabled={selectedRows?.length <= 0}
-                onClick={getCandidates}
+                onClick={() => setIsPopupOpen(true)}
               >
                 <IconAi />
                 Check matching candidate
@@ -420,7 +347,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             {benchDrawerData?.isOpen && (
                               <div
                                 className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                onClick={() => handleMatchingDialog(64)}
+                                // onClick={() => handleMatchingDialog(64)}
                               >
                                 <IconAi />
                                 <span> {requirement?.aiScore || 64}%</span>
@@ -614,6 +541,45 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
         selectedStatus={selectedStatus}
         isVendor={true}
       />
+
+      {isPopupOpen && (
+        <React.Fragment>
+          <Dialog
+            // fullScreen={fullScreen}
+            open={isPopupOpen}
+            // onClose={() => setIsPopupOpen(false)}
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogContent>
+              <div className="flex justify-center mb-4">
+                <IconAi width="40px" height="40px"  />
+              </div>
+              <p className="text-base">
+                Are you sure to want to check matching candidates for
+                requirements?
+              </p>
+            </DialogContent>
+            <DialogActions className="!mb-2 !me-2">
+              <Button
+                autoFocus
+                onClick={() => setIsPopupOpen(false)}
+                variant="outlined"
+                size="small"
+              >
+                Close
+              </Button>
+              <Button
+                onClick={getCandidates}
+                autoFocus
+                variant="contained"
+                size="small"
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
+      )}
     </>
   );
 };
