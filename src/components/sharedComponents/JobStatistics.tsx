@@ -11,7 +11,7 @@ import {
 const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const [weekGraphData, setWeekGraphData] = useState<any[]>([]);
-  const [statusGraphData, setStatusGraphData] = useState<any[]>([]);
+  const [statusGraphData, setStatusGraphData] = useState<any>({});
   const today = new Date();
   const activeRole = localStorage.getItem("activeRole") || "";
 
@@ -76,7 +76,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
       endDate: today.toISOString().split("T")[0],
     };
     getRequirementStatusGraph(payload).then((result: any) => {
-      if (result && result?.length >= 0) {
+      if (result) {
         setStatusGraphData(result);
       }
     });
@@ -93,7 +93,7 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
       userId: userData.userId,
     };
     getVndRequirementStatusGraph(payload).then((result: any) => {
-      if (result && result?.length >= 0) {
+      if (result) {
         setStatusGraphData(result);
       }
     });
@@ -103,19 +103,19 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
     () => [
       {
         id: "id_A",
-        value: statusGraphData[0]?.Open,
+        value: statusGraphData?.open,
         label: "Open",
         color: "#007FFF",
       },
       {
         id: "id_B",
-        value: statusGraphData[0]?.Closed,
+        value: statusGraphData?.closed,
         label: "Closed",
         color: "#5DB996",
       },
       {
         id: "id_C",
-        value: statusGraphData[0]?.Onhold,
+        value: statusGraphData?.onhold,
         label: "On hold",
         color: "#7e22ce",
       },
@@ -208,9 +208,9 @@ const JobStatistics = ({ lineTitle = "", barTitle = "", pieTitle = "" }) => {
         </div> */}
       <div className="sm:w-[99%] border p-3 rounded-md lg:w-[33%] md:w-[49%] mb-4">
         {pieTitle && <div className="text-title">{pieTitle}</div>}
-        {statusGraphData[0]?.Open !== 0 ||
-        statusGraphData[0]?.Closed !== 0 ||
-        statusGraphData[0]?.Onhold !== 0 ? (
+        {statusGraphData?.open !== 0 ||
+        statusGraphData?.closed !== 0 ||
+        statusGraphData?.onhold !== 0 ? (
           <PieChart
             series={[
               {

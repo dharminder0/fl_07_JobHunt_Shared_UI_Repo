@@ -201,7 +201,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     if (selectedRows.length === requirementData?.length) {
       setSelectedRows([]); // Deselect all
     } else {
-      setSelectedRows(requirementData?.list.map((row: any) => row.id)); // Store only IDs
+      setSelectedRows(requirementData?.map((row: any) => row.id)); // Store only IDs
     }
   };
 
