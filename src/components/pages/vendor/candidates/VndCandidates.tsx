@@ -1,4 +1,4 @@
-import { Download } from "@mui/icons-material";
+import { ChevronLeft, ChevronRight, Download } from "@mui/icons-material";
 import {
   IconButton,
   InputAdornment,
@@ -42,6 +42,8 @@ export default function VndCandidates() {
   const [client, setClient] = React.useState<any[]>([]);
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [matchingScore, setMatchingScore] = React.useState(0);
+  const [pageSize, setPageSize] = React.useState<any>(15);
+  const [applicantsCount, setApplicantsCount] = useState<any>(0);
 
   const navigate = useNavigate();
   const handleRowClick = (clientCode: number) => {
@@ -65,13 +67,14 @@ export default function VndCandidates() {
       status: status,
       userId: userData.userId,
       page: pageIndex,
-      pageSize: 10,
+      pageSize: pageSize,
     };
     setIsTableLoader(true);
     getApplicantsList(payload)
       .then((result: any) => {
         if (result?.list && result?.list.length > 0) {
           setApplicantData(result.list);
+          setApplicantsCount(result.count);
           setIsTableLoader(false);
         } else {
           setApplicantData([]);
@@ -100,7 +103,7 @@ export default function VndCandidates() {
   };
 
   return (
-    <div className="px-4 py-1">
+    <div className="px-2 py-3 h-[calc(100%-20px)]">
       <div className="flex flex-row gap-1 justify-end mb-1">
         <div className="flex flex-row gap-1 p-1 overflow-hidden">
           <div className="flex text-center flex-nowrap my-auto">
@@ -230,20 +233,50 @@ export default function VndCandidates() {
         </table>
       </div>
 
-      <StatusDialog
-        title="Applicant Status"
-        statusData={ApplicantsStatus}
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
-        selectedStatus={selectedStatus}
-        isVendor={true}
-      />
-      <MatchingSkillsDialog
-        title="Matching Score Analysis"
-        isMatchOpen={isMatchOpen}
-        setIsMatchOpen={setIsMatchOpen}
-        aiScore={matchingScore}
-      />
+      <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 sm:px-4">
+        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+          <div>
+            <p className="text-base text-gray-700">
+              Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+              <span>
+                {Math.min(pageIndex * pageSize, applicantsCount || 0)}
+              </span>{" "}
+              of <span>{applicantsCount || 0}</span> results
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-1 justify-end">
+          <IconButton
+            size="small"
+            onClick={() => setPageIndex(pageIndex - 1)}
+            disabled={pageIndex <= 1}
+          >
+            <ChevronLeft />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={() => setPageIndex(pageIndex + 1)}
+            disabled={pageIndex >= Math.ceil((applicantsCount || 0) / pageSize)}
+          >
+            <ChevronRight />
+          </IconButton>
+        </div>
+
+        <StatusDialog
+          title="Applicant Status"
+          statusData={ApplicantsStatus}
+          isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
+          selectedStatus={selectedStatus}
+          isVendor={true}
+        />
+        <MatchingSkillsDialog
+          title="Matching Score Analysis"
+          isMatchOpen={isMatchOpen}
+          setIsMatchOpen={setIsMatchOpen}
+          aiScore={matchingScore}
+        />
+      </div>
     </div>
   );
 }
