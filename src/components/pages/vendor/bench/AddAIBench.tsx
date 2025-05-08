@@ -128,7 +128,6 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
       .catch((error: any) => {
         setTimeout(() => {
           dispatch(closeBackdrop());
-          setIsSuccessPopup(false);
         }, 1000);
       });
   };
@@ -162,20 +161,28 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
   };
 
   const handleUploadPhoto = () => {
-    const payload = {
-      benchId: benchId,
-      logoURL: Image,
-    };
-    dispatch(openBackdrop());
-    upsetAvatar(payload).then((result: any) => {
-      if (result) {
-        setIsSuccessPopup(true);
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-          handleCloseDrawer();
-        }, 1000);
-      }
-    });
+    if (Object.keys(Image).length > 0) {
+      const payload = {
+        benchId: benchId,
+        logoURL: Image,
+      };
+      dispatch(openBackdrop());
+      upsetAvatar(payload).then((result: any) => {
+        if (result) {
+          setIsSuccessPopup(true);
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+            handleCloseDrawer();
+          }, 1000);
+        }
+      });
+    } else {
+      setIsSuccessPopup(true);
+      setTimeout(() => {
+        setIsSuccessPopup(false);
+        handleCloseDrawer();
+      }, 1000);
+    }
   };
 
   return (
