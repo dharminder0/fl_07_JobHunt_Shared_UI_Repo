@@ -152,7 +152,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
               <JobStatistics pieTitle="Requirements" />
               <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
                 {/* Applicants Summary Card */}
-                <Box className="bg-white border px-4 rounded-md">
+                <Box className="bg-white border px-4 rounded-md h-full">
                   <div className="flex justify-between">
                     <p className="pt-4 text-title">Top Vendors</p>
                     {topVendor?.length > 0 && (

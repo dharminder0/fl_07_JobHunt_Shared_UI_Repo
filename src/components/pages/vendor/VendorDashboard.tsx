@@ -39,7 +39,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
           RoleType.Vendor
         ),
         getVndTopClients({
-          userId: userData?.userId,
+          vendorCode: userData?.orgCode,
           pageNumber: 1,
           pageSize: 10,
         }),
@@ -119,9 +119,9 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
               <JobStatistics pieTitle="Requirements" />
               <Box className="gap-6 sm:w-[99%] lg:w-[33%] md:w-[49%] mb-4">
                 {/* Applicants Summary Card */}
-                <Box className="bg-white border px-4 rounded-md">
+                <Box className="bg-white border px-4 rounded-md h-full">
                   <div className="flex justify-between">
-                    <p className="pt-4 text-title">Top Clients</p>
+                    <p className="pt-4 text-title">Top Partners</p>
                     {topClients?.length > 0 && (
                       <p className="pt-4 text-title">Positions</p>
                     )}
@@ -133,15 +133,6 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                         <Box key={index} className="mb-3">
                           <Box className="flex justify-between mb-1">
                             <div className="flex items-center">
-                              {/* <img
-                            src={
-                              !item.clientLogo
-                                ? "/assets/images/Companylogo1.png"
-                                : item.clientLogo
-                            }
-                            className="rounded-full"
-                            style={{ width: 25, height: 25 }}
-                          /> */}
                               <Avatar
                                 src={item.clientLogo}
                                 alt={item.clientName}
@@ -160,19 +151,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                       ))
                     ) : (
                       <div className="pb-5 text-center">
-                        <p className="text-base mb-5">
-                          You haven't empaneled with any client yet. Start by
-                          clicking the 'Request for Empanelment' button to
-                          search for clients and send them a request.
-                        </p>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={() => navigate("/vendor/searchclient")}
-                          startIcon={<AddOutlined fontSize="small" />}
-                        >
-                          Request for empanelment
-                        </Button>
+                        <p className="text-base mb-5">No data available</p>
                       </div>
                     )}
                   </Box>
