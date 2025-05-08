@@ -634,7 +634,7 @@ const RequirementDetails = () => {
                     // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
                     <IconAi />
-                    Avg Score: {company?.matchingScore}%
+                    Avg Score: {company?.averageMatchingScore}%
                   </div>
                 </div>
               </div>
