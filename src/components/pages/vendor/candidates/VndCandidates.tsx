@@ -29,6 +29,7 @@ import IconAi from "../../../../components/sharedComponents/IconAi";
 export default function VndCandidates() {
   const location = useLocation();
   const params = location.state || {};
+  const paramStatus = params?.status;
   const dispatch: AppDispatch = useDispatch();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
@@ -38,7 +39,9 @@ export default function VndCandidates() {
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [searchValue, setSearchValue] = React.useState("");
-  const [status, setStatus] = React.useState<any[]>([]);
+  const [status, setStatus] = React.useState<any[]>(
+    !paramStatus ? [] : [paramStatus]
+  );
   const [client, setClient] = React.useState<any[]>([]);
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [matchingScore, setMatchingScore] = React.useState(0);
@@ -139,6 +142,7 @@ export default function VndCandidates() {
                 menuList={ApplicantsStatus}
                 placeholder="Status"
                 handleSelectedItem={(selectedItems) => setStatus(selectedItems)}
+                selectedId={status[0]}
               />
             </div>
           </div>
@@ -164,26 +168,9 @@ export default function VndCandidates() {
             {applicantData.map((applicant, index) => (
               <tr key={index}>
                 <th className="add-right-shadow">
-                  <div className="cursor-pointer hover:text-indigo-700">
-                    {applicant.firstName} {applicant.lastName}
-                  </div>
-                  <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                    <div
-                      className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                      onClick={() => handleRowClick(applicant.clientCode)}
-                    >
-                      {applicant.clientOrgLogo && (
-                        <img
-                          src={applicant.clientOrgLogo}
-                          style={{ height: 12, width: 12 }}
-                          className="me-1"
-                        />
-                      )}
-                      <Tooltip title={applicant.clientOrgName} arrow>
-                        <span className="text-ellipsis overflow-hidden truncate">
-                          {applicant.clientOrgName}
-                        </span>
-                      </Tooltip>
+                  <div className="flex items-center justify-between ">
+                    <div className="cursor-pointer hover:text-indigo-700">
+                      {applicant.firstName} {applicant.lastName}
                     </div>
                     <div className="flex text-info">
                       <div
@@ -204,6 +191,25 @@ export default function VndCandidates() {
                         <Download fontSize="inherit" />
                         <span className="text-info">CV</span>
                       </div>
+                    </div>
+                  </div>
+                  <div className="text-secondary-text text-info mt-1">
+                    <div
+                      className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
+                      onClick={() => handleRowClick(applicant.clientCode)}
+                    >
+                      {applicant.clientOrgLogo && (
+                        <img
+                          src={applicant.clientOrgLogo}
+                          style={{ height: 12, width: 12 }}
+                          className="me-1"
+                        />
+                      )}
+                      <Tooltip title={applicant.clientOrgName} arrow>
+                        <span className="text-ellipsis overflow-hidden truncate">
+                          {applicant.clientOrgName}
+                        </span>
+                      </Tooltip>
                     </div>
                   </div>
                 </th>

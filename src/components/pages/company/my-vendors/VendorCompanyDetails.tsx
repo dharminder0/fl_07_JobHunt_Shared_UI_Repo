@@ -20,6 +20,10 @@ import {
 import {
   AccessTimeOutlined,
   AccountCircleOutlined,
+  CancelOutlined,
+  Check,
+  CheckCircleOutlineOutlined,
+  CloseOutlined,
   CorporateFareOutlined,
   Handshake,
   HandshakeOutlined,
@@ -39,6 +43,7 @@ import {
   getBenchList,
   getOrgProfileDetails,
   getVendorContractData,
+  inviteStatusChange,
 } from "../../../../components/sharedService/apiService";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
@@ -68,6 +73,8 @@ const VendorCompanyDetails = () => {
   const [isInviteLoader, setIsInviteLoader] = React.useState<boolean>(false);
   const [isSuccessPopup, setIsSuccessPopup] = React.useState<boolean>(false);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
+  const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
+  const [statusData, setStatusData] = React.useState<any>({ id: 0, status: 1 });
   const handleRowClick = (id: any) => {};
 
   const [open, setOpen] = React.useState(false);
@@ -82,122 +89,6 @@ const VendorCompanyDetails = () => {
       !type ? setTabValue("activeView") : setTabValue(type);
     }
   }, [type, location.state]);
-
-  const activeContracts = [
-    {
-      id: 1,
-      title: "Social Media Assistant",
-      startDate: "20-04-2024",
-      endDate: "12-08-2024",
-      client: "Airtel",
-      resource: "Raj Kumar",
-      logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-    },
-    {
-      id: 2,
-      title: "Android Developer",
-      startDate: "18-03-2024",
-      endDate: "16-09-2024",
-      client: "IBM",
-      resource: "Sajid Sarkar",
-      logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-    },
-    {
-      id: 3,
-      title: "Angular Developer",
-      startDate: "02-01-2024",
-      endDate: "06-10-2024",
-      client: "SDET Tech",
-      resource: "Amit Thakur",
-      logo: "https://sdettech.com/wp-content/themes/sdetech/assets/images/favicon.png",
-    },
-    {
-      id: 4,
-      title: "iOS Developer",
-      startDate: "26-04-2024",
-      endDate: "18-11-2024",
-      client: "DevStringx",
-      resource: "Harshit Pandey",
-      logo: "https://www.devstringx.com/wp-content/uploads/2018/03/favicon.ico",
-    },
-    {
-      id: 1,
-      title: "QA Automation",
-      startDate: "13-05-2024",
-      endDate: "10-12-2024",
-      client: "JigNect Technologies",
-      resource: "Vinod Agarwal",
-      logo: "https://jignect.tech/wp-content/uploads/2023/01/cropped-JT-Main-ONLY-LOGO-01-192x192.png",
-    },
-  ];
-
-  const jobData = [
-    {
-      id: 1,
-      role: "Social Media Assistant",
-      status: "Open",
-      datePosted: "20-05-2020",
-      applicants: "19",
-      client: "OpsTree Solutions",
-      requirementType: "Remote",
-      noOfPositions: 3,
-      contractPeriod: "6 months",
-      visibility: "Global",
-      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
-    },
-    {
-      id: 2,
-      role: "Senior Designer",
-      status: "On hold",
-      datePosted: "16-05-2020",
-      applicants: "1,234",
-      client: "Creative Solutions Ltd.",
-      requirementType: "Hybrid",
-      noOfPositions: 5,
-      contractPeriod: "12 months",
-      visibility: "Empaneled",
-      logo: "https://cdn.creative-sols.com/assets/img/favicon-32x32.png",
-    },
-    {
-      id: 3,
-      role: "Visual Designer",
-      status: "Open",
-      datePosted: "15-05-2020",
-      applicants: "2,435",
-      client: "Design Pros Inc.",
-      requirementType: "Onsite",
-      noOfPositions: 2,
-      contractPeriod: "3 months",
-      visibility: "Limited",
-      logo: "https://www.prototypehouse.com/favicon.ico",
-    },
-    {
-      id: 4,
-      role: "Data Science",
-      status: "Closed",
-      datePosted: "13-05-2020",
-      applicants: "6,234",
-      client: "OpsTree Solutions",
-      requirementType: "Remote",
-      noOfPositions: 10,
-      contractPeriod: "9 months",
-      visibility: "Global",
-      logo: "https://opstree.com/wp-content/uploads/2024/10/FavIcon-OpsTree-100x100.png",
-    },
-    {
-      id: 5,
-      role: "Kotlin Developer",
-      status: "Closed",
-      datePosted: "12-05-2020",
-      applicants: "12",
-      client: "Tech Innovators LLC",
-      requirementType: "Hybrid",
-      noOfPositions: 20,
-      contractPeriod: "18 months",
-      visibility: "Empaneled",
-      logo: "https://techinnovators.dev/icon_dark.ico",
-    },
-  ];
 
   useEffect(() => {
     getOrgProfile();
@@ -247,28 +138,27 @@ const VendorCompanyDetails = () => {
   };
 
   const handleInvitation = () => {
-    const payload: any = {
-      partnerCode: userData.orgCode,
-      vendorCode: orgData.orgCode,
-      statusId: 1,
-      createdBy: userData.userId,
-    };
     setIsInviteLoader(true);
-    dispatchedInvitation(payload)
+    const payload = {
+      partnerVendorRelId: statusData.id,
+      statusId: statusData.status,
+      updatedBy: userData.userId,
+    };
+    inviteStatusChange(payload)
       .then((result: any) => {
-        if (result?.success) {
-          setIsSuccessPopup(true);
+        if (result) {
           setTimeout(() => {
-            getOrgProfile();
             setIsInviteLoader(false);
-            handleClose();
-          }, 1000);
+            setIsPopupOpen(false);
+            navigate("/vendor/onboarding");
+          }, 500);
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setTimeout(() => {
           setIsInviteLoader(false);
-        }, 1000);
+          setIsPopupOpen(false);
+        }, 500);
       });
   };
 
@@ -296,6 +186,11 @@ const VendorCompanyDetails = () => {
           setIsTableLoader(false);
         }, 1000);
       });
+  };
+
+  const handleConfirmPopup = (id: number, status: number) => {
+    setIsPopupOpen(true);
+    setStatusData({ id: id, status: status });
   };
 
   const getContractData = () => {
@@ -714,74 +609,34 @@ const VendorCompanyDetails = () => {
         {/* Tech Stack and Office Location */}
         <Grid item xs={12} md={3}>
           <div className="mb-2 space-y-4">
-            {orgData.status === 0 || orgData.status == InvitedType.Declined ? (
-              <Button
-                onClick={handleClickOpen}
-                variant="outlined"
-                startIcon={<HandshakeOutlined />}
-              >
-                Invite for Empanelment
-              </Button>
-            ) : (
-              <p
-                className={`line-clamp-1 text-base ${
-                  orgData?.status === 2
-                    ? "text-green-600"
-                    : orgData?.status === 3
-                      ? "text-red-500"
-                      : orgData?.status === 0 || orgData?.status === 1
-                        ? "text-orange-500"
-                        : ""
-                }`}
-              >
-                {orgData?.statusName}
-              </p>
-            )}
-
-            <Dialog
-              fullScreen={fullScreen}
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="responsive-dialog-title"
-            >
-              <DialogContent>
-                <div className="space-y-4">
-                  <p className="text-heading">Invite Vendors for Empanelment</p>
-                  <p className="text-base">
-                    Click the 'Invite' button to send a notification to vendors.
-                    Interested vendors will follow the instructions to complete
-                    the process. You can track their progress and manage
-                    empaneled vendors from the 'Manage Vendors' section.
-                  </p>
-                  <p className="text-base">Write a Personalized Message</p>
-                </div>
-                <form className="mt-2 space-y-4">
-                  <TextField
-                    label="Message"
-                    value={empMessage}
-                    onChange={(e) => setEmpMessage(e.target.value)}
-                    fullWidth
-                    variant="outlined"
-                    multiline
-                    required
-                    rows={3}
-                  />
-                </form>
-              </DialogContent>
-              <DialogActions sx={{ paddingBottom: 2, paddingRight: 3 }}>
-                <Button autoFocus onClick={handleClose} variant="outlined">
-                  Close
-                </Button>
+            {(orgData.status == 1 || orgData.status == InvitedType.Pending) && (
+              <div>
                 <Button
-                  variant="contained"
-                  disabled={!empMessage}
-                  onClick={handleInvitation}
-                  loading={isInviteLoader}
+                  size="small"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handleConfirmPopup(orgData?.id, 2);
+                  }}
+                  variant="outlined"
+                  endIcon={<Check fontSize="small" color="success" />}
+                  className="!me-3"
                 >
-                  Invite
+                  Accept
                 </Button>
-              </DialogActions>
-            </Dialog>
+
+                <Button
+                  size="small"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handleConfirmPopup(orgData?.id, 3);
+                  }}
+                  variant="outlined"
+                  endIcon={<CloseOutlined fontSize="small" color="error" />}
+                >
+                  Declined
+                </Button>
+              </div>
+            )}
           </div>
           <div>
             <h5 className="text-heading mb-2">Contact Information</h5>
@@ -855,6 +710,55 @@ const VendorCompanyDetails = () => {
           isOpenModal={isSuccessPopup}
           setIsOpenModal={setIsSuccessPopup}
         />
+      )}
+
+      {isPopupOpen && (
+        <React.Fragment>
+          <Dialog
+            // fullScreen={fullScreen}
+            open={isPopupOpen}
+            onClose={() => setIsPopupOpen(false)}
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogContent>
+              <div className="flex justify-center mb-4">
+                {statusData?.status === 2 && (
+                  <CheckCircleOutlineOutlined
+                    fontSize="large"
+                    color="success"
+                  />
+                )}
+                {statusData?.status === 3 && (
+                  <CancelOutlined fontSize="large" color="error" />
+                )}
+              </div>
+              <p className="text-base">
+                Are you sure to want to{" "}
+                {statusData?.status === 2 ? "accept" : "reject"} this
+                invitation?
+              </p>
+            </DialogContent>
+            <DialogActions className="!mb-2 !me-2">
+              <Button
+                autoFocus
+                onClick={() => setIsPopupOpen(false)}
+                variant="outlined"
+                size="small"
+              >
+                Close
+              </Button>
+              <Button
+                onClick={handleInvitation}
+                autoFocus
+                variant="contained"
+                size="small"
+                loading={isInviteLoader}
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
       )}
     </div>
   );

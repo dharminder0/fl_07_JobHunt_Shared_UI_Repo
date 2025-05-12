@@ -32,7 +32,7 @@ export default function MyCandidates() {
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
   const params = location.state || {};
-  const [filteredApplicants, setFilteredApplicants] = useState<any[]>([]);
+  const paramStatus = params.status;
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
@@ -41,7 +41,9 @@ export default function MyCandidates() {
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
-  const [status, setStatus] = React.useState<any[]>([]);
+  const [status, setStatus] = React.useState<any[]>(
+    !paramStatus ? [] : [paramStatus]
+  );
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [pageSize, setPageSize] = React.useState<any>(15);
   const [applicantData, setApplicantData] = useState<any[]>([]);
@@ -98,12 +100,9 @@ export default function MyCandidates() {
     setIsTableLoader(true);
     getClientApplicantsList(payload)
       .then((result: any) => {
-        if (result?.list && result?.list.length > 0) {
+        if (result?.list && result?.list.length >= 0) {
           setApplicantData(result.list);
           setApplicantsCount(result.count);
-          setIsTableLoader(false);
-        } else {
-          setApplicantData([]);
           setIsTableLoader(false);
         }
       })
@@ -158,6 +157,7 @@ export default function MyCandidates() {
                   handleSelectedItem={(selectedItems) => {
                     setStatus(selectedItems);
                   }}
+                  selectedId={status[0]}
                 />
               </div>
             </div>

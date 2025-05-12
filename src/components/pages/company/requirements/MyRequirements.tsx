@@ -7,6 +7,7 @@ import {
   IconButton,
   CircularProgress,
   Avatar,
+  Switch,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -51,6 +52,9 @@ const MyRequirements = () => {
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any>([]);
   const [requirementCount, setRequirementCount] = React.useState<any>();
+  const [isHotChecked, setIsHotChecked] = React.useState(
+    !params?.isHot ? false : true
+  );
 
   const drawerState = useSelector((state: any) => state.drawer);
 
@@ -100,7 +104,7 @@ const MyRequirements = () => {
       clientCode: client,
       userId: userData.userId,
       roleType: activeRole === "company" ? [RoleType.Client] : [],
-      isHotEnable: !params?.isHot ? false : true,
+      isHotEnable: isHotChecked,
     };
 
     getRequirementsList(payload)
@@ -128,7 +132,7 @@ const MyRequirements = () => {
     if (searchText?.length > 3 || searchText?.length == 0) {
       getRequirementsData();
     }
-  }, [searchText, resource, client, pageIndex, status]);
+  }, [searchText, resource, client, pageIndex, status, isHotChecked]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -136,12 +140,31 @@ const MyRequirements = () => {
     }
   }, [drawerState.isOpen]);
 
+  const handleHotRequirements = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsHotChecked(event.target.checked);
+    getRequirementsData();
+  };
+
   return (
     <>
       <div className="px-2 py-3 h-[calc(100%-20px)]">
         <div className="flex flex-row gap-1 justify-end mb-1">
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
+              <div className="flex items-center me-2">
+                <span className="text-base me-2">Show hot</span>
+                <Switch
+                  checked={isHotChecked}
+                  onChange={(event: any) =>
+                    setIsHotChecked(event.target.checked)
+                  }
+                  size="small"
+                  inputProps={{ "aria-label": "controlled" }}
+                  color="error"
+                />
+              </div>
               <div className="flex grow w-[220px] mr-2">
                 <div className="flex-col flex-grow">
                   <TextField
