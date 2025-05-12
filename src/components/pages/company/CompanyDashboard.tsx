@@ -15,7 +15,10 @@ import {
   getTopClients,
   getTopVendors,
 } from "../../sharedService/apiService";
-import { RequirementsStatus } from "../../../components/sharedService/enums";
+import {
+  ApplicationEnums,
+  RequirementsStatus,
+} from "../../../components/sharedService/enums";
 import moment from "moment";
 import Loader from "../../../components/sharedComponents/Loader";
 
@@ -118,7 +121,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
             <div
               className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-              onClick={() => handleCardClick("candidates", "Interview Round I")}
+              onClick={() =>
+                handleCardClick("candidates", ApplicationEnums.InterviewRound1)
+              }
             >
               <Typography variant="h5" className="!text-indigo-600">
                 {requirementCounts?.interviewScheduled}
@@ -128,7 +133,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
             <div
               className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-              onClick={() => handleCardClick("candidates", "In Review")}
+              onClick={() =>
+                handleCardClick("candidates", ApplicationEnums.UnderReview)
+              }
             >
               <Typography variant="h5" className="!text-indigo-400">
                 {requirementCounts?.candidatesToReview}

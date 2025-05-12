@@ -337,6 +337,14 @@ export const getVendorContractData = async (payload: any) => {
   return response.data;
 };
 
+export const getSimilerRequirements = async (payload: any) => {
+  const response = await api.post(
+    "V1/Requirement/SimilerRequirements",
+    payload
+  );
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {

@@ -11,6 +11,7 @@ import {
   DialogContent,
   Dialog,
   DialogActions,
+  Switch,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -78,6 +79,10 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const [status, setStatus] = useState<any[]>(
     !paramStatus ? [] : [paramStatus]
   );
+  const [isHotChecked, setIsHotChecked] = React.useState(
+    !params?.isHot ? false : true
+  );
+
   const [client, setClient] = React.useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
   const [requirementData, SetRequirementData] = React.useState<any>([]);
@@ -139,7 +144,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
       // clientCode: client,
       userId: userData.userId,
       roleType: [activeRole === "vendor" && RoleType.Vendor],
-      isHotEnable: !params?.isHot ? false : true,
+      isHotEnable: isHotChecked,
     };
 
     getRequirementsList(payload)
@@ -165,7 +170,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     if (searchText?.length > 3 || searchText?.length == 0) {
       getRequirementsData();
     }
-  }, [searchText, resource, status, client, pageIndex]);
+  }, [searchText, resource, status, client, pageIndex, isHotChecked]);
 
   const isSelected = (id: number) => selectedRows.includes(id);
   const isAllSelected = selectedRows.length === requirementData?.length;
@@ -238,6 +243,18 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           )}
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
+              <div className="flex items-center me-2">
+                <span className="text-base me-2">Show hot</span>
+                <Switch
+                  checked={isHotChecked}
+                  onChange={(event: any) =>
+                    setIsHotChecked(event.target.checked)
+                  }
+                  size="small"
+                  inputProps={{ "aria-label": "controlled" }}
+                  color="error"
+                />
+              </div>
               <div className="flex grow w-[220px] mr-2">
                 <div className="flex-col flex-grow">
                   <TextField
@@ -350,10 +367,15 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                                 // onClick={() => handleMatchingDialog(64)}
                               >
                                 <IconAi />
-                                <span> {requirement?.aiScore || 64}%</span>
+                                <span> {requirement?.aiScore}%</span>
                               </div>
                             )}
                           </div>
+                          {requirement?.hot && (
+                            <div className="text-info text-red-700 border px-2 mx-2 rounded-full border-red-700">
+                              Hot
+                            </div>
+                          )}
                           <div
                             className="cursor-pointer hover:text-indigo-700"
                             onClick={() =>
@@ -552,7 +574,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           >
             <DialogContent>
               <div className="flex justify-center mb-4">
-                <IconAi width="40px" height="40px"  />
+                <IconAi width="40px" height="40px" />
               </div>
               <p className="text-base">
                 Are you sure to want to check matching candidates for

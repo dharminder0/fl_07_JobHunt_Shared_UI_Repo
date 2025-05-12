@@ -147,7 +147,12 @@ const VndClients = () => {
                     activeDataList?.length > 0 &&
                     activeDataList.map((company, idx) => (
                       <div>
-                        <div className="h-100 border p-4 rounded-md cursor-pointer">
+                        <div
+                          className="h-100 border p-4 rounded-md cursor-pointer"
+                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            handleDetails(company.orgCode);
+                          }}
+                        >
                           <div className="flex align-center mb-3">
                             <Avatar
                               alt="Org Icon"

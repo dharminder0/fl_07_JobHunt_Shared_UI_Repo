@@ -7,6 +7,7 @@ import {
   getVndTopClients,
 } from "../../../components/sharedService/apiService";
 import {
+  ApplicationEnums,
   RequirementsStatus,
   RoleType,
 } from "../../../components/sharedService/enums";
@@ -95,7 +96,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
               <div
                 className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
                 onClick={() =>
-                  handleCardClick("candidate", "Interview Round I")
+                  handleCardClick("candidate", ApplicationEnums.InterviewRound1)
                 }
               >
                 <Typography variant="h5" className="!text-indigo-600">
