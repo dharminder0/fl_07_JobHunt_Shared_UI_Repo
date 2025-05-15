@@ -348,7 +348,24 @@ const VndRequirementDetails = () => {
                 <div className="text-base text-ellipsis overflow-hidden truncate">
                   {item.title}
                 </div>
-                <div className="flex text-secondary-text text-info">
+                <div
+                  className="flex text-secondary-text text-info cursor-pointer hover:text-indigo-700"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    dispatch(
+                      openDrawer({
+                        drawerName: "MatchingCandidates",
+                        data: {
+                          id: item?.id,
+                          role: item?.title,
+                          client: item.clientName,
+                          clientLogo: item.clientFavicon,
+                          uniqueId: item.uniqueId,
+                        },
+                      })
+                    );
+                  }}
+                >
                   <div>{item?.matchingCandidate || 2} Matching Candidates</div>
                 </div>
               </div>
