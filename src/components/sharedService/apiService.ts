@@ -345,6 +345,23 @@ export const getSimilerRequirements = async (payload: any) => {
   return response.data;
 };
 
+export const getClientsContractData = async (payload: any) => {
+  const response = await api.post("V1/Resources/shared-contracts", payload);
+  return response.data;
+};
+
+export const updateApplicantsStatus = async (payload: any) => {
+  const response = await api.post("v1/applicant/upsert-status", payload);
+  return response.data;
+};
+
+export const getApplicantsStatusHistory = async (applicantId: any) => {
+  const response = await api.get(
+    `v1/applicant/status-history?applicantId=${applicantId}`
+  );
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {

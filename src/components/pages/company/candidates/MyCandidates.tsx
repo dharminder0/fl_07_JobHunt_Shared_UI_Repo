@@ -1,5 +1,4 @@
 import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
-import StatusDialog from "../../../sharedComponents/StatusDialog";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import { ChevronLeft, ChevronRight, Download } from "@mui/icons-material";
 import {
@@ -26,6 +25,7 @@ import IconAi from "../../../../components/sharedComponents/IconAi";
 import { openDrawer } from "../../../../components/features/drawerSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/components/redux/store";
+import ApplicantsStatusDialog from "../../../../components/sharedComponents/ApplicantsStatusDialog";
 
 export default function MyCandidates() {
   const navigate = useNavigate();
@@ -66,11 +66,12 @@ export default function MyCandidates() {
   };
 
   const handleStatusDialog = (applicant: any) => {
+    debugger
     setIsDialogOpen(true);
     setSelectedApplicant({
-      resourceId: [applicant.resourceId],
+      applicationId: applicant.applicationId,
       requirementUniqueId: applicant.requirementUniqueId,
-      userId: userData.userId,
+      orgCode: userData.orgCode,
       comment: !applicant.comment ? "" : applicant.comment,
     });
     setSelectedStatus(applicant.statusName);
@@ -328,7 +329,7 @@ export default function MyCandidates() {
           </div>
         </div>
 
-        <StatusDialog
+        <ApplicantsStatusDialog
           title="Applicant Status"
           statusData={ApplicantsStatus}
           isDialogOpen={isDialogOpen}

@@ -140,7 +140,7 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
           setSelectedRows([]);
           dispatch(closeDrawer());
           setDrawerObj((prev: any) => ({ ...prev, isOpen: false }));
-        }, 100);
+        }, 2000);
       }
     });
   };
