@@ -249,7 +249,7 @@ export default function Clients() {
                   className="add-right-shadow wide-250 cursor-pointer hover:text-indigo-700"
                   onClick={() => handleRowClick(item.clientCode, "openView")}
                 >
-                  {item?.requirement || "-"}
+                  {item?.openRequirements || "-"}
                 </td>
                 <td
                   className="cursor-pointer hover:text-indigo-700"
