@@ -104,12 +104,8 @@ const VendorCompanyDetails = () => {
       .then((result: any) => {
         if (result.success) {
           setOrgData(result.content);
-          setTabValue(
-            result.content.status === InvitedType.Accepted
-              ? "activeView"
-              : "benchView"
-          );
           if (result.content.status !== InvitedType.Accepted) {
+            setTabValue("benchView");
             fetchBenchList(result.content.orgCode);
           }
         }
@@ -234,7 +230,7 @@ const VendorCompanyDetails = () => {
   }, [tabValue]);
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="h-full p-6">
       {/* Header Section */}
       <div className="mb-6 ">
         <div className="flex items-center gap-4 mb-4">

@@ -66,7 +66,6 @@ export default function MyCandidates() {
   };
 
   const handleStatusDialog = (applicant: any) => {
-    debugger
     setIsDialogOpen(true);
     setSelectedApplicant({
       applicationId: applicant.applicationId,
