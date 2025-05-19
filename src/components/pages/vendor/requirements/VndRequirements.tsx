@@ -474,7 +474,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     <td
                       className="cursor-pointer hover:text-indigo-700"
                       onClick={() =>
-                        handleClickToClient(requirement.clientCode, "openView")
+                        handleClickToClient(requirement.partnerCode, "openView")
                       }
                     >
                       {requirement.positions} ({requirement?.placed || 0})

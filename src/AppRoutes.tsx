@@ -120,7 +120,7 @@ export default function AppRoutes() {
           <Route path="candidate" element={<VndCandidates />} />
           <Route path="clients">
             <Route index element={<VndClients />} />
-            <Route path=":id" element={<ClientDetails />} />
+            <Route path=":id" element={<VendorCompanyDetails />} />
           </Route>
           {/* <Route path="searchclient">
             <Route index element={<VndSearchClients />} />
