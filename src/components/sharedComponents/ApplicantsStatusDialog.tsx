@@ -35,7 +35,7 @@ export default function ApplicantsStatusDialog({
 }: any) {
   // Local state to manage selected status before confirmation
   const [localStatus, setLocalStatus] = useState(selectedStatus);
-  const [comment, setComment] = useState<any>("");
+  const [comment, setComment] = useState<any>(selectedRow?.comment);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [history, setHistory] = useState<any>([]);
 
@@ -48,7 +48,7 @@ export default function ApplicantsStatusDialog({
   }, [selectedRow?.applicationId]);
 
   useEffect(() => {
-    setComment(!selectedRow?.comment ? "" : selectedRow?.comment);
+    setComment(selectedRow?.comment);
   }, [selectedRow?.comment]);
 
   // Find the index of the selected status
