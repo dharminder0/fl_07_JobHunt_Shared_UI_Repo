@@ -155,12 +155,7 @@ export default function ClientOnboarding() {
 
                     <div className="flex items-center justify-between w-full my-1">
                       {company.statusName && (
-                        <Link
-                          href="#"
-                          underline="none"
-                          fontSize={12}
-                          color="warning"
-                        >
+                        <Link underline="none" fontSize={12} color="warning">
                           {company.statusName}
                         </Link>
                       )}
@@ -172,6 +167,7 @@ export default function ClientOnboarding() {
                               e.stopPropagation();
                               handleConfirmPopup(company?.id, 2);
                             }}
+                            className="!me-3"
                           >
                             <Check fontSize="small" color="success" />
                           </IconButton>

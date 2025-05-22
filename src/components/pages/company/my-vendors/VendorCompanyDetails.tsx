@@ -196,8 +196,8 @@ const VendorCompanyDetails = () => {
       isActiveContracts: tabValue === "activeView" ? true : false,
       isPastContracts: tabValue === "pastView" ? true : false,
       isOpenPosition: tabValue === "openView" ? true : false,
-      partnerCode: userData.orgCode,
-      vendorCode: orgData.orgCode,
+      partnerCode: activeRole === "vendor" ? orgData.orgCode : userData.orgCode,
+      vendorCode: activeRole === "vendor" ? userData.orgCode : orgData.orgCode,
     };
     setIsTableLoader(true);
     getVendorContractData(payload)
@@ -294,7 +294,9 @@ const VendorCompanyDetails = () => {
                 {orgData.status === InvitedType.Accepted && (
                   <Tab value="openView" label="Open Positions" />
                 )}
-                <Tab value="benchView" label="Bench Strength" />
+                {activeRole !== "vendor" && (
+                  <Tab value="benchView" label="Bench Strength" />
+                )}
               </Tabs>
               {tabValue === "activeView" && (
                 <div className="table-body mt-4">
@@ -384,7 +386,7 @@ const VendorCompanyDetails = () => {
                           onClick={() => handleRowClick(item?.id)}
                         >
                           <th className="add-right-shadow">
-                            {item.title}
+                            {item.requirementTitle}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                               <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
@@ -410,8 +412,12 @@ const VendorCompanyDetails = () => {
                               {item.client}
                             </div>
                           </td> */}
-                          <td>{item.requirmentPostedDate}</td>
-                          <td>{item?.endDate || "-"}</td>
+                          <td>
+                            {moment(item.requirmentPostedDate).format(
+                              "DD-MM-YYYY"
+                            )}
+                          </td>
+                          <td>{moment(item.endDate).format("DD-MM-YYYY")}</td>
                           <td>{item.resourceName}</td>
                         </tr>
                       ))}
@@ -607,7 +613,7 @@ const VendorCompanyDetails = () => {
           <div className="mb-2 space-y-4">
             {(orgData.status == 1 || orgData.status == InvitedType.Pending) && (
               <div>
-                <Button
+                {/* <Button
                   size="small"
                   onClick={(e: any) => {
                     e.stopPropagation();
@@ -630,8 +636,32 @@ const VendorCompanyDetails = () => {
                   endIcon={<CloseOutlined fontSize="small" color="error" />}
                 >
                   Declined
+                </Button> */}
+                <Button
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handleConfirmPopup(orgData?.id, 2);
+                  }}
+                  color="success"
+                  endIcon={<Check fontSize="small" color="success" />}
+                  className="!me-3"
+                >
+                  Accept
+                </Button>
+                <Button
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                    handleConfirmPopup(orgData?.id, 3);
+                  }}
+                  color="error"
+                  endIcon={<CloseOutlined fontSize="small" color="error" />}
+                >
+                  Declined
                 </Button>
               </div>
+            )}
+            {orgData.status == InvitedType.Accepted && (
+              <p className="text-green-600 text-base">{orgData.statusName}</p>
             )}
           </div>
           <div>
