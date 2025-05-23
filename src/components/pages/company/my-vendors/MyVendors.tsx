@@ -46,9 +46,7 @@ const MyVendors = () => {
     []
   );
   // const [activeDataList, setActiveDataList] = useState<any[]>([]);
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-  });
+  const [searchText, setSearchText] = useState<any>("");
 
   // useEffect(() => {
   //   getOrgRequestList();
@@ -93,6 +91,7 @@ const MyVendors = () => {
     tabValue,
     pageIndex,
     pageSize,
+    searchText,
   });
 
   return (
@@ -119,13 +118,8 @@ const MyVendors = () => {
                   <TextField
                     size="small"
                     className="w-full"
-                    value={searchFilter.searchValue}
-                    onChange={(event) =>
-                      setSearchFilter({
-                        ...searchFilter,
-                        searchValue: event.target.value,
-                      })
-                    }
+                    value={searchText}
+                    onChange={(event) => setSearchText(event.target.value)}
                     placeholder="Search Vendors"
                     slotProps={{
                       input: {

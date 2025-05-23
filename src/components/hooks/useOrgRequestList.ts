@@ -9,6 +9,7 @@ interface UseOrgRequestListProps {
   tabValue: TabValue;
   pageIndex: number;
   pageSize: number;
+  searchText: string;
 }
 
 export const useOrgRequestList = ({
@@ -16,12 +17,14 @@ export const useOrgRequestList = ({
   tabValue,
   pageIndex,
   pageSize,
+  searchText,
 }: UseOrgRequestListProps) => {
   const [activeDataList, setActiveDataList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchOrgRequestList = () => {
     const payload = {
+      searchText,
       orgCode,
       relationshipType: [RoleType.Client],
       status:
@@ -45,10 +48,10 @@ export const useOrgRequestList = ({
   };
 
   useEffect(() => {
-    if (orgCode) {
+    if (orgCode && (searchText?.length > 2 || searchText?.length == 0)) {
       fetchOrgRequestList();
     }
-  }, [orgCode, tabValue, pageIndex, pageSize]);
+  }, [orgCode, tabValue, pageIndex, pageSize, searchText]);
 
   return {
     activeDataList,
