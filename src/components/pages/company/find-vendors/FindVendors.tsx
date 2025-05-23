@@ -11,7 +11,10 @@ import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuDrpDwnV2 from "../../../sharedComponents/MenuDrpDwnV2";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
-import { getOrgDetailsList } from "../../../../components/sharedService/apiService";
+import {
+  getOrgDetailsList,
+  getSkillsList,
+} from "../../../../components/sharedService/apiService";
 import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import Loader from "../../../sharedComponents/Loader";
 import { CorporateFareOutlined } from "@mui/icons-material";
@@ -32,29 +35,7 @@ const FindVendors = () => {
   const [pageSize, setPageSize] = useState(20);
 
   const [filterList, setFilterList] = useState<any>({
-    TechnologiesList: [
-      "Mobile App Development",
-      "Front-End Development",
-      "Back-End Development",
-      "Full-Stack Development",
-      "Cloud Technologies",
-      "Artificial Intelligence (AI)",
-      "Machine Learning (ML)",
-      "Blockchain Development",
-      "Data Science & Analytics",
-      "Cybersecurity Solutions",
-      "Internet of Things (IoT)",
-      "DevOps",
-      "QA",
-      "QA Automation",
-      "Augmented Reality (AR)",
-      "Virtual Reality (VR)",
-      "Progressive Web Applications (PWA)",
-      "Microservices Architecture",
-      "Low-Code/No-Code Development",
-      "Robotic Process Automation (RPA)",
-      "5G & Edge Computing Solutions",
-    ],
+    TechnologiesList: [],
     requirementType: [
       {
         id: 1,
@@ -109,9 +90,26 @@ const FindVendors = () => {
       });
   };
 
+  const getSkillList = () => {
+    getSkillsList().then((result: any) => {
+      if (result) {
+        setFilterList((prev: any) => ({
+          ...prev,
+          TechnologiesList: result,
+        }));
+      }
+    });
+  };
+
   useEffect(() => {
-    getOrgDetailsListData();
+    if (searchText?.length > 2 || searchText?.length == 0) {
+      getOrgDetailsListData();
+    }
   }, [searchText, technology, resource, strength, pageIndex, pageSize]);
+
+  useEffect(() => {
+    getSkillList();
+  }, []);
 
   return (
     <div className="px-4 pb-4">

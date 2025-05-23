@@ -196,11 +196,11 @@ const AddNewMemberForm = ({ isEditable = false, data = {} }: any) => {
                       )}
                     {userData?.role?.length == 1 &&
                       userData?.role[0] == RoleType.Client && (
-                        <MenuItem value={RoleType.Client}>Client</MenuItem>
+                        <MenuItem value={RoleType.Client}>Partner</MenuItem>
                       )}
                     {userData?.role?.length > 1 && [
                       <MenuItem value={RoleType.Vendor}>Vendor</MenuItem>,
-                      <MenuItem value={RoleType.Client}>Client</MenuItem>,
+                      <MenuItem value={RoleType.Client}>Partner</MenuItem>,
                       <MenuItem value={RoleType.Both}>Both</MenuItem>,
                     ]}
                   </TextField>
