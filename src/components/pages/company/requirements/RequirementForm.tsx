@@ -875,7 +875,7 @@ const RequirementForm = () => {
                           }
                           onChange={(event, newValue) => {
                             const selectedOrgCodes = newValue.map(
-                              (item) => item.orgCode
+                              (item) => item.relatedOrgCode
                             );
                             setSelectedVendors(selectedOrgCodes);
                           }}
