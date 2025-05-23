@@ -949,6 +949,7 @@ const RequirementForm = () => {
                 color="primary"
                 onClick={handleSubmitStep2}
                 sx={{ width: 125 }}
+                disabled={shareWith == 1 && selectedVendors?.length <= 0}
               >
                 Submit
               </Button>
