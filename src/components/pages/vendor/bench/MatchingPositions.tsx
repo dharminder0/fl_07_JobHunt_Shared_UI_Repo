@@ -243,15 +243,7 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                   />
                 </div>
               </div>
-              <div className="max-w-full shrink-0">
-                <MenuDrpDwnByValue
-                  menuList={clientList}
-                  placeholder="Client"
-                  handleSelectedItem={(selectedItems) =>
-                    setClient(selectedItems)
-                  }
-                />
-              </div>
+              
               <div className="max-w-full shrink-0">
                 <MenuDrpDwnV2
                   menuList={RequirementStatus}
