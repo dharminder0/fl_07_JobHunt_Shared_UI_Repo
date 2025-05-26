@@ -328,7 +328,7 @@ export default function UserDetails() {
           </div>
 
           <div className="space-y-2">
-            <div className="p-4 space-y-2  border rounded-md">
+            {/* <div className="p-4 space-y-2  border rounded-md">
               <p className="text-base">Update E-mail</p>
               <form onSubmit={handleSubmit1(onSubmit1)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -373,7 +373,7 @@ export default function UserDetails() {
                   </div>
                 </div>
               </form>
-            </div>
+            </div> */}
             <div className="p-4 space-y-2  border rounded-md">
               <p className="text-base">Change Password</p>
               <form onSubmit={handleSubmit2(onSubmit2)} className="space-y-6">
