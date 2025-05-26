@@ -331,7 +331,7 @@ const VendorDetails = () => {
                       </Button>
                       <Button
                         variant="contained"
-                        disabled={!empMessage}
+                        disabled={!empMessage.trim()}
                         onClick={handleInvitation}
                         loading={isInviteLoader}
                       >
