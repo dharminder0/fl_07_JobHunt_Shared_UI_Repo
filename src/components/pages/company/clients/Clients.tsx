@@ -20,54 +20,8 @@ import React from "react";
 import { AppDispatch } from "../../../../components/redux/store";
 import { openDrawer } from "../../../../components/features/drawerSlice";
 import { Add } from "@mui/icons-material";
-
-const clientDataObj = [
-  {
-    id: 1,
-    name: "Airtel",
-    requirement: 5,
-    activeContracts: 10,
-    pastContracts: 20,
-    status: "Active",
-    logo: "https://assets.airtel.in/static-assets/new-home/img/favicon-16x16.png",
-  },
-  {
-    id: 2,
-    name: "IBM Consulting",
-    requirement: 7,
-    activeContracts: 8,
-    pastContracts: 16,
-    status: "Active",
-    logo: "https://www.ibm.com/content/dam/adobe-cms/default-images/favicon.svg",
-  },
-  {
-    id: 3,
-    name: "Capgemini",
-    requirement: 3,
-    activeContracts: 6,
-    pastContracts: 13,
-    status: "Active",
-    logo: "https://www.capgemini.com/wp-content/uploads/2021/06/cropped-favicon.png?w=192",
-  },
-  {
-    id: 4,
-    name: "NTT DATA",
-    requirement: 2,
-    activeContracts: 5,
-    pastContracts: 12,
-    status: "Active",
-    logo: "https://www.nttdata.com/global/en/-/media/assets/images/android-chrome-256256.png?rev=8dd26dac893a4a07bae174ff25e900ef",
-  },
-  {
-    id: 5,
-    name: "Cognizant",
-    requirement: 4,
-    activeContracts: 7,
-    pastContracts: 17,
-    status: "Active",
-    logo: "https://companieslogo.com/img/orig/CTSH-82a8444b.png",
-  },
-];
+import { ClientStatus } from "../../../../components/sharedService/shareData";
+import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 
 export default function Clients() {
   const navigate = useNavigate();
@@ -83,31 +37,7 @@ export default function Clients() {
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const drawerState = useSelector((state: any) => state.drawer);
 
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-    status: [],
-  });
-  const [filterList, setFilterList] = useState<any>({
-    status: ["Active", "Inactive"],
-  });
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-
-  useEffect(() => {
-    // Filtering logic
-    const filtered = clientDataObj.filter((item) => {
-      // Check search input
-      const statusMatch =
-        searchFilter.status.length === 0 ||
-        searchFilter.status.includes(item.status);
-      const searchMatch =
-        searchFilter.searchValue === "" ||
-        item.name
-          .toLowerCase()
-          .includes(searchFilter.searchValue.toLowerCase());
-      return searchMatch && statusMatch;
-    });
-    setclientData(filtered);
-  }, [searchFilter]);
 
   const handleRowClick = (clientCode: number, tab: string) => {
     navigate(`${clientCode}?type=${tab}`, {
@@ -125,13 +55,13 @@ export default function Clients() {
     if (searchValue?.length > 3 || searchValue?.length <= 0) {
       getClientsListData();
     }
-  }, [searchValue]);
+  }, [searchValue, status]);
 
   const getClientsListData = () => {
     const payload = {
       searchText: searchValue,
       orgCode: userData?.orgCode,
-      status: status,
+      status: status && status,
       page: pageIndex,
       pageSize: pageSize,
     };
@@ -187,12 +117,13 @@ export default function Clients() {
               </div>
             </div>
             <div className="max-w-full shrink-0">
-              <MenuDrpDwn
-                menuList={filterList?.status}
+              <MenuDrpDwnV2
+                menuList={ClientStatus}
                 placeholder="Status"
                 handleSelectedItem={(selectedItems) => {
-                  setSearchFilter({ ...searchFilter, status: selectedItems });
+                  setStatus(selectedItems[0]);
                 }}
+                selectedId={status}
               />
             </div>
           </div>
