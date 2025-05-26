@@ -162,6 +162,13 @@ export const getMembersList = async (payload: any) => {
   return response.data;
 };
 
+export const updateUserEmail = async (oldEmail: any, newEmail: any) => {
+  const response = await api.post(
+    `V1/users/ChangeEmail?OldEmail=${oldEmail}&NewEmail=${newEmail}`
+  );
+  return response.data;
+};
+
 export const UpsertBenchDetail = async (payload: any) => {
   const response = await api.post("V1/Bench/Upsert", payload);
   return response.data;

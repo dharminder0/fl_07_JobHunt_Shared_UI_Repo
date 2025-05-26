@@ -2,6 +2,7 @@ import {
   changePassword,
   getUserDetailsByEmail,
   updateUserDetails,
+  updateUserEmail,
 } from "../../../components/sharedService/apiService";
 import {
   Avatar,
@@ -133,7 +134,23 @@ export default function UserDetails() {
   };
 
   const onSubmit1 = (data: any) => {
-    console.log("Form 1 Submitted:", data);
+    dispatch(openBackdrop());
+    updateUserEmail(data?.oldEmail, data?.newEmail)
+      .then((result: any) => {
+        if (result.success) {
+          userData.email = data.newEmail;
+          localStorage.setItem("userData", JSON.stringify(userData));
+        }
+        setTimeout(() => {
+          getUserDetails();
+          dispatch(closeBackdrop());
+        }, 2000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+        }, 1000);
+      });
   };
   const onSubmit2 = (data: any) => {
     dispatch(openBackdrop());
