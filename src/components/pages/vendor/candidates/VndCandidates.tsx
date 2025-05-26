@@ -25,6 +25,7 @@ import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { ApplicationEnums } from "../../../../components/sharedService/enums";
 import IconAi from "../../../../components/sharedComponents/IconAi";
+import ApplicantsStatusDialog from "../../../../components/sharedComponents/ApplicantsStatusDialog";
 
 export default function VndCandidates() {
   const location = useLocation();
@@ -40,13 +41,14 @@ export default function VndCandidates() {
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [searchValue, setSearchValue] = React.useState("");
   const [status, setStatus] = React.useState<any[]>(
-    !paramStatus ? [] : [paramStatus]
+    !paramStatus ? [] : paramStatus
   );
   const [client, setClient] = React.useState<any[]>([]);
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [pageSize, setPageSize] = React.useState<any>(15);
   const [applicantsCount, setApplicantsCount] = useState<any>(0);
+  const [selectedApplicant, setSelectedApplicant] = React.useState({});
 
   const navigate = useNavigate();
   const handleRowClick = (clientCode: number) => {
@@ -91,9 +93,20 @@ export default function VndCandidates() {
       });
   };
 
-  const handleStatusDialog = (status: string) => {
+  // const handleStatusDialog = (status: string) => {
+  //   setIsDialogOpen(true);
+  //   setSelectedStatus(status);
+  // };
+
+  const handleStatusDialog = (applicant: any) => {
     setIsDialogOpen(true);
-    setSelectedStatus(status);
+    setSelectedApplicant({
+      applicationId: applicant.applicationId,
+      requirementUniqueId: applicant.requirementUniqueId,
+      orgCode: userData.orgCode,
+      comment: !applicant.comment ? "" : applicant.comment,
+    });
+    setSelectedStatus(applicant.statusName);
   };
 
   const handleMatchingDialog = (score: number) => {
@@ -142,7 +155,7 @@ export default function VndCandidates() {
                 menuList={ApplicantsStatus}
                 placeholder="Status"
                 handleSelectedItem={(selectedItems) => setStatus(selectedItems)}
-                selectedId={status[0]}
+                selectedId={status}
               />
             </div>
           </div>
@@ -225,7 +238,7 @@ export default function VndCandidates() {
                             ? "bg-orange-100 text-orange-700"
                             : "bg-indigo-100 text-indigo-700"
                     }`}
-                    onClick={() => handleStatusDialog(applicant.statusName)}
+                    onClick={() => handleStatusDialog(applicant)}
                   >
                     {applicant.statusName}
                   </Typography>
@@ -268,14 +281,25 @@ export default function VndCandidates() {
           </IconButton>
         </div>
 
-        <StatusDialog
+        {/* <StatusDialog
           title="Applicant Status"
           statusData={ApplicantsStatus}
           isDialogOpen={isDialogOpen}
           setIsDialogOpen={setIsDialogOpen}
           selectedStatus={selectedStatus}
           isVendor={true}
+        /> */}
+
+        <ApplicantsStatusDialog
+          title="Applicant Status"
+          statusData={ApplicantsStatus}
+          isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
+          selectedStatus={selectedStatus}
+          selectedRow={selectedApplicant}
+          isVendor={true}
         />
+
         <MatchingSkillsDialog
           title="Matching Score Analysis"
           isMatchOpen={isMatchOpen}

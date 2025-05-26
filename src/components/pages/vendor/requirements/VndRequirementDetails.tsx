@@ -34,6 +34,7 @@ import {
   openDrawer,
 } from "../../../../components/features/drawerSlice";
 import IconAi from "../../../../components/sharedComponents/IconAi";
+import ApplicantsStatusDialog from "../../../../components/sharedComponents/ApplicantsStatusDialog";
 
 const VndRequirementDetails = () => {
   const navigate = useNavigate();
@@ -50,14 +51,26 @@ const VndRequirementDetails = () => {
   const [requirementData, setRequirementData] = useState<any>(null);
   const [similiarData, SetSimiliarData] = useState<any>(null);
   const [applicantData, setApplicantData] = useState<any[]>([]);
+  const [selectedApplicant, setSelectedApplicant] = React.useState({});
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
-  const handleStatusDialog = (status: string) => {
+  // const handleStatusDialog = (status: string) => {
+  //   setIsDialogOpen(true);
+  //   setSelectedStatus(status);
+  // };
+
+  const handleStatusDialog = (applicant: any) => {
     setIsDialogOpen(true);
-    setSelectedStatus(status);
+    setSelectedApplicant({
+      applicationId: applicant.applicationId,
+      requirementUniqueId: applicant.requirementUniqueId,
+      orgCode: userData.orgCode,
+      comment: !applicant.comment ? "" : applicant.comment,
+    });
+    setSelectedStatus(applicant.statusName);
   };
 
   const handleMatchingDialog = (score: number) => {
@@ -317,9 +330,7 @@ const VndRequirementDetails = () => {
                                   ? "bg-orange-100 text-orange-700"
                                   : "bg-indigo-100 text-indigo-700"
                           }`}
-                          onClick={() =>
-                            handleStatusDialog(applicant.statusName)
-                          }
+                          onClick={() => handleStatusDialog(applicant)}
                         >
                           {applicant.statusName}
                         </Typography>
@@ -403,12 +414,22 @@ const VndRequirementDetails = () => {
         aiScore={matchingScore}
       />
 
-      <StatusDialog
+      {/* <StatusDialog
         title="Applicant Status"
         statusData={ApplicantsStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}
+        isVendor={true}
+      /> */}
+
+      <ApplicantsStatusDialog
+        title="Applicant Status"
+        statusData={ApplicantsStatus}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        selectedStatus={selectedStatus}
+        selectedRow={selectedApplicant}
         isVendor={true}
       />
     </div>

@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,6 +13,7 @@ import {
   StepLabel,
   Stepper,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
@@ -21,6 +23,8 @@ import {
   upsertApplications,
 } from "../sharedService/apiService";
 import SuccessDialog from "./SuccessDialog";
+import Loader from "./Loader";
+import { InfoOutlined } from "@mui/icons-material";
 
 export default function ApplicantsStatusDialog({
   title = "",
@@ -37,6 +41,7 @@ export default function ApplicantsStatusDialog({
   const [localStatus, setLocalStatus] = useState(selectedStatus);
   const [comment, setComment] = useState<any>(selectedRow?.comment);
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
+  const [isLoader, setIsLoader] = useState<boolean>(false);
   const [history, setHistory] = useState<any>([]);
 
   useEffect(() => {
@@ -68,13 +73,21 @@ export default function ApplicantsStatusDialog({
   };
 
   const getStatusHistory = () => {
-    getApplicantsStatusHistory(selectedRow?.applicationId).then(
-      (result: any) => {
+    setIsLoader(true);
+    getApplicantsStatusHistory(selectedRow?.applicationId)
+      .then((result: any) => {
         if (result && result?.length > 0) {
           setHistory(result);
         }
-      }
-    );
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          setIsLoader(false);
+        }, 1000);
+      });
   };
 
   // Confirm status change
@@ -168,7 +181,8 @@ export default function ApplicantsStatusDialog({
                 }`}
               >
                 <Stepper activeStep={currentStep} orientation="vertical">
-                  {history?.length > 0 &&
+                  {history &&
+                    history?.length > 0 &&
                     history.map((status: any, index: number) => (
                       <Step key={status.status}>
                         <StepLabel
@@ -181,9 +195,24 @@ export default function ApplicantsStatusDialog({
                           }}
                         >
                           {status.statusName}
+                          <Tooltip title={status.statusName} arrow className="ms-2 cursor-pointer">
+                            <InfoOutlined fontSize="inherit" />
+                          </Tooltip>
                         </StepLabel>
                       </Step>
                     ))}
+                  {history?.length <= 0 && isLoader ? (
+                    <div className="flex justify-center items-center">
+                      <CircularProgress
+                        size={18}
+                        className="!text-indigo-500"
+                      />
+                    </div>
+                  ) : (
+                    history?.length <= 0 && (
+                      <p>Application history not created</p>
+                    )
+                  )}
                 </Stepper>
               </div>
             </div>
