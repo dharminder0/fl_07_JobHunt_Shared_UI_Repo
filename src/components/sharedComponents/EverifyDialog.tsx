@@ -51,6 +51,7 @@ function EverifyDialog() {
 
   const handleClose = () => {
     setOpen(false);
+    dispatch(closeEVerifyDialog());
   };
 
   return (
