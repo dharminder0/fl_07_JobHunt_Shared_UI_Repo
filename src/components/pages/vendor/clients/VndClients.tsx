@@ -42,13 +42,13 @@ const VndClients = () => {
     []
   );
   const [activeDataList, setActiveDataList] = useState<any[]>([]);
-  const [searchFilter, setSearchFilter] = useState<any>({
-    searchValue: "",
-  });
+  const [searchText, setSearchText] = useState<any>("");
 
   useEffect(() => {
-    getOrgRequestList();
-  }, [tabValue]);
+    if (searchText?.length >= 3 || searchText?.length == 0) {
+      getOrgRequestList();
+    }
+  }, [tabValue, searchText]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -59,11 +59,13 @@ const VndClients = () => {
       // orgCode: userData?.orgCode,
       relatedOrgCode: userData?.orgCode,
       relationshipType: [RoleType.Vendor],
+      searchText: searchText,
       status:
         tabValue === "Active" ? InvitedType.Accepted : InvitedType.Archived,
       page: pageIndex,
       pageSize: pageSize,
     };
+    
     setIsLoader(true);
     getOnboardInvitedList(payload)
       .then((result: any) => {
@@ -108,14 +110,9 @@ const VndClients = () => {
                   <TextField
                     size="small"
                     className="w-full"
-                    value={searchFilter.searchValue}
-                    onChange={(event) =>
-                      setSearchFilter({
-                        ...searchFilter,
-                        searchValue: event.target.value,
-                      })
-                    }
-                    placeholder="Search Vendors"
+                    value={searchText}
+                    onChange={(event: any) => setSearchText(event.target.value)}
+                    placeholder="Search Partners"
                     slotProps={{
                       input: {
                         startAdornment: (
