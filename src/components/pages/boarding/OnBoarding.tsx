@@ -60,8 +60,15 @@ export default function OnBoarding() {
     formState: { errors },
     setValue,
   } = useForm({
-    defaultValues: defaultVal,
-    mode: "onChange",
+    defaultValues: {
+      registrationType: ["1"], // Default empty or predefined value
+      orgName: userData.companyName,
+      portfolio: "",
+      contactMail: "",
+      phone: "",
+      website: "",
+      strength: null,
+    },
   });
 
   const onSubmit = (data: any) => {
@@ -277,7 +284,14 @@ export default function OnBoarding() {
                         <Controller
                           name="contactMail"
                           control={control}
-                          rules={{ required: "Contact Mail ID is required" }}
+                          rules={{
+                            required: "Contact email is required",
+                            pattern: {
+                              value:
+                                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                              message: "Invalid email format",
+                            },
+                          }}
                           render={({ field }) => (
                             <TextField
                               {...field}
@@ -287,6 +301,7 @@ export default function OnBoarding() {
                               placeholder="Enter your contact email"
                               size="small"
                               error={!!errors.contactMail}
+                              helperText={errors.contactMail?.message}
                             />
                           )}
                         />
@@ -295,7 +310,21 @@ export default function OnBoarding() {
                         <Controller
                           name="phone"
                           control={control}
-                          rules={{ required: "Mobile Number is required" }}
+                          rules={{
+                            required: "Mobile number is required",
+                            minLength: {
+                              value: 10,
+                              message: "Mobile number must be 10 digits",
+                            },
+                            maxLength: {
+                              value: 10,
+                              message: "Mobile number must be 10 digits",
+                            },
+                            pattern: {
+                              value: /^[6-9]\d{9}$/, // Adjust if you need to accept other ranges
+                              message: "Invalid mobile number format",
+                            },
+                          }}
                           render={({ field }) => (
                             <TextField
                               {...field}
@@ -305,6 +334,7 @@ export default function OnBoarding() {
                               placeholder="Enter your contact number"
                               size="small"
                               error={!!errors.phone}
+                              helperText={errors.phone?.message}
                             />
                           )}
                         />

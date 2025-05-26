@@ -265,13 +265,13 @@ const RequirementForm = () => {
     });
   };
 
-  const getSkillList = () => {
+ const getSkillList = () => {
     getSkillsList().then((result: any) => {
       if (result) {
         setSkillsData(result);
       }
     });
-  };
+  }; 
 
   useEffect(() => {
     if (tabValue === "recommendation") {
