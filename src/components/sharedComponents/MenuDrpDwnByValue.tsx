@@ -168,6 +168,14 @@ const MenuDrpDwnByValue: React.FC<MenuDrpDwnV2Props> = ({
               ))}
             </List>
           )}
+
+          {menuList.length <= 0 && placeholder == "Client" && (
+            <>
+              <p className="mb-3 text-base text-center">
+                No client has been added yet.
+              </p>
+            </>
+          )}
         </div>
         <Divider />
         <div style={{ padding: "8px", textAlign: "right" }}>
