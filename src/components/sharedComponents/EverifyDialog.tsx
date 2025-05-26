@@ -9,13 +9,16 @@ import {
   DialogContentText,
   Snackbar,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
 import { resendEVerify } from "../sharedService/apiService";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { closeEVerifyDialog } from "../features/drawerSlice";
 
 function EverifyDialog() {
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -43,7 +46,7 @@ function EverifyDialog() {
 
   const handleLogin = () => {
     setOpen(false);
-    navigate("/login");
+    dispatch(closeEVerifyDialog());
   };
 
   const handleClose = () => {

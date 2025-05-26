@@ -116,12 +116,17 @@ export default function SignUp() {
           </div>
         </div>
         <div className="w-1/2 mx-auto flex flex-col justify-center items-center px-16">
-          <div className="w-full max-w-md mb-8">
-            <h1 className="text-heading text-gray-700">
-              Get more opportunities
-            </h1>
+          {" "}
+          <div className="w-full max-w-md mb-3">
+            <img
+              src={"/assets/images/logo.svg"}
+              alt="Vendors Cloud Logo"
+              className="h-[70px] mx-auto"
+            />
           </div>
-
+          <div className="w-full max-w-md mb-4">
+            <h1 className="text-gray-700">Let's get started</h1>
+          </div>
           {/* Signup Form */}
           <form
             className="w-full max-w-md space-y-4"
@@ -201,17 +206,14 @@ export default function SignUp() {
                 ),
               }}
             />
-            
+
             {password && (
-              <p
-                className={`!mt-1 text-info ${getStrengthColor(strength)}`}
-              >
+              <p className={`!mt-1 text-info ${getStrengthColor(strength)}`}>
                 {strength === "Too short"
                   ? "Password must be at least 6 characters"
                   : `Password strength: ${strength}`}
               </p>
             )}
-
 
             {/* Error message */}
             {errors && (
@@ -232,7 +234,6 @@ export default function SignUp() {
               Continue
             </Button>
           </form>
-
           <p className="text-base text-gray-500 mt-4">
             Already have an account?{" "}
             <span

@@ -162,8 +162,8 @@ const Messages: React.FC<MessagesProps> = () => {
         {!isChat ? (
           <div className="p-4 flex justify-center items-center h-full flex-col">
             <img
-              src={"/assets/images/vendorscloud.png"}
-              alt="JobHunty Logo"
+              src={"/assets/images/logo.svg"}
+              alt="Vendors Cloud Logo"
               className="h-[100px]"
             />
             <h4 className="text-heading my-8">Welcome to Vendors Cloud</h4>
