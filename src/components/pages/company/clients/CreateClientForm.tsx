@@ -162,7 +162,21 @@ const CreateClientForm = () => {
                     <Controller
                       name="contactPhone"
                       control={control}
-                      rules={{ required: "Mobile number is required" }}
+                      rules={{
+                        required: "Mobile number is required",
+                        minLength: {
+                          value: 10,
+                          message: "Mobile number must be 10 digits",
+                        },
+                        maxLength: {
+                          value: 10,
+                          message: "Mobile number must be 10 digits",
+                        },
+                        pattern: {
+                          value: /^[6-9]\d{9}$/, // Adjust if you need to accept other ranges
+                          message: "Invalid mobile number format",
+                        },
+                      }}
                       render={({ field }) => (
                         <TextField
                           {...field}
