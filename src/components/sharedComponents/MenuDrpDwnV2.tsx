@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import { FixedSizeList } from "react-window";
+import { isArray } from "lodash";
 
 interface MenuItemType {
   id: number;
@@ -33,7 +34,7 @@ const MenuDrpDwnV2: React.FC<MenuDrpDwnV2Props> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIds, setSelectedIds] = useState<number[]>(
-    !selectedId ? [] : [selectedId]
+    !selectedId ? [] : Array.isArray(selectedId) ? selectedId : [selectedId]
   );
   const [filter, setFilter] = useState<string>("");
   const [debouncedFilter, setDebouncedFilter] = useState<string>(filter);

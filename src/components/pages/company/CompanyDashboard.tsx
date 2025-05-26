@@ -39,9 +39,15 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
     navigate(newPath);
   };
 
-  const handleCardClick = (page: string, status: any) => {
+  const handleCardClick = (page: string, status: any, useFor?: any) => {
     navigate(`/company/${page}`, {
-      state: { status: status === true ? 0 : status, isHot: status === true }, // Passing state data
+      state:
+        useFor === "isApplicants"
+          ? {
+              status: status === true ? 0 : status,
+              isApplicants: status === true,
+            }
+          : { status: status === true ? 0 : status, isHot: status === true }, // Passing state data
     });
   };
 
@@ -111,7 +117,7 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
             <div
               className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-              onClick={() => handleCardClick("myrequirements", true)}
+              onClick={() => handleCardClick("myrequirements", true, "isHot")}
             >
               <Typography variant="h5" className="!text-indigo-800">
                 {requirementCounts?.hotRequirements}
@@ -122,7 +128,11 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
             <div
               className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
               onClick={() =>
-                handleCardClick("candidates", ApplicationEnums.InterviewRound1)
+                handleCardClick("candidates", [
+                  ApplicationEnums.InterviewRound1,
+                  ApplicationEnums.InterviewRound2,
+                  ApplicationEnums.InterviewRound3,
+                ])
               }
             >
               <Typography variant="h5" className="!text-indigo-600">
@@ -145,7 +155,9 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = () => {
 
             <div
               className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
-              onClick={() => handleCardClick("myrequirements", true)}
+              onClick={() =>
+                handleCardClick("myrequirements", true, "isApplicants")
+              }
             >
               <Typography variant="h5" className="!text-red-600">
                 {requirementCounts?.noApplications}

@@ -42,7 +42,7 @@ export default function MyCandidates() {
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [searchValue, setSearchValue] = React.useState("");
   const [status, setStatus] = React.useState<any[]>(
-    !paramStatus ? [] : [paramStatus]
+    !paramStatus ? [] : paramStatus
   );
   const [pageIndex, setPageIndex] = React.useState<any>(1);
   const [pageSize, setPageSize] = React.useState<any>(15);
@@ -157,7 +157,7 @@ export default function MyCandidates() {
                   handleSelectedItem={(selectedItems) => {
                     setStatus(selectedItems);
                   }}
-                  selectedId={status[0]}
+                  selectedId={status}
                 />
               </div>
             </div>

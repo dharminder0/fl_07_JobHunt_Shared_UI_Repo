@@ -62,6 +62,7 @@ import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import IconAi from "../../../../components/sharedComponents/IconAi";
+import ApplicantsStatusDialog from "../../../../components/sharedComponents/ApplicantsStatusDialog";
 
 const RequirementDetails = () => {
   const navigate = useNavigate();
@@ -86,14 +87,26 @@ const RequirementDetails = () => {
   const [isSuccessPopup, setIsSuccessPopup] = useState<any>(false);
   const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [updateStatus, setUpdateStatus] = useState<any>({});
+  const [selectedApplicant, setSelectedApplicant] = React.useState({});
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
-  const handleStatusDialog = (status: string) => {
+  // const handleStatusDialog = (status: string) => {
+  //   setIsDialogOpen(true);
+  //   setSelectedStatus(status);
+  // };
+
+  const handleStatusDialog = (applicant: any) => {
     setIsDialogOpen(true);
-    setSelectedStatus(status);
+    setSelectedApplicant({
+      applicationId: applicant.applicationId,
+      requirementUniqueId: applicant.requirementUniqueId,
+      orgCode: userData.orgCode,
+      comment: !applicant.comment ? "" : applicant.comment,
+    });
+    setSelectedStatus(applicant.statusName);
   };
 
   const handleMatchingDialog = (score: number) => {
@@ -516,7 +529,7 @@ const RequirementDetails = () => {
                                     : "bg-indigo-100 text-indigo-700"
                             }`}
                             onClick={() =>
-                              handleStatusDialog(applicant.statusName)
+                              handleStatusDialog(applicant)
                             }
                           >
                             {applicant.statusName}
@@ -642,14 +655,25 @@ const RequirementDetails = () => {
           </>
         )}
       </div>
-
+{/* 
       <StatusDialog
         title="Applicant Status"
         statusData={ApplicantsStatus}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}
+      /> */}
+
+      <ApplicantsStatusDialog
+        title="Applicant Status"
+        statusData={ApplicantsStatus}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        selectedStatus={selectedStatus}
+        selectedRow={selectedApplicant}
+        onFinish={getRequirementApplicant}
       />
+
       <MatchingSkillsDialog
         title="Matching Score Analysis"
         isMatchOpen={isMatchOpen}

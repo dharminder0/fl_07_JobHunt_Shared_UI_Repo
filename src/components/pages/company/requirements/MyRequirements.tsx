@@ -55,6 +55,9 @@ const MyRequirements = () => {
   const [isHotChecked, setIsHotChecked] = React.useState(
     !params?.isHot ? false : true
   );
+  const [isApplicants, setIsApplicants] = React.useState(
+    !params?.isApplicants ? false : true
+  );
 
   const drawerState = useSelector((state: any) => state.drawer);
 
@@ -105,6 +108,7 @@ const MyRequirements = () => {
       userId: userData.userId,
       roleType: activeRole === "company" ? [RoleType.Client] : [],
       isHotEnable: isHotChecked,
+      applicantsExist: isApplicants,
     };
 
     getRequirementsList(payload)
@@ -132,7 +136,15 @@ const MyRequirements = () => {
     if (searchText?.length > 3 || searchText?.length == 0) {
       getRequirementsData();
     }
-  }, [searchText, resource, client, pageIndex, status, isHotChecked]);
+  }, [
+    searchText,
+    resource,
+    client,
+    pageIndex,
+    status,
+    isHotChecked,
+    isApplicants,
+  ]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -159,6 +171,18 @@ const MyRequirements = () => {
                   checked={isHotChecked}
                   onChange={(event: any) =>
                     setIsHotChecked(event.target.checked)
+                  }
+                  size="small"
+                  inputProps={{ "aria-label": "controlled" }}
+                  color="error"
+                />
+              </div>
+              <div className="flex items-center me-2">
+                <span className="text-base me-2">No Applicants</span>
+                <Switch
+                  checked={isApplicants}
+                  onChange={(event: any) =>
+                    setIsApplicants(event.target.checked)
                   }
                   size="small"
                   inputProps={{ "aria-label": "controlled" }}

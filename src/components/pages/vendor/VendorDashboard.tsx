@@ -96,7 +96,11 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
               <div
                 className="bg-primary-light p-3 rounded-md flex items-center flex-col shadow cursor-pointer hover:bg-primary-hover"
                 onClick={() =>
-                  handleCardClick("candidate", ApplicationEnums.InterviewRound1)
+                  handleCardClick("candidate", [
+                    ApplicationEnums.InterviewRound1,
+                    ApplicationEnums.InterviewRound2,
+                    ApplicationEnums.InterviewRound3,
+                  ])
                 }
               >
                 <Typography variant="h5" className="!text-indigo-600">
