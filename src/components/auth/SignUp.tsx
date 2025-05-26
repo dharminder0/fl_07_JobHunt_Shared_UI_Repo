@@ -29,6 +29,8 @@ export default function SignUp() {
 
   const dispatch: AppDispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [strength, setStrength] = useState("");
 
   const {
     register,
@@ -65,6 +67,43 @@ export default function SignUp() {
   };
   const handleBackDropOpen = () => {
     dispatch(openBackdrop());
+  };
+
+  const getPasswordStrength = (password: string): string => {
+    if (password.length < 6) return "Too short";
+
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+    if (strength <= 2) return "Weak";
+    if (strength === 3 || strength === 4) return "Medium";
+    if (strength === 5) return "Strong";
+    return "";
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const pwd = e.target.value;
+    setPassword(pwd);
+    setStrength(getPasswordStrength(pwd));
+  };
+
+  const getStrengthColor = (strength: string) => {
+    switch (strength) {
+      case "Too short":
+        return "text-gray-500";
+      case "Weak":
+        return "text-red-500";
+      case "Medium":
+        return "text-yellow-500";
+      case "Strong":
+        return "text-green-500";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -143,6 +182,7 @@ export default function SignUp() {
                   message: "Password must be at least 6 characters",
                 },
               })}
+              onChange={handlePasswordChange}
               error={!!errors.password}
               InputProps={{
                 endAdornment: (
@@ -161,6 +201,17 @@ export default function SignUp() {
                 ),
               }}
             />
+            
+            {password && (
+              <p
+                className={`!mt-1 text-info ${getStrengthColor(strength)}`}
+              >
+                {strength === "Too short"
+                  ? "Password must be at least 6 characters"
+                  : `Password strength: ${strength}`}
+              </p>
+            )}
+
 
             {/* Error message */}
             {errors && (
