@@ -175,15 +175,8 @@ const VndRequirementDetails = () => {
               <ArrowBackIcon />
             </IconButton>
             <Box>
-              <h5 className="text-heading group/item flex items-center">
+              <h5 className="text-heading flex items-center">
                 {requirementData?.title}
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700 ">
-                    <IconButton aria-label="edit" sx={{ marginLeft: 2 }}>
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
               </h5>
               <div className="flex items-center">
                 {requirementData?.clientFavicon && (

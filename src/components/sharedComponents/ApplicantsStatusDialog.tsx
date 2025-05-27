@@ -195,7 +195,7 @@ export default function ApplicantsStatusDialog({
                           }}
                         >
                           {status.statusName}
-                          <Tooltip title={status.statusName} arrow className="ms-2 cursor-pointer">
+                          <Tooltip title={status.comment} arrow className="ms-2 cursor-pointer">
                             <InfoOutlined fontSize="inherit" />
                           </Tooltip>
                         </StepLabel>
