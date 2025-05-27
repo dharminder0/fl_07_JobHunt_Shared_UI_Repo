@@ -87,7 +87,7 @@ const VndSearchClients = () => {
       role: [RoleType.Client],
       page: pageIndex,
       pageSize: pageSize,
-      searchText,
+      searchText:searchText.trim(),
       technology,
       resource,
       strength,

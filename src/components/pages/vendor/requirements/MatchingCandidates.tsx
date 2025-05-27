@@ -70,7 +70,7 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
     const payload = {
       requirementId: drawerDatas.id,
       orgCode: userData.orgCode,
-      searchText: searchText,
+      searchText: searchText.trim(),
       availability: availability,
     };
     setIsTableLoader(true);

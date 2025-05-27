@@ -24,7 +24,7 @@ export const useOrgRequestList = ({
 
   const fetchOrgRequestList = () => {
     const payload = {
-      searchText,
+      searchText:searchText.trim(),
       orgCode,
       relationshipType: [RoleType.Client],
       status:

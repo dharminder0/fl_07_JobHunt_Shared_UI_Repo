@@ -134,7 +134,7 @@ const VndRequirementDetails = () => {
   const getRequirementsSimiliarData = (searchText: string) => {
     const payload = {
       orgCode: userData.orgCode,
-      searchText: searchText ?? "",
+      searchText: searchText.trim() ?? "",
       page: 1,
       pageSize: 5,
       status: [1],

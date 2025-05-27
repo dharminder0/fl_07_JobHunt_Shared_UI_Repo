@@ -208,8 +208,8 @@ export default function VndCandidates() {
                   </div>
                   <div className="text-secondary-text text-info mt-1">
                     <div
-                      className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                      onClick={() => handleRowClick(applicant.clientCode)}
+                      className="flex items-center min-w-[135px] max-w-[150px]"
+                      // onClick={() => handleRowClick(applicant.clientCode)}
                     >
                       {applicant.clientOrgLogo && (
                         <img

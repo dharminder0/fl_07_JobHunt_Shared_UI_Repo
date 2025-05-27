@@ -66,7 +66,7 @@ const FindVendors = () => {
       orgCode: userData?.orgCode,
       page: pageIndex,
       pageSize: pageSize,
-      searchText,
+      searchText :searchText.trim(),
       technology,
       resource,
       strength,
