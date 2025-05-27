@@ -123,7 +123,13 @@ export default function VndBench({ drawerData = {} }: any) {
 
   const getTechStacks = () => {
     setIsTableLoader(true);
-    getTechStackList(userData.orgCode).then((result: any) => {
+    const payload = {
+      orgCode: userData.orgCode,
+      searchText: "",
+      pageSize: 10,
+      page: 1,
+    };
+    getTechStackList(payload).then((result: any) => {
       if (result && result?.length >= 0) {
         setTechStack(result);
       }

@@ -39,22 +39,19 @@ export default function ApplicantsStatusDialog({
 }: any) {
   // Local state to manage selected status before confirmation
   const [localStatus, setLocalStatus] = useState(selectedStatus);
-  const [comment, setComment] = useState<any>(selectedRow?.comment);
+  const [comment, setComment] = useState<any>("");
   const [isSuccessPopup, setIsSuccessPopup] = useState<boolean>(false);
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const [history, setHistory] = useState<any>([]);
 
   useEffect(() => {
     setHistory([]);
+    setComment("");
     setLocalStatus(selectedStatus);
     if (selectedRow?.applicationId) {
       getStatusHistory();
     }
   }, [selectedRow?.applicationId]);
-
-  useEffect(() => {
-    setComment(selectedRow?.comment);
-  }, [selectedRow?.comment]);
 
   // Find the index of the selected status
   const currentStep = statusData.findIndex(
@@ -195,7 +192,11 @@ export default function ApplicantsStatusDialog({
                           }}
                         >
                           {status.statusName}
-                          <Tooltip title={status.comment} arrow className="ms-2 cursor-pointer">
+                          <Tooltip
+                            title={status.comment}
+                            arrow
+                            className="ms-2 cursor-pointer"
+                          >
                             <InfoOutlined fontSize="inherit" />
                           </Tooltip>
                         </StepLabel>
