@@ -136,7 +136,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     setIsTableLoader(true);
     const payload = {
       orgCode: userData.orgCode,
-      searchText: searchText,
+      searchText: searchText.trim(),
       page: pageIndex,
       pageSize: pageSize,
       locationType: resource,

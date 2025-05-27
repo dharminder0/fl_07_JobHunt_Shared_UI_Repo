@@ -59,7 +59,7 @@ export default function Clients() {
 
   const getClientsListData = () => {
     const payload = {
-      searchText: searchValue,
+      searchText: searchValue.trim(),
       orgCode: userData?.orgCode,
       status: status && status,
       page: pageIndex,

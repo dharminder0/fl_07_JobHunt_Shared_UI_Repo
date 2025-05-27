@@ -109,6 +109,13 @@ export default function UserDetails() {
             },
           ],
         });
+
+        userData.firstName = result.content?.firstName;
+        userData.lastName = result.content?.lastName;
+        userData.phone = result.content?.phone;
+        userData.gender = result.content?.gender;
+        userData.dob = moment(result.content?.dob).format("YYYY-MM-DD");
+        localStorage.setItem("userData", JSON.stringify(userData));
         reset1({ oldEmail: result.content?.userName });
         reset2({ email: result.content?.userName });
       }

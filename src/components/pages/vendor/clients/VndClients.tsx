@@ -59,7 +59,7 @@ const VndClients = () => {
       // orgCode: userData?.orgCode,
       relatedOrgCode: userData?.orgCode,
       relationshipType: [RoleType.Vendor],
-      searchText: searchText,
+      searchText: searchText.trim(),
       status:
         tabValue === "Active" ? InvitedType.Accepted : InvitedType.Archived,
       page: pageIndex,

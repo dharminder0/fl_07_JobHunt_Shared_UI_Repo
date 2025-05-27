@@ -169,7 +169,7 @@ const RequirementDetails = () => {
     const payload = {
       requirementUniqueId: uniqueId,
       status: status,
-      searchText: searchText,
+      searchText: searchText.trim(),
       page: 1,
       pageSize: 10,
     };

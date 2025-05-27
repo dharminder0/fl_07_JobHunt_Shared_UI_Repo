@@ -97,7 +97,7 @@ export default function VndBench({ drawerData = {} }: any) {
 
   const fetchBenchList = () => {
     const payload = {
-      searchText: searchText,
+      searchText: searchText.trim(),
       orgCode: userData.orgCode,
       page: 1,
       availability: availability,
