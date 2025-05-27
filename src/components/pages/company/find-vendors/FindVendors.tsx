@@ -185,7 +185,7 @@ const FindVendors = () => {
               companiesfilterData?.length > 0 &&
               companiesfilterData.map((company, idx) => (
                 <div onClick={() => handleDetails(company.orgCode)}>
-                  <div className="h-100 border p-4 rounded-md cursor-pointer">
+                  <div className="h-full border p-4 rounded-md cursor-pointer">
                     <div className="flex align-center mb-4">
                       <Avatar
                         alt="Org Icon"

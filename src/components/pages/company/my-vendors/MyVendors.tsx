@@ -153,7 +153,7 @@ const MyVendors = () => {
                     activeDataList.map((company, idx) => (
                       <div>
                         <div
-                          className="h-100 border p-4 rounded-md cursor-pointer"
+                          className="h-full border p-4 rounded-md cursor-pointer"
                           onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                             handleDetails(company.relatedOrgCode);
                           }}
