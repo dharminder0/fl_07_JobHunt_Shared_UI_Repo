@@ -159,13 +159,16 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
     setSelectedStatus(status);
   };
 
-  const clientList = useClientList(userData?.orgCode);
+  // const clientList = useClientList(userData?.orgCode);
 
   const getRequirementsData = () => {
     setIsTableLoader(true);
     const payload = {
       resourcesId: benchDrawerData?.id,
       orgCode: userData.orgCode,
+      searchText: searchText,
+      status: status,
+      locationType: resource,
     };
 
     getMatchingPositions(payload)
@@ -243,7 +246,7 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                   />
                 </div>
               </div>
-              
+
               <div className="max-w-full shrink-0">
                 <MenuDrpDwnV2
                   menuList={RequirementStatus}
