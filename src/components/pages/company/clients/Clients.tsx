@@ -31,7 +31,7 @@ export default function Clients() {
   const [clientData, setclientData] = useState<any[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageIndex, setPageIndex] = useState<any>(1);
-  const [status, setStatus] = useState<any>(1);
+  const [status, setStatus] = useState<any>([]);
   const [pageSize, setPageSize] = useState<any>(10);
   const [clientList, setClientList] = useState<any[]>([]);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
@@ -61,7 +61,7 @@ export default function Clients() {
     const payload = {
       searchText: searchValue.trim(),
       orgCode: userData?.orgCode,
-      status: status && status,
+      status: status,
       page: pageIndex,
       pageSize: pageSize,
     };
@@ -121,7 +121,7 @@ export default function Clients() {
                 menuList={ClientStatus}
                 placeholder="Status"
                 handleSelectedItem={(selectedItems) => {
-                  setStatus(selectedItems[0]);
+                  setStatus(selectedItems);
                 }}
                 selectedId={status}
               />
