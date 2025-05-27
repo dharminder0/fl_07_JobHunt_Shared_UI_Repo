@@ -528,9 +528,7 @@ const RequirementDetails = () => {
                                     ? "bg-orange-100 text-orange-700"
                                     : "bg-indigo-100 text-indigo-700"
                             }`}
-                            onClick={() =>
-                              handleStatusDialog(applicant)
-                            }
+                            onClick={() => handleStatusDialog(applicant)}
                           >
                             {applicant.statusName}
                           </Typography>
@@ -655,7 +653,7 @@ const RequirementDetails = () => {
           </>
         )}
       </div>
-{/* 
+      {/* 
       <StatusDialog
         title="Applicant Status"
         statusData={ApplicantsStatus}
@@ -671,7 +669,7 @@ const RequirementDetails = () => {
         setIsDialogOpen={setIsDialogOpen}
         selectedStatus={selectedStatus}
         selectedRow={selectedApplicant}
-        onFinish={getRequirementApplicant}
+        onFinish={() => getRequirementApplicant(uniqueId)}
       />
 
       <MatchingSkillsDialog

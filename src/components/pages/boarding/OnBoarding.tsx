@@ -401,14 +401,14 @@ export default function OnBoarding() {
                         "Register as a vendor to find job opportunities and
                         connect with clients."
                       </p>
-                      <p className="text-base my-1">Client</p>
+                      <p className="text-base my-1">Partner</p>
                       <p className="text-info">
-                        "Register as a client to post job requirements and
+                        "Register as a partner to post job requirements and
                         manage vendors."
                       </p>
                       <p className="text-base my-1">Both</p>
                       <p className="text-info">
-                        "Register as both a vendor and a client to access all
+                        "Register as both a vendor and a partner to access all
                         features."
                       </p>
                     </div>
