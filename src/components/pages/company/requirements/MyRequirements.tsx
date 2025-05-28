@@ -351,21 +351,26 @@ const MyRequirements = () => {
                     <td>
                       {moment(requirement?.createdOn).format("DD-MM-YYYY")}
                     </td>
-                    <td
-                      className="cursor-pointer hover:text-indigo-700"
-                      onClick={() =>
-                        handleRowClick(requirement?.orgCode, "myvendors")
-                      }
-                    >
-                      {requirement?.positions || 0} ({requirement?.placed || 0})
+                    <td>
+                      <span
+                        onClick={() =>
+                          handleRowClick(requirement?.orgCode, "myvendors")
+                        }
+                        className="cursor-pointer hover:text-indigo-700"
+                      >
+                        {requirement?.positions || 0} (
+                        {requirement?.placed || 0})
+                      </span>
                     </td>
-                    <td
-                      className="cursor-pointer  hover:text-indigo-700"
-                      onClick={() =>
-                        handleRowClick(requirement.uniqueId, "applicant")
-                      }
-                    >
-                      {requirement?.applicants || "-"}
+                    <td>
+                      <span
+                        className="cursor-pointer  hover:text-indigo-700 px-3"
+                        onClick={() =>
+                          handleRowClick(requirement.uniqueId, "applicant")
+                        }
+                      >
+                        {requirement?.applicants || "-"}
+                      </span>
                     </td>
                     <td>{requirement?.visibilityName || "-"}</td>
                   </tr>

@@ -126,7 +126,7 @@ export default function VndBench({ drawerData = {} }: any) {
     const payload = {
       orgCode: userData.orgCode,
       searchText: searchText.trim(),
-      pageSize: 10,
+      pageSize: 20,
       page: 1,
     };
     getTechStackList(payload).then((result: any) => {
