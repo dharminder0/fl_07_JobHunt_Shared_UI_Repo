@@ -48,6 +48,7 @@ import {
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   InvitedType,
+  LocationType,
   RoleType,
 } from "../../../../components/sharedService/enums";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
@@ -196,8 +197,14 @@ const VendorCompanyDetails = () => {
       isActiveContracts: tabValue === "activeView" ? true : false,
       isPastContracts: tabValue === "pastView" ? true : false,
       isOpenPosition: tabValue === "openView" ? true : false,
-      partnerCode: activeRole === "vendor" ?  pathSegments[pathSegments.length - 1] : userData.orgCode,
-      vendorCode: activeRole !== "vendor" ? pathSegments[pathSegments.length - 1] : userData.orgCode,
+      partnerCode:
+        activeRole === "vendor"
+          ? pathSegments[pathSegments.length - 1]
+          : userData.orgCode,
+      vendorCode:
+        activeRole !== "vendor"
+          ? pathSegments[pathSegments.length - 1]
+          : userData.orgCode,
     };
     setIsTableLoader(true);
     getVendorContractData(payload)
@@ -452,8 +459,8 @@ const VendorCompanyDetails = () => {
                             <div className="cursor-pointer hover:text-indigo-700">
                               {job.requirementTitle}
                             </div>
-                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
+                            <div className="flex items-center text-secondary-text text-info mt-1">
+                              {/* <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
                                 <img
                                   src={job?.clientLogoUrl}
                                   style={{ height: 12, width: 12 }}
@@ -464,24 +471,29 @@ const VendorCompanyDetails = () => {
                                     {job?.client || "Self"}
                                   </span>
                                 </Tooltip>
-                              </div>
-                              <div className="flex w-[128px] justify-end">
-                                {job?.Location && (
-                                  <div className="flex items-center ms-1">
+                              </div> */}
+                              <div className="flex ">
+                                {job?.locationType && (
+                                  <div className="flex items-center me-1">
                                     <LocationOnOutlined
                                       fontSize="inherit"
                                       className="mr-1"
                                     />
-                                    <span>{job?.Location || "-"}</span>
+                                    <span>
+                                      {Object.keys(LocationType).find(
+                                        (k) =>
+                                          LocationType[k] == job.locationType
+                                      )}
+                                    </span>
                                   </div>
                                 )}
                                 {job?.contractPeriod && (
-                                  <div className="flex items-center ms-1">
+                                  <div className="flex items-center">
                                     <AccessTimeOutlined
                                       fontSize="inherit"
                                       className="mr-1"
                                     />
-                                    <span className="truncate w-[70px]">
+                                    <span className="truncate w-[100px]">
                                       {job?.contractPeriod || "-"}
                                     </span>
                                   </div>
