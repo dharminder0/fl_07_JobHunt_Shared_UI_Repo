@@ -196,8 +196,8 @@ const VendorCompanyDetails = () => {
       isActiveContracts: tabValue === "activeView" ? true : false,
       isPastContracts: tabValue === "pastView" ? true : false,
       isOpenPosition: tabValue === "openView" ? true : false,
-      partnerCode: activeRole === "vendor" ? orgData.orgCode : userData.orgCode,
-      vendorCode: activeRole !== "vendor" ? orgData.orgCode : userData.orgCode,
+      partnerCode: activeRole === "vendor" ?  pathSegments[pathSegments.length - 1] : userData.orgCode,
+      vendorCode: activeRole !== "vendor" ? pathSegments[pathSegments.length - 1] : userData.orgCode,
     };
     setIsTableLoader(true);
     getVendorContractData(payload)
