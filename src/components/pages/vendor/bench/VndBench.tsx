@@ -125,7 +125,7 @@ export default function VndBench({ drawerData = {} }: any) {
     setIsTableLoader(true);
     const payload = {
       orgCode: userData.orgCode,
-      searchText: "",
+      searchText: searchText.trim(),
       pageSize: 10,
       page: 1,
     };
@@ -305,30 +305,74 @@ export default function VndBench({ drawerData = {} }: any) {
 
           <div className="flex flex-row gap-1 p-1 overflow-hidden">
             <div className="flex text-center flex-nowrap my-auto">
-              {drawerData?.isOpen && drawerData.type !== "techStack" && (
-                <Button
-                  variant="contained"
-                  size="small"
-                  disabled={selectedRows?.length <= 0}
-                  className="!mr-2"
-                  onClick={handleApply}
-                >
-                  Apply
-                </Button>
-              )}
-              {!drawerData?.isOpen && drawerData.type !== "techStack" && (
-                <Button
-                  variant="text"
-                  size="small"
-                  disabled={selectedRows?.length <= 0}
-                  className="!mr-2"
-                  onClick={() => setIsPopupOpen(true)}
-                >
-                  <IconAi />
-                  Check matching positions
-                </Button>
-              )}
+              {activeTab === "benchTab" && (
+                <>
+                  {drawerData?.isOpen && drawerData.type !== "techStack" && (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      disabled={selectedRows?.length <= 0}
+                      className="!mr-2"
+                      onClick={handleApply}
+                    >
+                      Apply
+                    </Button>
+                  )}
+                  {!drawerData?.isOpen && drawerData.type !== "techStack" && (
+                    <Button
+                      variant="text"
+                      size="small"
+                      disabled={selectedRows?.length <= 0}
+                      className="!mr-2"
+                      onClick={() => setIsPopupOpen(true)}
+                    >
+                      <IconAi />
+                      Check matching positions
+                    </Button>
+                  )}
 
+                  <div className="flex grow w-[220px] mx-2">
+                    <div className="flex-col flex-grow">
+                      <TextField
+                        size="small"
+                        className="w-full"
+                        value={searchText}
+                        onChange={(event) => SetSearchText(event.target.value)}
+                        placeholder="Search Resources"
+                        slotProps={{
+                          input: {
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon fontSize="inherit" />
+                              </InputAdornment>
+                            ),
+                            // endAdornment: (
+                            //   <InputAdornment
+                            //     position="end"
+                            //     className="cursor-pointer"
+                            //   >
+                            //     <CloseOutlined fontSize="inherit" />
+                            //   </InputAdornment>
+                            // ),
+                          },
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="max-w-full shrink-0">
+                    <MenuDrpDwnV2
+                      menuList={AvailabilityStatus}
+                      placeholder="Availability"
+                      handleSelectedItem={(selectedItems) =>
+                        setAvailability(selectedItems)
+                      }
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+
+            {activeTab === "techStack" && (
               <div className="flex grow w-[220px] mx-2">
                 <div className="flex-col flex-grow">
                   <TextField
@@ -357,32 +401,12 @@ export default function VndBench({ drawerData = {} }: any) {
                   />
                 </div>
               </div>
-              {/* <div className="max-w-full shrink-0">
-                <MenuDrpDwn
-                  menuList={filterList?.roles}
-                  placeholder="Roles"
-                  handleSelectedItem={(selectedItems) => {
-                    setSearchFilter({
-                      ...searchFilter,
-                      roles: selectedItems,
-                    });
-                  }}
-                />
-              </div> */}
-              <div className="max-w-full shrink-0">
-                <MenuDrpDwnV2
-                  menuList={AvailabilityStatus}
-                  placeholder="Availability"
-                  handleSelectedItem={(selectedItems) =>
-                    setAvailability(selectedItems)
-                  }
-                />
-              </div>
-            </div>
+            )}
+
             <IconButton aria-label="filter">
               <FilterListOutlinedIcon />
             </IconButton>
-            {/* {!drawerData?.isOpen && <AddBenchForm />} */}
+
             {!drawerData?.isOpen && (
               // <AddAIBench handleGetBenchDetail={fetchBenchList} />
               <div className="flex flex-col my-auto mr-2">
