@@ -29,6 +29,7 @@ export default function SignUp() {
 
   const dispatch: AppDispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [strength, setStrength] = useState("");
 
@@ -49,10 +50,13 @@ export default function SignUp() {
           res.content["firstName"] = data?.firstName;
           res.content["lastName"] = data?.lastName;
           localStorage.setItem("userData", JSON.stringify(res?.content));
+          dispatch(openEVerifyDialog());
+        }
+        if (!res.success) {
+          setError(res.message);
         }
         setTimeout(() => {
           handleBackDropClose();
-          dispatch(openEVerifyDialog());
         }, 1000);
       })
       .catch((error: any) => {
@@ -216,13 +220,7 @@ export default function SignUp() {
             )}
 
             {/* Error message */}
-            {errors && (
-              <p className="text-info text-red-500">
-                {/* {Object.values(errors)
-                  .map((err) => err?.message)
-                  .join(", ")} */}
-              </p>
-            )}
+            {error && <p className="text-info text-red-500">{error}</p>}
 
             <Button
               type="submit"
