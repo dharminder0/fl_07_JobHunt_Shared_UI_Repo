@@ -160,29 +160,36 @@ export default function UserDetails() {
       });
   };
   const onSubmit2 = (data: any) => {
-    dispatch(openBackdrop());
-    changePassword(data)
-      .then((result: any) => {
-        if (result.success) {
-          reset2();
-          setTimeout(() => {
-            setIsSuccessPopup(true);
-          }, 1000);
-        } else {
-          setError1("newPassword", {
-            type: "manual",
-            message: "Incorrect Password",
-          });
-        }
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
-      })
-      .catch((error: any) => {
-        setTimeout(() => {
-          dispatch(closeBackdrop());
-        }, 1000);
+    if (data.newPassword === data.oldPassword) {
+      setError1("newPassword", {
+        type: "manual",
+        message: "Use Different Password",
       });
+    } else {
+      dispatch(openBackdrop());
+      changePassword(data)
+        .then((result: any) => {
+          if (result.success) {
+            reset2();
+            setTimeout(() => {
+              setIsSuccessPopup(true);
+            }, 1000);
+          } else {
+            setError1("newPassword", {
+              type: "manual",
+              message: "Incorrect Password",
+            });
+          }
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+        })
+        .catch((error: any) => {
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+        });
+    }
   };
 
   return (
