@@ -327,7 +327,7 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                         </div>
                       </div>
                       <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                        <div
+                        {/* <div
                           className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
                           onClick={() =>
                             handleClickToClient(
@@ -354,10 +354,10 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                               </span>
                             </Tooltip>
                           )}
-                        </div>
-                        <div className="flex w-[128px] justify-end">
+                        </div> */}
+                        <div className="flex w-full">
                           {requirement?.Location && (
-                            <div className="flex items-center ms-1">
+                            <div className="flex items-center me-1">
                               <LocationOnOutlined
                                 fontSize="inherit"
                                 className="mr-1"
@@ -366,12 +366,12 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                             </div>
                           )}
                           {requirement?.Duration && (
-                            <div className="flex items-center ms-1">
+                            <div className="flex items-center">
                               <AccessTimeOutlined
                                 fontSize="inherit"
                                 className="mr-1"
                               />
-                              <span className="truncate w-[70px]">
+                              <span className="truncate w-[100px]">
                                 {requirement?.Duration || "-"}
                               </span>
                             </div>
