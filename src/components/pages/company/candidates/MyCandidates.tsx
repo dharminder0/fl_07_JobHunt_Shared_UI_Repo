@@ -33,6 +33,7 @@ export default function MyCandidates() {
   const dispatch: AppDispatch = useDispatch();
   const params = location.state || {};
   const paramStatus = params.status;
+  const paramUniqueId = params.state?.uniqueId;
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isMatchOpen, setIsMatchOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
@@ -85,18 +86,18 @@ export default function MyCandidates() {
     if (searchValue?.length > 2 || searchValue?.length == 0) {
       getApplicantsListData();
     }
-  }, [searchValue, status, pageIndex, selectedClients]);
+  }, [searchValue, status, pageIndex, selectedClients, paramUniqueId]);
 
   const getApplicantsListData = () => {
     const payload = {
-      searchText: searchValue,
+      searchText: searchValue.trim(),
       client: selectedClients,
       status: status,
-      resources: [],
+      requirmentUniqueId: paramUniqueId,
       orgCode: userData.orgCode,
       page: pageIndex,
       pageSize: pageSize,
-    };
+    };  
     setIsTableLoader(true);
     getClientApplicantsList(payload)
       .then((result: any) => {

@@ -152,6 +152,11 @@ export const addNewMember = async (payload: any) => {
   return response.data;
 };
 
+export const deleteMember = async (userId: any) => {
+  const response = await api.post(`V1/users/DeleteMember?userId=${userId}`);
+  return response.data;
+};
+
 export const setMemberPassword = async (payload: any) => {
   const response = await api.post("V1/users/SetPassword", payload);
   return response.data;
