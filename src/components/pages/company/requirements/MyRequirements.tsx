@@ -32,6 +32,7 @@ import { RoleType } from "../../../../components/sharedService/enums";
 import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { useSelector } from "react-redux";
+import { uniqueId } from "lodash";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
@@ -66,7 +67,10 @@ const MyRequirements = () => {
       switch (type) {
         case "applicant":
           navigate(`/company/candidates`, {
-            state: { previousUrl: location.pathname },
+            state: {
+              previousUrl: location.pathname,
+              state: { uniqueId: clientCode },
+            },
           });
           break;
         case "client":
