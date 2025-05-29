@@ -332,17 +332,32 @@ const VendorCompanyDetails = () => {
                           <th className="add-right-shadow">
                             {item.requirementTitle}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
-                                <img
-                                  src={item?.clientLogoUrl}
-                                  style={{ height: 12, width: 12 }}
-                                  className="me-1"
-                                />
-                                <Tooltip title={item?.client} arrow>
-                                  <span className="text-ellipsis overflow-hidden truncate">
-                                    {item?.client || "Self"}
-                                  </span>
-                                </Tooltip>
+                              <div className="flex ">
+                                {item?.locationType && (
+                                  <div className="flex items-center me-1">
+                                    <LocationOnOutlined
+                                      fontSize="inherit"
+                                      className="mr-1"
+                                    />
+                                    <span>
+                                      {Object.keys(LocationType).find(
+                                        (k) =>
+                                          LocationType[k] == item.locationType
+                                      )}
+                                    </span>
+                                  </div>
+                                )}
+                                {item?.contractPeriod && (
+                                  <div className="flex items-center">
+                                    <AccessTimeOutlined
+                                      fontSize="inherit"
+                                      className="mr-1"
+                                    />
+                                    <span className="truncate w-[100px]">
+                                      {item?.contractPeriod || "-"}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </th>
@@ -395,17 +410,32 @@ const VendorCompanyDetails = () => {
                           <th className="add-right-shadow">
                             {item.requirementTitle}
                             <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
-                                <img
-                                  src={item?.clientLogoUrl}
-                                  style={{ height: 12, width: 12 }}
-                                  className="me-1"
-                                />
-                                <Tooltip title={item?.client} arrow>
-                                  <span className="text-ellipsis overflow-hidden truncate">
-                                    {item?.client || "Self"}
-                                  </span>
-                                </Tooltip>
+                              <div className="flex ">
+                                {item?.locationType && (
+                                  <div className="flex items-center me-1">
+                                    <LocationOnOutlined
+                                      fontSize="inherit"
+                                      className="mr-1"
+                                    />
+                                    <span>
+                                      {Object.keys(LocationType).find(
+                                        (k) =>
+                                          LocationType[k] == item.locationType
+                                      )}
+                                    </span>
+                                  </div>
+                                )}
+                                {item?.contractPeriod && (
+                                  <div className="flex items-center">
+                                    <AccessTimeOutlined
+                                      fontSize="inherit"
+                                      className="mr-1"
+                                    />
+                                    <span className="truncate w-[100px]">
+                                      {item?.contractPeriod || "-"}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </th>

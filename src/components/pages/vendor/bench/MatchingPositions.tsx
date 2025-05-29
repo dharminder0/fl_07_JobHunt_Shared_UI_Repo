@@ -79,7 +79,7 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
   const [status, setStatus] = useState<any[]>(
-    !paramStatus ? [] : [paramStatus]
+    !paramStatus ? [1] : [paramStatus]
   );
   const [client, setClient] = React.useState<any[]>([]);
   const [resource, setResource] = useState<any[]>([]);
@@ -254,6 +254,7 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                   handleSelectedItem={(selectedItems) =>
                     setStatus(selectedItems)
                   }
+                  selectedId={status}
                 />
               </div>
               <div className="max-w-full shrink-0">
