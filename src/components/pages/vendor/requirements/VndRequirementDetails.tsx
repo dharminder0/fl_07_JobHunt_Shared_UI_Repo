@@ -180,14 +180,14 @@ const VndRequirementDetails = () => {
                 {requirementData?.title}
               </h5>
               <div className="flex items-center">
-                {requirementData?.clientFavicon && (
+                {requirementData?.partnerFavicon && (
                   <img
-                    src={requirementData?.clientFavicon}
+                    src={requirementData?.partnerFavicon}
                     alt=""
                     style={{ width: 16, height: 16 }}
                   />
                 )}
-                <p className="text-title mx-2">{requirementData?.clientName}</p>
+                <p className="text-title mx-2">{requirementData?.partnerName}</p>
 
                 <div>
                   {requirementData?.locationTypeName && (

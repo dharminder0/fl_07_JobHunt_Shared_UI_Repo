@@ -109,6 +109,15 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   };
 
+  const handleApplicantClick = (uniqueId: any) => {
+    navigate(`/vendor/candidate`, {
+      state: {
+        previousUrl: location.pathname,
+        state: { uniqueId: uniqueId },
+      },
+    });
+  };
+
   const handleOpenDrawer = (name: string, data: any) => {
     dispatch(openDrawer({ drawerName: name, data: !data ? {} : data }));
   };
@@ -355,7 +364,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                       <div className="flex items-center justify-between">
                         <div
                           onClick={() => handleRowClick(requirement.uniqueId)}
-                          className="cursor-pointer hover:text-indigo-700"
+                          className="cursor-pointer hover:text-indigo-700 truncate w-3/5"
                         >
                           {requirement.title}
                         </div>
@@ -364,7 +373,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             {benchDrawerData?.isOpen && (
                               <div
                                 className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                // onClick={() => handleMatchingDialog(64)}
+                                // onClick={() => handleMatchingDialog(requirement?.aiScore)}
                               >
                                 <IconAi />
                                 <span> {requirement?.aiScore}%</span>
@@ -377,7 +386,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             </div>
                           )}
                           <div
-                            className="cursor-pointer hover:text-indigo-700"
+                            className="cursor-pointer hover:text-indigo-700 truncate"
                             onClick={() =>
                               handleOpenDrawer("MatchingCandidates", {
                                 id: requirement?.id,
@@ -471,15 +480,29 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     <td>
                       {moment(requirement.createdOn).format("DD-MM-YYYY")}
                     </td>
-                    <td
-                      className="cursor-pointer hover:text-indigo-700"
-                      onClick={() =>
-                        handleClickToClient(requirement.partnerCode, "openView")
-                      }
-                    >
-                      {requirement.positions} ({requirement?.placed || 0})
+                    <td>
+                      <span
+                        className="cursor-pointer hover:text-indigo-700 px-2"
+                        onClick={() =>
+                          handleClickToClient(
+                            requirement.partnerCode,
+                            "openView"
+                          )
+                        }
+                      >
+                        {requirement.positions} ({requirement?.placed || 0})
+                      </span>
                     </td>
-                    <td>{requirement?.applicants || "-"}</td>
+                    <td>
+                      <span
+                        className="cursor-pointer hover:text-indigo-700 px-2"
+                        onClick={() =>
+                          handleApplicantClick(requirement.uniqueId)
+                        }
+                      >
+                        {requirement?.applicants || "-"}
+                      </span>
+                    </td>
                   </tr>
                 ))}
             </tbody>

@@ -31,6 +31,7 @@ export default function VndCandidates() {
   const location = useLocation();
   const params = location.state || {};
   const paramStatus = params?.status;
+  const paramUniqueId = params.state?.uniqueId;
   const dispatch: AppDispatch = useDispatch();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
@@ -63,7 +64,7 @@ export default function VndCandidates() {
     if (searchValue?.length > 2 || searchValue?.length == 0) {
       getApplicantsListData();
     }
-  }, [searchValue, status, pageIndex, client]);
+  }, [searchValue, status, pageIndex, client, paramUniqueId]);
 
   const getApplicantsListData = () => {
     const payload = {
@@ -73,6 +74,7 @@ export default function VndCandidates() {
       userId: userData.userId,
       page: pageIndex,
       pageSize: pageSize,
+      uniqueId: paramUniqueId,
     };
     setIsTableLoader(true);
     getApplicantsList(payload)
@@ -143,13 +145,13 @@ export default function VndCandidates() {
                 />
               </div>
             </div>
-            <div className="max-w-full shrink-0">
+            {/* <div className="max-w-full shrink-0">
               <MenuDrpDwnByValue
                 menuList={clientList}
                 placeholder="Client"
                 handleSelectedItem={(selectedItems) => setClient(selectedItems)}
               />
-            </div>
+            </div> */}
             <div className="max-w-full shrink-0">
               <MenuDrpDwnV2
                 menuList={ApplicantsStatus}
@@ -211,16 +213,16 @@ export default function VndCandidates() {
                       className="flex items-center min-w-[135px] max-w-[150px]"
                       // onClick={() => handleRowClick(applicant.clientCode)}
                     >
-                      {applicant.clientOrgLogo && (
+                      {applicant.orgLogo && (
                         <img
-                          src={applicant.clientOrgLogo}
+                          src={applicant.orgLogo}
                           style={{ height: 12, width: 12 }}
                           className="me-1"
                         />
                       )}
-                      <Tooltip title={applicant.clientOrgName} arrow>
+                      <Tooltip title={applicant.orgName} arrow>
                         <span className="text-ellipsis overflow-hidden truncate">
-                          {applicant.clientOrgName}
+                          {applicant.orgName}
                         </span>
                       </Tooltip>
                     </div>
