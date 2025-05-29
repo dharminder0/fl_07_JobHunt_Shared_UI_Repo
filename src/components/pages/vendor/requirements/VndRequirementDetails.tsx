@@ -112,6 +112,7 @@ const VndRequirementDetails = () => {
       requirementUniqueId: uniqueId,
       page: 1,
       pageSize: 10,
+      vendorCode: userData.orgCode,
     };
     setIsLoader(true);
     getRequirementApplicants(payload)
@@ -186,10 +187,7 @@ const VndRequirementDetails = () => {
                     style={{ width: 16, height: 16 }}
                   />
                 )}
-                <p className="text-title mx-2">
-                  {" "}
-                  {requirementData?.clientName}
-                </p>
+                <p className="text-title mx-2">{requirementData?.clientName}</p>
 
                 <div>
                   {requirementData?.locationTypeName && (
