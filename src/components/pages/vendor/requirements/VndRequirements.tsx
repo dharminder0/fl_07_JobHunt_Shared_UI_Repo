@@ -391,8 +391,8 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                               handleOpenDrawer("MatchingCandidates", {
                                 id: requirement?.id,
                                 role: requirement?.title,
-                                client: requirement.clientName,
-                                clientLogo: requirement.clientFavicon,
+                                client: requirement.partnerName,
+                                clientLogo: requirement.partnerFavicon,
                                 uniqueId: requirement.uniqueId,
                               })
                             }
@@ -482,13 +482,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     </td>
                     <td>
                       <span
-                        className="cursor-pointer hover:text-indigo-700 px-2"
-                        onClick={() =>
-                          handleClickToClient(
-                            requirement.partnerCode,
-                            "openView"
-                          )
-                        }
+                        // onClick={() =>
+                        //   handleClickToClient(
+                        //     requirement.partnerCode,
+                        //     "openView"
+                        //   )
+                        // }
                       >
                         {requirement.positions} ({requirement?.placed || 0})
                       </span>

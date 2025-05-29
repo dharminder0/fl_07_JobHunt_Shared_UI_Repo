@@ -357,10 +357,10 @@ const MyRequirements = () => {
                     </td>
                     <td>
                       <span
-                        onClick={() =>
-                          handleRowClick(requirement?.orgCode, "myvendors")
-                        }
-                        className="cursor-pointer hover:text-indigo-700"
+                        // onClick={() =>
+                        //   handleRowClick(requirement?.orgCode, "myvendors")
+                        // }
+                        // className="cursor-pointer hover:text-indigo-700"
                       >
                         {requirement?.positions || 0} (
                         {requirement?.placed || 0})

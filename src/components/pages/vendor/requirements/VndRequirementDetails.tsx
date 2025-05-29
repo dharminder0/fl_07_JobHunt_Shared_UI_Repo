@@ -187,7 +187,9 @@ const VndRequirementDetails = () => {
                     style={{ width: 16, height: 16 }}
                   />
                 )}
-                <p className="text-title mx-2">{requirementData?.partnerName}</p>
+                <p className="text-title mx-2">
+                  {requirementData?.partnerName}
+                </p>
 
                 <div>
                   {requirementData?.locationTypeName && (
@@ -360,8 +362,8 @@ const VndRequirementDetails = () => {
                         data: {
                           id: item?.id,
                           role: item?.title,
-                          client: item.clientName,
-                          clientLogo: item.clientFavicon,
+                          client: item.partnerName,
+                          clientLogo: item.partnerFavicon,
                           uniqueId: item.uniqueId,
                         },
                       })
@@ -373,18 +375,18 @@ const VndRequirementDetails = () => {
               </div>
               <div className="flex items-center justify-between flex-wrap text-secondary-text text-info mt-1">
                 <div className="flex items-center w-full">
-                  {!item.clientFavicon ? (
+                  {!item.partnerFavicon ? (
                     <CorporateFareOutlined fontSize="medium" />
                   ) : (
                     <img
-                      src={item.clientFavicon}
+                      src={item.partnerFavicon}
                       style={{ height: 12, width: 12 }}
                       className="me-1"
                     />
                   )}
-                  <Tooltip title={item.clientName} arrow>
+                  <Tooltip title={item.partnerName} arrow>
                     <span className="text-ellipsis overflow-hidden truncate">
-                      {item.clientName}
+                      {item.partnerName}
                     </span>
                   </Tooltip>
                 </div>
