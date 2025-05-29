@@ -91,6 +91,7 @@ const RequirementForm = () => {
 
   const { control, handleSubmit, watch, reset, setValue } = useForm({
     defaultValues: {
+      id: 0,
       clientCode: "",
       title: "",
       description: "",
@@ -139,6 +140,7 @@ const RequirementForm = () => {
   const onSubmit = (data: any) => {
     data.orgCode = userData?.orgCode;
     data.userId = userData?.userId;
+    data.id = !requirementData?.Id ? 0 : requirementData?.Id;
     setIsLoader(true);
     upsertRequirement(data)
       .then((result: any) => {
@@ -265,13 +267,13 @@ const RequirementForm = () => {
     });
   };
 
- const getSkillList = () => {
+  const getSkillList = () => {
     getSkillsList().then((result: any) => {
       if (result) {
         setSkillsData(result);
       }
     });
-  }; 
+  };
 
   useEffect(() => {
     if (tabValue === "recommendation") {
@@ -951,8 +953,9 @@ const RequirementForm = () => {
                 sx={{ width: 125 }}
                 disabled={
                   (shareWith == 1 &&
-                  selectedVendors?.length <= 0 &&
-                  tabValue === "share") || (selectedCards?.length <=0 && tabValue === "recommendation")
+                    selectedVendors?.length <= 0 &&
+                    tabValue === "share") ||
+                  (selectedCards?.length <= 0 && tabValue === "recommendation")
                 }
               >
                 Submit
