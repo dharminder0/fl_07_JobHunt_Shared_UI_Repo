@@ -191,14 +191,17 @@ export default function ApplicantsStatusDialog({
                             },
                           }}
                         >
-                          {status.statusName}
-                          <Tooltip
-                            title={status.comment}
-                            arrow
-                            className="ms-2 cursor-pointer"
-                          >
-                            <InfoOutlined fontSize="inherit" />
-                          </Tooltip>
+                          <div className="flex items-center">
+                            {status.statusName}
+                            <Tooltip
+                              title={status.comment}
+                              arrow
+                              className="ms-2 cursor-pointer"
+                            >
+                              <InfoOutlined fontSize="inherit" />
+                            </Tooltip>
+                          </div>
+                          <p className="truncate text-info">{status.comment}</p>
                         </StepLabel>
                       </Step>
                     ))}

@@ -102,6 +102,7 @@ export default function VndBench({ drawerData = {} }: any) {
       page: 1,
       availability: availability,
       pageSize: 20,
+      topSkillId: drawerData?.data?.id ?? 0,
     };
     setIsTableLoader(true);
     getBenchList(payload)
@@ -586,6 +587,7 @@ export default function VndBench({ drawerData = {} }: any) {
                           onClick={() =>
                             handleDrawer("techStack", true, {
                               tech: item.SkillName,
+                              id: item.id,
                             })
                           }
                         >
@@ -620,7 +622,7 @@ export default function VndBench({ drawerData = {} }: any) {
             <div className="px-4 py-2 border-b">
               <h2 className="text-heading">
                 {drawerObj.type === "bench" && "Bench Resource Preview"}
-                {drawerObj.type === "techStack" && "Angular"}
+                {drawerObj.type === "techStack" && "Matching Resources"}
                 {drawerObj.type === "requirement" && "Matching Positions"}
               </h2>
             </div>
