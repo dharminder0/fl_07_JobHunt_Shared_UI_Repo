@@ -49,3 +49,13 @@ export enum ApplicationEnums {
   OnHold = 12,
   Withdrawn = 13,
 }
+
+export enum AvailabilityEnums {
+  Immediate = 1,
+  FifteenDaysNotice = 2,
+  ThirtyDaysNotice = 3,
+  SixtyDaysNotice = 4,
+  NinetyDaysNotice = 5,
+  Negotiable = 6,
+  NotAvailable = 7,
+}

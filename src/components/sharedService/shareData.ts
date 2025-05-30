@@ -167,6 +167,11 @@ export const AvailabilityStatus: any = [
     name: "Negotiable",
     value: "Negotiable",
   },
+  {
+    id: 7,
+    name: "Not Available",
+    value: "Not Available",
+  },
 ];
 
 export const OrgStrength: any = ["0-10", "10-50", "50-100", "100-500", "500+"];
