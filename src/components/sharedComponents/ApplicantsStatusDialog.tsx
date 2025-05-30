@@ -51,7 +51,7 @@ export default function ApplicantsStatusDialog({
     if (selectedRow?.applicationId) {
       getStatusHistory();
     }
-  }, [selectedRow?.applicationId]);
+  }, [selectedRow]);
 
   // Find the index of the selected status
   const currentStep = statusData.findIndex(
