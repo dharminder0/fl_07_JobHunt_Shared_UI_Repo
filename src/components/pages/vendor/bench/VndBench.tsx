@@ -15,6 +15,7 @@ import {
   DialogActions,
   DialogContent,
   Dialog,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
@@ -40,6 +41,7 @@ import {
 } from "../../../../components/features/drawerSlice";
 import MatchingPositions from "./MatchingPositions";
 import IconAi from "../../../../components/sharedComponents/IconAi";
+import { AvailabilityEnums } from "../../../../components/sharedService/enums";
 
 export default function VndBench({ drawerData = {} }: any) {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -494,9 +496,10 @@ export default function VndBench({ drawerData = {} }: any) {
                                   //   )
                                   // }
 
-                                  onClick={() =>
-                                    handleOpenDrawer("benchPreview", item.cv)
-                                  }
+                                  onClick={() => {
+                                    item.cv.id = item.id;
+                                    handleOpenDrawer("benchPreview", item.cv);
+                                  }}
                                   className="cursor-pointer hover:text-indigo-700"
                                 >
                                   {item?.firstName} {item?.lastName}
@@ -519,7 +522,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                     {item.matchingCount} Matching positions
                                   </div>
                                 )}
-                                {drawerData?.isOpen && (
+                                {/* {drawerData?.isOpen && (
                                   <div
                                     className="flex justify-end cursor-pointer hover:text-indigo-700"
                                     // onClick={() =>
@@ -527,9 +530,9 @@ export default function VndBench({ drawerData = {} }: any) {
                                     // }
                                   >
                                     <IconAi />
-                                    <span> {item?.aiScore || 60}%</span>
+                                    <span> {item?.matchingScore || "-"}%</span>
                                   </div>
-                                )}
+                                )} */}
                               </div>
                               <div className="flex items-center justify-between text-secondary-text text-info">
                                 <div className="flex">
@@ -552,7 +555,19 @@ export default function VndBench({ drawerData = {} }: any) {
                         </th>
                         <td>{item.title || "-"}</td>
                         {/* <td>{item.skills || "-"}</td> */}
-                        <td>{item?.availabilityName || "-"}</td>
+                        <td>
+                          <Typography
+                            className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
+                              item?.availabilityName ===
+                              AvailabilityEnums.NotAvailable
+                                ? "bg-red-100 text-red-700"
+                                : "bg-indigo-100 text-indigo-700"
+                            }`}
+                            // onClick={() => handleStatusDialog(item)}
+                          >
+                            {item?.availabilityName}
+                          </Typography>
+                        </td>
                       </tr>
                     ))}
                 </tbody>
@@ -619,7 +634,23 @@ export default function VndBench({ drawerData = {} }: any) {
           <div className="w-[calc(100vw-250px)] h-full">
             {/* header */}
 
-            <div className="px-4 py-2 border-b">
+            <div className="px-8 py-2 border-b flex">
+              <svg
+                className="absolute cursor-pointer left-[8px] top-[11px]"
+                onClick={toggleDrawer(false)}
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M20 20L4 4.00003M20 4L4.00002 20"
+                  stroke="black"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
               <h2 className="text-heading">
                 {drawerObj.type === "bench" && "Bench Resource Preview"}
                 {drawerObj.type === "techStack" && "Matching Resources"}
