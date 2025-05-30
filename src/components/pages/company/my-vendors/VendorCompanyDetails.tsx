@@ -166,6 +166,7 @@ const VendorCompanyDetails = () => {
       page: 1,
       availability: [],
       pageSize: 20,
+      topSkillId: 0,
     };
     setIsTableLoader(true);
     getBenchList(payload)
