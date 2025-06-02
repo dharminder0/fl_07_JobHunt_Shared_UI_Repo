@@ -597,7 +597,7 @@ export default function VndBench({ drawerData = {} }: any) {
                         <td>
                           <Typography
                             className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                              item?.availabilityName ===
+                              item?.availability ===
                               AvailabilityEnums.NotAvailable
                                 ? "bg-red-100 text-red-700"
                                 : "bg-indigo-100 text-indigo-700"
