@@ -8,8 +8,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
-import StatusDialog from "../../../sharedComponents/StatusDialog";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,8 +19,6 @@ import moment from "moment";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
-import { useClientList } from "../../../../components/hooks/useClientList";
-import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { ApplicationEnums } from "../../../../components/sharedService/enums";
 import IconAi from "../../../../components/sharedComponents/IconAi";
 import ApplicantsStatusDialog from "../../../../components/sharedComponents/ApplicantsStatusDialog";
@@ -58,7 +54,7 @@ export default function VndCandidates() {
     });
   };
 
-  const clientList = useClientList(userData?.orgCode);
+  // const clientList = useClientList(userData?.orgCode);
 
   useEffect(() => {
     if (searchValue?.length > 2 || searchValue?.length == 0) {
@@ -211,7 +207,7 @@ export default function VndCandidates() {
                   <div className="text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px]"
-                      // onClick={() => handleRowClick(applicant.clientCode)}
+                      onClick={() => handleRowClick(applicant.orgCode)}
                     >
                       {applicant.orgLogo && (
                         <img

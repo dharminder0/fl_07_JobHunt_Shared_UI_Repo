@@ -139,7 +139,7 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                           <Box className="flex justify-between mb-1">
                             <div className="flex items-center">
                               <Avatar
-                                src={item.clientLogo}
+                                src={item.clientFavicon}
                                 alt={item.clientName}
                                 sizes="large"
                                 sx={{ width: 25, height: 25 }}
