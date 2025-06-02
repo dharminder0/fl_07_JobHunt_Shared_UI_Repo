@@ -215,7 +215,7 @@ export default function SignUp() {
               <p className={`!mt-1 text-info ${getStrengthColor(strength)}`}>
                 {strength === "Too short"
                   ? "Password must be at least 6 characters"
-                  : `Password strength: ${strength}`}
+                  : `${strength} password (Use strong password)`}
               </p>
             )}
 
@@ -228,6 +228,7 @@ export default function SignUp() {
               color="primary"
               fullWidth
               sx={{ mt: 2 }}
+              disabled={strength !== "Strong"}
             >
               Continue
             </Button>
