@@ -189,6 +189,11 @@ export const getBenchList = async (payload: any) => {
   return response.data;
 };
 
+export const benchAvailabiltyUpdate = async (payload: any) => {
+  const response = await api.post("V1/Bench/update-availability", payload);
+  return response.data;
+};
+
 export const upsertApplications = async (payload: any) => {
   const response = await api.post("V1/Applications/Upsert", payload);
   return response.data;

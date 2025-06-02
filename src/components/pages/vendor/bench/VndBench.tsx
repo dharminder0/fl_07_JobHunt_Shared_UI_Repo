@@ -24,6 +24,7 @@ import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import BenchPreview from "./BenchPreview";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import {
+  benchAvailabiltyUpdate,
   getBenchList,
   getTechStackList,
   matchCandidateToRequirements,
@@ -42,6 +43,7 @@ import {
 import MatchingPositions from "./MatchingPositions";
 import IconAi from "../../../../components/sharedComponents/IconAi";
 import { AvailabilityEnums } from "../../../../components/sharedService/enums";
+import AvailabilityDialog from "../../../../components/sharedComponents/AvailabilityDialog";
 
 export default function VndBench({ drawerData = {} }: any) {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -53,6 +55,7 @@ export default function VndBench({ drawerData = {} }: any) {
   const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<any>({ type: "", message: "" });
   const [isTableLoader, setIsTableLoader] = React.useState(true);
+  const [isUpdateLoader, setIsUpdateLoader] = React.useState(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [searchText, SetSearchText] = useState("");
@@ -65,6 +68,12 @@ export default function VndBench({ drawerData = {} }: any) {
     isOpen: false,
     data: {},
     status: "Open",
+  });
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState({
+    availabilityId: 1,
+    benchId: 0,
   });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -254,6 +263,36 @@ export default function VndBench({ drawerData = {} }: any) {
         dispatch(closeBackdrop());
       }, 1000);
     }
+  };
+
+  const handleAvailabilityUpdate = (availabilityId: number) => {
+    const payload = {
+      id: selectedIds.benchId,
+      orgCode: userData.orgCode,
+      availability: availabilityId,
+    };
+    dispatch(openBackdrop());
+    benchAvailabiltyUpdate(payload)
+      .then((result: any) => {
+        if (result) {
+          setbenchDatadetails([]);
+          fetchBenchList();
+          setTimeout(() => {
+            setDialogOpen(false);
+            dispatch(closeBackdrop());
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            dispatch(closeBackdrop());
+          }, 1000);
+        }
+      })
+      .catch((error: any) => {
+        setTimeout(() => {
+          dispatch(closeBackdrop());
+          setDialogOpen(false);
+        }, 1000);
+      });
   };
 
   return (
@@ -558,12 +597,19 @@ export default function VndBench({ drawerData = {} }: any) {
                         <td>
                           <Typography
                             className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                              item?.availabilityName ===
+                              item?.availability ===
                               AvailabilityEnums.NotAvailable
                                 ? "bg-red-100 text-red-700"
                                 : "bg-indigo-100 text-indigo-700"
                             }`}
-                            // onClick={() => handleStatusDialog(item)}
+                            onClick={() => {
+                              setDialogOpen(true);
+                              setSelectedIds((prev) => ({
+                                ...prev,
+                                benchId: item.id,
+                                availabilityId: item.availability,
+                              }));
+                            }}
                           >
                             {item?.availabilityName}
                           </Typography>
@@ -720,6 +766,19 @@ export default function VndBench({ drawerData = {} }: any) {
           </Dialog>
         </React.Fragment>
       )}
+
+      <AvailabilityDialog
+        isOpen={dialogOpen}
+        selectedIds={selectedIds}
+        onClose={() => {
+          setDialogOpen(false);
+          setSelectedIds((prev) => ({
+            ...prev,
+            availabilityId: 1,
+          }));
+        }}
+        onSave={handleAvailabilityUpdate}
+      />
     </>
   );
 }
