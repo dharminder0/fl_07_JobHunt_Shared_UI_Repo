@@ -506,6 +506,10 @@ export default function VndBench({ drawerData = {} }: any) {
                             checked={isSelected(item.id)}
                             onChange={() => toggleRowSelection(item)}
                             className="cursor-pointer"
+                            disabled={
+                              item.availability ===
+                              AvailabilityEnums.NotAvailable
+                            }
                           />
                         </th>
 
