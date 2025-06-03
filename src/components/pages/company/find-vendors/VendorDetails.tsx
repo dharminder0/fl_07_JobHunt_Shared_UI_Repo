@@ -138,6 +138,7 @@ const VendorDetails = () => {
       vendorCode: orgData.orgCode,
       statusId: 1,
       createdBy: userData.userId,
+      message: empMessage,
     };
     setIsInviteLoader(true);
     dispatchedInvitation(payload)
@@ -266,7 +267,7 @@ const VendorDetails = () => {
                     <Button
                       onClick={handleClickOpen}
                       variant="outlined"
-                      startIcon={<HandshakeOutlined  fontSize="inherit"/>}
+                      startIcon={<HandshakeOutlined fontSize="inherit" />}
                     >
                       Invite for Empanelment
                     </Button>
