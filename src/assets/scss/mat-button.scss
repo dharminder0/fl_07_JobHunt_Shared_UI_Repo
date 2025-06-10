@@ -56,3 +56,11 @@
 .MuiRadioGroup-root .MuiFormControlLabel-label {
   font-size: 12px !important;
 }
+
+.MuiAccordion-root .MuiAccordion-heading .MuiButtonBase-root.Mui-expanded {
+  min-height: 45px !important;
+}
+
+.MuiAccordionSummary-content.Mui-expanded {
+  margin: 12px 0;
+}

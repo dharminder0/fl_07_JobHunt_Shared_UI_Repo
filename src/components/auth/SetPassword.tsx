@@ -106,8 +106,15 @@ export default function SetPassword() {
           </div>
 
           <div className="w-1/2 mx-auto flex flex-col justify-center items-center px-16">
-            <div className="w-full max-w-md mb-8">
-              <h1 className="text-heading font-display">Welcome Back</h1>
+            <div className="w-full max-w-md mb-3">
+              <img
+                src={"/assets/images/logo.svg"}
+                alt="Vendors Cloud Logo"
+                className="h-[70px] mx-auto"
+              />
+            </div>
+            <div className="w-full max-w-md mb-4">
+              <h1 className="text-gray-700">Set password</h1>
             </div>
 
             <form className="w-full max-w-md space-y-4">
