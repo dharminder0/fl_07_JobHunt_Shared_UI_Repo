@@ -26,10 +26,17 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SuccessDialog from "../../sharedComponents/SuccessDialog";
 import FileUploadBox from "../../sharedComponents/FileUploadBox";
 import UploadLogo from "../../sharedComponents/UploadLogo";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Notifications } from "./Notifications";
 
 export default function UserDetails() {
-  const [tabValue, setTabValue] = React.useState("Profile");
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const pathSegments = location.pathname.split("/");
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get("type");
+  const [tabValue, setTabValue] = React.useState(!type ? "profile" : type);
 
   const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState<any>();
@@ -44,8 +51,15 @@ export default function UserDetails() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   useEffect(() => {
-    getUserDetails();
-  }, []);
+    if (tabValue === "profile") {
+      getUserDetails();
+    }
+    navigate(`?type=${tabValue}`);
+  }, [tabValue]);
+
+  useEffect(() => {
+    setTabValue(!type ? "profile" : type);
+  }, [type]);
 
   const {
     control,
@@ -70,6 +84,7 @@ export default function UserDetails() {
       ],
     },
   });
+
   const {
     control: control1,
     handleSubmit: handleSubmit1,
@@ -203,11 +218,11 @@ export default function UserDetails() {
         indicatorColor="primary"
         aria-label="secondary tabs example"
       >
-        <Tab value="Profile" label="Personal Information" />
-        <Tab value="Notifications" label="Notifications" />
+        <Tab value="profile" label="Personal Information" />
+        <Tab value="notifications" label="Notifications" />
       </Tabs>
 
-      {tabValue === "Profile" && (
+      {tabValue === "profile" && (
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mt-3">
           {/* <h2 className="text-title my-3">Personal Information</h2> */}
           <div className="p-4 border rounded-md">
@@ -480,6 +495,8 @@ export default function UserDetails() {
           </div>
         </div>
       )}
+
+      {tabValue === "notifications" && <Notifications />}
       {isSuccessPopup && (
         <SuccessDialog
           title="Password changed successfully"

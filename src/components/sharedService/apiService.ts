@@ -379,6 +379,23 @@ export const getApplicantsStatusHistory = async (applicantId: any) => {
   return response.data;
 };
 
+export const getNotificationsList = async (payload: any) => {
+  const response = await api.post(`V1/Notifications/list`, payload);
+  return response.data;
+};
+
+export const getNotificationUpdate = async (id: any) => {
+  const response = await api.post(
+    `V1/Notifications/update-status?notificationId=${id}&isRead=true`
+  );
+  return response.data;
+};
+
+export const getNotificationCounts = async (orgCode: any) => {
+  const response = await api.post(`V1/Notifications/Count?orgCode=${orgCode}`);
+  return response.data;
+};
+
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {
