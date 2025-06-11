@@ -3,5 +3,6 @@
   "API_BEARER": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ94343f",
   "RequirementPromtCode": "REQRMNT",
   "BenchPromtCode": "RESUME",
-  "API_Token": ""
+  "API_Token": "",
+  "Notification_HUB": "https://fl-07-jobhunt-shared-api-test.azurewebsites.net/notificationHub"
 }

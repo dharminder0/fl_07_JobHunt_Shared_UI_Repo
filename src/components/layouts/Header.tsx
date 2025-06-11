@@ -20,6 +20,10 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { openDrawer } from "../features/drawerSlice";
 import { getNotificationCounts } from "../sharedService/apiService";
+import {
+  startNotificationConnection,
+  stopNotificationConnection,
+} from "../sharedService/signalRService";
 
 interface HeaderProps {}
 
@@ -65,7 +69,6 @@ const Header: React.FC<HeaderProps> = () => {
       isActive: route.code === activeRole,
     }));
     setRoutesData(updatedRoutes);
-    getNotifyCount();
     // Set the organization list and selected organization
     const currentObj = findRoutesByCodes(role);
     setOrganization(currentObj);
@@ -76,6 +79,29 @@ const Header: React.FC<HeaderProps> = () => {
       handleClose(activeOrg);
     }
   }, []); // Run once on component mount
+
+  useEffect(() => {
+    getNotifyCount();
+
+    startNotificationConnection(userData.orgCode, {
+      onCountUpdate: () => {
+        console.log("📡 Count update received");
+        getNotifyCount();
+      },
+      onReadStatusUpdate: () => {
+        console.log("📡 notification update received");
+        getNotifyCount();
+      },
+      onListUpdate: () => {
+        console.log("📡 notification list received");
+        getNotifyCount();
+      },
+    });
+
+    return () => {
+      stopNotificationConnection();
+    };
+  }, []);
 
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
@@ -101,7 +127,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   const getNotifyCount = () => {
     getNotificationCounts(userData.orgCode).then((result: any) => {
-      if (result > 0) {
+      if (result >= 0) {
         setNotifyCount(result);
       }
     });
@@ -163,7 +189,7 @@ const Header: React.FC<HeaderProps> = () => {
         >
           <NotificationsOutlined fontSize="inherit" />
           <Badge
-            badgeContent={notifyCount}
+            badgeContent={notifyCount > 0 ? notifyCount : null}
             color="primary"
             overlap="circular"
           />
