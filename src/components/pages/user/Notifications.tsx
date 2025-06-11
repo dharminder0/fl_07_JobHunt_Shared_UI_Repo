@@ -11,7 +11,13 @@ import {
   getNotificationUpdate,
 } from "../../../components/sharedService/apiService";
 import NoDataAvailable from "../../../components/sharedComponents/NoDataAvailable";
-import { result } from "lodash";
+
+import {
+  startNotificationConnection,
+  stopNotificationConnection,
+} from "../../sharedService/signalRService";
+import * as signalR from "@microsoft/signalr";
+import configData from "../../sharedService/config.json";
 
 export const Notifications = () => {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -36,15 +42,59 @@ export const Notifications = () => {
       });
   };
 
+  // const connection = new signalR.HubConnectionBuilder()
+  //   .withUrl(`${configData.Notification_HUB}?orgCode=${userData.orgCode}`, {
+  //     skipNegotiation: true,
+  //     transport: signalR.HttpTransportType.WebSockets,
+  //     accessTokenFactory: () => "",
+  //     headers: {
+  //       "Content-Type": "application/json; charset=UTF-8",
+  //       Accept: "*/*",
+  //       Authorization: `Bearer ${configData.API_BEARER}`,
+  //     },
+  //   })
+  //   .withAutomaticReconnect()
+  //   .configureLogging(signalR.LogLevel.Information)
+  //   .build();
+
+  // useEffect(() => {
+  //   getNotificationsListData();
+  //   connection.start();
+  //   connection.on("ReceiveNotification", (data) => {
+  //     console.log("Got notification:", data);
+  //     getNotificationsListData();
+  //   });
+  // }, []);
+
   useEffect(() => {
     getNotificationsListData();
+
+    startNotificationConnection(userData.orgCode, {
+      onCountUpdate: () => {
+        console.log("📡 count new notification");
+        getNotificationsListData();
+      },
+      onListUpdate: () => {
+        console.log("📡 Recieved new notification");
+        getNotificationsListData();
+      },
+      onReadStatusUpdate: () => {
+        console.log("📡 Recieved update notification");
+        getNotificationsListData();
+      },
+    });
+
+    return () => {
+      stopNotificationConnection();
+    };
   }, []);
 
   const handleNotifyRead = (item: any) => {
     if (!item.isRead) {
       getNotificationUpdate(item.id).then((result: any) => {
         if (result) {
-          getNotificationsListData();
+          // getNotificationsListData();
+          console.log("updated");
         }
       });
     }
