@@ -1,29 +1,38 @@
-// signalRService.ts
 import * as signalR from "@microsoft/signalr";
 import configData from "./config.json";
+import mitt from "mitt";
 
-let connection: signalR.HubConnection | null = null;
-let isStarting = false;
-let isStopping = false;
-
-type SignalRCallbacks = {
-  onCountUpdate?: () => void;
-  onListUpdate?: () => void;
-  onReadStatusUpdate?: () => void;
+type Events = {
+  countUpdate: void;
+  listUpdate: void;
+  readStatusUpdate: void;
 };
 
-export const startNotificationConnection = async (
-  orgCode: string,
-  callbacks: SignalRCallbacks
-) => {
+const emitter = mitt<Events>();
+
+let connection: signalR.HubConnection | null = null;
+let started = false;
+const countListeners: Set<(count: number) => void> = new Set();
+
+export const addCountListener = (fn: (count: number) => void) => {
+  countListeners.add(fn);
+};
+
+export const removeCountListener = (fn: (count: number) => void) => {
+  countListeners.delete(fn);
+};
+export const startNotificationConnection = async (orgCode: string) => {
+  if (started) {
+    console.log("⚠️ SignalR already started.");
+    return;
+  }
+
   connection = new signalR.HubConnectionBuilder()
     .withUrl(`${configData.Notification_HUB}?orgCode=${orgCode}`, {
       skipNegotiation: true,
       transport: signalR.HttpTransportType.WebSockets,
       accessTokenFactory: () => "",
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        Accept: "*/*",
         Authorization: `Bearer ${configData.API_BEARER}`,
       },
     })
@@ -31,47 +40,46 @@ export const startNotificationConnection = async (
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-  if (callbacks.onCountUpdate) {
-    connection.on("ReceiveNotificationCountUpdate", callbacks.onCountUpdate);
-  }
+  connection.on("ReceiveNotificationCountUpdate", (count: number) => {
+    console.log("📨 Event: countUpdate");
+    // emitter.emit("countUpdate");
+    // countListeners.forEach((fn) => fn(count)); // fan-out
+  });
 
-  if (callbacks.onListUpdate) {
-    connection.on("ReceiveNotification", callbacks.onListUpdate);
-  }
+  connection.on("ReceiveNotification", (count: number) => {
+    console.log("📨 Event: listUpdate");
+    emitter.emit("listUpdate");
+    countListeners.forEach((fn) => fn(count)); // fan-out
+  });
 
-  if (callbacks.onReadStatusUpdate) {
-    connection.on("ReceiveNotificationUpdate", callbacks.onReadStatusUpdate);
-  }
+  connection.on("ReceiveNotificationUpdate", (count: number) => {
+    console.log("📨 Event: readStatusUpdate");
+    emitter.emit("readStatusUpdate");
+    countListeners.forEach((fn) => fn(count)); // fan-out
+  });
 
   try {
     await connection.start();
-    console.log("✅ SignalR Connected");
-  } catch (error) {
-    console.error("❌ SignalR Connection Error:", error);
+    await connection.invoke("JoinGroup", orgCode);
+    console.log("✅ SignalR connected and group joined");
+    started = true;
+  } catch (err) {
+    console.error("❌ Error starting SignalR:", err);
   }
 };
 
 export const stopNotificationConnection = async () => {
   if (!connection) return;
 
-  if (
-    connection.state === signalR.HubConnectionState.Disconnected ||
-    isStopping ||
-    isStarting
-  ) {
-    console.log("⛔ SignalR is already disconnected or busy");
-    return;
-  }
-
   try {
-    isStopping = true;
-    console.log("🛑 Stopping SignalR connection...");
     await connection.stop();
-    console.log("🚫 SignalR Disconnected");
-  } catch (error) {
-    console.error("❌ Error stopping SignalR:", error);
+    console.log("🛑 SignalR stopped");
+  } catch (err) {
+    console.error("❌ Error stopping SignalR:", err);
   } finally {
-    isStopping = false;
     connection = null;
+    started = false;
   }
 };
+
+export const signalREmitter = emitter;

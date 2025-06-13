@@ -13,6 +13,7 @@ import {
 import NoDataAvailable from "../../../components/sharedComponents/NoDataAvailable";
 
 import {
+  signalREmitter,
   startNotificationConnection,
   stopNotificationConnection,
 } from "../../sharedService/signalRService";
@@ -41,53 +42,45 @@ export const Notifications = () => {
         console.log(error);
       });
   };
+  useEffect(() => {
+    const handle = () => {
+      console.log("📡 Count updated, fetching...");
+      getNotificationsListData();
+    };
+    handle();
+    signalREmitter.on("countUpdate", handle);
+    signalREmitter.on("readStatusUpdate", handle);
+    signalREmitter.on("listUpdate", handle);
 
-  // const connection = new signalR.HubConnectionBuilder()
-  //   .withUrl(`${configData.Notification_HUB}?orgCode=${userData.orgCode}`, {
-  //     skipNegotiation: true,
-  //     transport: signalR.HttpTransportType.WebSockets,
-  //     accessTokenFactory: () => "",
-  //     headers: {
-  //       "Content-Type": "application/json; charset=UTF-8",
-  //       Accept: "*/*",
-  //       Authorization: `Bearer ${configData.API_BEARER}`,
-  //     },
-  //   })
-  //   .withAutomaticReconnect()
-  //   .configureLogging(signalR.LogLevel.Information)
-  //   .build();
+    return () => {
+      signalREmitter.off("countUpdate", handle);
+      signalREmitter.off("readStatusUpdate", handle);
+      signalREmitter.off("listUpdate", handle);
+    };
+  }, []);
 
   // useEffect(() => {
   //   getNotificationsListData();
-  //   connection.start();
-  //   connection.on("ReceiveNotification", (data) => {
-  //     console.log("Got notification:", data);
-  //     getNotificationsListData();
+
+  //   startNotificationConnection(userData.orgCode, {
+  //     onCountUpdate: () => {
+  //       console.log("📡 count new notification");
+  //       getNotificationsListData();
+  //     },
+  //     onListUpdate: () => {
+  //       console.log("📡 Recieved new notification");
+  //       getNotificationsListData();
+  //     },
+  //     onReadStatusUpdate: () => {
+  //       console.log("📡 Recieved update notification");
+  //       getNotificationsListData();
+  //     },
   //   });
+
+  //   return () => {
+  //     stopNotificationConnection();
+  //   };
   // }, []);
-
-  useEffect(() => {
-    getNotificationsListData();
-
-    startNotificationConnection(userData.orgCode, {
-      onCountUpdate: () => {
-        console.log("📡 count new notification");
-        getNotificationsListData();
-      },
-      onListUpdate: () => {
-        console.log("📡 Recieved new notification");
-        getNotificationsListData();
-      },
-      onReadStatusUpdate: () => {
-        console.log("📡 Recieved update notification");
-        getNotificationsListData();
-      },
-    });
-
-    return () => {
-      stopNotificationConnection();
-    };
-  }, []);
 
   const handleNotifyRead = (item: any) => {
     if (!item.isRead) {

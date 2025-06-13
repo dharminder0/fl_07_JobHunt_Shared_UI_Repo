@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useOrganizationType } from "../../contexts/OrganizationTypeContext";
 import RequirementForm from "../pages/company/requirements/RequirementForm";
@@ -21,11 +21,16 @@ import { AppDispatch } from "../redux/store";
 import { openDrawer } from "../features/drawerSlice";
 import { getNotificationCounts } from "../sharedService/apiService";
 import {
+  addCountListener,
+  removeCountListener,
+  signalREmitter,
   startNotificationConnection,
   stopNotificationConnection,
 } from "../sharedService/signalRService";
 
 interface HeaderProps {}
+
+let notifyCallCount = 0;
 
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
@@ -42,6 +47,7 @@ const Header: React.FC<HeaderProps> = () => {
   const open = Boolean(anchorEl);
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const isMounted = useRef(false);
 
   const [routesData, setRoutesData] = useState([
     {
@@ -80,26 +86,41 @@ const Header: React.FC<HeaderProps> = () => {
     }
   }, []); // Run once on component mount
 
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     console.log("🌀 Component re-mounted unexpectedly");
+  //   }
+  //   isMounted.current = true;
+
+  //   const handle = () => {
+  //     console.log("📡 SignalR update → Calling getNotifyCount");
+  //     getNotifyCount();
+  //   };
+
+  //   // Subscribe once
+  //   signalREmitter.on("countUpdate", handle);
+  //   signalREmitter.on("readStatusUpdate", handle);
+  //   signalREmitter.on("listUpdate", handle);
+
+  //   // Clean up
+  //   return () => {
+  //     signalREmitter.off("countUpdate", handle);
+  //     signalREmitter.off("readStatusUpdate", handle);
+  //     signalREmitter.off("listUpdate", handle);
+  //     isMounted.current = false;
+  //   };
+  // }, []);
   useEffect(() => {
-    getNotifyCount();
+    const onCountUpdate = (count: number) => {
+      console.log("📡 Component received count:", count);
+      getNotifyCount(); // or getNotificationsListData()
+    };
 
-    startNotificationConnection(userData.orgCode, {
-      onCountUpdate: () => {
-        console.log("📡 Count update received");
-        getNotifyCount();
-      },
-      onReadStatusUpdate: () => {
-        console.log("📡 notification update received");
-        getNotifyCount();
-      },
-      onListUpdate: () => {
-        console.log("📡 notification list received");
-        getNotifyCount();
-      },
-    });
+    addCountListener(onCountUpdate);
 
+    // Cleanup to prevent memory leak and duplicate logs
     return () => {
-      stopNotificationConnection();
+      removeCountListener(onCountUpdate);
     };
   }, []);
 
@@ -131,6 +152,8 @@ const Header: React.FC<HeaderProps> = () => {
         setNotifyCount(result);
       }
     });
+    notifyCallCount++;
+    console.log(`🔁 getNotifyCount called: ${notifyCallCount} times`);
   };
 
   return (
