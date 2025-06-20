@@ -106,12 +106,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
             },
           ],
         }, // { text: "Find Clients", icon: <EventIcon />, id: 4, path:'/company/findclients' },
-        {
-          text: "Messages",
-          icon: <ChatOutlinedIcon fontSize="inherit" />,
-          id: 7,
-          path: "/company/messages",
-        },
+        // {
+        //   text: "Messages",
+        //   icon: <ChatOutlinedIcon fontSize="inherit" />,
+        //   id: 7,
+        //   path: "/company/messages",
+        // },
       ],
       settings: [
         {
@@ -120,12 +120,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           id: 0,
           path: "/company/profile",
         },
-        {
-          text: "Subscriptions",
-          icon: <SubscriptionsOutlinedIcon fontSize="inherit" />,
-          id: 1,
-          path: "/company/subscriptions",
-        },
+        // {
+        //   text: "Subscriptions",
+        //   icon: <SubscriptionsOutlinedIcon fontSize="inherit" />,
+        //   id: 1,
+        //   path: "/company/subscriptions",
+        // },
         {
           text: "Members",
           icon: <PeopleOutlinedIcon fontSize="inherit" />,
@@ -192,12 +192,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
             },
           ],
         },
-        {
-          text: "Messages",
-          icon: <ChatOutlinedIcon fontSize="inherit" />,
-          id: 7,
-          path: "/vendor/messages",
-        },
+        // {
+        //   text: "Messages",
+        //   icon: <ChatOutlinedIcon fontSize="inherit" />,
+        //   id: 7,
+        //   path: "/vendor/messages",
+        // },
       ],
       settings: [
         {
@@ -206,12 +206,12 @@ const SideMenu: React.FC<SideMenuProps> = () => {
           id: 0,
           path: "/vendor/profile",
         },
-        {
-          text: "Subscriptions",
-          icon: <SubscriptionsOutlinedIcon fontSize="inherit" />,
-          id: 1,
-          path: "/vendor/subscriptions",
-        },
+        // {
+        //   text: "Subscriptions",
+        //   icon: <SubscriptionsOutlinedIcon fontSize="inherit" />,
+        //   id: 1,
+        //   path: "/vendor/subscriptions",
+        // },
         {
           text: "Members",
           icon: <PeopleOutlinedIcon fontSize="inherit" />,

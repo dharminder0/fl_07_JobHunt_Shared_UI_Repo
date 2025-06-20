@@ -298,9 +298,8 @@ export default function EmailVerification() {
               type="submit"
               variant="contained"
               color="primary"
-              fullWidth
               loading={isLoader}
-              sx={{ mt: 2 }}
+              sx={{ mt: 2 , px:3}}
             >
               Verify
             </Button>
