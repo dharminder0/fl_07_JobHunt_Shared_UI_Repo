@@ -19,9 +19,14 @@ import {
 } from "../../sharedService/signalRService";
 import * as signalR from "@microsoft/signalr";
 import configData from "../../sharedService/config.json";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import moment from "moment";
+import { useNavigate } from "react-router";
 
 export const Notifications = () => {
+  const navigation = useNavigate();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+  const activeRole = localStorage.getItem("activeRole") || "";
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const [notificationList, setNotificationList] = useState<any[]>([]);
@@ -86,10 +91,21 @@ export const Notifications = () => {
     if (!item.isRead) {
       getNotificationUpdate(item.id).then((result: any) => {
         if (result) {
-          // getNotificationsListData();
           console.log("updated");
         }
       });
+    }
+  };
+
+  const handleRedirection = (item: any) => {
+    if (item.notificationType === 1) {
+      navigation(`/${activeRole}/clients`);
+    }
+    if (item.notificationType === 2) {
+      navigation(`/${activeRole}/candidate`);
+    }
+    if (item.notificationType === 3) {
+      navigation(`/${activeRole}/candidates`);
     }
   };
 
@@ -97,20 +113,38 @@ export const Notifications = () => {
     <div className="my-3">
       {notificationList?.length > 0 ? (
         notificationList?.map((item: any) => (
-          <Accordion
-            key={item.id}
-            className={!item.isRead ? "!bg-indigo-100" : "!bg-white"}
-          >
+          <Accordion key={item.id} className="!bg-indigo-50">
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls={`panel-header-${item.id}`}
               id={`panel-header-${item.id}`}
-              onClick={() => handleNotifyRead(item)}
+              onClick={(e: any) => {
+                handleNotifyRead(item);
+                e.stopPropagation();
+              }}
             >
-              <p className="text-base">{item?.title}</p>
+              <div className="flex justify-between w-full items-center">
+                <div className="flex">
+                  {!item.isRead && (
+                    <FiberManualRecordIcon fontSize="inherit" color="primary" />
+                  )}
+                  <p
+                    className="text-base font-semibold hover:text-indigo-500"
+                    onClick={(e: any) => {
+                      handleRedirection(item);
+                      e.stopPropagation();
+                    }}
+                  >
+                    {item?.title}
+                  </p>
+                </div>
+                <div className="text-base">
+                  {moment(item.createdOn).format("DD-MM-YYYY")}
+                </div>
+              </div>
             </AccordionSummary>
             <AccordionDetails className="!bg-white">
-              <p className="text-base">{item.message}</p>
+              <p className="text-base my-1">{item.message}</p>
             </AccordionDetails>
           </Accordion>
         ))

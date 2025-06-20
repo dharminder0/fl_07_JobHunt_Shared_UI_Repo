@@ -21,7 +21,11 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { CorporateFareOutlined, InfoOutlined } from "@mui/icons-material";
+import {
+  CorporateFareOutlined,
+  HandshakeOutlined,
+  InfoOutlined,
+} from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { upsertCompanyInfo } from "../../../components/sharedService/apiService";
 import {
@@ -32,8 +36,30 @@ import { RoleData } from "../../../components/sharedService/shareData";
 
 const steps = ["Company Information", "Subscription Plans"];
 
+type FormValues = {
+  registrationType: string[]; // array of selected role IDs
+  orgName: string; // organization/company name
+  portfolio: string; // portfolio URL or text
+  contactMail: string; // email address
+  phone: string; // phone number
+  website: string; // website URL
+  strength: number | null; // team strength or employee count
+};
+
 export default function OnBoarding() {
   const navigate = useNavigate();
+  const RoleData = [
+    {
+      id: "1",
+      role: "vendor",
+      name: "Vendor",
+    },
+    {
+      id: "2",
+      name: "Partner",
+      role: "company",
+    },
+  ];
   const [activeStep, setActiveStep] = React.useState(0);
   const userData = JSON.parse(localStorage.userData);
   const dispatch: AppDispatch = useDispatch();
@@ -44,24 +70,13 @@ export default function OnBoarding() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [companyType, setCompanyType] = React.useState<any>(RoleType.Vendor);
 
-  const defaultVal: any = {
-    registrationType: ["1"], // Default empty or predefined value
-    orgName: userData.companyName,
-    portfolio: "",
-    contactMail: "",
-    phone: "",
-    website: "",
-    strength: null, // Default number
-  };
-
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: {
-      registrationType: ["1"], // Default empty or predefined value
+      registrationType: [], // Default empty or predefined value
       orgName: userData.companyName,
       portfolio: "",
       contactMail: "",
@@ -74,8 +89,7 @@ export default function OnBoarding() {
   const onSubmit = (data: any) => {
     dispatch(openBackdrop());
     data.userId = userData.userId;
-    userData.role =
-      data?.registrationType === "3" ? `"1", "2"` : data?.registrationType;
+    userData.role = data?.registrationType;
     upsertCompanyInfo(data)
       .then((result: any) => {
         localStorage.setItem("userData", JSON.stringify(userData));
@@ -83,6 +97,15 @@ export default function OnBoarding() {
           setTimeout(() => {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             dispatch(closeBackdrop());
+            navigate(
+              `/${
+                companyType === RoleType.Client
+                  ? "company"
+                  : companyType === RoleType.Vendor
+                    ? "vendor"
+                    : "company"
+              }`
+            );
           }, 1000);
         }
       })
@@ -127,11 +150,6 @@ export default function OnBoarding() {
     setAnchorEl(null);
   };
   const open = Boolean(anchorEl);
-
-  const handleCompanyTypeChange = (value: any) => {
-    setCompanyType(value);
-    setValue("registrationType", value === "3" ? ["1", "2"] : [value]);
-  };
 
   React.useEffect(() => {
     if (companyType) {
@@ -184,7 +202,7 @@ export default function OnBoarding() {
       <div className="flex-grow overflow-auto">
         <div className="container mx-auto py-3">
           <div className="w-full">
-            <div className="w-3/5 mx-auto">
+            {/* <div className="w-3/5 mx-auto">
               <Stepper activeStep={activeStep}>
                 {steps.map((label) => {
                   const stepProps: { completed?: boolean } = {};
@@ -196,7 +214,7 @@ export default function OnBoarding() {
                   );
                 })}
               </Stepper>
-            </div>
+            </div> */}
 
             <div className="flex justify-center items-center mt-9">
               {/* {activeStep === 0 && <CompanyInfo ref={childRef} />} */}
@@ -206,41 +224,70 @@ export default function OnBoarding() {
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-3/5 m-auto p-6 bg-white rounded-lg space-y-4"
                   >
-                    {/* Registration Type - MUI Select */}
-                    <div className="flex items-center space-x-6">
-                      <p className="text-base">
-                        Select your registration type
-                        <IconButton
-                          size="small"
-                          onClick={handlePopoverOpen}
-                          aria-label="registration details"
-                        >
-                          <InfoOutlined fontSize="inherit" />
-                        </IconButton>
-                      </p>
-
-                      <FormControl
+                    <h3 className="text-heading mb-5">Company Information</h3>
+                    <p className="text-base">
+                      Select your registration type
+                      <IconButton
                         size="small"
-                        error={!!errors.registrationType}
+                        onClick={handlePopoverOpen}
+                        aria-label="registration details"
                       >
-                        <RadioGroup
-                          row
-                          onChange={(e) => {
-                            handleCompanyTypeChange(e.target?.value); // Call external handler
-                          }}
-                          defaultValue={RoleType.Vendor}
-                        >
-                          {RoleData.map((item: any) => (
-                            <FormControlLabel
-                              key={item.id}
-                              value={item.id}
-                              control={<Radio size="small" />}
-                              label={item.name}
-                            />
-                          ))}
-                        </RadioGroup>
-                      </FormControl>
-                    </div>
+                        <InfoOutlined fontSize="inherit" />
+                      </IconButton>
+                    </p>
+
+                    {/* Registration Type - MUI Select */}
+                    <Controller
+                      name="registrationType"
+                      control={control}
+                      rules={{
+                        validate: (value) =>
+                          value.length > 0 ||
+                          "Select at least one registration type",
+                      }}
+                      render={({ field }) => {
+                        const handleToggle = (id: string) => {
+                          const exists = field.value.includes(id);
+                          const newValue = exists
+                            ? field.value.filter((v) => v !== id)
+                            : [...field.value, id];
+                          field.onChange(newValue);
+                        };
+
+                        return (
+                          <div className="space-y-2">
+                            <div className="flex">
+                              {RoleData.map((item) => (
+                                <div
+                                  key={item.id}
+                                  onClick={() => handleToggle(item.id)}
+                                  className={`cursor-pointer rounded-lg border h-[70px] w-[200px] me-3 transition-all duration-200 select-none flex flex-col items-center justify-center
+                                  ${
+                                    field.value.includes(item.id)
+                                      ? "border-indigo-600 bg-indigo-100 shadow-md text-indigo-600"
+                                      : "border-gray-300 bg-white hover:shadow hover:bg-indigo-100 hover:border-indigo-600"
+                                  }`}
+                                >
+                                  <HandshakeOutlined
+                                    fontSize="medium"
+                                    className="text-indigo-600"
+                                  />
+                                  <p className="text-base font-semibold">
+                                    {item.name}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+
+                            {errors.registrationType && (
+                              <p className="text-info text-red-600">
+                                {errors.registrationType.message}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      }}
+                    />
 
                     {/* Company Name */}
                     <Controller

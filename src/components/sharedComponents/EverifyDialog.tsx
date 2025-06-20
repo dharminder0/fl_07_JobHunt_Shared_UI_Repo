@@ -47,6 +47,7 @@ function EverifyDialog() {
   const handleLogin = () => {
     setOpen(false);
     dispatch(closeEVerifyDialog());
+    navigate("/login");
   };
 
   const handleClose = () => {
