@@ -177,7 +177,17 @@ export default function Login() {
               />
             </div>
             <div className="w-full max-w-md mb-4">
-              <h1 className="font-display">Login with email</h1>
+              <h1 className="text-heading">Log in to your account</h1>
+
+              <p className="text-base text-gray-500 mt-2">
+                Or{" "}
+                <span
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => navigate("/signup")}
+                >
+                  create a new account
+                </span>
+              </p>
             </div>
 
             <form
@@ -253,30 +263,38 @@ export default function Login() {
                 )}
               />
 
-              {/* Remember Me Checkbox */}
-              <Controller
-                name="rememberMe"
-                control={control}
-                defaultValue={false}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        {...field}
-                        color="primary"
-                        checked={field.value}
-                        size="small"
-                      />
-                    }
-                    label="Remember me"
-                    sx={{
-                      "& .MuiTypography-root": {
-                        fontSize: "12px",
-                      },
-                    }}
-                  />
-                )}
-              />
+              <div className="flex justify-between mt-2">
+                {/* Remember Me Checkbox */}
+                <Controller
+                  name="rememberMe"
+                  control={control}
+                  defaultValue={false}
+                  render={({ field }) => (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          {...field}
+                          color="primary"
+                          checked={field.value}
+                          size="small"
+                        />
+                      }
+                      label="Remember me"
+                      sx={{
+                        "& .MuiTypography-root": {
+                          fontSize: "12px",
+                        },
+                      }}
+                    />
+                  )}
+                />
+                <span
+                  className="text-base text-blue-500 cursor-pointer"
+                  onClick={() => navigate("/#")}
+                >
+                  Forgot your password?
+                </span>
+              </div>
 
               {/* Submit Button */}
               <Button
@@ -289,20 +307,10 @@ export default function Login() {
                 Login
               </Button>
             </form>
-
-            <p className="text-base text-gray-500 mt-4">
-              Don’t have an account?{" "}
-              <span
-                className="text-blue-500 cursor-pointer"
-                onClick={() => navigate("/signup")}
-              >
-                Sign Up
-              </span>
-            </p>
           </div>
         </div>
       </div>
-      
+
       {isOpen && <EverifyDialog />}
     </>
   );

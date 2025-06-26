@@ -120,7 +120,6 @@ export default function SignUp() {
           </div>
         </div>
         <div className="w-1/2 mx-auto flex flex-col justify-center items-center px-16">
-          {" "}
           <div className="w-full max-w-md mb-3">
             <img
               src={"/assets/images/logo.svg"}
@@ -129,7 +128,16 @@ export default function SignUp() {
             />
           </div>
           <div className="w-full max-w-md mb-4">
-            <h1 className="text-gray-700">Let's get started</h1>
+            <h1 className="text-heading">Create your account</h1>
+            <p className="text-base text-gray-500 mt-2">
+              Already have an account?{" "}
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </span>
+            </p>
           </div>
           {/* Signup Form */}
           <form
@@ -232,20 +240,12 @@ export default function SignUp() {
             >
               Continue
             </Button>
+
+            <p className="text-info text-center text-gray-500 mt-4">
+              By clicking 'Continue', you acknowledge that you have read and
+              accept the Terms of Service and Privacy Policy.
+            </p>
           </form>
-          <p className="text-base text-gray-500 mt-4">
-            Already have an account?{" "}
-            <span
-              className="text-blue-500 cursor-pointer"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </span>
-          </p>
-          <p className="text-info text-gray-500 mt-4">
-            By clicking 'Continue', you acknowledge that you have read and
-            accept the Terms of Service and Privacy Policy.
-          </p>
         </div>
 
         <EverifyDialog />
