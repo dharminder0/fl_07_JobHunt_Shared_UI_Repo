@@ -23,6 +23,7 @@ export default function SetPassword() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
+  const [result, setResult] = useState<any>("");
 
   const {
     control,
@@ -38,16 +39,15 @@ export default function SetPassword() {
     },
   });
 
-  useEffect(() => {}, []);
-
   const onSubmit = (data: any) => {
     setValue("userToken", pathSegments[pathSegments?.length - 1]);
     if (data.newPassword === data.confirmPassword) {
       dispatch(openBackdrop());
       setMemberPassword(data)
         .then((result: any) => {
-          if (result.success) {
-            if (result.content?.role?.length > 0) {
+          if (result) {
+            setResult(result);
+            if (result.content && result.content?.role?.length > 0) {
               const roles: any =
                 result.content?.role?.length === 1 &&
                 result.content?.role[0] === RoleType.Vendor
@@ -68,23 +68,28 @@ export default function SetPassword() {
                   : ""
               );
             }
-            localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("userData", JSON.stringify(result?.content));
-            dispatch(closeBackdrop());
-            setIsSuccessPopup(true);
+            if (result.success) {
+              localStorage.setItem("isLoggedIn", "true");
+              localStorage.setItem("userData", JSON.stringify(result?.content));
+              setTimeout(() => {
+                const activeRole = localStorage.getItem("activeRole") || "";
+                if (
+                  activeRole &&
+                  RoleData.find((item: any) => item.role === activeRole)
+                ) {
+                  navigate(`/${activeRole}`);
+                }
+              }, 1000);
+            }
             setTimeout(() => {
-              const activeRole = localStorage.getItem("activeRole") || "";
-              if (
-                activeRole &&
-                RoleData.find((item: any) => item.role === activeRole)
-              ) {
-                navigate(`/${activeRole}`);
-              }
-            }, 3000);
+              dispatch(closeBackdrop());
+              setIsSuccessPopup(true);
+            }, 1000);
           }
         })
         .catch(() => {
           dispatch(closeBackdrop());
+          setIsSuccessPopup(false);
         });
     } else {
       setError("confirmPassword", {
@@ -114,7 +119,7 @@ export default function SetPassword() {
               />
             </div>
             <div className="w-full max-w-md mb-4">
-              <h1 className="text-gray-700">Set password</h1>
+              <h1 className="text-heading">Set password</h1>
             </div>
 
             <form className="w-full max-w-md space-y-4">
@@ -217,9 +222,10 @@ export default function SetPassword() {
 
       {isSuccessPopup && (
         <SuccessDialog
-          title="Set Password successfully"
+          title={result?.success ? "Set Password successfully" : result.message}
           isOpenModal={isSuccessPopup}
           setIsOpenModal={setIsSuccessPopup}
+          type={!result?.success ? "error" : "success"}
         />
       )}
     </>

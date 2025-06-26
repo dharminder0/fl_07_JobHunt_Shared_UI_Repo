@@ -41,6 +41,7 @@ import BenchPreview from "./components/pages/vendor/bench/BenchPreview";
 import DashboardLayoutBasic from "./components/layouts/DashboardLayoutBasic";
 import EmailVerification from "./components/auth/EmailVerification";
 import SetPassword from "./components/auth/SetPassword";
+import ForgotPassword from "./components/auth/ForgotPassword";
 
 export default function AppRoutes() {
   return (
@@ -52,6 +53,7 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/onboard" element={<OnBoarding />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/everify/:token/:otp?" element={<EmailVerification />} />
         <Route path="/setpassword/:token" element={<SetPassword />} />
 
