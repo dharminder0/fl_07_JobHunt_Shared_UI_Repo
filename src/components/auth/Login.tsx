@@ -290,7 +290,7 @@ export default function Login() {
                 />
                 <span
                   className="text-base text-blue-500 cursor-pointer"
-                  onClick={() => navigate("/#")}
+                  onClick={() => navigate("/forgotpassword")}
                 >
                   Forgot your password?
                 </span>
