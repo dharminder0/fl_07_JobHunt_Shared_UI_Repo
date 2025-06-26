@@ -16,6 +16,11 @@ export const userLogin = async (payload: object) => {
   return response.data;
 };
 
+export const forgotPassword = async (email: string) => {
+  const response = await api.post(`V1/users/ForgetPassword?email=${email}`);
+  return response.data;
+};
+
 export const userLogout = () => {
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("activeRole");
