@@ -68,6 +68,8 @@
       "node_modules/(?!(swiper|ssr-window|dom7)/)"
     ],
     "moduleNameMapper": {
+      "^swiper/react$": "swiper/swiper-react.mjs",
+      "^swiper/modules$": "swiper/modules/index.mjs",
       "^swiper/css$": "swiper/swiper.css",
       "^swiper/css/pagination$": "swiper/modules/pagination.css"
     }
