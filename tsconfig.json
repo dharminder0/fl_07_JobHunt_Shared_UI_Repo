@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "es5", // Compatible with older browsers
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ], // Use DOM and modern ES features
+    "module": "esnext", // Use ES modules
+    "moduleResolution": "node", // Resolve modules like Node.js
+    "jsx": "react-jsx", // Enable React JSX transformations
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Ensure compatibility with CommonJS modules
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules without default exports
+    "forceConsistentCasingInFileNames": true, // Enforce consistent file name casing
+    "skipLibCheck": true, // Skip type checks for declaration files
+    "resolveJsonModule": true, // Allow importing JSON files
+    "allowJs": true, // Allow JavaScript files in the project
+    "noEmit": true, // Prevent emitting compiled files
+    "isolatedModules": true, // Ensure each file is a separate module
+    "noFallthroughCasesInSwitch": true, // Prevent fallthrough in switch cases
+    "baseUrl": "./", // Set the base URL for module resolution
+    "paths": { // Optional: Add path aliases
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ], // Include only the source folder
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ] // Exclude unnecessary folders
+}
