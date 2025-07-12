@@ -35,7 +35,7 @@
     "react-window": "^1.8.11",
     "redux": "^5.0.1",
     "sass": "^1.82.0",
-    "swiper": "^10.0.0",
+    "swiper": "^11.2.10",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
@@ -73,7 +73,6 @@
     "@types/node": "^22.10.2",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-window": "^1.8.8",
-    "@types/swiper": "^6.0.0",
     "@types/testing-library__react": "^10.2.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
