@@ -53,4 +53,4 @@ jobs:
           app-name: 'fl-07-JobHunt-Shared-UI-Prod'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3EAF070C696C4A0084E641EF2026E1E1 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D22ACD465E3F470590DC9E7936841DD1 }}
