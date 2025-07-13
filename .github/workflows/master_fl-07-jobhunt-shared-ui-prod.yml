@@ -29,6 +29,12 @@ jobs:
           npm run build --if-present
         env:
           CI: false
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -46,6 +52,22 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+      
+      - name: 'Update runtime configuration'
+        shell: pwsh
+        run: |
+          $configPath = "config.js"
+          if (Test-Path $configPath) {
+            Write-Host "Updating runtime configuration..."
+            .\scripts\update-config.ps1 -ConfigFile $configPath
+          }
+        env:
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
       
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3

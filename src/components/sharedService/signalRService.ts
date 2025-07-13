@@ -1,5 +1,5 @@
 import * as signalR from "@microsoft/signalr";
-import configData from "./config.json";
+import configData from "./config";
 import mitt from "mitt";
 
 type Events = {
