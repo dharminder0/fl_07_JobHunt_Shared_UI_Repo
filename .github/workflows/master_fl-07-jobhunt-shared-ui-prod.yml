@@ -59,7 +59,26 @@ jobs:
           $configPath = "config.js"
           if (Test-Path $configPath) {
             Write-Host "Updating runtime configuration..."
-            .\scripts\update-config.ps1 -ConfigFile $configPath
+            
+            # Read the config file
+            $content = Get-Content $configPath -Raw
+            
+            # Replace environment variable placeholders with actual values
+            $content = $content -replace '\$\{REACT_APP_API_BASE_URL\}', $env:REACT_APP_API_BASE_URL
+            $content = $content -replace '\$\{REACT_APP_API_BEARER\}', $env:REACT_APP_API_BEARER
+            $content = $content -replace '\$\{REACT_APP_REQUIREMENT_PROMPT_CODE\}', $env:REACT_APP_REQUIREMENT_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_BENCH_PROMPT_CODE\}', $env:REACT_APP_BENCH_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_API_TOKEN\}', $env:REACT_APP_API_TOKEN
+            $content = $content -replace '\$\{REACT_APP_NOTIFICATION_HUB\}', $env:REACT_APP_NOTIFICATION_HUB
+            
+            # Write back to file
+            Set-Content -Path $configPath -Value $content -NoNewline
+            
+            Write-Host "Configuration file updated successfully"
+            Write-Host "API Base URL: $env:REACT_APP_API_BASE_URL"
+            Write-Host "Notification Hub: $env:REACT_APP_NOTIFICATION_HUB"
+          } else {
+            Write-Host "Config file not found at: $configPath"
           }
         env:
           REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
