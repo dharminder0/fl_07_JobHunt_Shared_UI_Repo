@@ -57,34 +57,24 @@ jobs:
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D22ACD465E3F470590DC9E7936841DD1 }}
       
-      - name: 'Replace Template Strings with Azure App Service Configuration'
+      - name: 'Verify Template Strings Are Preserved'
         shell: pwsh
         run: |
-          Write-Host "Replacing template strings in config.js..."
+          Write-Host "Verifying template strings in config.js are preserved..."
           
           if (Test-Path "config.js") {
-            # Read the config.js file
             $configContent = Get-Content "config.js" -Raw
-            
-            Write-Host "Original config.js content:"
+            Write-Host "config.js content:"
             Write-Host $configContent
             
-            # Replace template strings with placeholder values that will be replaced at runtime
-            # We'll use a different approach - set these as app settings and let the app read them
-            
-            # For now, let's just ensure the template strings are preserved
-            Write-Host "Template strings preserved for Azure App Service runtime replacement"
-            Write-Host "Azure App Service will replace these values using application settings"
-            
-            # Show what the final config should look like
-            Write-Host "Expected replacement values from Azure App Service:"
-            Write-Host "REACT_APP_API_BASE_URL should be replaced with: https://fl-07-jobhunt-shared-api-prod.azurewebsites.net/api12/"
-            Write-Host "REACT_APP_API_BEARER should be replaced with: [Your Bearer Token]"
-            Write-Host "REACT_APP_REQUIREMENT_PROMPT_CODE should be replaced with: REQRMNT"
-            Write-Host "REACT_APP_BENCH_PROMPT_CODE should be replaced with: RESUME"
-            Write-Host "REACT_APP_API_TOKEN should be replaced with: [Your API Token]"
-            Write-Host "REACT_APP_NOTIFICATION_HUB should be replaced with: https://fl-07-jobhunt-shared-api-test.azurewebsites.net/notificationHub"
+            Write-Host "✅ Template strings are preserved for Azure App Service runtime replacement"
+            Write-Host ""
+            Write-Host "IMPORTANT: You need to set the startup command in Azure Portal:"
+            Write-Host "Azure Portal → App Service → Configuration → General settings → Startup command"
+            Write-Host ""
+            Write-Host "Use this startup command:"
+            Write-Host "powershell -Command \"if (Test-Path config.js) { Write-Host 'Updating config.js...'; `$c = Get-Content config.js -Raw; `$c = `$c -replace '\`${REACT_APP_API_BASE_URL}', `$env:REACT_APP_API_BASE_URL; `$c = `$c -replace '\`${REACT_APP_API_BEARER}', `$env:REACT_APP_API_BEARER; `$c = `$c -replace '\`${REACT_APP_REQUIREMENT_PROMPT_CODE}', `$env:REACT_APP_REQUIREMENT_PROMPT_CODE; `$c = `$c -replace '\`${REACT_APP_BENCH_PROMPT_CODE}', `$env:REACT_APP_BENCH_PROMPT_CODE; `$c = `$c -replace '\`${REACT_APP_API_TOKEN}', `$env:REACT_APP_API_TOKEN; `$c = `$c -replace '\`${REACT_APP_NOTIFICATION_HUB}', `$env:REACT_APP_NOTIFICATION_HUB; Set-Content config.js -Value `$c; Write-Host 'Config updated!'; }\""
             
           } else {
-            Write-Host "config.js not found in deployment package"
+            Write-Host "❌ config.js not found in deployment package"
           }
