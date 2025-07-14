@@ -1,0 +1,146 @@
+# Alternative: Single workflow file for multiple environments
+# This is an example - rename to .yml to use
+
+name: Multi-Environment Deployment
+
+on:
+  push:
+    branches: [master, develop, staging]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+      
+      - name: Determine environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/master" ] || [ "${{ github.event.inputs.environment }}" == "production" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "app_name=fl-07-JobHunt-Shared-UI-Prod" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+            echo "app_name=fl-07-JobHunt-Shared-UI-Staging" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+      
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build --if-present
+        env:
+          CI: false
+          # Note: These will be resolved based on the environment in the deploy job
+          REACT_APP_API_BASE_URL: placeholder
+          REACT_APP_API_BEARER: placeholder
+          REACT_APP_REQUIREMENT_PROMPT_CODE: placeholder
+          REACT_APP_BENCH_PROMPT_CODE: placeholder
+          REACT_APP_API_TOKEN: placeholder
+          REACT_APP_NOTIFICATION_HUB: placeholder
+      
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-app-${{ steps.env.outputs.environment }}
+          path: build
+      
+      - name: Save environment info
+        run: echo "${{ steps.env.outputs.environment }}" > environment.txt
+      
+      - name: Upload environment info
+        uses: actions/upload-artifact@v4
+        with:
+          name: environment-info
+          path: environment.txt
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: ${{ needs.build.outputs.environment }}
+    
+    steps:
+      - name: Download environment info
+        uses: actions/download-artifact@v4
+        with:
+          name: environment-info
+      
+      - name: Set environment variables
+        id: env
+        run: |
+          ENVIRONMENT=$(cat environment.txt)
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+          
+          if [ "$ENVIRONMENT" == "production" ]; then
+            echo "app_name=fl-07-JobHunt-Shared-UI-Prod" >> $GITHUB_OUTPUT
+            echo "publish_profile_secret=AZUREAPPSERVICE_PUBLISHPROFILE_D22ACD465E3F470590DC9E7936841DD1" >> $GITHUB_OUTPUT
+          else
+            echo "app_name=fl-07-JobHunt-Shared-UI-Staging" >> $GITHUB_OUTPUT
+            echo "publish_profile_secret=AZUREAPPSERVICE_PUBLISHPROFILE_STAGING" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: node-app-${{ steps.env.outputs.environment }}
+      
+      - name: 'Update runtime configuration'
+        shell: pwsh
+        run: |
+          $configPath = "config.js"
+          $environment = "${{ steps.env.outputs.environment }}"
+          
+          if (Test-Path $configPath) {
+            Write-Host "Updating runtime configuration for $environment..."
+            
+            # Read the config file
+            $content = Get-Content $configPath -Raw
+            
+            # Replace environment variable placeholders with actual values
+            $content = $content -replace '\$\{REACT_APP_API_BASE_URL\}', $env:REACT_APP_API_BASE_URL
+            $content = $content -replace '\$\{REACT_APP_API_BEARER\}', $env:REACT_APP_API_BEARER
+            $content = $content -replace '\$\{REACT_APP_REQUIREMENT_PROMPT_CODE\}', $env:REACT_APP_REQUIREMENT_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_BENCH_PROMPT_CODE\}', $env:REACT_APP_BENCH_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_API_TOKEN\}', $env:REACT_APP_API_TOKEN
+            $content = $content -replace '\$\{REACT_APP_NOTIFICATION_HUB\}', $env:REACT_APP_NOTIFICATION_HUB
+            
+            # Write back to file
+            Set-Content -Path $configPath -Value $content -NoNewline
+            
+            Write-Host "$environment configuration file updated successfully"
+            Write-Host "API Base URL: $env:REACT_APP_API_BASE_URL"
+            Write-Host "Notification Hub: $env:REACT_APP_NOTIFICATION_HUB"
+          } else {
+            Write-Host "Config file not found at: $configPath"
+          }
+        env:
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
+      
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ steps.env.outputs.app_name }}
+          slot-name: 'Production'
+          package: .
+          publish-profile: ${{ secrets[steps.env.outputs.publish_profile_secret] }} 

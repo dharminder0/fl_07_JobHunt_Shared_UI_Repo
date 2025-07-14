@@ -45,7 +45,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    
+    environment: production  # Add environment specification
     
     steps:
       - name: Download artifact from build job
@@ -58,7 +58,7 @@ jobs:
         run: |
           $configPath = "config.js"
           if (Test-Path $configPath) {
-            Write-Host "Updating runtime configuration..."
+            Write-Host "Updating runtime configuration for PRODUCTION..."
             
             # Read the config file
             $content = Get-Content $configPath -Raw
