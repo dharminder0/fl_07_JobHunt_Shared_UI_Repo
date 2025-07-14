@@ -16,13 +16,26 @@ declare global {
 const getRuntimeConfig = () => {
   const runtimeConfig = window.appConfig;
   
+  // Helper function to check if value is a template string (not replaced)
+  const isTemplateString = (value: string | undefined): boolean => {
+    return value ? value.startsWith('${') && value.endsWith('}') : false;
+  };
+  
+  // Helper function to get valid config value
+  const getConfigValue = (runtimeValue: string | undefined, envValue: string | undefined, fallback: string): string => {
+    if (runtimeValue && !isTemplateString(runtimeValue)) {
+      return runtimeValue;
+    }
+    return envValue || fallback;
+  };
+  
   return {
-    API_BASE_URL: runtimeConfig?.API_BASE_URL || process.env.REACT_APP_API_BASE_URL || 'https://fl-07-jobhunt-shared-api-test.azurewebsites.net/api/',
-    API_BEARER: runtimeConfig?.API_BEARER || process.env.REACT_APP_API_BEARER || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ94343f',
-    RequirementPromtCode: runtimeConfig?.RequirementPromtCode || process.env.REACT_APP_REQUIREMENT_PROMPT_CODE || 'REQRMNT',
-    BenchPromtCode: runtimeConfig?.BenchPromtCode || process.env.REACT_APP_BENCH_PROMPT_CODE || 'RESUME',
-    API_Token: runtimeConfig?.API_Token || process.env.REACT_APP_API_TOKEN || '',
-    Notification_HUB: runtimeConfig?.Notification_HUB || process.env.REACT_APP_NOTIFICATION_HUB || 'https://fl-07-jobhunt-shared-api-test.azurewebsites.net/notificationHub'
+    API_BASE_URL: getConfigValue(runtimeConfig?.API_BASE_URL, process.env.REACT_APP_API_BASE_URL, 'https://yoursite.azurewebsites.net/api/'),
+    API_BEARER: getConfigValue(runtimeConfig?.API_BEARER, process.env.REACT_APP_API_BEARER, 'exxx'),
+    RequirementPromtCode: getConfigValue(runtimeConfig?.RequirementPromtCode, process.env.REACT_APP_REQUIREMENT_PROMPT_CODE, 'REQRMNT'),
+    BenchPromtCode: getConfigValue(runtimeConfig?.BenchPromtCode, process.env.REACT_APP_BENCH_PROMPT_CODE, 'RESUME'),
+    API_Token: getConfigValue(runtimeConfig?.API_Token, process.env.REACT_APP_API_TOKEN, ''),
+    Notification_HUB: getConfigValue(runtimeConfig?.Notification_HUB, process.env.REACT_APP_NOTIFICATION_HUB, 'https://yourapp.azurewebsites.net/notificationHub')
   };
 };
 

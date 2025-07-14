@@ -16,7 +16,7 @@ const api = axios.create({
 // Interceptor to add Bearer token dynamically
 api.interceptors.request.use((config) => {
   if (configData.API_BEARER) {
-    config.headers.Authorization = `Bearer ${configData.API_BEARER}`;
+       config.headers.Authorization = `Bearer ${configData.API_BEARER}`;
   }
   return config;
 });
