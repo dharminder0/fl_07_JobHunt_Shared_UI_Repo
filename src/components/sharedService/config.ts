@@ -12,21 +12,32 @@ declare global {
   }
 }
 
-// Get runtime config from window object (injected by Azure) or fallback to build-time env vars
+// Get runtime config from Azure App Service configuration (primary) or fallback to build-time env vars
 const getRuntimeConfig = () => {
   const runtimeConfig = window.appConfig;
   
-  // Helper function to check if value is a template string (not replaced)
+  // Helper function to check if value is a template string (not replaced by Azure)
   const isTemplateString = (value: string | undefined): boolean => {
     return value ? value.startsWith('${') && value.endsWith('}') : false;
   };
   
   // Helper function to get valid config value
+  // Priority: 1. Azure App Service runtime config (if not template string)
+  //          2. Local development environment variables
+  //          3. Fallback defaults
   const getConfigValue = (runtimeValue: string | undefined, envValue: string | undefined, fallback: string): string => {
+    // Use Azure App Service runtime config if it's properly replaced (not a template string)
     if (runtimeValue && !isTemplateString(runtimeValue)) {
       return runtimeValue;
     }
-    return envValue || fallback;
+    
+    // Fallback to local development environment variables
+    if (envValue) {
+      return envValue;
+    }
+    
+    // Final fallback to defaults
+    return fallback;
   };
   
   return {
