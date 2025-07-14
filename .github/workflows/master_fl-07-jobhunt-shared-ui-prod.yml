@@ -29,7 +29,12 @@ jobs:
           npm run build --if-present
         env:
           CI: false
-          # Remove GitHub secrets - let Azure App Service handle configuration at runtime
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -48,6 +53,41 @@ jobs:
         with:
           name: node-app
       
+      - name: 'Update runtime configuration'
+        shell: pwsh
+        run: |
+          $configPath = "config.js"
+          if (Test-Path $configPath) {
+            Write-Host "Updating runtime configuration..."
+            
+            # Read the config file
+            $content = Get-Content $configPath -Raw
+            
+            # Replace environment variable placeholders with actual values
+            $content = $content -replace '\$\{REACT_APP_API_BASE_URL\}', $env:REACT_APP_API_BASE_URL
+            $content = $content -replace '\$\{REACT_APP_API_BEARER\}', $env:REACT_APP_API_BEARER
+            $content = $content -replace '\$\{REACT_APP_REQUIREMENT_PROMPT_CODE\}', $env:REACT_APP_REQUIREMENT_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_BENCH_PROMPT_CODE\}', $env:REACT_APP_BENCH_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_API_TOKEN\}', $env:REACT_APP_API_TOKEN
+            $content = $content -replace '\$\{REACT_APP_NOTIFICATION_HUB\}', $env:REACT_APP_NOTIFICATION_HUB
+            
+            # Write back to file
+            Set-Content -Path $configPath -Value $content -NoNewline
+            
+            Write-Host "Configuration file updated successfully"
+            Write-Host "API Base URL: $env:REACT_APP_API_BASE_URL"
+            Write-Host "Notification Hub: $env:REACT_APP_NOTIFICATION_HUB"
+          } else {
+            Write-Host "Config file not found at: $configPath"
+          }
+        env:
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
+      
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
@@ -56,25 +96,3 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D22ACD465E3F470590DC9E7936841DD1 }}
-      
-      - name: 'Verify Template Strings Are Preserved'
-        shell: pwsh
-        run: |
-          Write-Host "Verifying template strings in config.js are preserved..."
-          
-          if (Test-Path "config.js") {
-            $configContent = Get-Content "config.js" -Raw
-            Write-Host "config.js content:"
-            Write-Host $configContent
-            
-            Write-Host "✅ Template strings are preserved for Azure App Service runtime replacement"
-            Write-Host ""
-            Write-Host "IMPORTANT: You need to set the startup command in Azure Portal:"
-            Write-Host "Azure Portal → App Service → Configuration → General settings → Startup command"
-            Write-Host ""
-            Write-Host "Use this startup command:"
-            Write-Host "powershell -Command \"if (Test-Path config.js) { Write-Host 'Updating config.js...'; `$c = Get-Content config.js -Raw; `$c = `$c -replace '\`${REACT_APP_API_BASE_URL}', `$env:REACT_APP_API_BASE_URL; `$c = `$c -replace '\`${REACT_APP_API_BEARER}', `$env:REACT_APP_API_BEARER; `$c = `$c -replace '\`${REACT_APP_REQUIREMENT_PROMPT_CODE}', `$env:REACT_APP_REQUIREMENT_PROMPT_CODE; `$c = `$c -replace '\`${REACT_APP_BENCH_PROMPT_CODE}', `$env:REACT_APP_BENCH_PROMPT_CODE; `$c = `$c -replace '\`${REACT_APP_API_TOKEN}', `$env:REACT_APP_API_TOKEN; `$c = `$c -replace '\`${REACT_APP_NOTIFICATION_HUB}', `$env:REACT_APP_NOTIFICATION_HUB; Set-Content config.js -Value `$c; Write-Host 'Config updated!'; }\""
-            
-          } else {
-            Write-Host "❌ config.js not found in deployment package"
-          }
