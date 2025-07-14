@@ -92,7 +92,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'fl-07-JobHunt-Shared-UI-Staging'  # Different app name for staging
+          app-name: 'fl-07-JobHunt-Shared-UI-Test'  # Different app name for staging
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_STAGING }} 
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EC464E35A8FD4913B678DFC5EE35CF5E }} 

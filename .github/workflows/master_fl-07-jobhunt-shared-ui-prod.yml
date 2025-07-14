@@ -39,7 +39,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: node-app-production
+          name: node-app
           path: build
 
   deploy:
@@ -51,7 +51,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app-production
+          name: node-app
       
       - name: 'Update runtime configuration'
         shell: pwsh
@@ -74,7 +74,7 @@ jobs:
             # Write back to file
             Set-Content -Path $configPath -Value $content -NoNewline
             
-            Write-Host "PRODUCTION Configuration file updated successfully"
+            Write-Host "Configuration file updated successfully"
             Write-Host "API Base URL: $env:REACT_APP_API_BASE_URL"
             Write-Host "Notification Hub: $env:REACT_APP_NOTIFICATION_HUB"
           } else {
@@ -92,7 +92,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'fl-07-JobHunt-Shared-UI-Test'
+          app-name: 'fl-07-JobHunt-Shared-UI-Prod'
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D22ACD465E3F470590DC9E7936841DD1 }}
