@@ -11,10 +11,7 @@
     "@mui/system": "^6.1.10",
     "@mui/x-charts": "^7.23.1",
     "@reduxjs/toolkit": "^2.5.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
     "@toolpad/core": "^0.11.0",
-    "@types/jest": "^29.5.14",
     "@types/react-dom": "^18.2.7",
     "axios": "^1.7.9",
     "cra-template-typescript": "1.2.0",
@@ -35,20 +32,18 @@
     "react-window": "^1.8.11",
     "redux": "^5.0.1",
     "sass": "^1.82.0",
-    "swiper": "^11.1.15",
+    "swiper": "^11.2.10",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && copyfiles web.config build/",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "customStart": "HOST=192.168.1.100 PORT=3000 react-scripts start"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -65,16 +60,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
     "@types/html-docx-js": "^0.3.4",
-    "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
     "@types/node": "^22.10.2",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-window": "^1.8.8",
-    "@types/swiper": "^6.0.0",
-    "@types/testing-library__react": "^10.2.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "autoprefixer": "^10.4.20",

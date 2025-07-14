@@ -31,7 +31,7 @@ import {
 } from "../../../../components/features/drawerSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
-import configData from "../../../sharedService/config.json";
+import configData from "../../../sharedService/config";
 import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 import { DownloadOutlined, PictureAsPdfOutlined } from "@mui/icons-material";
 import UploadLogo from "../../../../components/sharedComponents/UploadLogo";
