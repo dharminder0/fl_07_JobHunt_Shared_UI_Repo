@@ -127,7 +127,7 @@ export default function SignUp() {
               className="h-[70px] mx-auto"
             />
           </div>
-          <div className="w-full max-w-md mb-4">
+          <div className="w-full max-w-md mb-4 text-center">
             <h1 className="text-heading">Create your account</h1>
             <p className="text-base text-gray-500 mt-2">
               Already have an account?{" "}
