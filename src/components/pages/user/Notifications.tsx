@@ -18,7 +18,7 @@ import {
   stopNotificationConnection,
 } from "../../sharedService/signalRService";
 import * as signalR from "@microsoft/signalr";
-import configData from "../../sharedService/config.json";
+import configData from "../../sharedService/config";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import moment from "moment";
 import { useNavigate } from "react-router";

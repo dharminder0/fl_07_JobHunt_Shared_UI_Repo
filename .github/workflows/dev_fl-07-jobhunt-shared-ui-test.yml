@@ -1,0 +1,98 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Node.js app to Azure Web App - fl-07-JobHunt-Shared-UI-Test
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build --if-present
+        env:
+          CI: false
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
+      
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-app
+          path: build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: development  # Add environment specification
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: node-app
+      
+      - name: 'Update runtime configuration'
+        shell: pwsh
+        run: |
+          $configPath = "config.js"
+          if (Test-Path $configPath) {
+            Write-Host "Updating runtime configuration for PRODUCTION..."
+            
+            # Read the config file
+            $content = Get-Content $configPath -Raw
+            
+            # Replace environment variable placeholders with actual values
+            $content = $content -replace '\$\{REACT_APP_API_BASE_URL\}', $env:REACT_APP_API_BASE_URL
+            $content = $content -replace '\$\{REACT_APP_API_BEARER\}', $env:REACT_APP_API_BEARER
+            $content = $content -replace '\$\{REACT_APP_REQUIREMENT_PROMPT_CODE\}', $env:REACT_APP_REQUIREMENT_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_BENCH_PROMPT_CODE\}', $env:REACT_APP_BENCH_PROMPT_CODE
+            $content = $content -replace '\$\{REACT_APP_API_TOKEN\}', $env:REACT_APP_API_TOKEN
+            $content = $content -replace '\$\{REACT_APP_NOTIFICATION_HUB\}', $env:REACT_APP_NOTIFICATION_HUB
+            
+            # Write back to file
+            Set-Content -Path $configPath -Value $content -NoNewline
+            
+            Write-Host "Configuration file updated successfully"
+            Write-Host "API Base URL: $env:REACT_APP_API_BASE_URL"
+            Write-Host "Notification Hub: $env:REACT_APP_NOTIFICATION_HUB"
+          } else {
+            Write-Host "Config file not found at: $configPath"
+          }
+        env:
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_API_BEARER: ${{ secrets.REACT_APP_API_BEARER }}
+          REACT_APP_REQUIREMENT_PROMPT_CODE: ${{ secrets.REACT_APP_REQUIREMENT_PROMPT_CODE }}
+          REACT_APP_BENCH_PROMPT_CODE: ${{ secrets.REACT_APP_BENCH_PROMPT_CODE }}
+          REACT_APP_API_TOKEN: ${{ secrets.REACT_APP_API_TOKEN }}
+          REACT_APP_NOTIFICATION_HUB: ${{ secrets.REACT_APP_NOTIFICATION_HUB }}
+      
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
+        with:
+          app-name: 'fl-07-JobHunt-Shared-UI-Test'
+          slot-name: 'Production'
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C4D87AE1A05C406591B61B8CFFCCC0F4 }}

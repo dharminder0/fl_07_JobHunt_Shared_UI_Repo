@@ -28,7 +28,7 @@ import {
 } from "@mui/material";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import Loader from "../../../sharedComponents/Loader";
-import configData from "../../../sharedService/config.json";
+import configData from "../../../sharedService/config";
 import { useForm, Controller } from "react-hook-form";
 import {
   generateRequirement,
