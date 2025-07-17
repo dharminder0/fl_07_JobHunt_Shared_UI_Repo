@@ -147,7 +147,8 @@ const VendorCompanyDetails = () => {
           setTimeout(() => {
             setIsInviteLoader(false);
             setIsPopupOpen(false);
-            navigate("/vendor/onboarding");
+            // navigate("/vendor/onboarding");
+            getOrgProfile();
           }, 500);
         }
       })
@@ -656,30 +657,6 @@ const VendorCompanyDetails = () => {
           <div className="mb-2 space-y-4">
             {(orgData.status == 1 || orgData.status == InvitedType.Pending) && (
               <div>
-                {/* <Button
-                  size="small"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleConfirmPopup(orgData?.id, 2);
-                  }}
-                  variant="outlined"
-                  endIcon={<Check fontSize="small" color="success" />}
-                  className="!me-3"
-                >
-                  Accept
-                </Button>
-
-                <Button
-                  size="small"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleConfirmPopup(orgData?.id, 3);
-                  }}
-                  variant="outlined"
-                  endIcon={<CloseOutlined fontSize="small" color="error" />}
-                >
-                  Declined
-                </Button> */}
                 <Button
                   onClick={(e: any) => {
                     e.stopPropagation();
