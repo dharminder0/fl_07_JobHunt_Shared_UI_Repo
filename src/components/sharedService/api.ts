@@ -2,7 +2,7 @@ import axios from "axios";
 import configData from "./config";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+  baseURL: configData.API_BASE_URL,
   headers: {
     "Content-type": "application/json; charset=UTF-8",
     Accept: "*",
@@ -15,8 +15,8 @@ const api = axios.create({
 
 // Interceptor to add Bearer token dynamically
 api.interceptors.request.use((config) => {
-  if (process.env.REACT_APP_API_BEARER) {
-       config.headers.Authorization = `Bearer ${process.env.REACT_APP_API_BEARER}`;
+  if (configData.API_BEARER) {
+       config.headers.Authorization = `Bearer ${configData.API_BEARER}`;
   }
   return config;
 });
