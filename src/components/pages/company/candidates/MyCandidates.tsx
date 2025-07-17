@@ -97,7 +97,7 @@ export default function MyCandidates() {
       orgCode: userData.orgCode,
       page: pageIndex,
       pageSize: pageSize,
-    };  
+    };
     setIsTableLoader(true);
     getClientApplicantsList(payload)
       .then((result: any) => {
@@ -190,13 +190,25 @@ export default function MyCandidates() {
               {applicantData.map((applicant, index) => (
                 <tr key={index}>
                   <th className="add-right-shadow">
-                    <div>{applicant.firstName + " " + applicant.lastName}</div>
+                    <div
+                      onClick={() =>
+                        dispatch(
+                          openDrawer({
+                            drawerName: "benchPreview",
+                            data: JSON.parse(applicant.cv),
+                          })
+                        )
+                      }
+                      className="cursor-pointer hover:text-indigo-700"
+                    >
+                      {applicant.firstName + " " + applicant.lastName}
+                    </div>
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
-                        className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700"
-                        onClick={() =>
-                          handleRowClick(applicant.vendorOrgCode, "vendor")
-                        }
+                        className="flex items-center min-w-[135px] max-w-[150px] hover:text-indigo-700"
+                        // onClick={() =>
+                        //   handleRowClick(applicant.vendorOrgCode, "vendor")
+                        // }
                       >
                         <img
                           src={applicant?.vendorLogo}

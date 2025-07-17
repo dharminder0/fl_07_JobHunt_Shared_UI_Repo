@@ -99,7 +99,7 @@ export const Notifications = () => {
 
   const handleRedirection = (item: any) => {
     if (item.notificationType === 1) {
-      navigation(`/${activeRole}/clients`);
+      navigation(`/${activeRole}/myvendors`);
     }
     if (item.notificationType === 2) {
       navigation(`/${activeRole}/candidate`);

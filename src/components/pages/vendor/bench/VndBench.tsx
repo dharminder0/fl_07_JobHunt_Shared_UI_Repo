@@ -1,5 +1,7 @@
 import {
   AccountCircleOutlined,
+  ChevronLeft,
+  ChevronRight,
   LocationOn,
   QuestionMarkOutlined,
   WorkHistory,
@@ -58,9 +60,12 @@ export default function VndBench({ drawerData = {} }: any) {
   const [isUpdateLoader, setIsUpdateLoader] = React.useState(false);
   const [matchingScore, setMatchingScore] = React.useState(0);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [pageIndex, setPageIndex] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(15);
   const [searchText, SetSearchText] = useState("");
   const [activeTab, setActiveTab] = useState("benchTab");
   const [benchDatadetails, setbenchDatadetails] = useState<any[]>([]);
+  const [records, setRecords] = React.useState<any>({});
   const [availability, setAvailability] = useState<any[]>([]);
   const [techStack, setTechStack] = useState<any[]>([]);
   const [drawerObj, setDrawerObj] = useState({
@@ -98,7 +103,7 @@ export default function VndBench({ drawerData = {} }: any) {
     if (activeTab === "techStack") {
       getTechStacks();
     }
-  }, [searchText, availability, activeTab]);
+  }, [searchText, availability, activeTab, pageIndex]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -110,14 +115,15 @@ export default function VndBench({ drawerData = {} }: any) {
     const payload = {
       searchText: searchText.trim(),
       orgCode: userData.orgCode,
-      page: 1,
+      page: pageIndex,
       availability: availability,
-      pageSize: 20,
+      pageSize: pageSize,
       topSkillId: drawerData?.data?.id ?? 0,
     };
     setIsTableLoader(true);
     getBenchList(payload)
       .then((result: any) => {
+        setRecords(result);
         if (result?.list && result?.list.length >= 0) {
           setbenchDatadetails(result.list);
           setTimeout(() => {
@@ -138,10 +144,11 @@ export default function VndBench({ drawerData = {} }: any) {
     const payload = {
       orgCode: userData.orgCode,
       searchText: searchText.trim(),
-      pageSize: 20,
-      page: 1,
+      pageSize: pageSize,
+      page: pageIndex,
     };
     getTechStackList(payload).then((result: any) => {
+      setRecords(result);
       if (result && result?.length >= 0) {
         setTechStack(result);
       }
@@ -623,6 +630,38 @@ export default function VndBench({ drawerData = {} }: any) {
                 </tbody>
               </table>
             </div>
+
+            <div className="flex items-center justify-between border-gray-200 bg-white px-2 sm:px-4">
+              <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-base text-gray-700">
+                    Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                    <span>
+                      {Math.min(pageIndex * pageSize, records?.count || 0)}
+                    </span>{" "}
+                    of <span>{records?.count || 0}</span> results
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-1 justify-end">
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex - 1)}
+                  disabled={pageIndex <= 1}
+                >
+                  <ChevronLeft />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex + 1)}
+                  disabled={
+                    pageIndex >= Math.ceil((records?.count || 0) / pageSize)
+                  }
+                >
+                  <ChevronRight />
+                </IconButton>
+              </div>
+            </div>
           </>
         )}
 
@@ -663,6 +702,37 @@ export default function VndBench({ drawerData = {} }: any) {
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="flex items-center justify-between border-gray-200 bg-white px-2 sm:px-4">
+              <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-base text-gray-700">
+                    Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                    <span>
+                      {Math.min(pageIndex * pageSize, records?.count || 0)}
+                    </span>{" "}
+                    of <span>{records?.count || 0}</span> results
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-1 justify-end">
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex - 1)}
+                  disabled={pageIndex <= 1}
+                >
+                  <ChevronLeft />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex + 1)}
+                  disabled={
+                    pageIndex >= Math.ceil((records?.count || 0) / pageSize)
+                  }
+                >
+                  <ChevronRight />
+                </IconButton>
+              </div>
             </div>
           </>
         )}

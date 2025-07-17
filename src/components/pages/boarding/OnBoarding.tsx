@@ -68,7 +68,7 @@ export default function OnBoarding() {
   );
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [companyType, setCompanyType] = React.useState<any>(RoleType.Vendor);
+  const [companyType, setCompanyType] = React.useState<any>(userData.role);
 
   const {
     control,
@@ -90,18 +90,20 @@ export default function OnBoarding() {
     dispatch(openBackdrop());
     data.userId = userData.userId;
     userData.role = data?.registrationType;
+    setCompanyType(data?.registrationType[0]);
     upsertCompanyInfo(data)
       .then((result: any) => {
         localStorage.setItem("userData", JSON.stringify(userData));
         if (result?.success) {
           setTimeout(() => {
+            debugger
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             dispatch(closeBackdrop());
             navigate(
               `/${
-                companyType === RoleType.Client
+                data?.registrationType[0] === RoleType.Client
                   ? "company"
-                  : companyType === RoleType.Vendor
+                  : data?.registrationType[0] === RoleType.Vendor
                     ? "vendor"
                     : "company"
               }`
@@ -124,6 +126,7 @@ export default function OnBoarding() {
         }
       } else {
         // Save role type to localStorage and navigate
+        debugger
         navigate(
           `/${
             companyType === RoleType.Client

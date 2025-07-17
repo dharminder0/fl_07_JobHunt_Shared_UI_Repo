@@ -360,10 +360,7 @@ export const getVendorContractData = async (payload: any) => {
 };
 
 export const getSimilerRequirements = async (payload: any) => {
-  const response = await api.post(
-    "V1/Requirement/SimilerRequirements",
-    payload
-  );
+  const response = await api.post("V1/Requirement/matching", payload);
   return response.data;
 };
 

@@ -32,7 +32,7 @@ const FindVendors = () => {
   const [resource, setResource] = useState<any[]>([]);
   const [strength, setStrength] = useState<string[]>([]);
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(25);
 
   const [filterList, setFilterList] = useState<any>({
     TechnologiesList: [],
@@ -66,7 +66,7 @@ const FindVendors = () => {
       orgCode: userData?.orgCode,
       page: pageIndex,
       pageSize: pageSize,
-      searchText :searchText.trim(),
+      searchText: searchText.trim(),
       technology,
       resource,
       strength,

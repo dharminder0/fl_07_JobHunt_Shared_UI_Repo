@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Grid, Link, Button, Avatar } from "@mui/material";
+import { Grid, Link, Button, Avatar, Tooltip } from "@mui/material";
 import {
   CorporateFareOutlined,
   Edit,
@@ -112,24 +112,35 @@ const OrganizationProfile = () => {
                 </h5>
 
                 <ul className="text-gray-700 text-base">
-                  <li>
-                    <Link href={`mailto:${orgData?.email}`} underline="none">
-                      <MailOutline fontSize="small" /> {orgData?.email}
-                    </Link>
+                  <li className="truncate text-ellipsis mb-1">
+                    <Tooltip title={orgData?.email} arrow>
+                      <span className="text-indigo-600 cursor-pointer hover:text-indigo-700">
+                        <MailOutline fontSize="small" />
+                        <a href={`mailto:${orgData?.email}`}>
+                          {" "}
+                          {orgData?.email}
+                        </a>
+                      </span>
+                    </Tooltip>
                   </li>
-                  <li>
-                    <Link href={`tel:${orgData?.phone}`} underline="none">
-                      <Phone fontSize="small" /> {orgData?.phone}
-                    </Link>
+                  <li className="truncate text-ellipsis mb-1">
+                    <Tooltip title={orgData?.phone} arrow>
+                      <span className="text-indigo-600 cursor-pointer hover:text-indigo-700">
+                        <Phone fontSize="small" />
+                        <a href={`tel:${orgData?.phone}`}> {orgData?.phone}</a>
+                      </span>
+                    </Tooltip>
                   </li>
-                  <li>
-                    <Link
-                      href={orgData?.website}
-                      underline="none"
-                      target="_blank"
-                    >
-                      <Language fontSize="small" /> {orgData?.website}
-                    </Link>
+                  <li className="truncate text-ellipsis mb-1">
+                    <Tooltip title={orgData?.website} arrow>
+                      <span className="text-indigo-600 cursor-pointer hover:text-indigo-700">
+                        <Language fontSize="small" />
+                        <a href={orgData?.website} target="_blank">
+                          {" "}
+                          {orgData?.website}
+                        </a>
+                      </span>
+                    </Tooltip>
                   </li>
                 </ul>
               </div>
@@ -146,7 +157,7 @@ const OrganizationProfile = () => {
                           <li>
                             <LocationOnOutlined
                               fontSize="small"
-                              color="primary"
+                              className="!text-indigo-600"
                             />{" "}
                             {item.city}, {item.stateName}
                           </li>
@@ -165,7 +176,11 @@ const OrganizationProfile = () => {
                       orgData?.socialLinks?.length > 0 &&
                       orgData?.socialLinks.map((item: any) => (
                         <li>
-                          <Link href={item?.url} underline="none">
+                          <Link
+                            href={item?.url}
+                            underline="none"
+                            className="!text-indigo-600"
+                          >
                             <SocialIcon platform={item.platform} /> {item?.name}
                           </Link>
                         </li>

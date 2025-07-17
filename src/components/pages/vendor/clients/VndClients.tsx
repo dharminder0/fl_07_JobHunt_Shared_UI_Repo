@@ -19,7 +19,11 @@ import {
   RoleType,
 } from "../../../../components/sharedService/enums";
 import { getOnboardInvitedList } from "../../../../components/sharedService/apiService";
-import { CorporateFareOutlined } from "@mui/icons-material";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CorporateFareOutlined,
+} from "@mui/icons-material";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
 import Loader from "../../../sharedComponents/Loader";
@@ -36,11 +40,9 @@ const VndClients = () => {
 
   const [tabValue, setTabValue] = React.useState("Active");
   const [pageIndex, setPageIndex] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = React.useState(16);
   const [isLoader, setIsLoader] = React.useState<boolean>(true);
-  const [archivedDatafilterData, setarchivedDatafilterData] = useState<any[]>(
-    []
-  );
+  const [records, setRecords] = React.useState<any>({});
   const [activeDataList, setActiveDataList] = useState<any[]>([]);
   const [searchText, setSearchText] = useState<any>("");
 
@@ -48,7 +50,7 @@ const VndClients = () => {
     if (searchText?.length >= 3 || searchText?.length == 0) {
       getOrgRequestList();
     }
-  }, [tabValue, searchText]);
+  }, [tabValue, searchText, pageIndex]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -65,10 +67,11 @@ const VndClients = () => {
       page: pageIndex,
       pageSize: pageSize,
     };
-    
+
     setIsLoader(true);
     getOnboardInvitedList(payload)
       .then((result: any) => {
+        setRecords(result);
         if (result.count > 0) {
           setActiveDataList(result.list);
         } else {
@@ -139,110 +142,197 @@ const VndClients = () => {
           <>
             {tabValue == "Active" && (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {activeDataList &&
-                    activeDataList?.length > 0 &&
-                    activeDataList.map((company, idx) => (
-                      <div>
-                        <div
-                          className="h-full border p-4 rounded-md cursor-pointer"
-                          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                            handleDetails(company.orgCode);
-                          }}
-                        >
-                          <div className="flex align-center mb-3">
-                            <Avatar
-                              alt="Org Icon"
-                              src={company.logo || undefined}
-                              className="rounded-full !h-10 !w-10 me-3"
+                <div>
+                  {activeDataList && activeDataList?.length > 0 ? (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {activeDataList.map((company, idx) => (
+                          <div>
+                            <div
+                              className="h-full border p-4 rounded-md cursor-pointer"
+                              onClick={(
+                                e: React.MouseEvent<HTMLDivElement>
+                              ) => {
+                                handleDetails(company.orgCode);
+                              }}
                             >
-                              {!company.logo && (
-                                <CorporateFareOutlined fontSize="small" />
-                              )}
-                            </Avatar>
-                            <div>
-                              <Tooltip title={company.orgName} arrow>
-                                <p className="text-title line-clamp-1 font-bold">
-                                  {company.orgName}
-                                </p>
-                              </Tooltip>
-                              <p className="line-clamp-1 text-base">
-                                {company?.location[0] || "-"}
+                              <div className="flex align-center mb-3">
+                                <Avatar
+                                  alt="Org Icon"
+                                  src={company.logo || undefined}
+                                  className="rounded-full !h-10 !w-10 me-3"
+                                >
+                                  {!company.logo && (
+                                    <CorporateFareOutlined fontSize="small" />
+                                  )}
+                                </Avatar>
+                                <div>
+                                  <Tooltip title={company.orgName} arrow>
+                                    <p className="text-title line-clamp-1 font-bold">
+                                      {company.orgName}
+                                    </p>
+                                  </Tooltip>
+                                  <p className="line-clamp-1 text-base">
+                                    {company?.location[0] || "-"}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <p className="text-base line-clamp-2">
+                                <HtmlRenderer content={company?.description} />
                               </p>
+                              <div className="flex flex-wrap mt-2">
+                                <Chip
+                                  label={company?.empCount}
+                                  size="small"
+                                  variant="outlined"
+                                  className="my-1 me-1 !text-info"
+                                />
+                              </div>
                             </div>
                           </div>
+                        ))}
+                      </div>
 
-                          <p className="text-base line-clamp-2">
-                            <HtmlRenderer content={company?.description} />
-                          </p>
-                          <div className="flex flex-wrap mt-2">
-                            <Chip
-                              label={company?.empCount}
-                              size="small"
-                              variant="outlined"
-                              className="my-1 me-1 !text-info"
-                            />
+                      <div className="flex items-center justify-between border-gray-200 bg-white p-2 sm:px-4">
+                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                          <div>
+                            <p className="text-base text-gray-700">
+                              Showing{" "}
+                              <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                              <span>
+                                {Math.min(
+                                  pageIndex * pageSize,
+                                  records?.count || 0
+                                )}
+                              </span>{" "}
+                              of <span>{records?.count || 0}</span> results
+                            </p>
                           </div>
                         </div>
+                        <div className="flex flex-1 justify-end">
+                          <IconButton
+                            size="small"
+                            onClick={() => setPageIndex(pageIndex - 1)}
+                            disabled={pageIndex <= 1}
+                          >
+                            <ChevronLeft />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={() => setPageIndex(pageIndex + 1)}
+                            disabled={
+                              pageIndex >=
+                              Math.ceil((records?.count || 0) / pageSize)
+                            }
+                          >
+                            <ChevronRight />
+                          </IconButton>
+                        </div>
                       </div>
-                    ))}
+                    </>
+                  ) : (
+                    <NoDataAvailable />
+                  )}
                 </div>
-
-                {activeDataList && activeDataList?.length <= 0 && (
-                  <NoDataAvailable />
-                )}
               </>
             )}
 
             {tabValue == "Archived" && (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {activeDataList &&
-                    activeDataList?.length > 0 &&
-                    activeDataList.map((company, idx) => (
-                      <div>
-                        <div className="h-100 border p-4 rounded-md cursor-pointer">
-                          <div className="flex align-center mb-3">
-                            <Avatar
-                              alt="Org Icon"
-                              src={company.logo || undefined}
-                              className="rounded-full !h-10 !w-10 me-3"
+                <div>
+                  {activeDataList && activeDataList?.length > 0 ? (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {activeDataList.map((company, idx) => (
+                          <div>
+                            <div
+                              className="h-full border p-4 rounded-md cursor-pointer"
+                              onClick={(
+                                e: React.MouseEvent<HTMLDivElement>
+                              ) => {
+                                handleDetails(company.orgCode);
+                              }}
                             >
-                              {!company.logo && (
-                                <CorporateFareOutlined fontSize="small" />
-                              )}
-                            </Avatar>
-                            <div>
-                              <Tooltip title={company.orgName} arrow>
-                                <p className="text-title line-clamp-1 font-bold">
-                                  {company.orgName}
-                                </p>
-                              </Tooltip>
-                              <p className="line-clamp-1 text-base">
-                                {company?.location[0] || "-"}
+                              <div className="flex align-center mb-3">
+                                <Avatar
+                                  alt="Org Icon"
+                                  src={company.logo || undefined}
+                                  className="rounded-full !h-10 !w-10 me-3"
+                                >
+                                  {!company.logo && (
+                                    <CorporateFareOutlined fontSize="small" />
+                                  )}
+                                </Avatar>
+                                <div>
+                                  <Tooltip title={company.orgName} arrow>
+                                    <p className="text-title line-clamp-1 font-bold">
+                                      {company.orgName}
+                                    </p>
+                                  </Tooltip>
+                                  <p className="line-clamp-1 text-base">
+                                    {company?.location[0] || "-"}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <p className="text-base line-clamp-2">
+                                <HtmlRenderer content={company?.description} />
                               </p>
+                              <div className="flex flex-wrap mt-2">
+                                <Chip
+                                  label={company?.empCount}
+                                  size="small"
+                                  variant="outlined"
+                                  className="my-1 me-1 !text-info"
+                                />
+                              </div>
                             </div>
                           </div>
+                        ))}
+                      </div>
 
-                          <p className="text-base line-clamp-2">
-                            <HtmlRenderer content={company?.description} />
-                          </p>
-                          <div className="flex flex-wrap mt-2">
-                            <Chip
-                              label={company?.empCount}
-                              size="small"
-                              variant="outlined"
-                              className="my-1 me-1 !text-info"
-                            />
+                      <div className="flex items-center justify-between border-gray-200 bg-white p-2 sm:px-4">
+                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                          <div>
+                            <p className="text-base text-gray-700">
+                              Showing{" "}
+                              <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                              <span>
+                                {Math.min(
+                                  pageIndex * pageSize,
+                                  records?.count || 0
+                                )}
+                              </span>{" "}
+                              of <span>{records?.count || 0}</span> results
+                            </p>
                           </div>
                         </div>
+                        <div className="flex flex-1 justify-end">
+                          <IconButton
+                            size="small"
+                            onClick={() => setPageIndex(pageIndex - 1)}
+                            disabled={pageIndex <= 1}
+                          >
+                            <ChevronLeft />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={() => setPageIndex(pageIndex + 1)}
+                            disabled={
+                              pageIndex >=
+                              Math.ceil((records?.count || 0) / pageSize)
+                            }
+                          >
+                            <ChevronRight />
+                          </IconButton>
+                        </div>
                       </div>
-                    ))}
+                    </>
+                  ) : (
+                    <NoDataAvailable />
+                  )}
                 </div>
-
-                {activeDataList && activeDataList?.length <= 0 && (
-                  <NoDataAvailable />
-                )}
               </>
             )}
           </>
