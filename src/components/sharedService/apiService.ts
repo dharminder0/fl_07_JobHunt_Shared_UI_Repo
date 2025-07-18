@@ -115,8 +115,10 @@ export const getRequirementsList = async (payload: any) => {
   return response.data;
 };
 
-export const getRequirementsListById = async (uniqueId: any) => {
-  const response = await api.get(`V1/Requirement/GetList/${uniqueId}`);
+export const getRequirementsListById = async (uniqueId: any, orgCode: any) => {
+  const response = await api.get(
+    `V1/Requirement/GetList/${uniqueId}/${orgCode}`
+  );
   return response.data;
 };
 

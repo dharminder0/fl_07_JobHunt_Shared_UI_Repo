@@ -80,7 +80,7 @@ export default function AppRoutes() {
             <Route index element={<FindVendors />} />{" "}
             {/* List all applications */}
             <Route path=":id" element={<VendorDetails />} />{" "}
-{/*             <Route path=":id" element={<VendorCompanyDetails />} />{" "} */}
+            {/*             <Route path=":id" element={<VendorCompanyDetails />} />{" "} */}
             {/* View specific application */}
           </Route>
           <Route path="findclients" element={<FindClients />} />
@@ -92,7 +92,7 @@ export default function AppRoutes() {
             <Route index element={<VendorOnboarding />} />{" "}
             {/* List all applications */}
             <Route path=":id" element={<VendorDetails />} />{" "}
-{/*             <Route path=":id" element={<VendorCompanyDetails />} />{" "} */}
+            {/*             <Route path=":id" element={<VendorCompanyDetails />} />{" "} */}
             {/* View specific application */}
           </Route>
           <Route path="candidates" element={<MyCandidates />} />
