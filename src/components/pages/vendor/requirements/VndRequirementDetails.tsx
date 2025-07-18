@@ -92,7 +92,7 @@ const VndRequirementDetails = () => {
   }, [uniqueId]);
 
   const getRequirementsData = (uniqueId: any) => {
-    getRequirementsListById(uniqueId)
+    getRequirementsListById(uniqueId, userData.orgCode)
       .then((result: any) => {
         if (result) {
           setRequirementData(result);
@@ -154,6 +154,10 @@ const VndRequirementDetails = () => {
           dispatch(closeBackdrop());
         }, 1000);
       });
+  };
+
+  const handleOpenDrawer = (name: string, data: any) => {
+    dispatch(openDrawer({ drawerName: name, data: !data ? {} : data }));
   };
 
   return (
@@ -249,16 +253,32 @@ const VndRequirementDetails = () => {
           )}
         </div>
 
-        {/* Tabs */}
-        <Tabs
-          value={activeTab}
-          onChange={handleTabChange}
-          textColor="primary"
-          indicatorColor="primary"
-        >
-          <Tab label="Applicants" />
-          <Tab label="Analytics" />
-        </Tabs>
+        <div className="flex items-center justify-between">
+          {/* Tabs */}
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            textColor="primary"
+            indicatorColor="primary"
+          >
+            <Tab label="Applicants" />
+            <Tab label="Analytics" />
+          </Tabs>
+          <div
+            className="cursor-pointer hover:text-indigo-700 truncate text-base"
+            onClick={() =>
+              handleOpenDrawer("MatchingCandidates", {
+                id: requirementData?.id,
+                role: requirementData?.title,
+                client: requirementData.partnerName,
+                clientLogo: requirementData.partnerFavicon,
+                uniqueId: requirementData.uniqueId,
+              })
+            }
+          >
+            {requirementData?.matchingCandidates || 0} Matching Candidates
+          </div>
+        </div>
 
         {activeTab == 0 && (
           <>
@@ -371,7 +391,9 @@ const VndRequirementDetails = () => {
                   }}
                 >
                   {item?.matchingCandidateCount && (
-                    <div>{item?.matchingCandidateCount} Matching Candidates</div>
+                    <div>
+                      {item?.matchingCandidateCount} Matching Candidates
+                    </div>
                   )}
                 </div>
               </div>

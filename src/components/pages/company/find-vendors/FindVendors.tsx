@@ -7,7 +7,7 @@ import {
   Tooltip,
   Avatar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuDrpDwnV2 from "../../../sharedComponents/MenuDrpDwnV2";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
@@ -23,6 +23,7 @@ import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 
 const FindVendors = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
@@ -56,8 +57,14 @@ const FindVendors = () => {
     companyStrength: ["0-10", "10-50", "50-100", "100-500", "500+"],
   });
 
+  // const handleDetails = (id: number) => {
+  //   navigate(`${id}`);
+  // };
+
   const handleDetails = (id: number) => {
-    navigate(`${id}`);
+    navigate(`${id}?type=benchView`, {
+      state: { previousUrl: location.pathname },
+    });
   };
 
   const getOrgDetailsListData = () => {
