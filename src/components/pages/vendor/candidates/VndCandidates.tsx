@@ -71,7 +71,9 @@ export default function VndCandidates() {
       page: pageIndex,
       pageSize: pageSize,
       uniqueId: paramUniqueId,
+      orgCode: userData.orgCode,
     };
+    
     setIsTableLoader(true);
     getApplicantsList(payload)
       .then((result: any) => {
