@@ -33,6 +33,7 @@ import {
   openBackdrop,
 } from "../../../components/features/drawerSlice";
 import { RoleData } from "../../../components/sharedService/shareData";
+import ReactQuill from "react-quill";
 
 const steps = ["Company Information", "Subscription Plans"];
 
@@ -96,7 +97,6 @@ export default function OnBoarding() {
         localStorage.setItem("userData", JSON.stringify(userData));
         if (result?.success) {
           setTimeout(() => {
-            debugger
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             dispatch(closeBackdrop());
             navigate(
@@ -126,7 +126,6 @@ export default function OnBoarding() {
         }
       } else {
         // Save role type to localStorage and navigate
-        debugger
         navigate(
           `/${
             companyType === RoleType.Client
@@ -310,7 +309,7 @@ export default function OnBoarding() {
                     />
 
                     {/* Company Portfolio */}
-                    <Controller
+                    {/* <Controller
                       name="portfolio"
                       control={control}
                       rules={{ required: "Company Portfolio is required" }}
@@ -325,6 +324,21 @@ export default function OnBoarding() {
                           placeholder="Brief description of your company portfolio"
                           size="small"
                           error={!!errors.portfolio}
+                        />
+                      )}
+                    /> */}
+
+                    <Controller
+                      name="portfolio" // your form field name
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: "Company Portfolio is required" }}
+                      render={({ field: { onChange, value } }) => (
+                        <ReactQuill
+                          theme="snow"
+                          value={value}
+                          onChange={onChange}
+                          placeholder="Brief description of your company portfolio"
                         />
                       )}
                     />
