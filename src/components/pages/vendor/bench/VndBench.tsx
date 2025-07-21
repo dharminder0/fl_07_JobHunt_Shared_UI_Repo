@@ -302,6 +302,17 @@ export default function VndBench({ drawerData = {} }: any) {
       });
   };
 
+  const handleMatchingDrawer = (item: any) => {
+    if (item?.availability !== AvailabilityEnums.NotAvailable) {
+      handleOpenDrawer("MatchingPositions", {
+        id: item?.id,
+        resource: item?.firstName + item?.lastName,
+        experience: item?.cv?.profile?.experience,
+        location: item?.location,
+      });
+    }
+  };
+
   return (
     <>
       {drawerData?.isOpen && drawerData.type !== "techStack" && (
@@ -558,16 +569,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                 {!drawerData?.isOpen && (
                                   <div
                                     className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                    onClick={() =>
-                                      handleOpenDrawer("MatchingPositions", {
-                                        id: item?.id,
-                                        resource:
-                                          item?.firstName + item?.lastName,
-                                        experience:
-                                          item?.cv?.profile?.experience,
-                                        location: item?.location,
-                                      })
-                                    }
+                                    onClick={() => handleMatchingDrawer(item)}
                                   >
                                     {item.matchingCount} Matching positions
                                   </div>
