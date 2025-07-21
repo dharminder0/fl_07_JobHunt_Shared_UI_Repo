@@ -21,6 +21,8 @@ import {
   CancelOutlined,
   Check,
   CheckCircleOutlineOutlined,
+  ChevronLeft,
+  ChevronRight,
   CloseOutlined,
   CorporateFareOutlined,
 } from "@mui/icons-material";
@@ -48,11 +50,12 @@ export default function VendorOnboarding() {
   const [statusData, setStatusData] = React.useState<any>({ id: 0, status: 1 });
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(10);
+  const [records, setRecords] = React.useState<any>({});
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   useEffect(() => {
     getOrgInvitedList();
-  }, []);
+  }, [pageIndex]);
 
   const getOrgInvitedList = () => {
     const payload = {
@@ -66,6 +69,7 @@ export default function VendorOnboarding() {
     setIsLoader(true);
     getOnboardInvitedList(payload)
       .then((result: any) => {
+        setRecords(result);
         if (result.count > 0) {
           setInvitedList(result.list);
         } else {
@@ -176,6 +180,37 @@ export default function VendorOnboarding() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="flex items-center justify-between border-gray-200 bg-white p-2 sm:px-4">
+              <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-base text-gray-700">
+                    Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                    <span>
+                      {Math.min(pageIndex * pageSize, records?.count || 0)}
+                    </span>{" "}
+                    of <span>{records?.count || 0}</span> results
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-1 justify-end">
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex - 1)}
+                  disabled={pageIndex <= 1}
+                >
+                  <ChevronLeft />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex + 1)}
+                  disabled={
+                    pageIndex >= Math.ceil((records?.count || 0) / pageSize)
+                  }
+                >
+                  <ChevronRight />
+                </IconButton>
+              </div>
             </div>
           </>
         ) : (
