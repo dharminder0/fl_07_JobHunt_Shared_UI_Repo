@@ -1,10 +1,13 @@
 import {
   Avatar,
   Badge,
+  Box,
   Button,
+  ClickAwayListener,
   IconButton,
   Menu,
   MenuItem,
+  Popper,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,7 +22,10 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { openDrawer } from "../features/drawerSlice";
-import { getNotificationCounts } from "../sharedService/apiService";
+import {
+  getNotificationCounts,
+  getNotificationsList,
+} from "../sharedService/apiService";
 import {
   addCountListener,
   removeCountListener,
@@ -44,7 +50,11 @@ const Header: React.FC<HeaderProps> = () => {
   const [selectedOrg, setSelectedOrg] = useState<any>(null);
   const { organizationType, setOrganizationType } = useOrganizationType();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [notificationList, setNotificationList] = useState<any[]>([]);
+  const [notifyAnchorEl, setNotifyAnchorEl] =
+    React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const isNotifyOpen = Boolean(notifyAnchorEl);
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
   const isMounted = useRef(false);
@@ -84,36 +94,14 @@ const Header: React.FC<HeaderProps> = () => {
     if (activeOrg) {
       handleClose(activeOrg);
     }
+    getNotifyCount();
+    getNotificationsListData();
   }, []); // Run once on component mount
 
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     console.log("🌀 Component re-mounted unexpectedly");
-  //   }
-  //   isMounted.current = true;
-
-  //   const handle = () => {
-  //     console.log("📡 SignalR update → Calling getNotifyCount");
-  //     getNotifyCount();
-  //   };
-
-  //   // Subscribe once
-  //   signalREmitter.on("countUpdate", handle);
-  //   signalREmitter.on("readStatusUpdate", handle);
-  //   signalREmitter.on("listUpdate", handle);
-
-  //   // Clean up
-  //   return () => {
-  //     signalREmitter.off("countUpdate", handle);
-  //     signalREmitter.off("readStatusUpdate", handle);
-  //     signalREmitter.off("listUpdate", handle);
-  //     isMounted.current = false;
-  //   };
-  // }, []);
   useEffect(() => {
     const onCountUpdate = (count: number) => {
       console.log("📡 Component received count:", count);
-      getNotifyCount(); // or getNotificationsListData()
+      getNotifyCount();
     };
 
     addCountListener(onCountUpdate);
@@ -154,6 +142,27 @@ const Header: React.FC<HeaderProps> = () => {
     });
     notifyCallCount++;
     console.log(`🔁 getNotifyCount called: ${notifyCallCount} times`);
+  };
+
+  const handleNotifyClick = (event: React.MouseEvent<HTMLElement>) => {
+    setNotifyAnchorEl(notifyAnchorEl ? null : event.currentTarget);
+  };
+
+  const getNotificationsListData = () => {
+    const payload = {
+      orgCode: userData?.orgCode,
+      page: 1,
+      pageSize: 10,
+    };
+    getNotificationsList(payload)
+      .then((result: any) => {
+        if (result.count >= 0) {
+          setNotificationList(result.notifications);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -207,9 +216,7 @@ const Header: React.FC<HeaderProps> = () => {
         </Menu>
       </div>
       <div className="flex flex-row gap-8 items-center">
-        <IconButton
-          onClick={() => navigate(`/${activeRole}/account?type=notifications`)}
-        >
+        <IconButton onClick={handleNotifyClick}>
           <NotificationsOutlined fontSize="inherit" />
           <Badge
             badgeContent={notifyCount > 0 ? notifyCount : null}
@@ -230,6 +237,41 @@ const Header: React.FC<HeaderProps> = () => {
           </div>
         )}
       </div>
+      <Popper
+        id="simple-popper"
+        open={isNotifyOpen}
+        anchorEl={notifyAnchorEl}
+        sx={{ marginRight: "20px", zIndex: 9 }}
+      >
+        <ClickAwayListener onClickAway={() => setNotifyAnchorEl(null)}>
+          <div className="bg-white rounded-md shadow-sm max-w-[370px] border">
+            <div className="p-2 border-b flex items-center justify-between">
+              <p className="text-base font-semibold">Notifications</p>
+              <Button
+                size="small"
+                onClick={() => {
+                  navigate(`/${activeRole}/account?type=notifications`);
+                  setNotifyAnchorEl(null);
+                }}
+              >
+                View all
+              </Button>
+            </div>
+            <div className="text-base px-1">
+              {notificationList?.length > 0
+                ? notificationList.map((item: any) => (
+                    <div className="border-b p-2  cursor-pointer hover:border-0 hover:bg-indigo-100 hover:rounded-md">
+                      <p style={{ fontWeight: "500" }}>{item.title}</p>
+                      <p className="text-info truncate text-ellipsis">
+                        {item.message}
+                      </p>
+                    </div>
+                  ))
+                : "no data"}
+            </div>
+          </div>
+        </ClickAwayListener>
+      </Popper>
     </div>
   );
 };
