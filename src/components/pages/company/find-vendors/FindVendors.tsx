@@ -7,7 +7,7 @@ import {
   Tooltip,
   Avatar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuDrpDwnV2 from "../../../sharedComponents/MenuDrpDwnV2";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
@@ -17,12 +17,19 @@ import {
 } from "../../../../components/sharedService/apiService";
 import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import Loader from "../../../sharedComponents/Loader";
-import { CorporateFareOutlined } from "@mui/icons-material";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CorporateFareOutlined,
+} from "@mui/icons-material";
 import { RoleType } from "../../../../components/sharedService/enums";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
+import React from "react";
+import NoDataAvailable from "../../../../components/sharedComponents/NoDataAvailable";
 
 const FindVendors = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 
   const [companiesfilterData, setcompaniesfilterData] = useState<any[]>([]);
@@ -33,6 +40,7 @@ const FindVendors = () => {
   const [strength, setStrength] = useState<string[]>([]);
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [records, setRecords] = React.useState<any>({});
 
   const [filterList, setFilterList] = useState<any>({
     TechnologiesList: [],
@@ -56,8 +64,14 @@ const FindVendors = () => {
     companyStrength: ["0-10", "10-50", "50-100", "100-500", "500+"],
   });
 
+  // const handleDetails = (id: number) => {
+  //   navigate(`${id}`);
+  // };
+
   const handleDetails = (id: number) => {
-    navigate(`${id}`);
+    navigate(`${id}?type=benchView`, {
+      state: { previousUrl: location.pathname },
+    });
   };
 
   const getOrgDetailsListData = () => {
@@ -66,7 +80,7 @@ const FindVendors = () => {
       orgCode: userData?.orgCode,
       page: pageIndex,
       pageSize: pageSize,
-      searchText :searchText.trim(),
+      searchText: searchText.trim(),
       technology,
       resource,
       strength,
@@ -74,6 +88,7 @@ const FindVendors = () => {
     setIsLoader(true);
     getOrgDetailsList(payload)
       .then((result: any) => {
+        setRecords(result);
         if (result.count > 0) {
           setcompaniesfilterData(result.list);
         } else {
@@ -105,7 +120,7 @@ const FindVendors = () => {
     if (searchText?.length > 2 || searchText?.length == 0) {
       getOrgDetailsListData();
     }
-  }, [searchText, technology, resource, strength, pageIndex, pageSize]);
+  }, [searchText, technology, resource, strength, pageIndex]);
 
   useEffect(() => {
     getSkillList();
@@ -178,7 +193,7 @@ const FindVendors = () => {
 
       {/* Sidebar and Companies List */}
       {!isLoader ? (
-        <div className="flex">
+        <div className="">
           {/* Company Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {companiesfilterData &&
@@ -244,6 +259,41 @@ const FindVendors = () => {
                 </div>
               ))}
           </div>
+          {companiesfilterData && companiesfilterData?.length <= 0 ? (
+            <NoDataAvailable />
+          ) : (
+            <div className="flex items-center justify-between border-gray-200 bg-white p-2 sm:px-4">
+              <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-base text-gray-700">
+                    Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                    <span>
+                      {Math.min(pageIndex * pageSize, records?.count || 0)}
+                    </span>{" "}
+                    of <span>{records?.count || 0}</span> results
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-1 justify-end">
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex - 1)}
+                  disabled={pageIndex <= 1}
+                >
+                  <ChevronLeft />
+                </IconButton>
+                <IconButton
+                  size="small"
+                  onClick={() => setPageIndex(pageIndex + 1)}
+                  disabled={
+                    pageIndex >= Math.ceil((records?.count || 0) / pageSize)
+                  }
+                >
+                  <ChevronRight />
+                </IconButton>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <Loader />

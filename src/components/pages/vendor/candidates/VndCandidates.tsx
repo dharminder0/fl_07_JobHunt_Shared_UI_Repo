@@ -71,7 +71,9 @@ export default function VndCandidates() {
       page: pageIndex,
       pageSize: pageSize,
       uniqueId: paramUniqueId,
+      orgCode: userData.orgCode,
     };
+    
     setIsTableLoader(true);
     getApplicantsList(payload)
       .then((result: any) => {
@@ -180,7 +182,12 @@ export default function VndCandidates() {
               <tr key={index}>
                 <th className="add-right-shadow">
                   <div className="flex items-center justify-between ">
-                    <div className="cursor-pointer hover:text-indigo-700">
+                    <div
+                      className="cursor-pointer hover:text-indigo-700"
+                      onClick={() =>
+                        handleOpenDrawer("benchPreview", applicant?.cv)
+                      }
+                    >
                       {applicant.firstName} {applicant.lastName}
                     </div>
                     <div className="flex text-info">
@@ -207,7 +214,7 @@ export default function VndCandidates() {
                   <div className="text-secondary-text text-info mt-1">
                     <div
                       className="flex items-center min-w-[135px] max-w-[150px]"
-                      onClick={() => handleRowClick(applicant.orgCode)}
+                      // onClick={() => handleRowClick(applicant.orgCode)}
                     >
                       {applicant.orgLogo && (
                         <img

@@ -17,6 +17,7 @@ import {
   getRequirementsListById,
   getRequirementApplicants,
   getRequirementsList,
+  getSimilerRequirements,
 } from "../../../../components/sharedService/apiService";
 import moment from "moment";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
@@ -91,11 +92,11 @@ const VndRequirementDetails = () => {
   }, [uniqueId]);
 
   const getRequirementsData = (uniqueId: any) => {
-    getRequirementsListById(uniqueId)
+    getRequirementsListById(uniqueId, userData.orgCode)
       .then((result: any) => {
         if (result) {
           setRequirementData(result);
-          getRequirementsSimiliarData(result?.title);
+          getRequirementsSimiliarData(result?.id);
           setTimeout(() => {
             dispatch(closeBackdrop());
           }, 1000);
@@ -107,6 +108,7 @@ const VndRequirementDetails = () => {
         }, 1000);
       });
   };
+
   const getRequirementApplicant = (uniqueId: any) => {
     const payload = {
       requirementUniqueId: uniqueId,
@@ -132,21 +134,17 @@ const VndRequirementDetails = () => {
       });
   };
 
-  const getRequirementsSimiliarData = (searchText: string) => {
+  const getRequirementsSimiliarData = (id: any) => {
     const payload = {
-      orgCode: userData.orgCode,
-      searchText: searchText.trim() ?? "",
-      page: 1,
-      pageSize: 5,
-      status: [1],
-      userId: userData.userId,
-      roleType: [activeRole === "vendor" && RoleType.Vendor],
+      requirementId: id,
+      pageIndex: 1,
+      pageSize: 10,
     };
 
-    getRequirementsList(payload)
+    getSimilerRequirements(payload)
       .then((result: any) => {
-        if (result && result?.totalPages > 0) {
-          SetSimiliarData(result.list);
+        if (result && result?.length > 0) {
+          SetSimiliarData(result);
         } else {
           SetSimiliarData([]);
         }
@@ -156,6 +154,10 @@ const VndRequirementDetails = () => {
           dispatch(closeBackdrop());
         }, 1000);
       });
+  };
+
+  const handleOpenDrawer = (name: string, data: any) => {
+    dispatch(openDrawer({ drawerName: name, data: !data ? {} : data }));
   };
 
   return (
@@ -241,24 +243,42 @@ const VndRequirementDetails = () => {
           </div>
 
           {/* Responsibilities */}
-          <Box>
-            <p className="text-title mb-2">Remarks</p>
-            <p className="text-gray-600 text-base">
-              {requirementData?.remarks}
-            </p>
-          </Box>
+          {requirementData?.remarks && (
+            <Box>
+              <p className="text-title mb-2">Remarks</p>
+              <p className="text-gray-600 text-base">
+                {requirementData?.remarks}
+              </p>
+            </Box>
+          )}
         </div>
 
-        {/* Tabs */}
-        <Tabs
-          value={activeTab}
-          onChange={handleTabChange}
-          textColor="primary"
-          indicatorColor="primary"
-        >
-          <Tab label="Applicants" />
-          <Tab label="Analytics" />
-        </Tabs>
+        <div className="flex items-center justify-between">
+          {/* Tabs */}
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            textColor="primary"
+            indicatorColor="primary"
+          >
+            <Tab label="Applicants" />
+            <Tab label="Analytics" />
+          </Tabs>
+          <div
+            className="cursor-pointer hover:text-indigo-700 truncate text-base"
+            onClick={() =>
+              handleOpenDrawer("MatchingCandidates", {
+                id: requirementData?.id,
+                role: requirementData?.title,
+                client: requirementData.partnerName,
+                clientLogo: requirementData.partnerFavicon,
+                uniqueId: requirementData.uniqueId,
+              })
+            }
+          >
+            {requirementData?.matchingCandidates || 0} Matching Candidates
+          </div>
+        </div>
 
         {activeTab == 0 && (
           <>
@@ -363,23 +383,27 @@ const VndRequirementDetails = () => {
                           id: item?.id,
                           role: item?.title,
                           client: item.partnerName,
-                          clientLogo: item.partnerFavicon,
+                          clientLogo: item.partnerLogo,
                           uniqueId: item.uniqueId,
                         },
                       })
                     );
                   }}
                 >
-                  <div>{item?.matchingCandidate || 2} Matching Candidates</div>
+                  {item?.matchingCandidateCount && (
+                    <div>
+                      {item?.matchingCandidateCount} Matching Candidates
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center justify-between flex-wrap text-secondary-text text-info mt-1">
                 <div className="flex items-center w-full">
-                  {!item.partnerFavicon ? (
+                  {!item.partnerLogo ? (
                     <CorporateFareOutlined fontSize="medium" />
                   ) : (
                     <img
-                      src={item.partnerFavicon}
+                      src={item.partnerLogo}
                       style={{ height: 12, width: 12 }}
                       className="me-1"
                     />

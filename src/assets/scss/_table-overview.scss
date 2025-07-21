@@ -217,6 +217,9 @@
     &.wide-500 {
       min-width: 500px;
     }
+    @media (max-width: 1400px) {
+      min-width: 100px !important;
+    }
   }
 }
 

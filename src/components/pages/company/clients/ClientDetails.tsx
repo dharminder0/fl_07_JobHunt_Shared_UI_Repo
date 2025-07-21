@@ -158,10 +158,12 @@ const ClientDetails = () => {
                   >
                     <Phone fontSize="inherit" /> {clientData?.contactPhone}
                   </Link>
-                  <Link href="www.fleekitsolutions.com" underline="none">
-                    <Language fontSize="inherit" />
-                    {clientData?.website}
-                  </Link>
+                  {clientData?.website && (
+                    <Link href="www.fleekitsolutions.com" underline="none">
+                      <Language fontSize="inherit" />
+                      {clientData?.website}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

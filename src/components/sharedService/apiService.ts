@@ -115,8 +115,10 @@ export const getRequirementsList = async (payload: any) => {
   return response.data;
 };
 
-export const getRequirementsListById = async (uniqueId: any) => {
-  const response = await api.get(`V1/Requirement/GetList/${uniqueId}`);
+export const getRequirementsListById = async (uniqueId: any, orgCode: any) => {
+  const response = await api.get(
+    `V1/Requirement/GetList/${uniqueId}/${orgCode}`
+  );
   return response.data;
 };
 
@@ -360,10 +362,7 @@ export const getVendorContractData = async (payload: any) => {
 };
 
 export const getSimilerRequirements = async (payload: any) => {
-  const response = await api.post(
-    "V1/Requirement/SimilerRequirements",
-    payload
-  );
+  const response = await api.post("V1/Requirement/matching", payload);
   return response.data;
 };
 

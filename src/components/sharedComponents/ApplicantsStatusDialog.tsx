@@ -25,6 +25,7 @@ import {
 import SuccessDialog from "./SuccessDialog";
 import Loader from "./Loader";
 import { InfoOutlined } from "@mui/icons-material";
+import { ApplicationEnums } from "../sharedService/enums";
 
 export default function ApplicantsStatusDialog({
   title = "",
@@ -162,6 +163,9 @@ export default function ApplicantsStatusDialog({
                         control={<Radio size="small" />}
                         label={item.name}
                         checked={item.name === localStatus}
+                        disabled={
+                          item.id < history?.[history.length - 1]?.status
+                        }
                         sx={{
                           "& .MuiRadio-root": {
                             padding: "5px",

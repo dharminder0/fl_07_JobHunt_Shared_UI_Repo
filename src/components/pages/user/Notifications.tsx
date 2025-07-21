@@ -64,29 +64,6 @@ export const Notifications = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   getNotificationsListData();
-
-  //   startNotificationConnection(userData.orgCode, {
-  //     onCountUpdate: () => {
-  //       console.log("📡 count new notification");
-  //       getNotificationsListData();
-  //     },
-  //     onListUpdate: () => {
-  //       console.log("📡 Recieved new notification");
-  //       getNotificationsListData();
-  //     },
-  //     onReadStatusUpdate: () => {
-  //       console.log("📡 Recieved update notification");
-  //       getNotificationsListData();
-  //     },
-  //   });
-
-  //   return () => {
-  //     stopNotificationConnection();
-  //   };
-  // }, []);
-
   const handleNotifyRead = (item: any) => {
     if (!item.isRead) {
       getNotificationUpdate(item.id).then((result: any) => {
@@ -99,7 +76,7 @@ export const Notifications = () => {
 
   const handleRedirection = (item: any) => {
     if (item.notificationType === 1) {
-      navigation(`/${activeRole}/clients`);
+      navigation(`/${activeRole}/myvendors`);
     }
     if (item.notificationType === 2) {
       navigation(`/${activeRole}/candidate`);

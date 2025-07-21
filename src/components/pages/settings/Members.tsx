@@ -3,6 +3,8 @@ import {
   Add,
   CancelOutlined,
   CheckCircleOutlineOutlined,
+  ChevronLeft,
+  ChevronRight,
   DeleteOutlineOutlined,
   FilterList,
   PersonOffOutlined,
@@ -18,6 +20,7 @@ import {
   DialogContent,
   IconButton,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import AddNewMemberForm from "../../sharedComponents/AddNewMemberForm";
 import { openDrawer } from "../../../components/features/drawerSlice";
@@ -40,6 +43,7 @@ export default function Members() {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [membersList, setMembersList] = useState<any[]>([]);
+  const [records, setRecords] = React.useState<any>({});
   const [isDeleteLoader, setIsDeleteLoader] = React.useState<boolean>(false);
   const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [memberId, setMemberId] = React.useState<number>();
@@ -54,7 +58,7 @@ export default function Members() {
     if (search?.length > 2 || search?.length == 0) {
       getMemberListData();
     }
-  }, [search]);
+  }, [search, pageIndex]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -74,6 +78,7 @@ export default function Members() {
     setIsTableLoader(true);
     getMembersList(payload)
       .then((result: any) => {
+        setRecords(result);
         if (result.count > 0) {
           setMembersList(result.list);
         } else {
@@ -188,13 +193,17 @@ export default function Members() {
                       )}
                     </div>
                   </th>
-                  <td>{member.userName}</td>
+                  <td className="truncate text-ellipsis">
+                    <Tooltip title={member.userName} arrow>
+                      {member.userName}
+                    </Tooltip>
+                  </td>
                   <td>{member.phone || "-"}</td>
                   <td>
                     {member?.role?.length > 0 &&
                       member?.role.map((access: any, index: number) => (
                         <span>
-                          {access}
+                          {access === "Client" ? "Partner" : access}
                           {index !== member?.role?.length - 1 && ", "}
                         </span>
                       ))}
@@ -205,6 +214,38 @@ export default function Members() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className="flex items-center justify-between border-gray-200 bg-white px-2 sm:px-4">
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p className="text-base text-gray-700">
+                Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                <span>
+                  {Math.min(pageIndex * pageSize, records?.count || 0)}
+                </span>{" "}
+                of <span>{records?.count || 0}</span> results
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-1 justify-end">
+            <IconButton
+              size="small"
+              onClick={() => setPageIndex(pageIndex - 1)}
+              disabled={pageIndex <= 1}
+            >
+              <ChevronLeft />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => setPageIndex(pageIndex + 1)}
+              disabled={
+                pageIndex >= Math.ceil((records?.count || 0) / pageSize)
+              }
+            >
+              <ChevronRight />
+            </IconButton>
+          </div>
         </div>
       </div>
 

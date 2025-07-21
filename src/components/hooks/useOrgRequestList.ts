@@ -21,10 +21,11 @@ export const useOrgRequestList = ({
 }: UseOrgRequestListProps) => {
   const [activeDataList, setActiveDataList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [records, setRecords] = useState<any>({});
 
   const fetchOrgRequestList = () => {
     const payload = {
-      searchText:searchText.trim(),
+      searchText: searchText.trim(),
       orgCode,
       relationshipType: [RoleType.Client],
       status:
@@ -37,6 +38,7 @@ export const useOrgRequestList = ({
 
     getOnboardInvitedList(payload)
       .then((result: any) => {
+        setRecords(result);
         setActiveDataList(result.count > 0 ? result.list : []);
       })
       .catch((error) => {
@@ -56,6 +58,7 @@ export const useOrgRequestList = ({
   return {
     activeDataList,
     isLoading,
+    records,
     refetch: fetchOrgRequestList,
   };
 };

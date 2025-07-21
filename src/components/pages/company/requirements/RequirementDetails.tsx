@@ -147,7 +147,7 @@ const RequirementDetails = () => {
   }, [status, searchText]);
 
   const getRequirementsData = (uniqueId: any) => {
-    getRequirementsListById(uniqueId)
+    getRequirementsListById(uniqueId, userData.orgCode)
       .then((result: any) => {
         if (result) {
           setRequirementData(result);

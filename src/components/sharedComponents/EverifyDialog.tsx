@@ -104,13 +104,12 @@ function EverifyDialog() {
             <div className="flex mt-5 text-base justify-between text-secondary-text">
               <p>
                 Already verified?{" "}
-                <Link
-                  to={""}
+                <span
+                  className="text-indigo-500 hover:text-indigo-700 cursor-pointer"
                   onClick={handleLogin}
-                  className="text-indigo-500 hover:text-indigo-700"
                 >
                   Log in
-                </Link>
+                </span>
               </p>
               <p>
                 Didn't receive the email?{" "}

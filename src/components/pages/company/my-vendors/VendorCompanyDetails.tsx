@@ -147,7 +147,8 @@ const VendorCompanyDetails = () => {
           setTimeout(() => {
             setIsInviteLoader(false);
             setIsPopupOpen(false);
-            navigate("/vendor/onboarding");
+            // navigate("/vendor/onboarding");
+            getOrgProfile();
           }, 500);
         }
       })
@@ -237,6 +238,14 @@ const VendorCompanyDetails = () => {
     }
   }, [tabValue]);
 
+  const handleBack = () => {
+    if (previousUrl) {
+      navigate(previousUrl);
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
     <div className="h-full p-6">
       {/* Header Section */}
@@ -246,9 +255,7 @@ const VendorCompanyDetails = () => {
             color="primary"
             aria-label="add to shopping cart"
             className="!w-[50px] !h-[50px]"
-            onClick={() => {
-              navigate(previousUrl);
-            }}
+            onClick={handleBack}
             size="small"
           >
             <ArrowBackIcon fontSize="small" />
@@ -656,30 +663,6 @@ const VendorCompanyDetails = () => {
           <div className="mb-2 space-y-4">
             {(orgData.status == 1 || orgData.status == InvitedType.Pending) && (
               <div>
-                {/* <Button
-                  size="small"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleConfirmPopup(orgData?.id, 2);
-                  }}
-                  variant="outlined"
-                  endIcon={<Check fontSize="small" color="success" />}
-                  className="!me-3"
-                >
-                  Accept
-                </Button>
-
-                <Button
-                  size="small"
-                  onClick={(e: any) => {
-                    e.stopPropagation();
-                    handleConfirmPopup(orgData?.id, 3);
-                  }}
-                  variant="outlined"
-                  endIcon={<CloseOutlined fontSize="small" color="error" />}
-                >
-                  Declined
-                </Button> */}
                 <Button
                   onClick={(e: any) => {
                     e.stopPropagation();
@@ -711,20 +694,32 @@ const VendorCompanyDetails = () => {
             <h5 className="text-heading mb-2">Contact Information</h5>
 
             <ul className="text-gray-700 text-base">
-              <li>
-                <Link href={`mailto:${orgData?.email}`} underline="none">
-                  <MailOutline fontSize="small" /> {orgData?.email}
-                </Link>
+              <li className="truncate text-ellipsis mb-1">
+                <Tooltip title={orgData?.email} arrow>
+                  <span className="text-indigo-600 cursor-pointer hover:text-indigo-700">
+                    <MailOutline fontSize="small" />
+                    <a href={`mailto:${orgData?.email}`}> {orgData?.email}</a>
+                  </span>
+                </Tooltip>
               </li>
-              <li>
-                <Link href={`tel:${orgData?.phone}`} underline="none">
-                  <Phone fontSize="small" /> {orgData?.phone}
-                </Link>
+              <li className="truncate text-ellipsis mb-1">
+                <Tooltip title={orgData?.phone} arrow>
+                  <span className="text-indigo-600 cursor-pointer hover:text-indigo-700">
+                    <Phone fontSize="small" />
+                    <a href={`tel:${orgData?.phone}`}> {orgData?.phone}</a>
+                  </span>
+                </Tooltip>
               </li>
-              <li>
-                <Link href={orgData?.website} underline="none">
-                  <Language fontSize="small" /> {orgData?.website}
-                </Link>
+              <li className="truncate text-ellipsis mb-1">
+                <Tooltip title={orgData?.website} arrow>
+                  <span className="text-indigo-600 cursor-pointer hover:text-indigo-700">
+                    <Language fontSize="small" />
+                    <a href={orgData?.website} target="_blank">
+                      {" "}
+                      {orgData?.website}
+                    </a>
+                  </span>
+                </Tooltip>
               </li>
             </ul>
           </div>
