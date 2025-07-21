@@ -19,7 +19,11 @@ import {
   RoleType,
 } from "../../../../components/sharedService/enums";
 import { getOnboardInvitedList } from "../../../../components/sharedService/apiService";
-import { CorporateFareOutlined } from "@mui/icons-material";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CorporateFareOutlined,
+} from "@mui/icons-material";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
 import Loader from "../../../sharedComponents/Loader";
@@ -40,7 +44,7 @@ const MyVendors = () => {
 
   const [tabValue, setTabValue] = React.useState<TabValue>("Active");
   const [pageIndex, setPageIndex] = React.useState(1);
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = React.useState(20);
   const [isLoader, setIsLoader] = React.useState<boolean>(true);
   const [archivedDatafilterData, setarchivedDatafilterData] = useState<any[]>(
     []
@@ -86,7 +90,7 @@ const MyVendors = () => {
   //     });
   // };
 
-  const { activeDataList, isLoading } = useOrgRequestList({
+  const { activeDataList, isLoading, records } = useOrgRequestList({
     orgCode,
     tabValue,
     pageIndex,
@@ -196,8 +200,45 @@ const MyVendors = () => {
                     ))}
                 </div>
 
-                {activeDataList && activeDataList?.length <= 0 && (
+                {activeDataList && activeDataList?.length <= 0 ? (
                   <NoDataAvailable />
+                ) : (
+                  <div className="flex items-center justify-between border-gray-200 bg-white p-2 sm:px-4">
+                    <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-base text-gray-700">
+                          Showing <span>{(pageIndex - 1) * pageSize + 1}</span>{" "}
+                          to{" "}
+                          <span>
+                            {Math.min(
+                              pageIndex * pageSize,
+                              records?.count || 0
+                            )}
+                          </span>{" "}
+                          of <span>{records?.count || 0}</span> results
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-1 justify-end">
+                      <IconButton
+                        size="small"
+                        onClick={() => setPageIndex(pageIndex - 1)}
+                        disabled={pageIndex <= 1}
+                      >
+                        <ChevronLeft />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={() => setPageIndex(pageIndex + 1)}
+                        disabled={
+                          pageIndex >=
+                          Math.ceil((records?.count || 0) / pageSize)
+                        }
+                      >
+                        <ChevronRight />
+                      </IconButton>
+                    </div>
+                  </div>
                 )}
               </>
             )}
