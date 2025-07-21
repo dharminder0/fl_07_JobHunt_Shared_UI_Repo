@@ -194,14 +194,16 @@ export default function Members() {
                     </div>
                   </th>
                   <td className="truncate text-ellipsis">
-                    <Tooltip title={member.userName} arrow>{member.userName}</Tooltip>
+                    <Tooltip title={member.userName} arrow>
+                      {member.userName}
+                    </Tooltip>
                   </td>
                   <td>{member.phone || "-"}</td>
                   <td>
                     {member?.role?.length > 0 &&
                       member?.role.map((access: any, index: number) => (
                         <span>
-                          {access}
+                          {access === "Client" ? "Partner" : access}
                           {index !== member?.role?.length - 1 && ", "}
                         </span>
                       ))}

@@ -30,6 +30,7 @@ import {
   openDrawer,
 } from "../../../../components/features/drawerSlice";
 import IconAi from "../../../../components/sharedComponents/IconAi";
+import { AvailabilityEnums } from "../../../../components/sharedService/enums";
 
 export default function MatchingCandidates({ drawerData = {} }: any) {
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -288,22 +289,30 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                     }`}
                   >
                     <th className="multi-select">
-                      {!item.IsApplied && (
-                        <input
-                          type="checkbox"
-                          checked={isSelected(item.BenchId)}
-                          onChange={() => toggleRowSelection(item)}
-                          className="cursor-pointer"
-                        />
-                      )}
-                      {item.IsApplied && (
-                        <Tooltip title="Already applied">
+                      {item.Availability !== AvailabilityEnums.NotAvailable &&
+                        !item.IsApplied && (
                           <input
                             type="checkbox"
                             checked={isSelected(item.BenchId)}
                             onChange={() => toggleRowSelection(item)}
                             className="cursor-pointer"
-                            disabled={item.IsApplied}
+                          />
+                        )}
+
+                      {(item.IsApplied ||
+                        item.Availability ===
+                          AvailabilityEnums.NotAvailable) && (
+                        <Tooltip title="Already applied or not available">
+                          <input
+                            type="checkbox"
+                            checked={isSelected(item.BenchId)}
+                            onChange={() => toggleRowSelection(item)}
+                            className="cursor-pointer"
+                            disabled={
+                              item.IsApplied ||
+                              item.Availability ===
+                                AvailabilityEnums.NotAvailable
+                            }
                           />
                         </Tooltip>
                       )}
