@@ -64,29 +64,6 @@ export const Notifications = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   getNotificationsListData();
-
-  //   startNotificationConnection(userData.orgCode, {
-  //     onCountUpdate: () => {
-  //       console.log("📡 count new notification");
-  //       getNotificationsListData();
-  //     },
-  //     onListUpdate: () => {
-  //       console.log("📡 Recieved new notification");
-  //       getNotificationsListData();
-  //     },
-  //     onReadStatusUpdate: () => {
-  //       console.log("📡 Recieved update notification");
-  //       getNotificationsListData();
-  //     },
-  //   });
-
-  //   return () => {
-  //     stopNotificationConnection();
-  //   };
-  // }, []);
-
   const handleNotifyRead = (item: any) => {
     if (!item.isRead) {
       getNotificationUpdate(item.id).then((result: any) => {
