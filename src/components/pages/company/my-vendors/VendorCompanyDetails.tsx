@@ -1,20 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Box,
   Tabs,
   Tab,
-  Chip,
-  Link,
   IconButton,
   Tooltip,
   Avatar,
-  useMediaQuery,
   useTheme,
   DialogContent,
   Button,
   DialogActions,
-  TextField,
   Dialog,
 } from "@mui/material";
 import {
@@ -25,21 +21,16 @@ import {
   CheckCircleOutlineOutlined,
   CloseOutlined,
   CorporateFareOutlined,
-  Handshake,
-  HandshakeOutlined,
   Language,
   LocationOn,
   LocationOnOutlined,
   MailOutline,
   Phone,
-  PictureAsPdf,
-  Share,
   WorkHistory,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
-  dispatchedInvitation,
   getBenchList,
   getOrgProfileDetails,
   getVendorContractData,
@@ -49,11 +40,11 @@ import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   InvitedType,
   LocationType,
-  RoleType,
 } from "../../../../components/sharedService/enums";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
 import SuccessDialog from "../../../../components/sharedComponents/SuccessDialog";
 import moment from "moment";
+import Pagination from "../../../../components/sharedComponents/Pagination";
 
 const VendorCompanyDetails = () => {
   const theme = useTheme();
@@ -76,11 +67,11 @@ const VendorCompanyDetails = () => {
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [isPopupOpen, setIsPopupOpen] = React.useState<boolean>(false);
   const [statusData, setStatusData] = React.useState<any>({ id: 0, status: 1 });
-  const handleRowClick = (id: any) => {};
+  const [pageIndex, setPageIndex] = useState<any>(1);
+  const [pageSize, setPageSize] = useState<any>(10);
+  const [totalCount, setTotalCount] = useState<any>(0);
 
-  const [open, setOpen] = React.useState(false);
-  const [empMessage, setEmpMessage] = React.useState<any>("");
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const handleRowClick = (id: any) => {};
 
   useEffect(() => {
     if (location.state && location.state.previousUrl) {
@@ -123,15 +114,8 @@ const VendorCompanyDetails = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
+    setPageIndex(1);
     navigate(`?type=${newValue}`);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const handleInvitation = () => {
@@ -164,14 +148,15 @@ const VendorCompanyDetails = () => {
     const payload = {
       searchText: "",
       orgCode: orgCode,
-      page: 1,
+      page: pageIndex,
       availability: [],
-      pageSize: 20,
+      pageSize: pageSize,
       topSkillId: 0,
     };
     setIsTableLoader(true);
     getBenchList(payload)
       .then((result: any) => {
+        setTotalCount(result.count);
         if (result?.list && result?.list.length >= 0) {
           setBenchList(result.list);
           setTimeout(() => {
@@ -194,8 +179,8 @@ const VendorCompanyDetails = () => {
 
   const getContractData = () => {
     const payload = {
-      pageNumber: 1,
-      pageSize: 10,
+      pageNumber: pageIndex,
+      pageSize: pageSize,
       isActiveContracts: tabValue === "activeView" ? true : false,
       isPastContracts: tabValue === "pastView" ? true : false,
       isOpenPosition: tabValue === "openView" ? true : false,
@@ -211,6 +196,7 @@ const VendorCompanyDetails = () => {
     setIsTableLoader(true);
     getVendorContractData(payload)
       .then((result: any) => {
+        setTotalCount(result.content.totalRecords);
         if (result && result.success && result.content.totalRecords > 0) {
           setContractData(result.content.records);
           setTimeout(() => {
@@ -236,7 +222,7 @@ const VendorCompanyDetails = () => {
     } else if (orgData.orgCode) {
       fetchBenchList(orgData.orgCode);
     }
-  }, [tabValue]);
+  }, [tabValue, pageIndex, totalCount]);
 
   const handleBack = () => {
     if (previousUrl) {
@@ -271,15 +257,6 @@ const VendorCompanyDetails = () => {
           </div>
           <div>
             <p className="text-heading">{orgData?.orgName}</p>
-            {/* <div className="mt-1">
-              <Chip
-                label="Web Development"
-                variant="outlined"
-                sx={{ fontSize: 12 }}
-                className="my-1 me-1 !text-info"
-                size="small"
-              />
-            </div> */}
           </div>
         </div>
       </div>
@@ -314,345 +291,328 @@ const VendorCompanyDetails = () => {
                 )}
               </Tabs>
               {tabValue === "activeView" && (
-                <div className="table-body mt-4">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th className="add-right-shadow">Title</th>
-                        {/* <th>Client</th> */}
-                        <th>Start Date</th>
-                        <th>Resource</th>
-                      </tr>
-                    </thead>
-
-                    <TablePreLoader
-                      isTableLoader={isTableLoader}
-                      data={contractData}
-                    />
-
-                    <tbody>
-                      {contractData.map((item: any, index: number) => (
-                        <tr
-                          key={index}
-                          onClick={() => handleRowClick(item?.id)}
-                        >
-                          {/* <th className="add-right-shadow">{item.title}</th> */}
-                          <th className="add-right-shadow">
-                            {item.requirementTitle}
-                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex ">
-                                {item?.locationType && (
-                                  <div className="flex items-center me-1">
-                                    <LocationOnOutlined
-                                      fontSize="inherit"
-                                      className="mr-1"
-                                    />
-                                    <span>
-                                      {Object.keys(LocationType).find(
-                                        (k) =>
-                                          LocationType[k] == item.locationType
-                                      )}
-                                    </span>
-                                  </div>
-                                )}
-                                {item?.contractPeriod && (
-                                  <div className="flex items-center">
-                                    <AccessTimeOutlined
-                                      fontSize="inherit"
-                                      className="mr-1"
-                                    />
-                                    <span className="truncate w-[100px]">
-                                      {item?.contractPeriod || "-"}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </th>
-                          {/* <td className="wide-200">
-                            <div className="flex">
-                              <img
-                                src={item.logo}
-                                style={{ height: 16, width: 16 }}
-                                className="me-1"
-                              />
-                              {item.client}
-                            </div>
-                          </td> */}
-                          <td>
-                            {moment(item.requirmentPostedDate).format(
-                              "DD-MM-YYYY"
-                            )}
-                          </td>
-                          <td>{item.resourceName}</td>
+                <>
+                  <div className="table-body mt-4">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th className="add-right-shadow">Title</th>
+                          <th>Start Date</th>
+                          <th>Resource</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+
+                      <TablePreLoader
+                        isTableLoader={isTableLoader}
+                        data={contractData}
+                      />
+
+                      <tbody>
+                        {contractData.map((item: any, index: number) => (
+                          <tr
+                            key={index}
+                            onClick={() => handleRowClick(item?.id)}
+                          >
+                            <th className="add-right-shadow">
+                              {item.requirementTitle}
+                              <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                                <div className="flex ">
+                                  {item?.locationType && (
+                                    <div className="flex items-center me-1">
+                                      <LocationOnOutlined
+                                        fontSize="inherit"
+                                        className="mr-1"
+                                      />
+                                      <span>
+                                        {Object.keys(LocationType).find(
+                                          (k) =>
+                                            LocationType[k] == item.locationType
+                                        )}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {item?.contractPeriod && (
+                                    <div className="flex items-center">
+                                      <AccessTimeOutlined
+                                        fontSize="inherit"
+                                        className="mr-1"
+                                      />
+                                      <span className="truncate w-[100px]">
+                                        {item?.contractPeriod || "-"}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </th>
+                            <td>
+                              {moment(item.requirmentPostedDate).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </td>
+                            <td>{item.resourceName}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {contractData?.length > 0 && totalCount > 10 && (
+                    <Pagination
+                      pageIndex={pageIndex}
+                      setPageIndex={setPageIndex}
+                      pageSize={pageSize}
+                      totalCount={totalCount}
+                    />
+                  )}
+                </>
               )}
               {tabValue === "pastView" && (
-                <div className="table-body mt-4">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th className="add-right-shadow">Title</th>
-                        {/* <th>Client</th> */}
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Resource</th>
-                      </tr>
-                    </thead>
-
-                    <TablePreLoader
-                      isTableLoader={isTableLoader}
-                      data={contractData}
-                    />
-
-                    <tbody>
-                      {contractData.map((item: any, index: number) => (
-                        <tr
-                          key={index}
-                          onClick={() => handleRowClick(item?.id)}
-                        >
-                          <th className="add-right-shadow">
-                            {item.requirementTitle}
-                            <div className="flex items-center justify-between text-secondary-text text-info mt-1">
-                              <div className="flex ">
-                                {item?.locationType && (
-                                  <div className="flex items-center me-1">
-                                    <LocationOnOutlined
-                                      fontSize="inherit"
-                                      className="mr-1"
-                                    />
-                                    <span>
-                                      {Object.keys(LocationType).find(
-                                        (k) =>
-                                          LocationType[k] == item.locationType
-                                      )}
-                                    </span>
-                                  </div>
-                                )}
-                                {item?.contractPeriod && (
-                                  <div className="flex items-center">
-                                    <AccessTimeOutlined
-                                      fontSize="inherit"
-                                      className="mr-1"
-                                    />
-                                    <span className="truncate w-[100px]">
-                                      {item?.contractPeriod || "-"}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </th>
-                          {/* <td className="wide-200">
-                            <div className="flex items-center">
-                              <img
-                                src={item.logo}
-                                style={{ height: 16, width: 16 }}
-                                className="me-1"
-                              />
-                              {item.client}
-                            </div>
-                          </td> */}
-                          <td>
-                            {moment(item.requirmentPostedDate).format(
-                              "DD-MM-YYYY"
-                            )}
-                          </td>
-                          <td>{moment(item.endDate).format("DD-MM-YYYY")}</td>
-                          <td>{item.resourceName}</td>
+                <>
+                  <div className="table-body mt-4">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th className="add-right-shadow">Title</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Resource</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+
+                      <TablePreLoader
+                        isTableLoader={isTableLoader}
+                        data={contractData}
+                      />
+
+                      <tbody>
+                        {contractData.map((item: any, index: number) => (
+                          <tr
+                            key={index}
+                            onClick={() => handleRowClick(item?.id)}
+                          >
+                            <th className="add-right-shadow">
+                              {item.requirementTitle}
+                              <div className="flex items-center justify-between text-secondary-text text-info mt-1">
+                                <div className="flex ">
+                                  {item?.locationType && (
+                                    <div className="flex items-center me-1">
+                                      <LocationOnOutlined
+                                        fontSize="inherit"
+                                        className="mr-1"
+                                      />
+                                      <span>
+                                        {Object.keys(LocationType).find(
+                                          (k) =>
+                                            LocationType[k] == item.locationType
+                                        )}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {item?.contractPeriod && (
+                                    <div className="flex items-center">
+                                      <AccessTimeOutlined
+                                        fontSize="inherit"
+                                        className="mr-1"
+                                      />
+                                      <span className="truncate w-[100px]">
+                                        {item?.contractPeriod || "-"}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </th>
+                            <td>
+                              {moment(item.requirmentPostedDate).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </td>
+                            <td>{moment(item.endDate).format("DD-MM-YYYY")}</td>
+                            <td>{item.resourceName}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {contractData?.length > 0 && totalCount > 10 && (
+                    <Pagination
+                      pageIndex={pageIndex}
+                      setPageIndex={setPageIndex}
+                      pageSize={pageSize}
+                      totalCount={totalCount}
+                    />
+                  )}
+                </>
               )}
               {tabValue === "openView" && (
-                <div className="table-body mt-4">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th className="add-right-shadow">Role</th>
-                        {/* <th>Client</th> */}
-                        <th>Date Posted</th>
-                        {/* <th>Requirement Type</th> */}
-                        <th>No. of Positions</th>
-                        {/* <th>Contract period</th> */}
-                      </tr>
-                    </thead>
-
-                    <TablePreLoader
-                      isTableLoader={isTableLoader}
-                      data={contractData}
-                    />
-
-                    <tbody>
-                      {contractData.map((job: any, index: number) => (
-                        <tr key={index} onClick={() => handleRowClick(job?.id)}>
-                          {/* <th className="add-right-shadow">{job.role}</th> */}
-                          <th className="add-right-shadow">
-                            <div className="cursor-pointer hover:text-indigo-700">
-                              {job.requirementTitle}
-                            </div>
-                            <div className="flex items-center text-secondary-text text-info mt-1">
-                              {/* <div className="flex items-center min-w-[135px] max-w-[150px] cursor-pointer hover:text-indigo-700">
-                                <img
-                                  src={job?.clientLogoUrl}
-                                  style={{ height: 12, width: 12 }}
-                                  className="me-1"
-                                />
-                                <Tooltip title={job?.client} arrow>
-                                  <span className="text-ellipsis overflow-hidden truncate">
-                                    {job?.client || "Self"}
-                                  </span>
-                                </Tooltip>
-                              </div> */}
-                              <div className="flex ">
-                                {job?.locationType && (
-                                  <div className="flex items-center me-1">
-                                    <LocationOnOutlined
-                                      fontSize="inherit"
-                                      className="mr-1"
-                                    />
-                                    <span>
-                                      {Object.keys(LocationType).find(
-                                        (k) =>
-                                          LocationType[k] == job.locationType
-                                      )}
-                                    </span>
-                                  </div>
-                                )}
-                                {job?.contractPeriod && (
-                                  <div className="flex items-center">
-                                    <AccessTimeOutlined
-                                      fontSize="inherit"
-                                      className="mr-1"
-                                    />
-                                    <span className="truncate w-[100px]">
-                                      {job?.contractPeriod || "-"}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </th>
-                          {/* <td className="wide-200">
-                            <div className="flex">
-                              <img
-                                src={job.logo}
-                                style={{ height: 16, width: 16 }}
-                                className="me-1"
-                              />
-                              {job.client}
-                            </div>
-                          </td> */}
-                          <td>
-                            {moment(job.requirmentPostedDate).format(
-                              "DD-MM-YYYY"
-                            )}
-                          </td>
-                          {/* <td>
-                            <Typography
-                              className={`px-3 py-1 rounded-full !text-base text-center ${
-                                job.requirementType === "Onsite"
-                                  ? "text-blue-700 border border-blue-700"
-                                  : "text-yellow-700 border border-yellow-700"
-                              }`}
-                            >
-                              {job.requirementType}
-                            </Typography>
-                          </td> */}
-                          <td>{job.numberOfPosition}</td>
-                          {/* <td>{job.contractPeriod}</td> */}
+                <>
+                  <div className="table-body mt-4">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th className="add-right-shadow">Role</th>
+                          <th>Date Posted</th>
+                          <th>No. of Positions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+
+                      <TablePreLoader
+                        isTableLoader={isTableLoader}
+                        data={contractData}
+                      />
+
+                      <tbody>
+                        {contractData.map((job: any, index: number) => (
+                          <tr
+                            key={index}
+                            onClick={() => handleRowClick(job?.id)}
+                          >
+                            <th className="add-right-shadow">
+                              <div className="cursor-pointer hover:text-indigo-700">
+                                {job.requirementTitle}
+                              </div>
+                              <div className="flex items-center text-secondary-text text-info mt-1">
+                                <div className="flex ">
+                                  {job?.locationType && (
+                                    <div className="flex items-center me-1">
+                                      <LocationOnOutlined
+                                        fontSize="inherit"
+                                        className="mr-1"
+                                      />
+                                      <span>
+                                        {Object.keys(LocationType).find(
+                                          (k) =>
+                                            LocationType[k] == job.locationType
+                                        )}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {job?.contractPeriod && (
+                                    <div className="flex items-center">
+                                      <AccessTimeOutlined
+                                        fontSize="inherit"
+                                        className="mr-1"
+                                      />
+                                      <span className="truncate w-[100px]">
+                                        {job?.contractPeriod || "-"}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </th>
+                            <td>
+                              {moment(job.requirmentPostedDate).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </td>
+                            <td>{job.numberOfPosition}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {contractData?.length > 0 && totalCount > 10 && (
+                    <Pagination
+                      pageIndex={pageIndex}
+                      setPageIndex={setPageIndex}
+                      pageSize={pageSize}
+                      totalCount={totalCount}
+                    />
+                  )}
+                </>
               )}
               {tabValue === "benchView" && (
-                <div className="table-body mt-4">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th className="add-right-shadow">Resource name</th>
-                        <th>Skill Set</th>
-                        {/* <th>Experience</th> */}
-                        {/* <th>Location</th> */}
-                        <th>Availability</th>
-                      </tr>
-                    </thead>
+                <>
+                  <div className="table-body mt-4">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th className="add-right-shadow">Resource name</th>
+                          <th>Skill Set</th>
+                          <th>Availability</th>
+                        </tr>
+                      </thead>
 
-                    <TablePreLoader
-                      isTableLoader={isTableLoader}
-                      data={benchList}
-                    />
+                      <TablePreLoader
+                        isTableLoader={isTableLoader}
+                        data={benchList}
+                      />
 
-                    <tbody>
-                      {benchList.map((item: any, index: number) => (
-                        <tr key={index} onClick={() => handleRowClick(item.id)}>
-                          <th className="add-right-shadow">
-                            <div className="flex items-center">
-                              {!item.avtar ? (
-                                <AccountCircleOutlined
-                                  fontSize="medium"
-                                  className="text-secondary-text"
-                                />
-                              ) : (
-                                <img
-                                  src={item.avtar}
-                                  alt={item?.firstName}
-                                  style={{ height: 24, width: 24 }}
-                                  className="rounded-full"
-                                />
-                              )}
-                              <div className="ms-2 w-[100%]">
-                                <div className="flex items-center justify-between text-base">
-                                  <div
-                                    // onClick={() =>
-                                    //   handleOpenDrawer("benchPreview", item.cv)
-                                    // }
-                                    className="cursor-pointer hover:text-indigo-700"
-                                  >
-                                    {item?.firstName}
+                      <tbody>
+                        {benchList.map((item: any, index: number) => (
+                          <tr
+                            key={index}
+                            onClick={() => handleRowClick(item.id)}
+                          >
+                            <th className="add-right-shadow">
+                              <div className="flex items-center">
+                                {!item.avtar ? (
+                                  <AccountCircleOutlined
+                                    fontSize="medium"
+                                    className="text-secondary-text"
+                                  />
+                                ) : (
+                                  <img
+                                    src={item.avtar}
+                                    alt={item?.firstName}
+                                    style={{ height: 24, width: 24 }}
+                                    className="rounded-full"
+                                  />
+                                )}
+                                <div className="ms-2 w-[100%]">
+                                  <div className="flex items-center justify-between text-base">
+                                    <div
+                                      // onClick={() =>
+                                      //   handleOpenDrawer("benchPreview", item.cv)
+                                      // }
+                                      className="cursor-pointer hover:text-indigo-700"
+                                    >
+                                      {item?.firstName}
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="flex items-center justify-between text-secondary-text text-info">
-                                  <div className="flex">
-                                    {item?.cv?.profile?.experience && (
-                                      <p>
-                                        <WorkHistory fontSize="inherit" />{" "}
-                                        {item?.cv?.profile?.experience}
-                                      </p>
-                                    )}
-                                    {item?.location && (
-                                      <p className="ms-1">
-                                        <LocationOn fontSize="inherit" />{" "}
-                                        {item.location}
-                                      </p>
-                                    )}
+                                  <div className="flex items-center justify-between text-secondary-text text-info">
+                                    <div className="flex">
+                                      {item?.cv?.profile?.experience && (
+                                        <p>
+                                          <WorkHistory fontSize="inherit" />{" "}
+                                          {item?.cv?.profile?.experience}
+                                        </p>
+                                      )}
+                                      {item?.location && (
+                                        <p className="ms-1">
+                                          <LocationOn fontSize="inherit" />{" "}
+                                          {item.location}
+                                        </p>
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </th>
-                          <td className="truncate">
-                            {item.cv.top_skills?.length > 0 &&
-                              item.cv.top_skills.map((skill: any) => (
-                                <span>{skill}, </span>
-                              ))}
-                          </td>
-                          {/* <td>{item.experience}</td> */}
-                          {/* <td>{item.location}</td> */}
-                          <td>{item.availabilityName}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                            </th>
+                            <td className="truncate">
+                              {item.cv.top_skills?.length > 0 &&
+                                item.cv.top_skills.map((skill: any) => (
+                                  <span>{skill}, </span>
+                                ))}
+                            </td>
+                            <td>{item.availabilityName}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {benchList?.length > 0 && totalCount > 10 && (
+                    <Pagination
+                      pageIndex={pageIndex}
+                      setPageIndex={setPageIndex}
+                      pageSize={pageSize}
+                      totalCount={totalCount}
+                    />
+                  )}
+                </>
               )}
             </Box>
           </div>

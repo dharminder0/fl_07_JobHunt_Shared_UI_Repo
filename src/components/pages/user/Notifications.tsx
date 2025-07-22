@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  IconButton,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -22,6 +23,7 @@ import configData from "../../sharedService/config";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import moment from "moment";
 import { useNavigate } from "react-router";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 
 export const Notifications = () => {
   const navigation = useNavigate();
@@ -30,6 +32,7 @@ export const Notifications = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const [notificationList, setNotificationList] = useState<any[]>([]);
+  const [notificationCount, setNotificationCount] = useState<any>(0);
 
   const getNotificationsListData = () => {
     const payload = {
@@ -39,6 +42,7 @@ export const Notifications = () => {
     };
     getNotificationsList(payload)
       .then((result: any) => {
+        setNotificationCount(result.count);
         if (result.count >= 0) {
           setNotificationList(result.notifications);
         }
@@ -62,7 +66,7 @@ export const Notifications = () => {
       signalREmitter.off("readStatusUpdate", handle);
       signalREmitter.off("listUpdate", handle);
     };
-  }, []);
+  }, [pageIndex]);
 
   const handleNotifyRead = (item: any) => {
     if (!item.isRead) {
@@ -89,42 +93,79 @@ export const Notifications = () => {
   return (
     <div className="my-3">
       {notificationList?.length > 0 ? (
-        notificationList?.map((item: any) => (
-          <Accordion key={item.id} className="!bg-indigo-50">
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls={`panel-header-${item.id}`}
-              id={`panel-header-${item.id}`}
-              onClick={(e: any) => {
-                handleNotifyRead(item);
-                e.stopPropagation();
-              }}
-            >
-              <div className="flex justify-between w-full items-center">
-                <div className="flex">
-                  {!item.isRead && (
-                    <FiberManualRecordIcon fontSize="inherit" color="primary" />
-                  )}
-                  <p
-                    className="text-base font-semibold hover:text-indigo-500"
-                    onClick={(e: any) => {
-                      handleRedirection(item);
-                      e.stopPropagation();
-                    }}
-                  >
-                    {item?.title}
-                  </p>
+        <>
+          {notificationList?.map((item: any) => (
+            <Accordion key={item.id} className="!bg-indigo-50">
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls={`panel-header-${item.id}`}
+                id={`panel-header-${item.id}`}
+                onClick={(e: any) => {
+                  handleNotifyRead(item);
+                  e.stopPropagation();
+                }}
+              >
+                <div className="flex justify-between w-full items-center">
+                  <div className="flex">
+                    {!item.isRead && (
+                      <FiberManualRecordIcon
+                        fontSize="inherit"
+                        color="primary"
+                      />
+                    )}
+                    <p
+                      className="text-base font-semibold hover:text-indigo-500"
+                      onClick={(e: any) => {
+                        handleRedirection(item);
+                        e.stopPropagation();
+                      }}
+                    >
+                      {item?.title}
+                    </p>
+                  </div>
+                  <div className="text-base">
+                    {moment(item.createdOn).format("DD-MM-YYYY")}
+                  </div>
                 </div>
-                <div className="text-base">
-                  {moment(item.createdOn).format("DD-MM-YYYY")}
-                </div>
+              </AccordionSummary>
+              <AccordionDetails className="!bg-white">
+                <p className="text-base my-1">{item.message}</p>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+
+          <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 sm:px-4">
+            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+              <div>
+                <p className="text-base text-gray-700">
+                  Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                  <span>
+                    {Math.min(pageIndex * pageSize, notificationCount || 0)}
+                  </span>{" "}
+                  of <span>{notificationCount || 0}</span> results
+                </p>
               </div>
-            </AccordionSummary>
-            <AccordionDetails className="!bg-white">
-              <p className="text-base my-1">{item.message}</p>
-            </AccordionDetails>
-          </Accordion>
-        ))
+            </div>
+            <div className="flex flex-1 justify-end">
+              <IconButton
+                size="small"
+                onClick={() => setPageIndex(pageIndex - 1)}
+                disabled={pageIndex <= 1}
+              >
+                <ChevronLeft />
+              </IconButton>
+              <IconButton
+                size="small"
+                onClick={() => setPageIndex(pageIndex + 1)}
+                disabled={
+                  pageIndex >= Math.ceil((notificationCount || 0) / pageSize)
+                }
+              >
+                <ChevronRight />
+              </IconButton>
+            </div>
+          </div>
+        </>
       ) : (
         <>
           <NoDataAvailable />

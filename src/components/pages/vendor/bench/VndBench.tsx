@@ -149,8 +149,8 @@ export default function VndBench({ drawerData = {} }: any) {
     };
     getTechStackList(payload).then((result: any) => {
       setRecords(result);
-      if (result && result?.length >= 0) {
-        setTechStack(result);
+      if (result && result?.data.length >= 0) {
+        setTechStack(result.data);
       }
       setTimeout(() => {
         setIsTableLoader(false);
@@ -686,18 +686,18 @@ export default function VndBench({ drawerData = {} }: any) {
                 <tbody>
                   {techStack.map((item, index) => (
                     <tr key={item?.id}>
-                      <th className="add-right-shadow">{item.SkillName}</th>
+                      <th className="add-right-shadow">{item.skillName}</th>
                       <td>
                         <div
                           className="cursor-pointer hover:text-indigo-700"
                           onClick={() =>
                             handleDrawer("techStack", true, {
-                              tech: item.SkillName,
+                              tech: item.skillName,
                               id: item.id,
                             })
                           }
                         >
-                          {item.ResourceCount}
+                          {item.resourceCount}
                         </div>
                       </td>
                     </tr>
@@ -711,9 +711,9 @@ export default function VndBench({ drawerData = {} }: any) {
                   <p className="text-base text-gray-700">
                     Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
                     <span>
-                      {Math.min(pageIndex * pageSize, records?.count || 0)}
+                      {Math.min(pageIndex * pageSize, records?.totalCount || 0)}
                     </span>{" "}
-                    of <span>{records?.count || 0}</span> results
+                    of <span>{records?.totalCount || 0}</span> results
                   </p>
                 </div>
               </div>
@@ -729,7 +729,7 @@ export default function VndBench({ drawerData = {} }: any) {
                   size="small"
                   onClick={() => setPageIndex(pageIndex + 1)}
                   disabled={
-                    pageIndex >= Math.ceil((records?.count || 0) / pageSize)
+                    pageIndex >= Math.ceil((records?.totalCount || 0) / pageSize)
                   }
                 >
                   <ChevronRight />
