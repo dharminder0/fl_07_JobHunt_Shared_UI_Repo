@@ -31,6 +31,7 @@ const htmlDocx = require("html-docx-js/dist/html-docx");
 
 type BenchPreviewProps = {
   benchData?: any;
+  setBenchData?: any;
 };
 
 export type BenchPreviewHandles = {
