@@ -180,18 +180,34 @@ export default function OrganizationProfileUpdate() {
             <Controller
               name="orgName"
               control={control}
+              rules={{
+                required: "Company name is required",
+                validate: (value) =>
+                  !/\s{2,}/.test(value) || "Multiple spaces are not allowed",
+              }}
               render={({ field }) => (
                 <TextField
                   fullWidth
                   margin="normal"
                   label="Company Name"
                   {...field}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    value = value.replace(/\s{2,}/g, " "); // replace multiple spaces
+                    value = value.trimStart(); // prevent leading space while typing
+                    field.onChange(value);
+                  }}
+                  onBlur={(e) => {
+                    const value = e.target.value.trim(); // trim on blur (leading & trailing)
+                    field.onChange(value);
+                  }}
                   error={!!errors.orgName}
                   helperText={errors.orgName?.message}
                   size="small"
                 />
               )}
             />
+
             <Controller
               name="regAddress"
               control={control}
