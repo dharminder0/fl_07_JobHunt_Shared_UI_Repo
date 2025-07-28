@@ -265,27 +265,64 @@ export default function UserDetails() {
                 <Controller
                   name="firstName"
                   control={control}
+                  rules={{
+                    required: "First name is required",
+                    validate: (value) =>
+                      !/\s{2,}/.test(value) ||
+                      "Multiple spaces are not allowed",
+                  }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       label="First Name"
                       fullWidth
                       size="small"
+                      onChange={(e) => {
+                        let value = e.target.value;
+                        value = value.replace(/\s{2,}/g, " "); // remove multiple spaces
+                        value = value.trimStart(); // avoid leading space while typing
+                        field.onChange(value);
+                      }}
+                      onBlur={(e) => {
+                        const value = e.target.value.trim(); // trim on blur
+                        field.onChange(value);
+                      }}
+                      error={!!errors.firstName}
+                      helperText={errors.firstName?.message}
                     />
                   )}
                 />
+
                 <Controller
                   name="lastName"
                   control={control}
+                  rules={{
+                    validate: (value) =>
+                      !/\s{2,}/.test(value) ||
+                      "Multiple spaces are not allowed",
+                  }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       label="Last Name"
                       fullWidth
                       size="small"
+                      onChange={(e) => {
+                        let value = e.target.value;
+                        value = value.replace(/\s{2,}/g, " "); // remove multiple spaces
+                        value = value.trimStart(); // avoid leading space
+                        field.onChange(value);
+                      }}
+                      onBlur={(e) => {
+                        const value = e.target.value.trim(); // trim leading & trailing spaces
+                        field.onChange(value);
+                      }}
+                      error={!!errors.lastName}
+                      helperText={errors.lastName?.message}
                     />
                   )}
                 />
+
                 <Controller
                   name="email"
                   control={control}
