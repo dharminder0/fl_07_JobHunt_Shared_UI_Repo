@@ -67,7 +67,6 @@ export default function VndCandidates() {
       searchText: searchValue,
       clientOrgName: client,
       status: status,
-      userId: userData.userId,
       page: pageIndex,
       pageSize: pageSize,
       uniqueId: paramUniqueId,
