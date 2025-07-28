@@ -312,6 +312,12 @@ export default function VndBench({ drawerData = {} }: any) {
       });
     }
   };
+  const handleSearch = (value: any) => {
+    if (value?.length > 2) {
+      setPageIndex(1);
+    }
+    SetSearchText(value);
+  };
 
   return (
     <>
@@ -439,7 +445,7 @@ export default function VndBench({ drawerData = {} }: any) {
                     size="small"
                     className="w-full"
                     value={searchText}
-                    onChange={(event) => SetSearchText(event.target.value)}
+                    onChange={(event) => handleSearch(event.target.value)}
                     placeholder="Search Resources"
                     slotProps={{
                       input: {
@@ -729,7 +735,8 @@ export default function VndBench({ drawerData = {} }: any) {
                   size="small"
                   onClick={() => setPageIndex(pageIndex + 1)}
                   disabled={
-                    pageIndex >= Math.ceil((records?.totalCount || 0) / pageSize)
+                    pageIndex >=
+                    Math.ceil((records?.totalCount || 0) / pageSize)
                   }
                 >
                   <ChevronRight />

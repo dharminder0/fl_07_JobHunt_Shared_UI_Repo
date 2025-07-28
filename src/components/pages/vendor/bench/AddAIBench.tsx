@@ -100,6 +100,7 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
 
   const handleSubmit = () => {
     const payload = {
+      id: benchId,
       firstName: benchData.profile?.name ?? "",
       lastName: "",
       title: benchData.profile?.title ?? "",
@@ -267,7 +268,11 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
               )}
 
               {activeStep === 1 && (
-                <BenchPreview benchData={benchData} ref={benchRef} />
+                <BenchPreview
+                  benchData={benchData}
+                  ref={benchRef}
+                  setBenchData={setBenchData}
+                />
               )}
 
               {activeStep === 2 && (
@@ -334,216 +339,6 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
             </Button>
           )}
         </div>
-
-        {/* <div className="!overflow-hidden">
-            {!isLoader ? (
-              <div className="h-[calc(100vh-90px)] !overflow-y-auto">
-                <div className="md:w-[95%] lg:w-[95%] xl:w-[70%] p-4 mx-auto">
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-2 gap-x-3">
-                      <div className="col-span-2">
-                        
-                        <Controller
-                          name="title"
-                          control={control}
-                          rules={{ required: "Title is required" }}
-                          render={({ field }) => (
-                            <TextField
-                              fullWidth
-                              margin="normal"
-                              label="Title"
-                              {...field}
-                              error={!!errors.title}
-                              helperText={errors.title?.message}
-                              size="small"
-                            />
-                          )}
-                        />
-                      </div>
-
-                      
-                      <Controller
-                        name="firstName"
-                        control={control}
-                        rules={{ required: "First name is required" }}
-                        render={({ field }) => (
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            label="First Name"
-                            {...field}
-                            error={!!errors.firstName}
-                            helperText={errors.firstName?.message}
-                            size="small"
-                          />
-                        )}
-                      />
-
-                      
-                      <Controller
-                        name="lastName"
-                        control={control}
-                        rules={{ required: "Last name is required" }}
-                        render={({ field }) => (
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            label="Last Name"
-                            {...field}
-                            error={!!errors.lastName}
-                            helperText={errors.lastName?.message}
-                            size="small"
-                          />
-                        )}
-                      />
-                    </div>
-
-                    
-                    <Controller
-                      name="cv"
-                      control={control}
-                      rules={{ required: "CV is required" }}
-                      render={({ field }) => (
-                        <div className="requirement-quill mt-3">
-                          <ReactQuill
-                            {...field}
-                            theme="snow"
-                            value={field.value || ""}
-                            onChange={field.onChange}
-                            placeholder="Paste CV Data"
-                          />
-                          {errors.cv && (
-                            <p className="text-red-500 text-xs">
-                              {errors.cv.message}
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    />
-
-                    <div className="grid grid-cols-2 gap-x-3">
-                      
-                      <Controller
-                        name="email"
-                        control={control}
-                        rules={{
-                          required: "Email is required",
-                          pattern: {
-                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Invalid email address",
-                          },
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            label="Email"
-                            {...field}
-                            error={!!errors.email}
-                            helperText={errors.email?.message}
-                            size="small"
-                          />
-                        )}
-                      />
-                      
-                      <Controller
-                        name="phone"
-                        control={control}
-                        rules={{
-                          required: "Phone number is required",
-                          maxLength: 13,
-                          pattern: {
-                            value: /^[0-9]{10,15}$/,
-                            message:
-                              "Invalid phone number (must be 10-15 digits)",
-                          },
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            label="Phone"
-                            {...field}
-                            error={!!errors.phone}
-                            helperText={errors.phone?.message}
-                            size="small"
-                          />
-                        )}
-                      />
-                      
-                      <Controller
-                        name="linkedin"
-                        control={control}
-                        rules={{
-                          required: "LinkedIn is required",
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            label="LinkedIn Profile"
-                            {...field}
-                            error={!!errors.linkedin}
-                            helperText={errors.linkedin?.message}
-                            size="small"
-                          />
-                        )}
-                      />
-                      
-                      <Controller
-                        name="availability"
-                        control={control}
-                        rules={{ required: "Availability is required" }}
-                        render={({ field }) => (
-                          <FormControl
-                            fullWidth
-                            margin="normal"
-                            size="small"
-                            error={!!errors.availability}
-                          >
-                            <InputLabel>Availability</InputLabel>
-                            <Select {...field} label="Availability">
-                              {AvailabilityStatus.map((option: any) => (
-                                <MenuItem key={option.id} value={option.id}>
-                                  {option.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                            {errors.availability && (
-                              <FormHelperText>
-                                {errors.availability.message}
-                              </FormHelperText>
-                            )}
-                          </FormControl>
-                        )}
-                      />
-                    </div>
-                  </form>
-                </div>
-              </div>
-            ) : (
-              <div className="h-[calc(100vh-90px)] !overflow-y-auto">
-                <Loader />
-              </div>
-            )}
-
-            <div className="px-4 border-t flex justify-between items-center h-[50px]">
-              <Button
-                variant="outlined"
-                className="!mr-4 !w-[110px]"
-                onClick={() => setDrawerOpen(false)}
-              >
-                Close
-              </Button>
-              <Button
-                variant="contained"
-                className="!w-[110px]"
-                onClick={handleSubmit(onSubmit)}
-              >
-                Submit
-              </Button>
-            </div>
-          </div> */}
       </div>
       {isSuccessPopup && (
         <SuccessDialog
