@@ -164,7 +164,7 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
   const getRequirementsData = () => {
     setIsTableLoader(true);
     const payload = {
-      resourcesId: benchDrawerData?.id,
+      resourceId: benchDrawerData?.id,
       orgCode: userData.orgCode,
       searchText: searchText,
       status: status,
