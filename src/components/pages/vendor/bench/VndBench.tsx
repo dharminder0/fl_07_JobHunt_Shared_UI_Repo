@@ -564,7 +564,7 @@ export default function VndBench({ drawerData = {} }: any) {
                                   // }
 
                                   onClick={() => {
-                                    item.cv.id = item.id;
+                                    item.cv.id = item?.id;
                                     handleOpenDrawer("benchPreview", item.cv);
                                   }}
                                   className="cursor-pointer hover:text-indigo-700"
