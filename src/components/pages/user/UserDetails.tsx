@@ -129,6 +129,7 @@ export default function UserDetails() {
         userData.lastName = result.content?.lastName;
         userData.phone = result.content?.phone;
         userData.gender = result.content?.gender;
+        userData.profileAvatar = result.content?.profileAvatar;
         userData.dob = moment(result.content?.dob).format("YYYY-MM-DD");
         localStorage.setItem("userData", JSON.stringify(userData));
         reset1({ oldEmail: result.content?.userName });
