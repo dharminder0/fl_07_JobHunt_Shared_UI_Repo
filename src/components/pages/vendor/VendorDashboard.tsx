@@ -159,6 +159,16 @@ const VendorDashboard: React.FC<VendorDashboard> = () => {
                         <p className="text-base mb-5">No data available</p>
                       </div>
                     )}
+                    {topClients?.length > 0 && (
+                      <div className="mb-1.5 text-end">
+                        <Button
+                          variant="text"
+                          onClick={() => navigate("/vendor/clients")}
+                        >
+                          View all
+                        </Button>
+                      </div>
+                    )}
                   </Box>
                 </Box>
               </Box>
