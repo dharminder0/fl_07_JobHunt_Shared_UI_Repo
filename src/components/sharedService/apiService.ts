@@ -405,7 +405,7 @@ export const matchRequirementToCandidates = async (
 ) => {
   try {
     const response = await axios.post(
-      "https://fl-07-agent-shared-api-test.azurewebsites.net/match_requirement_to_candidates",
+      `${process.env.REACT_APP_Agent_Url}match_requirement_to_candidates`,
       {
         requirement_ids: requirementIds,
       },
@@ -426,7 +426,7 @@ export const matchRequirementToCandidates = async (
 export const matchCandidateToRequirements = async (candidate_ids: number[]) => {
   try {
     const response = await axios.post(
-      "https://fl-07-agent-shared-api-test.azurewebsites.net/match_candidate_to_requirements",
+      `${process.env.REACT_APP_Agent_Url}match_candidate_to_requirements`,
       {
         candidate_ids: candidate_ids,
       },
