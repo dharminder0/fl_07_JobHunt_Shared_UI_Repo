@@ -8,6 +8,7 @@ declare global {
       BenchPromtCode: string;
       API_Token: string;
       Notification_HUB: string;
+      REACT_APP_Agent_Url:string;
     };
   }
 }
@@ -46,7 +47,8 @@ const getRuntimeConfig = () => {
     RequirementPromtCode: getConfigValue(runtimeConfig?.RequirementPromtCode, process.env.REACT_APP_REQUIREMENT_PROMPT_CODE, 'REQRMNT'),
     BenchPromtCode: getConfigValue(runtimeConfig?.BenchPromtCode, process.env.REACT_APP_BENCH_PROMPT_CODE, 'RESUME'),
     API_Token: getConfigValue(runtimeConfig?.API_Token, process.env.REACT_APP_API_TOKEN, ''),
-    Notification_HUB: getConfigValue(runtimeConfig?.Notification_HUB, process.env.REACT_APP_NOTIFICATION_HUB, 'https://yourapp.azurewebsites.net/notificationHub')
+    Notification_HUB: getConfigValue(runtimeConfig?.Notification_HUB, process.env.REACT_APP_NOTIFICATION_HUB, 'https://yourapp.azurewebsites.net/notificationHub'),
+    REACT_APP_Agent_Url: getConfigValue(runtimeConfig?.REACT_APP_Agent_Url, process.env.REACT_APP_Agent_Url, 'https://yourapp.azurewebsites.net/api/')
   };
 };
 
