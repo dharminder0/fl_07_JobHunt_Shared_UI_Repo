@@ -1,19 +1,13 @@
 import { getCVDetailById } from "../../../../components/sharedService/apiService";
-import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
   AccessTimeOutlined,
   AccountCircleOutlined,
-  DownloadOutlined,
   Edit,
   EmailOutlined,
   LinkedIn,
   Phone,
-  PictureAsPdf,
-  PictureAsPdfOutlined,
 } from "@mui/icons-material";
-import { Button, Chip, IconButton, TextField } from "@mui/material";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { IconButton, TextField } from "@mui/material";
 import React, {
   forwardRef,
   useEffect,
@@ -21,9 +15,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-// import htmlDocx from "html-docx-js/dist/html-docx";
-import { useForm } from "react-hook-form";
-import { Link, useLocation } from "react-router-dom";
 import { useSafeLocation } from "../../../../components/hooks/useSafeLocation";
 
 const html2pdf = require("html2pdf.js");
@@ -45,6 +36,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
     // const { benchData = {} } = props;
     const [benchData, setBenchData] = useState(props.benchData);
     const [tempBenchData, setTempBenchData] = React.useState(benchData ?? {});
+    const activeRole = localStorage.getItem("activeRole") || "";
 
     // Expose this method to the parent
     useImperativeHandle(ref, () => ({
@@ -152,21 +144,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
 
     return (
       <>
-        {/* body */}
-        <div className="w-[70%] flex justify-end space-x-4 px-4">
-          {/* <Button
-          startIcon={<PictureAsPdfOutlined fontSize="inherit" />}
-          onClick={downloadPDF}
-        >
-          Download Pdf
-        </Button>
-        <Button
-          startIcon={<DownloadOutlined fontSize="inherit" />}
-          onClick={handleDownloadDocx}
-        >
-          Download Doc
-        </Button> */}
-        </div>
+        <div className="w-[70%] flex justify-end space-x-4 px-4"></div>
         <div
           className="w-full h-full flex flex-wrap mx-auto"
           id="printSection"
@@ -207,18 +185,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div>
               <p className="text-title font-bold group/item flex items-center mb-1">
                 Objective
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("objective")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("objective")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               {formStates.isOpen && formStates.useForm === "objective" ? (
                 <TextField
@@ -246,18 +226,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div>
               <p className="text-title font-bold group/item flex items-center mb-1">
                 Summary
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("summary")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("summary")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               <div className="text-base">
                 {formStates.isOpen && formStates.useForm === "summary" ? (
@@ -281,19 +263,6 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                         />
                       )
                     )}
-
-                    {/* Optional Add Button */}
-                    {/* <button
-                    className="mt-2 text-sm text-blue-600 underline"
-                    onClick={() =>
-                      setTempBenchData((prev: any) => ({
-                        ...prev,
-                        summary: [...prev.summary, ""],
-                      }))
-                    }
-                  >
-                    + Add Point
-                  </button> */}
                   </div>
                 ) : (
                   tempBenchData?.summary?.length > 0 && (
@@ -312,18 +281,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div className="text-base space-y-2">
               <p className="text-title font-bold group/item flex items-center mb-2">
                 Projects
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("projects")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("projects")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               {formStates.isOpen && formStates.useForm === "projects"
                 ? tempBenchData?.projects?.map((project: any, idx: number) => (
@@ -432,18 +403,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div className="space-y-2 mt-12">
               <p className="text-title group/item flex items-center">
                 Contact Detail
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("contact")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("contact")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               <ul>
                 {tempBenchData?.contact_details?.email &&
@@ -539,18 +512,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div>
               <p className="text-title group/item flex items-center">
                 Certifications
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("certifications")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("certifications")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               {formStates.isOpen && formStates.useForm === "certifications" ? (
                 <div className="flex flex-wrap gap-2">
@@ -579,11 +554,7 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
                   {tempBenchData?.certifications?.length > 0 &&
                     tempBenchData.certifications.map(
                       (item: string, index: number) => (
-                        <div
-                          key={index}
-                          // className="my-1 me-1 text-base border-1 border px-3 py-1 rounded-full border-gray-400 line-clamp-2"
-                          className="my-1 me-1 text-base"
-                        >
+                        <div key={index} className="my-1 me-1 text-base">
                           {item}
                           {index === tempBenchData?.certifications?.length - 1
                             ? ""
@@ -597,18 +568,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div>
               <p className="text-title group/item flex items-center">
                 Top Skills
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("top_skills")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("top_skills")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               {formStates.isOpen && formStates.useForm === "top_skills" ? (
                 <div className="flex flex-wrap gap-2">
@@ -651,18 +624,20 @@ const BenchPreview = forwardRef<BenchPreviewHandles, BenchPreviewProps>(
             <div>
               <p className="text-title group/item flex items-center">
                 Education
-                <div className="group/edit invisible group-hover/item:visible">
-                  <span className="group-hover/edit:text-gray-700">
-                    <IconButton
-                      aria-label="edit"
-                      sx={{ marginLeft: 1 }}
-                      size="small"
-                      onClick={() => handleFormStates("education")}
-                    >
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </span>
-                </div>
+                {activeRole === "vendor" && (
+                  <div className="group/edit invisible group-hover/item:visible">
+                    <span className="group-hover/edit:text-gray-700">
+                      <IconButton
+                        aria-label="edit"
+                        sx={{ marginLeft: 1 }}
+                        size="small"
+                        onClick={() => handleFormStates("education")}
+                      >
+                        <Edit fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </div>
+                )}
               </p>
               {formStates.isOpen && formStates.useForm === "education" ? (
                 <div className="space-y-2">
