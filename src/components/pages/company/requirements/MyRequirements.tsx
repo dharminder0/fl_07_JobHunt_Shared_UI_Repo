@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Typography,
   TextField,
@@ -46,6 +46,7 @@ const MyRequirements = () => {
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
   const [selectedRequirement, setSelectedRequirement] = React.useState({});
   const [searchText, setSearchText] = React.useState("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
   const [status, setStatus] = useState<any>(!paramStatus ? [] : [paramStatus]);
@@ -99,7 +100,7 @@ const MyRequirements = () => {
     setSelectedStatus(requirement.statusName);
   };
 
-  const getRequirementsData = async () => {
+  const getRequirementsData = useCallback(async () => {
     setIsTableLoader(true);
     const payload = {
       orgCode: userData.orgCode,
@@ -132,23 +133,45 @@ const MyRequirements = () => {
           setIsTableLoader(false);
         }, 1000);
       });
-  };
+  }, [
+    resource,
+    client,
+    status,
+    isHotChecked,
+    isApplicants,
+    debouncedSearchText,
+    pageIndex,
+  ]);
 
   const clientList = useClientList(userData?.orgCode);
 
   useEffect(() => {
-    if (searchText?.length > 3 || searchText?.length == 0) {
-      getRequirementsData();
-    }
+    const handler = setTimeout(() => {
+      setDebouncedSearchText(searchText);
+    }, 500); // adjust debounce delay as needed
+
+    return () => clearTimeout(handler);
+  }, [searchText]);
+
+  useEffect(() => {
+    setPageIndex(1);
   }, [
-    searchText,
     resource,
     client,
-    pageIndex,
     status,
     isHotChecked,
     isApplicants,
+    debouncedSearchText,
   ]);
+
+  useEffect(() => {
+    const shouldFetch =
+      debouncedSearchText.length > 3 || debouncedSearchText.length === 0;
+
+    if (shouldFetch) {
+      getRequirementsData();
+    }
+  }, [getRequirementsData]);
 
   useEffect(() => {
     if (!drawerState.isOpen) {
@@ -357,10 +380,10 @@ const MyRequirements = () => {
                     </td>
                     <td>
                       <span
-                        // onClick={() =>
-                        //   handleRowClick(requirement?.orgCode, "myvendors")
-                        // }
-                        // className="cursor-pointer hover:text-indigo-700"
+                      // onClick={() =>
+                      //   handleRowClick(requirement?.orgCode, "myvendors")
+                      // }
+                      // className="cursor-pointer hover:text-indigo-700"
                       >
                         {requirement?.positions || 0} (
                         {requirement?.placed || 0})
