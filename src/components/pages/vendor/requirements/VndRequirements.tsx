@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Typography,
   TextField,
@@ -73,6 +73,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
   const [selectedStatus, setSelectedStatus] = React.useState("Open");
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [searchText, setSearchText] = React.useState("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
   const [pageIndex, setPageIndex] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(15);
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
@@ -99,15 +100,15 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     }
   };
 
-  const handleClickToClient = (id: number, tab: string) => {
-    if (!benchDrawerData.isOpen) {
-      if (tab) {
-        navigate(`/vendor/clients/${id}?type=${tab}`, {
-          state: { previousUrl: location.pathname },
-        });
-      }
-    }
-  };
+  // const handleClickToClient = (id: number, tab: string) => {
+  //   if (!benchDrawerData.isOpen) {
+  //     if (tab) {
+  //       navigate(`/vendor/clients/${id}?type=${tab}`, {
+  //         state: { previousUrl: location.pathname },
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleApplicantClick = (uniqueId: any) => {
     navigate(`/vendor/candidate`, {
@@ -141,7 +142,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
     setSelectedStatus(status);
   };
 
-  const getRequirementsData = () => {
+  const getRequirementsData = useCallback(() => {
     setIsTableLoader(true);
     const payload = {
       orgCode: userData.orgCode,
@@ -173,13 +174,28 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
           setIsTableLoader(false);
         }, 1000);
       });
-  };
+  }, [resource, status, client, isHotChecked, debouncedSearchText, pageIndex]);
 
   useEffect(() => {
-    if (searchText?.length > 3 || searchText?.length == 0) {
+    const handler = setTimeout(() => {
+      setDebouncedSearchText(searchText);
+    }, 500); // adjust delay as needed
+
+    return () => clearTimeout(handler);
+  }, [searchText]);
+
+  useEffect(() => {
+    setPageIndex(1);
+  }, [resource, status, client, isHotChecked, debouncedSearchText]);
+
+  useEffect(() => {
+    const shouldFetch =
+      debouncedSearchText.length > 3 || debouncedSearchText.length === 0;
+
+    if (shouldFetch) {
       getRequirementsData();
     }
-  }, [searchText, resource, status, client, pageIndex, isHotChecked]);
+  }, [resource, status, client, isHotChecked, pageIndex, debouncedSearchText]);
 
   const isSelected = (id: number) => selectedRows.includes(id);
   const isAllSelected = selectedRows.length === requirementData?.length;
@@ -482,12 +498,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     </td>
                     <td>
                       <span
-                        // onClick={() =>
-                        //   handleClickToClient(
-                        //     requirement.partnerCode,
-                        //     "openView"
-                        //   )
-                        // }
+                      // onClick={() =>
+                      //   handleClickToClient(
+                      //     requirement.partnerCode,
+                      //     "openView"
+                      //   )
+                      // }
                       >
                         {requirement.positions} ({requirement?.placed || 0})
                       </span>
