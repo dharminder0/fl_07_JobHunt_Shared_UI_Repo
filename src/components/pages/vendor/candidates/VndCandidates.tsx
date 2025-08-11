@@ -6,7 +6,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
@@ -37,6 +37,7 @@ export default function VndCandidates() {
   const [isTableLoader, setIsTableLoader] = React.useState(true);
   const [selectedStatus, setSelectedStatus] = React.useState("New");
   const [searchValue, setSearchValue] = React.useState("");
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
   const [status, setStatus] = React.useState<any[]>(
     !paramStatus ? [] : paramStatus
   );
@@ -57,12 +58,27 @@ export default function VndCandidates() {
   // const clientList = useClientList(userData?.orgCode);
 
   useEffect(() => {
-    if (searchValue?.length > 2 || searchValue?.length == 0) {
+    const handler = setTimeout(() => {
+      setDebouncedSearchValue(searchValue);
+    }, 500); // adjust debounce delay as needed
+
+    return () => clearTimeout(handler);
+  }, [searchValue]);
+
+  useEffect(() => {
+    setPageIndex(1);
+  }, [status, client, paramUniqueId, debouncedSearchValue]);
+
+  useEffect(() => {
+    const shouldFetch =
+      debouncedSearchValue.length > 2 || debouncedSearchValue.length === 0;
+
+    if (shouldFetch) {
       getApplicantsListData();
     }
-  }, [searchValue, status, pageIndex, client, paramUniqueId]);
+  }, [status, client, paramUniqueId, debouncedSearchValue, pageIndex]);
 
-  const getApplicantsListData = () => {
+  const getApplicantsListData = useCallback(() => {
     const payload = {
       searchText: searchValue,
       clientOrgName: client,
@@ -72,7 +88,7 @@ export default function VndCandidates() {
       uniqueId: paramUniqueId,
       orgCode: userData.orgCode,
     };
-    
+
     setIsTableLoader(true);
     getApplicantsList(payload)
       .then((result: any) => {
@@ -90,7 +106,7 @@ export default function VndCandidates() {
         setApplicantData([]);
         setIsTableLoader(false);
       });
-  };
+  }, [status, client, paramUniqueId, debouncedSearchValue, pageIndex]);
 
   // const handleStatusDialog = (status: string) => {
   //   setIsDialogOpen(true);

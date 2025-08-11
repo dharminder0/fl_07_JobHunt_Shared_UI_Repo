@@ -1,5 +1,5 @@
 import axios from "axios";
-import api from "./api";
+import { agent_api, api } from "./api";
 
 export const getAllUsers = async () => {
   const response = await api.get("V1/User/getAllUsers");
@@ -403,45 +403,17 @@ export const getNotificationCounts = async (orgCode: any) => {
 export const matchRequirementToCandidates = async (
   requirementIds: number[]
 ) => {
-  try {
-    const response = await axios.post(
-      "https://fl-07-agent-shared-api-test.azurewebsites.net/match_requirement_to_candidates",
-      {
-        requirement_ids: requirementIds,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error("API Error:", error);
-    throw error; // rethrow if you want the caller to handle it
-  }
+  const response = await agent_api.post(`match_requirement_to_candidates`, {
+    requirement_ids: requirementIds,
+  });
+  return response.data;
 };
 
 export const matchCandidateToRequirements = async (candidate_ids: number[]) => {
-  try {
-    const response = await axios.post(
-      "https://fl-07-agent-shared-api-test.azurewebsites.net/match_candidate_to_requirements",
-      {
-        candidate_ids: candidate_ids,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error("API Error:", error);
-    throw error; // rethrow if you want the caller to handle it
-  }
+  const response = await agent_api.post(`match_candidate_to_requirements`, {
+    candidate_ids: candidate_ids,
+  });
+  return response.data;
 };
 
 export default api;

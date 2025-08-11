@@ -453,6 +453,14 @@ export default function UserDetails() {
                       render={({ field }) => (
                         <TextField
                           {...field}
+                          onChange={(e) => {
+                            let value = e.target.value;
+                            // Remove leading spaces
+                            value = value.replace(/^\s+/, "");
+                            // Replace multiple spaces with single space
+                            value = value.replace(/\s{2,}/g, " ");
+                            field.onChange(value);
+                          }}
                           label="Old Password"
                           fullWidth
                           size="small"
@@ -491,6 +499,14 @@ export default function UserDetails() {
                       render={({ field }) => (
                         <TextField
                           {...field}
+                          onChange={(e) => {
+                            let value = e.target.value;
+                            // Remove leading spaces
+                            value = value.replace(/^\s+/, "");
+                            // Replace multiple spaces with single space
+                            value = value.replace(/\s{2,}/g, " ");
+                            field.onChange(value);
+                          }}
                           label="New Password"
                           fullWidth
                           type={showPassword1 ? "text" : "password"}

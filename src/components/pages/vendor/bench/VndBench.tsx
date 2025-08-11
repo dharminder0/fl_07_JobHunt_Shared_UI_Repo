@@ -429,9 +429,10 @@ export default function VndBench({ drawerData = {} }: any) {
                     <MenuDrpDwnV2
                       menuList={AvailabilityStatus}
                       placeholder="Availability"
-                      handleSelectedItem={(selectedItems) =>
-                        setAvailability(selectedItems)
-                      }
+                      handleSelectedItem={(selectedItems) => {
+                        setAvailability(selectedItems);
+                        setPageIndex(1);
+                      }}
                     />
                   </div>
                 </>
