@@ -19,7 +19,7 @@ import TablePreLoader from "../../../../components/sharedComponents/TablePreLoad
 import React from "react";
 import { AppDispatch } from "../../../../components/redux/store";
 import { openDrawer } from "../../../../components/features/drawerSlice";
-import { Add } from "@mui/icons-material";
+import { Add, ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { ClientStatus } from "../../../../components/sharedService/shareData";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 
@@ -32,9 +32,10 @@ export default function Clients() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageIndex, setPageIndex] = useState<any>(1);
   const [status, setStatus] = useState<any>([]);
-  const [pageSize, setPageSize] = useState<any>(10);
+  const [pageSize, setPageSize] = useState<any>(15);
   const [clientList, setClientList] = useState<any[]>([]);
   const [isTableLoader, setIsTableLoader] = React.useState(true);
+  const [clientCount, setClientCount] = useState<any>(0);
   const drawerState = useSelector((state: any) => state.drawer);
 
   const userData = JSON.parse(localStorage.getItem("userData") || "{}");
@@ -55,7 +56,7 @@ export default function Clients() {
     if (searchValue?.length > 3 || searchValue?.length <= 0) {
       getClientsListData();
     }
-  }, [searchValue, status]);
+  }, [searchValue, status, pageIndex]);
 
   const getClientsListData = () => {
     const payload = {
@@ -68,6 +69,7 @@ export default function Clients() {
     setIsTableLoader(true);
     getClientsList(payload)
       .then((result: any) => {
+        setClientCount(result?.count);
         if (result?.count > 0) {
           setTimeout(() => {
             setClientList(result.list);
@@ -200,6 +202,35 @@ export default function Clients() {
           </tbody>
         </table>
       </div>
+      {clientCount > 15 && (
+        <div className="flex items-center justify-between border-t border-gray-200 bg-white px-2 sm:px-4">
+          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+            <div>
+              <p className="text-base text-gray-700">
+                Showing <span>{(pageIndex - 1) * pageSize + 1}</span> to{" "}
+                <span>{Math.min(pageIndex * pageSize, clientCount || 0)}</span>{" "}
+                of <span>{clientCount || 0}</span> results
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-1 justify-end">
+            <IconButton
+              size="small"
+              onClick={() => setPageIndex(pageIndex - 1)}
+              disabled={pageIndex <= 1}
+            >
+              <ChevronLeft />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => setPageIndex(pageIndex + 1)}
+              disabled={pageIndex >= Math.ceil((clientCount || 0) / pageSize)}
+            >
+              <ChevronRight />
+            </IconButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
