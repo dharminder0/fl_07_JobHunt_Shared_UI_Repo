@@ -112,6 +112,17 @@ const CreateClientForm = () => {
                     render={({ field }) => (
                       <TextField
                         {...field}
+                        onChange={(e) => {
+                          let value = e.target.value;
+
+                          // Remove leading spaces
+                          value = value.replace(/^\s+/, "");
+
+                          // Replace multiple spaces with single space
+                          value = value.replace(/\s{2,}/g, " ");
+
+                          field.onChange(value);
+                        }}
                         label="Name"
                         variant="outlined"
                         fullWidth
@@ -121,7 +132,6 @@ const CreateClientForm = () => {
                       />
                     )}
                   />
-
                   {/* About Client */}
                   {/* <Controller
                     name="description"
@@ -142,7 +152,6 @@ const CreateClientForm = () => {
                       />
                     )}
                   /> */}
-
                   <Controller
                     name="description"
                     control={control}
@@ -155,7 +164,6 @@ const CreateClientForm = () => {
                       />
                     )}
                   />
-
                   {/* Contact Details */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                     {/* Mobile */}
@@ -216,7 +224,6 @@ const CreateClientForm = () => {
                       )}
                     />
                   </div>
-
                   {/* Address */}
                   <Controller
                     name="address"
@@ -231,7 +238,6 @@ const CreateClientForm = () => {
                       />
                     )}
                   />
-
                   {/* Website */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                     <Controller
@@ -248,7 +254,6 @@ const CreateClientForm = () => {
                       )}
                     />
                   </div>
-
                   {/* Logo & Favicon Upload */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
                     {/* Logo Upload */}
