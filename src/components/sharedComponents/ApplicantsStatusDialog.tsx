@@ -58,7 +58,15 @@ export default function ApplicantsStatusDialog({
   const currentStep = statusData.findIndex(
     (status: any) => status.name === localStatus
   );
-  const reachedStatuses = statusData.slice(0, currentStep + 1);
+  // const reachedStatuses = statusData.slice(0, currentStep + 1);
+
+  const selectedId =
+    statusData.find(
+      (status: any) =>
+        status.name === localStatus || status.value === localStatus
+    )?.id ?? null;
+
+  console.log(selectedId);
 
   // Handle status change
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,32 +96,17 @@ export default function ApplicantsStatusDialog({
       });
   };
 
-  // Confirm status change
-  //   const handleUpdate = () => {
-  //     const status = statusData.find(
-  //       (item: any) => item.name === localStatus || item.value === localStatus
-  //     );
-  //     if (title.includes("Applicant")) {
-  //       const payload = { ...selectedRow, status: status?.id, comment: comment };
-  //       upsertApplications(payload)
-  //         .then((result: any) => {
-  //           if (result.success) {
-  //             setIsSuccessPopup(true);
-  //             onFinish();
-  //           }
-  //         })
-  //         .catch((error: any) => {
-  //           setIsSuccessPopup(false);
-  //         });
-  //     }
-  //     onStatusChange(localStatus);
-  //     setIsDialogOpen(false);
-  //   };
+  const lastHistoryId = history[history.length - 1]?.status;
+
+  // Find index of last status in ApplicantsStatus
+  const lastHistoryIndex = statusData.findIndex(
+    (s: any) => s.id === lastHistoryId
+  );
 
   const handleUpdate = () => {
     const payload = {
       applicantId: selectedRow?.applicationId,
-      status: reachedStatuses?.length,
+      status: selectedId,
       changedBy: selectedRow?.orgCode,
       comment: comment,
     };
@@ -156,16 +149,14 @@ export default function ApplicantsStatusDialog({
                     onChange={handleStatusChange}
                     className="!flex !flex-col"
                   >
-                    {statusData.map((item: any) => (
+                    {statusData.map((item: any, index: any) => (
                       <FormControlLabel
                         key={item.id}
                         value={item.name}
                         control={<Radio size="small" />}
                         label={item.name}
                         checked={item.name === localStatus}
-                        disabled={
-                          item.id < history?.[history.length - 1]?.status
-                        }
+                        disabled={index < lastHistoryIndex}
                         sx={{
                           "& .MuiRadio-root": {
                             padding: "5px",

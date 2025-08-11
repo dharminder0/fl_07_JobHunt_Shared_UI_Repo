@@ -105,6 +105,21 @@ export const ApplicantsStatus: any = [
     value: "InterviewRound3",
   },
   {
+    id: 13,
+    name: "Withdrawn",
+    value: "Withdrawn",
+  },
+  {
+    id: 12,
+    name: "On Hold",
+    value: "OnHold",
+  },
+  {
+    id: 11,
+    name: "Rejected",
+    value: "Rejected",
+  },
+  {
     id: 8,
     name: "Selected",
     value: "Selected",
@@ -118,21 +133,6 @@ export const ApplicantsStatus: any = [
     id: 10,
     name: "Contract Closed",
     value: "ContractClosed",
-  },
-  {
-    id: 11,
-    name: "Rejected",
-    value: "Rejected",
-  },
-  {
-    id: 12,
-    name: "On Hold",
-    value: "OnHold",
-  },
-  {
-    id: 13,
-    name: "Withdrawn",
-    value: "Withdrawn",
   },
 ];
 
