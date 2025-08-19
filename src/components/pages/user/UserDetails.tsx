@@ -5,7 +5,6 @@ import {
   updateUserEmail,
 } from "../../../components/sharedService/apiService";
 import {
-  Avatar,
   Button,
   IconButton,
   MenuItem,
@@ -24,9 +23,8 @@ import {
 } from "../../../components/features/drawerSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SuccessDialog from "../../sharedComponents/SuccessDialog";
-import FileUploadBox from "../../sharedComponents/FileUploadBox";
 import UploadLogo from "../../sharedComponents/UploadLogo";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Notifications } from "./Notifications";
 
 export default function UserDetails() {

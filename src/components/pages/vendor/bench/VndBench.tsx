@@ -3,7 +3,6 @@ import {
   ChevronLeft,
   ChevronRight,
   LocationOn,
-  QuestionMarkOutlined,
   WorkHistory,
 } from "@mui/icons-material";
 import {
@@ -521,9 +520,8 @@ export default function VndBench({ drawerData = {} }: any) {
                     benchDatadetails.map((item, index) => (
                       <tr
                         key={item?.id}
-                        className={`${
-                          isSelected(item.id) ? "bg-blue-100" : "bg-white"
-                        }`}
+                        className={`${isSelected(item.id) ? "bg-blue-100" : "bg-white"
+                          }`}
                       >
                         <th className="multi-select">
                           <input
@@ -616,12 +614,11 @@ export default function VndBench({ drawerData = {} }: any) {
                         {/* <td>{item.skills || "-"}</td> */}
                         <td>
                           <Typography
-                            className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                              item?.availability ===
-                              AvailabilityEnums.NotAvailable
+                            className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${item?.availability ===
+                                AvailabilityEnums.NotAvailable
                                 ? "bg-red-100 text-red-700"
                                 : "bg-indigo-100 text-indigo-700"
-                            }`}
+                              }`}
                             onClick={() => {
                               setDialogOpen(true);
                               setSelectedIds((prev) => ({

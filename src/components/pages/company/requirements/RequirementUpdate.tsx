@@ -9,7 +9,7 @@ import {
   openBackdrop,
 } from "../../../../components/features/drawerSlice";
 import { AppDispatch } from "@/components/redux/store";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import {

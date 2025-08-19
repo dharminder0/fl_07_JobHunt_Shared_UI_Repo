@@ -1,28 +1,18 @@
 import { useRef, useState } from "react";
 import {
   Stepper,
-  Drawer,
   Step,
   Button,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
   StepLabel,
   Box,
 } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import {
   generateRequirement,
   UpsertBenchDetail,
   upsetAvatar,
 } from "../../../../components/sharedService/apiService";
-import Loader from "../../../../components/sharedComponents/Loader";
-import { AvailabilityStatus } from "../../../../components/sharedService/shareData";
 import BenchPreview, { BenchPreviewHandles } from "./BenchPreview";
 import {
   closeBackdrop,
@@ -291,9 +281,8 @@ const AddAIBench: React.FC<AddAIBenchProps> = ({ handleGetBenchDetail }) => {
           </Box>
         </div>
         <div
-          className={`flex space-x-2 border-t px-4 py-2 ${
-            activeStep === 0 ? "justify-end" : "justify-between"
-          }`}
+          className={`flex space-x-2 border-t px-4 py-2 ${activeStep === 0 ? "justify-end" : "justify-between"
+            }`}
         >
           {activeStep !== 0 && (
             <Button

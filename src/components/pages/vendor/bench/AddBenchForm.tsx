@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { Add } from "@mui/icons-material";
 import {
-  Box,
-  Chip,
   Drawer,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
 } from "@mui/material";
-import { TextField, Button, MenuItem } from "@mui/material";
+import { Button } from "@mui/material";
 import FileUploadBox from "../../../sharedComponents/FileUploadBox";
 
 const AddBenchForm = () => {
@@ -25,15 +20,15 @@ const AddBenchForm = () => {
     setDrawerOpen(open);
   };
 
-    const handleSubmit = (event: React.FormEvent) => {
-      event.preventDefault();
-      if (file) {
-        console.log("Selected file:", file.name, file.size, file.type);
-      } else {
-        console.log("No file selected.");
-      }
-    };
-  
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (file) {
+      console.log("Selected file:", file.name, file.size, file.type);
+    } else {
+      console.log("No file selected.");
+    }
+  };
+
 
   return (
     <div className="flex flex-col my-auto">
@@ -47,7 +42,7 @@ const AddBenchForm = () => {
       </Button>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-      <div className="h-full w-[calc(100vw-250px)]">
+        <div className="h-full w-[calc(100vw-250px)]">
           <div className="p-4  py-2  border-b">
             <h2 className="text-heading">Import bench</h2>
           </div>

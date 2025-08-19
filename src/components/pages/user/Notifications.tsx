@@ -3,10 +3,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   IconButton,
-  Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getNotificationsList,
   getNotificationUpdate,
@@ -15,11 +14,7 @@ import NoDataAvailable from "../../../components/sharedComponents/NoDataAvailabl
 
 import {
   signalREmitter,
-  startNotificationConnection,
-  stopNotificationConnection,
 } from "../../sharedService/signalRService";
-import * as signalR from "@microsoft/signalr";
-import configData from "../../sharedService/config";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import moment from "moment";
 import { useNavigate } from "react-router";

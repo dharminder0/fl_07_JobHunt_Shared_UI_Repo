@@ -20,7 +20,6 @@ import {
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import {
   getClientDataByClientCode,
   getClientsContractData,

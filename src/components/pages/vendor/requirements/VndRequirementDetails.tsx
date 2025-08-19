@@ -8,22 +8,19 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import { Edit, Download, CorporateFareOutlined } from "@mui/icons-material";
+import { Download, CorporateFareOutlined } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
-import StatusDialog from "../../../sharedComponents/StatusDialog";
 import {
   getRequirementsListById,
   getRequirementApplicants,
-  getRequirementsList,
   getSimilerRequirements,
 } from "../../../../components/sharedService/apiService";
 import moment from "moment";
 import { ApplicantsStatus } from "../../../../components/sharedService/shareData";
 import {
   ApplicationEnums,
-  RoleType,
 } from "../../../../components/sharedService/enums";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
@@ -298,7 +295,7 @@ const VndRequirementDetails = () => {
                   {applicantData.map((applicant, index) => (
                     <tr
                       key={index}
-                      // onClick={() => handleRowClick(applicant.id)}
+                    // onClick={() => handleRowClick(applicant.id)}
                     >
                       <th className="add-right-shadow">
                         <div className="flex items-center justify-between text-info mt-1">
@@ -308,9 +305,9 @@ const VndRequirementDetails = () => {
                           <div className="flex text-info items-center text-secondary-text">
                             <div
                               className="flex cursor-pointer"
-                              // onClick={() =>
-                              //   handleMatchingDialog(applicant?.ai)
-                              // }
+                            // onClick={() =>
+                            //   handleMatchingDialog(applicant?.ai)
+                            // }
                             >
                               <IconAi />
                               <span> {applicant?.matchingScore}%</span>
@@ -334,15 +331,14 @@ const VndRequirementDetails = () => {
                       </th>
                       <td>
                         <Typography
-                          className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                            applicant.status === ApplicationEnums.Selected
+                          className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${applicant.status === ApplicationEnums.Selected
                               ? "bg-green-100 text-green-700"
                               : applicant.status === ApplicationEnums.Rejected
                                 ? "bg-red-100 text-red-700"
                                 : applicant.status === ApplicationEnums.New
                                   ? "bg-orange-100 text-orange-700"
                                   : "bg-indigo-100 text-indigo-700"
-                          }`}
+                            }`}
                           onClick={() => handleStatusDialog(applicant)}
                         >
                           {applicant.statusName}

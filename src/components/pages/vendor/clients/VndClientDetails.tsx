@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import {
-  Typography,
   Grid,
   Box,
   Tabs,
@@ -37,7 +36,7 @@ const VndClientDetails = () => {
   const [value, setValue] = React.useState("activeView");
   const [previousUrl, setpreviousUrl] = React.useState("");
   const [clientData, setClientData] = React.useState<any>({});
-  const handleRowClick = (id: any) => {};
+  const handleRowClick = (id: any) => { };
 
   useEffect(() => {
     if (location.state && location.state.previousUrl) {

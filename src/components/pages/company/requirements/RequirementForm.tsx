@@ -6,14 +6,12 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   AccountCircleOutlined,
-  Add,
   CorporateFareOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
 import {
   Autocomplete,
   Avatar,
-  Checkbox,
   Chip,
   FormControl,
   InputLabel,
@@ -34,7 +32,6 @@ import {
   generateRequirement,
   getMatchingVendors,
   getOnboardInvitedList,
-  getOrgDetailsList,
   getSkillsList,
   matchRequirementToCandidates,
   shareRequirement,
@@ -43,11 +40,9 @@ import {
 import {
   LocationType,
   RoleType,
-  Visibility,
 } from "../../../../components/sharedService/enums";
 import { getClientLists } from "../../../../components/sharedService/apiService";
 import ReactQuill from "react-quill";
-import { useOrgRequestList } from "../../../../components/hooks/useOrgRequestList";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import { closeDrawer } from "../../../../components/features/drawerSlice";
@@ -703,11 +698,10 @@ const RequirementForm = () => {
                                   }
                                 >
                                   <div
-                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
-                                      isCardSelected(company, "matchingOrgCode")
+                                    className={`h-100 border p-3 rounded-md cursor-pointer ${isCardSelected(company, "matchingOrgCode")
                                         ? "!bg-indigo-100 border-indigo-600"
                                         : ""
-                                    }`}
+                                      }`}
                                   >
                                     <div className="flex items-center mb-4">
                                       <img
@@ -771,11 +765,10 @@ const RequirementForm = () => {
                                   }
                                 >
                                   <div
-                                    className={`h-100 border p-3 rounded-md cursor-pointer ${
-                                      isCardSelected(company, "matchingOrgCode")
+                                    className={`h-100 border p-3 rounded-md cursor-pointer ${isCardSelected(company, "matchingOrgCode")
                                         ? "!bg-indigo-100 border-indigo-600"
                                         : ""
-                                    }`}
+                                      }`}
                                   >
                                     <div className="flex items-center mb-4">
                                       <img

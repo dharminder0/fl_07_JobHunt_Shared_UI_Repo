@@ -1,4 +1,3 @@
-import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import { ChevronLeft, ChevronRight, Download } from "@mui/icons-material";
 import {
@@ -206,9 +205,9 @@ export default function MyCandidates() {
                     <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                       <div
                         className="flex items-center min-w-[135px] max-w-[150px] hover:text-indigo-700"
-                        // onClick={() =>
-                        //   handleRowClick(applicant.vendorOrgCode, "vendor")
-                        // }
+                      // onClick={() =>
+                      //   handleRowClick(applicant.vendorOrgCode, "vendor")
+                      // }
                       >
                         <img
                           src={applicant?.vendorLogo}
@@ -224,9 +223,9 @@ export default function MyCandidates() {
                       <div className="flex text-info items-center">
                         <div
                           className="flex cursor-pointer hover:text-indigo-700"
-                          // onClick={() =>
-                          //   handleMatchingDialog(applicant.matchingScore)
-                          // }
+                        // onClick={() =>
+                        //   handleMatchingDialog(applicant.matchingScore)
+                        // }
                         >
                           <IconAi />
                           <span> {applicant.matchingScore}%</span>
@@ -278,15 +277,14 @@ export default function MyCandidates() {
                   </td>
                   <td>
                     <Typography
-                      className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                        applicant.status === ApplicationEnums.Selected
+                      className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${applicant.status === ApplicationEnums.Selected
                           ? "bg-green-100 text-green-700"
                           : applicant.status === ApplicationEnums.Rejected
                             ? "bg-red-100 text-red-700"
                             : applicant.status === ApplicationEnums.New
                               ? "bg-orange-100 text-orange-700"
                               : "bg-indigo-100 text-indigo-700"
-                      }`}
+                        }`}
                       onClick={() => handleStatusDialog(applicant)}
                     >
                       {applicant.statusName}

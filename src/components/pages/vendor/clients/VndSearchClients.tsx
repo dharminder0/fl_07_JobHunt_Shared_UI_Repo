@@ -1,6 +1,5 @@
 import {
   TextField,
-  Chip,
   InputAdornment,
   IconButton,
   Tooltip,
@@ -87,7 +86,7 @@ const VndSearchClients = () => {
       role: [RoleType.Client],
       page: pageIndex,
       pageSize: pageSize,
-      searchText:searchText.trim(),
+      searchText: searchText.trim(),
       technology,
       resource,
       strength,
@@ -216,16 +215,15 @@ const VndSearchClients = () => {
                         )}
                         {company.statusName && (
                           <p
-                            className={`line-clamp-1 text-base ${
-                              company?.status === 2
+                            className={`line-clamp-1 text-base ${company?.status === 2
                                 ? "text-green-600"
                                 : company?.status === 3
                                   ? "text-red-500"
                                   : company?.status === 0 ||
-                                      company?.status === 1
+                                    company?.status === 1
                                     ? "text-orange-500"
                                     : ""
-                            }`}
+                              }`}
                           >
                             {company?.statusName}
                           </p>
