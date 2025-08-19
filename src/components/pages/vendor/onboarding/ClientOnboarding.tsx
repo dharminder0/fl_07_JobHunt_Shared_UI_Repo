@@ -6,8 +6,6 @@ import {
   DialogContent,
   IconButton,
   Link,
-  Tab,
-  Tabs,
   Tooltip,
 } from "@mui/material";
 import React, { useEffect } from "react";

@@ -3,46 +3,29 @@ import {
   Typography,
   TextField,
   InputAdornment,
-  Tooltip,
   IconButton,
-  Drawer,
-  Button,
-  Avatar,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
 import {
   AccessTimeOutlined,
-  AccountCircleOutlined,
-  ChevronLeft,
-  ChevronRight,
-  LocationOn,
   LocationOnOutlined,
-  WorkHistory,
 } from "@mui/icons-material";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import VndBench from "../bench/VndBench";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
 import React from "react";
 import {
   getMatchingPositions,
-  getRequirementsList,
-  matchRequirementToCandidates,
   upsertApplications,
-  upsertMatchingIds,
 } from "../../../../components/sharedService/apiService";
 import {
   LocationTypeStatus,
   RequirementStatus,
 } from "../../../../components/sharedService/shareData";
 import TablePreLoader from "../../../../components/sharedComponents/TablePreLoader";
-import { RoleType } from "../../../../components/sharedService/enums";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
 import moment from "moment";
-import { useClientList } from "../../../../components/hooks/useClientList";
-import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../components/redux/store";
 import {
@@ -306,9 +289,9 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                           <div className="mx-2">
                             <div
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
-                              // onClick={() =>
-                              //   handleMatchingDialog(requirement?.MatchingScore)
-                              // }
+                            // onClick={() =>
+                            //   handleMatchingDialog(requirement?.MatchingScore)
+                            // }
                             >
                               <IconAi />
                               <span> {requirement?.MatchingScore || 0}%</span>
@@ -382,11 +365,10 @@ const MatchingPositions = ({ benchDrawerData = {} }: any) => {
                     </th>
                     <td>
                       <Typography
-                        className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${
-                          requirement.StatusName === "Open"
+                        className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${requirement.StatusName === "Open"
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
-                        }`}
+                          }`}
                         onClick={() =>
                           handleStatusDialog(requirement.StatusName)
                         }

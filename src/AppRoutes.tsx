@@ -1,10 +1,8 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
@@ -24,13 +22,11 @@ import MyRequirements from "./components/pages/company/requirements/MyRequiremen
 import MyVendors from "./components/pages/company/my-vendors/MyVendors";
 import FindVendors from "./components/pages/company/find-vendors/FindVendors";
 import VndBench from "./components/pages/vendor/bench/VndBench";
-import VndSearchClients from "./components/pages/vendor/clients/VndSearchClients";
 import MyCandidates from "./components/pages/company/candidates/MyCandidates";
 import UserDetails from "./components/pages/user/UserDetails";
 import VndRequirementDetails from "./components/pages/vendor/requirements/VndRequirementDetails";
 import VndCandidates from "./components/pages/vendor/candidates/VndCandidates";
 import ClientOnboarding from "./components/pages/vendor/onboarding/ClientOnboarding";
-import VndClientDetails from "./components/pages/vendor/clients/VndClientDetails";
 import Clients from "./components/pages/company/clients/Clients";
 import ClientDetails from "./components/pages/company/clients/ClientDetails";
 import ProtectedRoute from "./components/sharedComponents/ProtectedRoute";
@@ -38,7 +34,6 @@ import OrganizationProfile from "./components/pages/settings/OrganizationProfile
 import Subscriptions from "./components/pages/settings/Subscriptions";
 import Members from "./components/pages/settings/Members";
 import BenchPreview from "./components/pages/vendor/bench/BenchPreview";
-import DashboardLayoutBasic from "./components/layouts/DashboardLayoutBasic";
 import EmailVerification from "./components/auth/EmailVerification";
 import SetPassword from "./components/auth/SetPassword";
 import ForgotPassword from "./components/auth/ForgotPassword";

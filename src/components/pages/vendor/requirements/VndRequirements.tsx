@@ -19,7 +19,6 @@ import {
   ChevronLeft,
   ChevronRight,
   LocationOnOutlined,
-  QuestionMarkOutlined,
 } from "@mui/icons-material";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
@@ -31,7 +30,6 @@ import React from "react";
 import {
   getRequirementsList,
   matchRequirementToCandidates,
-  upsertMatchingIds,
 } from "../../../../components/sharedService/apiService";
 import {
   LocationTypeStatus,
@@ -389,7 +387,7 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                             {benchDrawerData?.isOpen && (
                               <div
                                 className="flex justify-end cursor-pointer hover:text-indigo-700"
-                                // onClick={() => handleMatchingDialog(requirement?.aiScore)}
+                              // onClick={() => handleMatchingDialog(requirement?.aiScore)}
                               >
                                 <IconAi />
                                 <span> {requirement?.aiScore}%</span>
@@ -422,12 +420,12 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                       <div className="flex items-center justify-between text-secondary-text text-info mt-1">
                         <div
                           className="flex items-center min-w-[135px] max-w-[150px]"
-                          // onClick={() =>
-                          //   handleClickToClient(
-                          //     requirement.partnerCode,
-                          //     "activeView"
-                          //   )
-                          // }
+                        // onClick={() =>
+                        //   handleClickToClient(
+                        //     requirement.partnerCode,
+                        //     "activeView"
+                        //   )
+                        // }
                         >
                           {requirement?.partnerFavicon && (
                             // <img
@@ -481,11 +479,10 @@ const VndRequirements = ({ benchDrawerData = {} }: any) => {
                     </th>
                     <td>
                       <Typography
-                        className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${
-                          requirement.statusName === "Open"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
+                        className={`inline-block cursor-pointer px-3 py-1 !text-base rounded-full ${requirement.statusName === "Open"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                          }`}
                         onClick={() =>
                           handleStatusDialog(requirement.statusName)
                         }

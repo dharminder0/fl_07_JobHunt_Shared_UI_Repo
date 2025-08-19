@@ -11,7 +11,6 @@ import {
   InputAdornment,
   Avatar,
   Switch,
-  FormControlLabel,
   Button,
   DialogContent,
   DialogActions,
@@ -26,15 +25,11 @@ import {
 } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
-import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
-import StatusDialog from "../../../sharedComponents/StatusDialog";
 import MatchingSkillsDialog from "../../../sharedComponents/MatchingSkillsDialog";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   getMatchingVendors,
-  getOnboardInvitedList,
-  getOrgDetailsList,
   getRequirementApplicants,
   getRequirementsListById,
   matchRequirementToCandidates,
@@ -42,12 +37,9 @@ import {
 } from "../../../../components/sharedService/apiService";
 import {
   ApplicantsStatus,
-  RequirementStatus,
 } from "../../../../components/sharedService/shareData";
 import {
   ApplicationEnums,
-  InvitedType,
-  RoleType,
 } from "../../../../components/sharedService/enums";
 import moment from "moment";
 import MenuDrpDwnV2 from "../../../../components/sharedComponents/MenuDrpDwnV2";
@@ -492,9 +484,9 @@ const RequirementDetails = () => {
                             <div className="flex text-info items-center">
                               <div
                                 className="flex cursor-pointer"
-                                // onClick={() =>
-                                //   handleMatchingDialog(applicant.ai)
-                                // }
+                              // onClick={() =>
+                              //   handleMatchingDialog(applicant.ai)
+                              // }
                               >
                                 <IconAi />
                                 <span> {applicant.matchingScore}%</span>
@@ -519,15 +511,14 @@ const RequirementDetails = () => {
                         <td>{applicant.title}</td>
                         <td>
                           <Typography
-                            className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${
-                              applicant.status === ApplicationEnums.Selected
+                            className={`inline-block px-3 py-1 !text-base rounded-full cursor-pointer ${applicant.status === ApplicationEnums.Selected
                                 ? "bg-green-100 text-green-700"
                                 : applicant.status === ApplicationEnums.Rejected
                                   ? "bg-red-100 text-red-700"
                                   : applicant.status === ApplicationEnums.New
                                     ? "bg-orange-100 text-orange-700"
                                     : "bg-indigo-100 text-indigo-700"
-                            }`}
+                              }`}
                             onClick={() => handleStatusDialog(applicant)}
                           >
                             {applicant.statusName}
@@ -593,7 +584,7 @@ const RequirementDetails = () => {
 
                   <div
                     className="text-base flex"
-                    // onClick={() => handleMatchingDialog(company.avgScore)}
+                  // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
                     <IconAi />
                     Avg Score: {vendor?.averageMatchingScore}%
@@ -642,7 +633,7 @@ const RequirementDetails = () => {
 
                   <div
                     className="text-base flex"
-                    // onClick={() => handleMatchingDialog(company.avgScore)}
+                  // onClick={() => handleMatchingDialog(company.avgScore)}
                   >
                     <IconAi />
                     Avg Score: {company?.averageMatchingScore}%

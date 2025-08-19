@@ -5,7 +5,6 @@ import {
   InputAdornment,
   Tooltip,
   IconButton,
-  CircularProgress,
   Avatar,
   Switch,
 } from "@mui/material";
@@ -17,7 +16,6 @@ import {
   ChevronRight,
   LocationOnOutlined,
 } from "@mui/icons-material";
-import MenuDrpDwn from "../../../sharedComponents/MenuDrpDwn";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import StatusDialog from "../../../sharedComponents/StatusDialog";
 import { getRequirementsList } from "../../../../components/sharedService/apiService";
@@ -32,7 +30,6 @@ import { RoleType } from "../../../../components/sharedService/enums";
 import { useClientList } from "../../../../components/hooks/useClientList";
 import MenuDrpDwnByValue from "../../../../components/sharedComponents/MenuDrpDwnByValue";
 import { useSelector } from "react-redux";
-import { uniqueId } from "lodash";
 
 const MyRequirements = () => {
   const navigate = useNavigate();
@@ -365,11 +362,10 @@ const MyRequirements = () => {
                     </th>
                     <td>
                       <Typography
-                        className={`inline-block px-3 py-1 !text-base cursor-pointer rounded-full ${
-                          requirement?.statusName === "Open"
+                        className={`inline-block px-3 py-1 !text-base cursor-pointer rounded-full ${requirement?.statusName === "Open"
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
-                        }`}
+                          }`}
                         onClick={() => handleStatusDialog(requirement)}
                       >
                         {requirement?.statusName || "-"}

@@ -16,7 +16,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SuccessDialog from "../../../sharedComponents/SuccessDialog";
 import {
-  getBenchList,
   getMatchingCandidates,
   upsertApplications,
 } from "../../../../components/sharedService/apiService";
@@ -284,9 +283,8 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                 benchDatadetails.map((item, index) => (
                   <tr
                     key={item?.id}
-                    className={`${
-                      isSelected(item.BenchId) ? "bg-blue-100" : "bg-white"
-                    }`}
+                    className={`${isSelected(item.BenchId) ? "bg-blue-100" : "bg-white"
+                      }`}
                   >
                     <th className="multi-select">
                       {item.Availability !== AvailabilityEnums.NotAvailable &&
@@ -301,21 +299,21 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
 
                       {(item.IsApplied ||
                         item.Availability ===
-                          AvailabilityEnums.NotAvailable) && (
-                        <Tooltip title="Already applied or not available">
-                          <input
-                            type="checkbox"
-                            checked={isSelected(item.BenchId)}
-                            onChange={() => toggleRowSelection(item)}
-                            className="cursor-pointer"
-                            disabled={
-                              item.IsApplied ||
-                              item.Availability ===
+                        AvailabilityEnums.NotAvailable) && (
+                          <Tooltip title="Already applied or not available">
+                            <input
+                              type="checkbox"
+                              checked={isSelected(item.BenchId)}
+                              onChange={() => toggleRowSelection(item)}
+                              className="cursor-pointer"
+                              disabled={
+                                item.IsApplied ||
+                                item.Availability ===
                                 AvailabilityEnums.NotAvailable
-                            }
-                          />
-                        </Tooltip>
-                      )}
+                              }
+                            />
+                          </Tooltip>
+                        )}
                     </th>
 
                     <th className="add-right-shadow">
@@ -359,9 +357,9 @@ export default function MatchingCandidates({ drawerData = {} }: any) {
                             )} */}
                             <div
                               className="flex justify-end cursor-pointer hover:text-indigo-700"
-                              // onClick={() =>
-                              //   handleMatchingDialog(item?.MatchScore)
-                              // }
+                            // onClick={() =>
+                            //   handleMatchingDialog(item?.MatchScore)
+                            // }
                             >
                               <IconAi />
                               <span> {item?.MatchScore || 0}%</span>

@@ -11,10 +11,9 @@ import {
   RequirementsStatus,
   RoleType,
 } from "../../../components/sharedService/enums";
-import { AddOutlined } from "@mui/icons-material";
 import Loader from "../../../components/sharedComponents/Loader";
 
-interface VendorDashboard {}
+interface VendorDashboard { }
 
 const VendorDashboard: React.FC<VendorDashboard> = () => {
   const navigate = useNavigate();

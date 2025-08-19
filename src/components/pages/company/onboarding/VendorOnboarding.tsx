@@ -1,29 +1,21 @@
 import {
   Avatar,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   IconButton,
   Link,
-  Tab,
-  Tabs,
   Tooltip,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { Chip } from "@mui/material";
 import HtmlRenderer from "../../../../components/sharedComponents/HtmlRenderer";
 import {
-  Cancel,
   CancelOutlined,
-  Check,
   CheckCircleOutlineOutlined,
   ChevronLeft,
   ChevronRight,
-  CloseOutlined,
   CorporateFareOutlined,
 } from "@mui/icons-material";
 import {
@@ -34,7 +26,6 @@ import {
   getOnboardInvitedList,
   inviteStatusChange,
 } from "../../../../components/sharedService/apiService";
-import PageLoader from "../../../../components/sharedComponents/PageLoader";
 import Loader from "../../../sharedComponents/Loader";
 import NoDataAvailable from "../../../sharedComponents/NoDataAvailable";
 import { useNavigate } from "react-router";
